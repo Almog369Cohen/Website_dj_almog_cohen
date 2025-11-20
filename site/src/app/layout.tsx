@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   title: "DJ Almog Cohen — DJ • Mentor • Creator",
   description:
     "Premium DJ brand site. Events, DJ courses & mentorship. Energy, emotion, and human connection through sound.",
+  metadataBase: new URL("https://www.compaktt.com"),
   icons: {
     icon: [
       { url: "/icon.png", type: "image/png" },
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
       "Events, DJ courses & mentorship. Energy, emotion, and human connection through sound.",
     type: "website",
     url: "https://www.compaktt.com",
-    images: [{ url: "/icon.png", width: 1011, height: 1184 }],
+    images: [{ url: "https://www.compaktt.com/icon.png", width: 1011, height: 1184 }],
   },
 };
 
