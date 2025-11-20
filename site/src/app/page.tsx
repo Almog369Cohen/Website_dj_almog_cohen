@@ -200,16 +200,17 @@ export default function Home() {
             <span className="rounded-full bg-brand-green/20 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-brand-green">
               חדש!
             </span>
-            <span className="mx-2 text-sm font-semibold md:text-base">
+            <span className="mx-2 text-xs font-semibold md:text-sm lg:text-base">
               <span className="bg-gradient-to-l from-brand-green via-white to-brand-blue bg-clip-text text-transparent">
                 חוגג מנגן
               </span>
-              {" "}- הקונספט שהופך את בעלי השמחה לכוכבי הערב
+              <span className="hidden md:inline">{" "}- הקונספט שהופך את בעלי השמחה לכוכבי הערב</span>
+              <span className="md:hidden">{" "}- קונספט חדש!</span>
             </span>
           </div>
           <Link
             href="/chogeg-menagen"
-            className="hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-4 py-1.5 text-xs font-bold text-black shadow-lg transition hover:scale-105 hover:shadow-brand-green/50 md:inline-block"
+            className="inline-block rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-3 py-1 text-xs md:px-4 md:py-1.5 font-bold text-black shadow-lg transition hover:scale-105 hover:shadow-brand-green/50"
           >
             גלה עוד →
           </Link>
@@ -223,7 +224,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="פתיחת שיחה בוואטסאפ"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-brand-green/30 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-green hover:bg-brand-green/10"
+          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-brand-green/30 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-green hover:bg-brand-green/10"
         >
           <Image src="/assets/icons/whatsapp.png" alt="WhatsApp" width={24} height={24} />
         </a>
@@ -232,7 +233,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="מעבר לאינסטגרם"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-blue hover:bg-brand-blue/10"
+          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-white/20 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-blue hover:bg-brand-blue/10"
         >
           <Image src="/assets/icons/instagram.png" alt="Instagram" width={24} height={24} />
         </a>
@@ -241,7 +242,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="מעבר ליוטיוב"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-blue hover:bg-brand-blue/10"
+          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-white/20 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-blue hover:bg-brand-blue/10"
         >
           <Image src="/assets/icons/youtube.png" alt="YouTube" width={24} height={24} />
         </a>
@@ -250,7 +251,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="מעבר לסאונדקלאוד"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-blue hover:bg-brand-blue/10"
+          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-white/20 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-blue hover:bg-brand-blue/10"
         >
           <Image src="/assets/icons/soundcloud.png" alt="SoundCloud" width={24} height={24} />
         </a>
@@ -341,7 +342,7 @@ export default function Home() {
             <div className="absolute -inset-2 -z-10 animate-pulse rounded-[40px] bg-gradient-to-r from-brand-blue/40 via-brand-green/40 to-brand-blue/40 opacity-40 blur-2xl" />
             <div className="absolute -inset-4 -z-10 rounded-[40px] bg-gradient-to-r from-brand-green/30 via-brand-blue/30 to-brand-green/30 opacity-20 blur-3xl" />
             
-            <div className="relative overflow-hidden rounded-[40px] border-2 border-white/30 bg-black/25 px-6 py-10 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-md md:px-10 md:py-12">
+            <div className="relative overflow-hidden rounded-[40px] border-2 border-white/30 bg-black/25 px-5 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-md md:px-10 md:py-12">
               {/* Title - Fluid Typography with Kinetic Reveal (Level 1000) */}
               <RevealText 
                 className="mb-6" 
@@ -1434,7 +1435,7 @@ export default function Home() {
         ))}
 
         <div className="relative mx-auto w-full max-w-7xl px-4">
-          <div className="grid items-center gap-16 md:grid-cols-2">
+          <div className="grid items-center gap-8 md:gap-16 md:grid-cols-2">
             {/* Left: Image with 3D Effects */}
             <motion.div
               initial={{ opacity: 0, x: -80, rotateY: -15 }}
@@ -1478,16 +1479,16 @@ export default function Home() {
                     scale: [1, 1.05, 1]
                   }}
                   transition={{ duration: 4, repeat: Infinity }}
-                  className="absolute bottom-8 right-8 overflow-hidden rounded-full border-2 border-brand-green/60 bg-black/90 backdrop-blur-xl"
+                  className="absolute bottom-4 right-4 md:bottom-8 md:right-8 overflow-hidden rounded-full border-2 border-brand-green/60 bg-black/90 backdrop-blur-xl"
                 >
                   <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-brand-green/20 to-brand-blue/20" />
-                  <div className="relative flex items-center gap-3 px-5 py-3">
+                  <div className="relative flex items-center gap-2 px-4 py-2 md:gap-3 md:px-5 backdrop-blur-md">
                     <span className="relative flex h-4 w-4">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-green opacity-75" />
                       <span className="absolute inline-flex h-full w-full animate-pulse rounded-full bg-brand-green opacity-75" style={{ animationDelay: "0.5s" }} />
                       <span className="relative inline-flex h-4 w-4 rounded-full bg-brand-green shadow-[0_0_15px_rgba(3,178,140,0.8)]" />
                     </span>
-                    <span className="font-bold text-brand-green">זמין לאירועים</span>
+                    <span className="text-xs md:text-base font-bold text-brand-green">זמין לאירועים</span>
                   </div>
                 </motion.div>
 
