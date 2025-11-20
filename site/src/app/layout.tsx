@@ -23,13 +23,22 @@ export const metadata: Metadata = {
   title: "DJ Almog Cohen — DJ • Mentor • Creator",
   description:
     "Premium DJ brand site. Events, DJ courses & mentorship. Energy, emotion, and human connection through sound.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "DJ Almog Cohen",
     description:
       "Events, DJ courses & mentorship. Energy, emotion, and human connection through sound.",
     type: "website",
-    url: "https://example.com",
+    url: "https://www.compaktt.com",
+    images: [{ url: "/icon.png", width: 1011, height: 1184 }],
   },
 };
 
