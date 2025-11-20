@@ -83,10 +83,10 @@ export default function Home() {
   const [faqOpen, setFaqOpen] = useState(false);
   const isMobile = useIsMobile();
   
-  // Disable complex animations on mobile for better performance
+  // Completely disable animations on mobile to prevent flickering
   const animationConfig = isMobile ? {
-    duration: 0.3,
-    ease: "easeOut"
+    duration: 0,
+    ease: "linear"
   } : {
     duration: 0.8,
     ease: [0.22, 1, 0.36, 1]

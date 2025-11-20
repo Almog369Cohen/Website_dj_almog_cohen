@@ -98,7 +98,7 @@ body {
   top: 0;
 }
 
-/* Mobile optimizations - prevent jumping */
+/* Mobile optimizations - prevent jumping and flickering */
 @media (max-width: 768px) {
   /* Prevent horizontal scroll and layout shifts */
   html, body {
@@ -108,12 +108,21 @@ body {
     -webkit-overflow-scrolling: touch;
   }
   
-  /* Disable complex animations on mobile */
-  .reduce-motion-mobile *,
-  .reduce-motion-mobile *::before,
-  .reduce-motion-mobile *::after {
-    animation-duration: 0.2s !important;
-    transition-duration: 0.2s !important;
+  /* DISABLE ALL ANIMATIONS ON MOBILE - Prevents flickering */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+  
+  /* Disable Framer Motion animations */
+  [data-framer-motion],
+  [data-projection-id] {
+    animation: none !important;
+    transition: none !important;
   }
   
   /* Prevent content jumping during font load */
@@ -143,14 +152,19 @@ body {
     -webkit-transform: none !important;
   }
   
-  /* Stabilize fixed/sticky elements */
-  [style*="position: fixed"],
-  [style*="position: sticky"],
-  .fixed,
-  .sticky {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transform: translateZ(0);
+  /* Disable all CSS animations that could flicker */
+  .animate-pulse,
+  .animate-ping,
+  .animate-spin,
+  .animate-bounce {
+    animation: none !important;
+  }
+  
+  /* Stop all morphing/blob animations */
+  [class*="motion-"],
+  [class*="animate-"] {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
