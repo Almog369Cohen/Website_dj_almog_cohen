@@ -21,7 +21,7 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
       x: "100%",
       transition: {
         duration: 0.3,
-        ease: "easeInOut",
+        ease: "easeInOut" as const,
       },
     },
     open: {
@@ -29,7 +29,7 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
       x: 0,
       transition: {
         duration: 0.3,
-        ease: "easeInOut",
+        ease: "easeInOut" as const,
       },
     },
   };
@@ -42,6 +42,7 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
       transition: {
         delay: i * 0.1,
         duration: 0.3,
+        ease: "easeOut" as const,
       },
     }),
   };
