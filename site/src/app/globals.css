@@ -102,9 +102,10 @@ body {
 @media (max-width: 768px) {
   /* Prevent horizontal scroll and layout shifts */
   html, body {
-    overflow-x: hidden;
+    overflow-x: hidden !important;
     width: 100%;
     position: relative;
+    -webkit-overflow-scrolling: touch;
   }
   
   /* Disable complex animations on mobile */
@@ -120,22 +121,36 @@ body {
     font-display: swap;
   }
   
-  /* Smooth scroll without jump */
+  /* Disable smooth scroll on mobile - can cause drift */
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto !important;
   }
   
   /* Prevent iOS bounce/rubber-band effect */
   body {
     overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
   }
   
-  /* GPU acceleration for smooth animations */
+  /* Remove will-change to prevent repaint issues */
   * {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    will-change: auto !important;
+  }
+  
+  /* Disable GPU transforms that cause movement */
+  html, body, #__next {
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+  
+  /* Stabilize fixed/sticky elements */
+  [style*="position: fixed"],
+  [style*="position: sticky"],
+  .fixed,
+  .sticky {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    transform: translateZ(0);
   }
 }
 
