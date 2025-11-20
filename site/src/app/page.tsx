@@ -257,7 +257,7 @@ export default function Home() {
       </div>
 
       {/* --- HERO SECTION (LEVEL 1000) --- */}
-      <section className="relative flex h-dvh min-h-[700px] flex-col items-center justify-center overflow-hidden text-center">
+      <section className="relative flex h-dvh min-h-[500px] md:min-h-[700px] flex-col items-center justify-center overflow-hidden text-center">
         {/* Fade masks for smooth transitions */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-40 bg-gradient-to-b from-brand-dark via-brand-dark/60 to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-40 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-transparent" />
@@ -394,7 +394,7 @@ export default function Home() {
                   <SmoothScrollLink
                     href="#events-section"
                     ariaLabel="גלילה לסקשן האירועים"
-                    className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-12 py-4 text-base font-bold text-black shadow-[0_0_40px_rgba(3,178,140,0.7)] transition hover:scale-105 hover:shadow-[0_0_60px_rgba(3,178,140,1)]"
+                    className="group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-black shadow-[0_0_40px_rgba(3,178,140,0.7)] transition hover:scale-105 hover:shadow-[0_0_60px_rgba(3,178,140,1)]"
                   >
                     <span className="relative z-20">לאירוע הבא שלכם</span>
                     <motion.svg 
@@ -419,7 +419,7 @@ export default function Home() {
                   <SmoothScrollLink
                     href="#school-section"
                     ariaLabel="גלילה לסקשן בית הספר והקורסים"
-                    className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border-2 border-brand-blue bg-brand-blue/20 px-12 py-4 text-base font-bold text-white backdrop-blur-md transition hover:scale-105 hover:bg-brand-blue/30 hover:shadow-[0_0_40px_rgba(5,156,192,0.5)]"
+                    className="group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden rounded-full border-2 border-brand-blue bg-brand-blue/20 px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-white backdrop-blur-md transition hover:scale-105 hover:bg-brand-blue/30 hover:shadow-[0_0_40px_rgba(5,156,192,0.5)]"
                   >
                     <span className="relative z-10">לקורסים ולבית הספר</span>
                     <svg className="relative z-10 h-5 w-5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -543,7 +543,7 @@ export default function Home() {
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{ transformStyle: "preserve-3d" }}
-            className="group relative overflow-hidden rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-8 text-right backdrop-blur-xl"
+            className="group relative overflow-hidden rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl"
           >
             {/* Multi-layer glow */}
             <div className="absolute -inset-1 -z-10 animate-pulse rounded-3xl bg-gradient-to-r from-brand-green/40 to-transparent opacity-50 blur-xl" />
@@ -558,7 +558,7 @@ export default function Home() {
               >
                 לאירוע שלכם
               </motion.p>
-              <h3 className="mt-3 text-3xl font-black text-white md:text-4xl">לחגוג</h3>
+              <h3 className="mt-3 text-2xl font-black text-white md:text-3xl lg:text-4xl">לחגוג</h3>
               <p className="mt-2 text-sm font-semibold text-brand-green/90">לזוגות שרוצים ללכת על בטוח.</p>
               <p className="mt-4 leading-relaxed text-white/85">
                 האירוע שלכם הוא חד פעמי. האחריות שלי היא לוודא שהמוזיקה תהיה מדויקת, שהאנרגיה לא תיפול לרגע, ושאתם תהיו עסוקים רק בליהנות. אני דואג לווייב, אתם דואגים לאורחים.
@@ -619,7 +619,7 @@ export default function Home() {
               >
                 לעתיד שלך כדיג'יי
               </motion.p>
-              <h3 className="mt-3 text-3xl font-black text-white md:text-4xl">ללמוד</h3>
+              <h3 className="mt-3 text-2xl font-black text-white md:text-3xl lg:text-4xl">ללמוד</h3>
               <p className="mt-2 text-sm font-semibold text-brand-blue/90">למי שרוצה להפוך תשוקה למקצוע.</p>
               <p className="mt-4 leading-relaxed text-white/85">
                 רוצים לדעת להחזיק רחבה באמת? אני אלמד אתכם את כל מה שלא כתוב בספרים. טכניקה, פסיכולוגיה של קהל, ואיך לבנות לעצמכם שם בתעשייה. לא חוג, קריירה.
@@ -929,7 +929,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="mt-3 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+              className="mt-3 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-2xl font-bold text-transparent md:text-4xl lg:text-5xl"
             >
               לשמוע את אלמוג לפני שפוגשים אותו
             </motion.h2>
@@ -1713,7 +1713,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="mt-2 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+              className="mt-2 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-2xl font-bold text-transparent md:text-4xl lg:text-5xl"
             >
               מדריכים וטיפים לאירוע המושלם
             </motion.h2>
