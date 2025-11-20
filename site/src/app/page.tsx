@@ -132,10 +132,10 @@ export default function Home() {
       {/* Fluid Typography System - Mobile Optimized */}
       <style jsx global>{`
         :root {
-          --font-fluid-h1: clamp(2rem, 8vw + 1rem, 9rem);
-          --font-fluid-h2: clamp(1.75rem, 5vw + 0.5rem, 5rem);
-          --font-fluid-h3: clamp(1.25rem, 3vw + 0.5rem, 3rem);
-          --font-fluid-p: clamp(0.9rem, 1vw + 0.5rem, 1.25rem);
+          --font-fluid-h1: clamp(1.75rem, 8vw + 1rem, 9rem);
+          --font-fluid-h2: clamp(1.5rem, 5vw + 0.5rem, 5rem);
+          --font-fluid-h3: clamp(1.125rem, 3vw + 0.5rem, 3rem);
+          --font-fluid-p: clamp(0.875rem, 1vw + 0.5rem, 1.25rem);
         }
         
         /* Prevent layout shifts on mobile */
@@ -528,7 +528,7 @@ export default function Home() {
           </motion.p>
         </motion.div>
 
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2">
           {/* Card 1 - Events */}
           <motion.div
             initial={{ opacity: 0, x: -50, rotateY: -10 }}
@@ -833,7 +833,7 @@ export default function Home() {
         >
           <div className="px-2 pt-8 pb-4">
             {/* Authority indicators */}
-            <div className="mb-8 grid gap-4 text-center md:grid-cols-3">
+            <div className="mb-8 grid grid-cols-1 gap-4 text-center sm:grid-cols-3 md:grid-cols-3">
               <div className="rounded-xl border border-brand-blue/20 bg-brand-blue/5 px-4 py-3">
                 <div className="text-2xl font-bold text-brand-blue">10+</div>
                 <div className="text-xs text-white/60">שנים מלמד DJ'ים</div>
@@ -849,7 +849,7 @@ export default function Home() {
             </div>
 
             {/* Course cards */}
-            <div className="grid gap-6 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
               <motion.div
                 whileHover={{ y: -6, scale: 1.02 }}
                 whileTap={{ scale: 0.99 }}
@@ -1087,7 +1087,7 @@ export default function Home() {
         </motion.div>
 
         <div className="space-y-8">
-          <div className="relative grid gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5/90 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
+          <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5/90 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
             <div className="brand-noise" aria-hidden="true" />
             <div className="relative space-y-4 text-right">
               <h3 className="text-xl font-semibold">סגירת מעגל: כשהמרצים שלי בחרו בי</h3>
@@ -1112,7 +1112,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative grid gap-6 overflow-hidden rounded-3xl border border-white/10 bg-black/50 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
+          <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-black/50 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
             <div className="brand-noise" aria-hidden="true" />
             <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5">
               {/* Interactive Carousel */}
@@ -1130,19 +1130,19 @@ export default function Home() {
               {/* Navigation Arrows */}
               <button
                 onClick={prevImage}
-                className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white backdrop-blur-sm transition hover:bg-black/80"
+                className="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 md:p-3 text-white backdrop-blur-sm transition hover:bg-black/80"
                 aria-label="תמונה קודמת"
               >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-4 w-4 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 text-white backdrop-blur-sm transition hover:bg-black/80"
+                className="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 md:p-3 text-white backdrop-blur-sm transition hover:bg-black/80"
                 aria-label="תמונה הבאה"
               >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-4 w-4 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
@@ -1344,7 +1344,7 @@ export default function Home() {
             </motion.div>
 
             {/* Other Services - 2 Column Grid */}
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2">
               <motion.div
                 whileHover={{ y: -6, scale: 1.02 }}
                 whileTap={{ scale: 0.99 }}
