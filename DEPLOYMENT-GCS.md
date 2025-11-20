@@ -111,7 +111,7 @@ If you want to deploy manually:
 
 ```bash
 # Navigate to the site directory
-cd "Coder - 1 /docs/site"
+cd "site"
 
 # Build the site
 npm run build
@@ -242,7 +242,7 @@ Clear the bucket cache:
 gsutil rm gs://www.compaktt.com/index.html
 
 # Re-upload (GitHub Actions does this automatically)
-gsutil cp "Coder - 1 /docs/site/out/index.html" gs://www.compaktt.com/
+gsutil cp "site/out/index.html" gs://www.compaktt.com/
 
 # If using Cloud CDN, invalidate cache
 gcloud compute url-maps invalidate-cdn-cache compaktt-url-map \
@@ -282,7 +282,7 @@ https://console.cloud.google.com/storage/browser/www.compaktt.com
 
 ### Build Failures
 - Check GitHub Actions logs
-- Test build locally: `cd "Coder - 1 /docs/site" && npm run build`
+- Test build locally: `cd "site" && npm run build`
 - Verify `output: 'export'` in next.config.ts
 
 ### Upload Failures

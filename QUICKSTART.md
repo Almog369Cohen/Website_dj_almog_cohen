@@ -167,7 +167,7 @@ gcloud iam service-accounts keys create gcp-key.json \
 
 ### Build fails locally?
 ```bash
-cd "Coder - 1 /docs/site"
+cd "site"
 npm install
 npm run build
 ```

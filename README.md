@@ -15,7 +15,7 @@ A modern, responsive Next.js website for DJ Almog Cohen with automated deploymen
 ### Local Development
 
 ```bash
-cd "Coder - 1 /docs/site"
+cd "site"
 npm install
 npm run dev
 ```
@@ -95,7 +95,7 @@ Your website will be live at: https://www.compaktt.com
 
 ```
 .
-├── Coder - 1 /docs/site/     # Next.js application
+├── site/     # Next.js application
 │   ├── src/
 │   │   ├── app/              # Next.js 13+ app directory
 │   │   ├── components/       # React components
@@ -142,7 +142,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 Test the static build locally:
 
 ```bash
-cd "Coder - 1 /docs/site"
+cd "site"
 npm run build
 # Output will be in the 'out' directory
 npx serve out
@@ -171,7 +171,7 @@ npx serve out
 Deploy manually using `gsutil`:
 
 ```bash
-cd "Coder - 1 /docs/site"
+cd "site"
 npm run build
 gsutil -m rsync -r -d out gs://www.compaktt.com
 ```

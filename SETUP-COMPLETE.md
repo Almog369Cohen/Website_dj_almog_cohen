@@ -130,7 +130,7 @@ gsutil iam get gs://www.compaktt.com
 ### Test Deployment (Manual)
 ```bash
 # Build the site
-cd "Coder - 1 /docs/site"
+cd "site"
 npm run build
 
 # Upload to bucket
