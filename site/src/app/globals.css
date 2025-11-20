@@ -98,6 +98,47 @@ body {
   top: 0;
 }
 
+/* Mobile optimizations - prevent jumping */
+@media (max-width: 768px) {
+  /* Prevent horizontal scroll and layout shifts */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+  
+  /* Disable complex animations on mobile */
+  .reduce-motion-mobile *,
+  .reduce-motion-mobile *::before,
+  .reduce-motion-mobile *::after {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Prevent content jumping during font load */
+  body {
+    font-display: swap;
+  }
+  
+  /* Smooth scroll without jump */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Prevent iOS bounce/rubber-band effect */
+  body {
+    overscroll-behavior-y: none;
+  }
+  
+  /* GPU acceleration for smooth animations */
+  * {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-assistant), var(--font-hebrew-sans), system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue";
 }

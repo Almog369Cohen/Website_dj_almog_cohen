@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
+import { useIsMobile } from "@/hooks/useMediaQuery";
 
 const AnimatedBackground = dynamic(
   () => import("@/components/AnimatedBackground"),
@@ -25,13 +26,13 @@ const RevealText = ({
   return (
     <div className="overflow-hidden">
       <motion.div
-        initial={{ y: "100%", skewY: 5, opacity: 0 }}
-        whileInView={{ y: "0%", skewY: 0, opacity: 1 }}
-        viewport={{ once: true }}
+        initial={{ y: "30%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
         transition={{ 
-          duration: 0.8, 
-          delay,
-          ease: [0.22, 1, 0.36, 1] // Custom easing for smooth reveal
+          duration: 0.4, 
+          delay: delay * 0.5,
+          ease: "easeOut"
         }}
         className={className}
       >
@@ -80,6 +81,16 @@ export default function Home() {
   const [schoolOpen, setSchoolOpen] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [faqOpen, setFaqOpen] = useState(false);
+  const isMobile = useIsMobile();
+  
+  // Disable complex animations on mobile for better performance
+  const animationConfig = isMobile ? {
+    duration: 0.3,
+    ease: "easeOut"
+  } : {
+    duration: 0.8,
+    ease: [0.22, 1, 0.36, 1]
+  };
 
   const carouselImages = [
     "/assets/almog/IMG_6561.jpg",
@@ -118,13 +129,20 @@ export default function Home() {
 
   return (
     <>
-      {/* Fluid Typography System - Level 1000 Editorial */}
+      {/* Fluid Typography System - Mobile Optimized */}
       <style jsx global>{`
         :root {
-          --font-fluid-h1: clamp(3.5rem, 8vw + 1rem, 9rem);
-          --font-fluid-h2: clamp(2.5rem, 5vw + 1rem, 5rem);
-          --font-fluid-h3: clamp(1.5rem, 3vw + 1rem, 3rem);
-          --font-fluid-p: clamp(1rem, 1vw + 0.5rem, 1.25rem);
+          --font-fluid-h1: clamp(2rem, 8vw + 1rem, 9rem);
+          --font-fluid-h2: clamp(1.75rem, 5vw + 0.5rem, 5rem);
+          --font-fluid-h3: clamp(1.25rem, 3vw + 0.5rem, 3rem);
+          --font-fluid-p: clamp(0.9rem, 1vw + 0.5rem, 1.25rem);
+        }
+        
+        /* Prevent layout shifts on mobile */
+        @media (max-width: 768px) {
+          * {
+            will-change: auto !important;
+          }
         }
       `}</style>
       
