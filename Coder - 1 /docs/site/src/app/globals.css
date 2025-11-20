@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --background: #1f1f21;
+  --foreground: #ffffff;
+  --brand-blue: #059cc0;
+  --brand-green: #03b28c;
+  --brand-dark: #1f1f21;
+  --brand-white: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-green: var(--brand-green);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-white: var(--brand-white);
+  --font-sans: var(--font-hebrew-sans);
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(5, 156, 192, 0.22), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(3, 178, 140, 0.18), transparent 55%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-hebrew-sans), system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-assistant), var(--font-hebrew-sans), system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue";
+}
+
+.bg-section-school {
+  background-image: linear-gradient(rgba(25, 28, 32, 0.9), rgba(25, 28, 32, 0.9)), url('/assets/almog/corporate-1.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-section-events {
+  background-image: linear-gradient(rgba(25, 28, 32, 0.9), rgba(25, 28, 32, 0.9)), url('/assets/almog/wedding-1.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.card-glow {
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.card-glow:hover {
+  box-shadow: 0 0 15px 5px var(--brand-blue-transparent, rgba(5, 156, 192, 0.2));
+}
+
+.card-glow-green:hover {
+  box-shadow: 0 0 15px 5px var(--brand-green-transparent, rgba(3, 178, 140, 0.2));
+}
+
+/* Brand helpers: Noise / Grain overlay and geometric shapes (AC brand language) */
+.brand-noise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  mix-blend-mode: soft-light;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.15) 0, rgba(255, 255, 255, 0.15) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0, rgba(255, 255, 255, 0.12) 1px, transparent 1px, transparent 4px);
+}
+
+.brand-shape-ring {
+  border-radius: 9999px;
+  border: 1px solid rgba(5, 156, 192, 0.8);
+  box-shadow: 0 0 0 1px rgba(3, 178, 140, 0.6);
+}
+
+.brand-shape-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--brand-green);
+}
+
+.brand-shape-triangle {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid var(--brand-blue);
+}

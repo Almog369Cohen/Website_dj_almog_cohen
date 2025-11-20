@@ -1,0 +1,64 @@
+name: Build and Deploy to GCS Bucket (Workload Identity)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  BUCKET_NAME: www.compaktt.com
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      id-token: write  # Required for Workload Identity Federation
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: 'Coder - 1 /docs/site'
+
+      - name: Build Next.js site
+        run: npm run build
+        working-directory: 'Coder - 1 /docs/site'
+
+      - name: Authenticate to Google Cloud via Workload Identity
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Upload to GCS bucket
+        run: |
+          gsutil -m rsync -r -d "Coder - 1 /docs/site/out" gs://${{ env.BUCKET_NAME }}
+
+      - name: Set cache control headers
+        run: |
+          # Set cache headers for static assets (1 year)
+          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" \
+            'gs://${{ env.BUCKET_NAME }}/_next/**' || echo "No _next files yet"
+          
+          # Set cache headers for HTML files (no cache)
+          gsutil -m setmeta -h "Cache-Control:public, max-age=0, must-revalidate" \
+            'gs://${{ env.BUCKET_NAME }}/**/*.html' || echo "No HTML files yet"
+
+      - name: Deployment complete
+        run: |
+          echo "✅ Website deployed to: https://www.compaktt.com"
+          echo "🌐 Storage URL: https://storage.googleapis.com/${{ env.BUCKET_NAME }}/index.html"
+          echo "🔒 Deployed using Workload Identity Federation (no keys!)"
