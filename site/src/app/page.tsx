@@ -316,7 +316,7 @@ export default function Home() {
             playsInline
             poster="/assets/almog/hero-poster.jpg"
           >
-            <source src="/assets/hero-main-optimized.mp4" type="video/mp4" />
+            <source src="https://storage.googleapis.com/www.compaktt.com/assets/hero-main-optimized.mp4" type="video/mp4" />
           </video>
           {/* Scanline Effect */}
           <motion.div

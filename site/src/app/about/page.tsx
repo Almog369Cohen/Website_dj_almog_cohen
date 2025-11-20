@@ -208,7 +208,7 @@ export default function AboutPage() {
             playsInline
             className="h-full w-full object-cover opacity-40"
           >
-            <source src="/assets/hero-main-optimized.mp4" type="video/mp4" />
+            <source src="https://storage.googleapis.com/www.compaktt.com/assets/hero-main-optimized.mp4" type="video/mp4" />
           </video>
           {/* Dark Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/60 to-[#0a0a0a]/80" />
