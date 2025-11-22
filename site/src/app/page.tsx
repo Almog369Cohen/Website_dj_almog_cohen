@@ -146,7 +146,7 @@ export default function Home() {
         }
       `}</style>
       
-      <div className="text-brand-white">
+      <div className="overflow-x-hidden text-brand-white">
       {/* --- FLOATING CTA FOR CHOGEG MENAGEN --- */}
       <motion.div
         initial={{ x: 100, opacity: 0 }}
@@ -315,6 +315,7 @@ export default function Home() {
             muted
             loop
             playsInline
+            preload="auto"
             poster="/assets/almog/hero-poster.jpg"
           >
             <source src="https://storage.googleapis.com/www.compaktt.com/assets/hero-main-optimized.mp4" type="video/mp4" />
@@ -528,7 +529,7 @@ export default function Home() {
           </motion.p>
         </motion.div>
 
-        <div className="flex flex-col md:grid md:grid-cols-2 gap-0 md:gap-8">
+        <div className="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2">
           {/* Card 1 - Events */}
           <motion.div
             initial={{ opacity: 0, x: -50, rotateY: -10 }}
@@ -544,7 +545,7 @@ export default function Home() {
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{ transformStyle: "preserve-3d" }}
-            className="group relative overflow-hidden min-h-[50vh] md:min-h-0 rounded-none md:rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-8 md:p-8 text-right backdrop-blur-xl"
+            className="group relative overflow-hidden rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl"
           >
             {/* Multi-layer glow */}
             <div className="absolute -inset-1 -z-10 animate-pulse rounded-3xl bg-gradient-to-r from-brand-green/40 to-transparent opacity-50 blur-xl" />
@@ -605,7 +606,7 @@ export default function Home() {
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{ transformStyle: "preserve-3d" }}
-            className="group relative overflow-hidden min-h-[50vh] md:min-h-0 rounded-none md:rounded-3xl border-2 border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 via-black/50 to-transparent p-8 text-right backdrop-blur-xl"
+            className="group relative overflow-hidden rounded-3xl border-2 border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl"
           >
             {/* Multi-layer glow */}
             <div className="absolute -inset-1 -z-10 animate-pulse rounded-3xl bg-gradient-to-r from-brand-blue/40 to-transparent opacity-50 blur-xl" />
