@@ -56,29 +56,21 @@ const TimelineItem = ({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, x: 50 }}
-      animate={isInView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.6, delay }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       className="relative grid grid-cols-[auto_1fr] gap-4 md:gap-8 text-right"
     >
       {/* Year - Left Side */}
-      <motion.div
-        animate={isInView ? { 
-          textShadow: [
-            "0 0 0px #059cc0",
-            "0 0 15px #059cc0, 0 0 30px #059cc0",
-            "0 0 15px #059cc0"
-          ]
-        } : {}}
-        transition={{ duration: 2, repeat: Infinity }}
+      <div
         style={{
           fontSize: "clamp(1.25rem, 2.5vw + 0.5rem, 2.5rem)",
           fontWeight: 900
         }}
-        className={`text-left leading-none ${isInView ? 'text-brand-blue' : 'text-white/20'}`}
+        className={`text-left leading-none transition-colors duration-300 ${isInView ? 'text-brand-blue' : 'text-white/30'}`}
       >
         {year}
-      </motion.div>
+      </div>
 
       {/* Content - Right Side */}
       <div className="space-y-2 pb-8 md:pb-12">
@@ -87,11 +79,9 @@ const TimelineItem = ({
       </div>
 
       {/* Connection Dot */}
-      <motion.div
-        animate={isInView ? { scale: [1, 1.5, 1] } : {}}
-        transition={{ duration: 1.5, repeat: Infinity }}
-        className={`absolute -right-1 md:-right-2 top-2 h-3 w-3 md:h-4 md:w-4 rounded-full ${
-          isInView ? 'bg-brand-blue shadow-[0_0_15px_#059cc0]' : 'bg-white/20'
+      <div
+        className={`absolute -right-1 md:-right-2 top-2 h-3 w-3 md:h-4 md:w-4 rounded-full transition-all duration-300 ${
+          isInView ? 'bg-brand-blue shadow-[0_0_10px_#059cc0]' : 'bg-white/20'
         }`}
       />
     </motion.div>
@@ -156,6 +146,21 @@ export default function AboutPage() {
       year: "2020",
       title: "הקמת העסק ובית הספר",
       description: "לא רק תקלוט. בית ספר, ליווי אישי, קונספטים כמו חוגג מנגן, והפקות שלמות. כל אירוע עולם משלו."
+    },
+    {
+      year: "2021-22",
+      title: "התבססות והרחבה",
+      description: "מאות אירועים נוספים, בניית מוניטין והתמחות בחתונות ואירועים פרטיים. כל ערב הזדמנות לשכלל את האומנות."
+    },
+    {
+      year: "2023-24",
+      title: "חידושים וקונספטים חדשים",
+      description: "פיתוח 'חוגג מנגן' - קונספט ייחודי שהופך את בעלי השמחה לכוכבי הערב. שילוב טכנולוגיה מתקדמת עם אנרגיה אנושית."
+    },
+    {
+      year: "2025",
+      title: "המסע נמשך",
+      description: "כל אירוע, כל רחבה, כל רגע - המשך המסע למצוינות. 12+ שנים של ניסיון, מאות אירועים, ועדיין כל ערב מרגיש כמו הפעם הראשונה."
     }
   ];
 
