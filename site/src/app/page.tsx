@@ -162,13 +162,17 @@ export default function Home() {
           whileTap={{ scale: 0.9 }}
           className="group relative flex items-center gap-3 overflow-hidden rounded-full border-2 border-brand-green bg-gradient-to-r from-brand-green to-brand-blue px-6 py-4 shadow-[0_0_40px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_60px_rgba(3,178,140,0.9)]"
         >
-          <motion.span
-            animate={{ scale: [1, 1.3, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="text-2xl"
-          >
-            ⭐
-          </motion.span>
+          {!isMobile ? (
+            <motion.span
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="text-2xl"
+            >
+              ⭐
+            </motion.span>
+          ) : (
+            <span className="text-2xl">⭐</span>
+          )}
           <div className="relative z-20 text-right">
             <div className="text-xs font-bold uppercase tracking-wider text-black drop-shadow-sm">חדש!</div>
             <div className="text-sm font-bold text-black drop-shadow-sm">חוגג מנגן</div>
@@ -189,13 +193,17 @@ export default function Home() {
       >
         <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-brand-green/5 to-transparent" />
         <div className="mx-auto flex max-w-6xl items-center justify-center gap-3 px-4">
-          <motion.span
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="text-2xl"
-          >
-            🎉
-          </motion.span>
+          {!isMobile ? (
+            <motion.span
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="text-2xl"
+            >
+              ⭐
+            </motion.span>
+          ) : (
+            <span className="text-2xl">⭐</span>
+          )}
           <div className="text-center">
             <span className="rounded-full bg-brand-green/20 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-brand-green">
               חדש!
@@ -258,7 +266,7 @@ export default function Home() {
       </div>
 
       {/* --- HERO SECTION (LEVEL 1000) --- */}
-      <section className="relative flex h-dvh min-h-[500px] md:min-h-[700px] flex-col items-center justify-center overflow-hidden text-center">
+      <section className="relative flex h-dvh min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[700px] flex-col items-center justify-center overflow-hidden text-center">
         {/* Fade masks for smooth transitions */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-40 bg-gradient-to-b from-brand-dark via-brand-dark/60 to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-40 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-transparent" />
@@ -389,28 +397,28 @@ export default function Home() {
                 transition={{ duration: 1, delay: 1.2 }}
                 className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
               >
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={!isMobile ? { scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
                   <SmoothScrollLink
                     href="#events-section"
                     ariaLabel="גלילה לסקשן האירועים"
                     className="group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-black shadow-[0_0_40px_rgba(3,178,140,0.7)] transition hover:scale-105 hover:shadow-[0_0_60px_rgba(3,178,140,1)]"
                   >
                     <span className="relative z-20">לאירוע הבא שלכם</span>
-                    <motion.svg 
+                    <svg 
                       className="relative z-20 h-5 w-5"
-                      animate={{ x: [0, 5, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </motion.svg>
-                    <motion.div
-                      animate={{ x: ["-200%", "200%"] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                      className="absolute inset-0 z-10 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
-                    />
+                    </svg>
+                    {!isMobile && (
+                      <motion.div
+                        animate={{ x: ["-200%", "200%"] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 z-10 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
+                      />
+                    )}
                   </SmoothScrollLink>
                 </motion.div>
 
@@ -420,8 +428,13 @@ export default function Home() {
                     ariaLabel="גלילה לסקשן בית הספר והקורסים"
                     className="group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden rounded-full border-2 border-brand-blue bg-brand-blue/20 px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-white backdrop-blur-md transition hover:scale-105 hover:bg-brand-blue/30 hover:shadow-[0_0_40px_rgba(5,156,192,0.5)]"
                   >
-                    <span className="relative z-10">לקורסים ולבית הספר</span>
-                    <svg className="relative z-10 h-5 w-5 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className="relative z-10">לקורסי DJ</span>
+                    <svg 
+                      className="relative z-10 h-5 w-5"
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </SmoothScrollLink>
@@ -531,24 +544,18 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2">
           {/* Card 1 - Events */}
           <motion.div
-            initial={{ opacity: 0, x: -50, rotateY: -10 }}
-            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            whileHover={{ 
-              y: -12, 
-              scale: 1.02,
-              rotateY: 3,
-              rotateX: -3,
-              z: 50
-            }}
+            whileHover={!isMobile ? { y: -8, scale: 1.02 } : {}}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d" }}
             className="group relative overflow-hidden rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl"
           >
-            {/* Multi-layer glow */}
-            <div className="absolute -inset-1 -z-10 animate-pulse rounded-3xl bg-gradient-to-r from-brand-green/40 to-transparent opacity-50 blur-xl" />
-            <div className="absolute -inset-2 -z-10 rounded-3xl bg-gradient-to-r from-brand-green/20 to-transparent opacity-30 blur-2xl" />
+            {/* Single glow - Desktop only */}
+            {!isMobile && (
+              <div className="absolute -inset-1 -z-10 rounded-3xl bg-gradient-to-r from-brand-green/30 to-transparent opacity-40 blur-xl" />
+            )}
             
             <div className="relative">
               <motion.p 
@@ -566,7 +573,7 @@ export default function Home() {
               </p>
               
               <div className="mt-6 flex justify-end">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={!isMobile ? { scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
                   <SmoothScrollLink
                     href="#events-section"
                     ariaLabel="גלילה לסקשן האירועים"
@@ -576,11 +583,13 @@ export default function Home() {
                     <svg className="relative z-10 h-4 w-4 transition group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
-                    <motion.div
-                      animate={{ x: ["-200%", "200%"] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                      className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
-                    />
+                    {!isMobile && (
+                      <motion.div
+                        animate={{ x: ["-200%", "200%"] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
+                      />
+                    )}
                   </SmoothScrollLink>
                 </motion.div>
               </div>
@@ -592,24 +601,18 @@ export default function Home() {
 
           {/* Card 2 - School */}
           <motion.div
-            initial={{ opacity: 0, x: 50, rotateY: 10 }}
-            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            whileHover={{ 
-              y: -12, 
-              scale: 1.02,
-              rotateY: -3,
-              rotateX: -3,
-              z: 50
-            }}
+            whileHover={!isMobile ? { y: -8, scale: 1.02 } : {}}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d" }}
             className="group relative overflow-hidden rounded-3xl border-2 border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl"
           >
-            {/* Multi-layer glow */}
-            <div className="absolute -inset-1 -z-10 animate-pulse rounded-3xl bg-gradient-to-r from-brand-blue/40 to-transparent opacity-50 blur-xl" />
-            <div className="absolute -inset-2 -z-10 rounded-3xl bg-gradient-to-r from-brand-blue/20 to-transparent opacity-30 blur-2xl" />
+            {/* Single glow - Desktop only */}
+            {!isMobile && (
+              <div className="absolute -inset-1 -z-10 rounded-3xl bg-gradient-to-r from-brand-blue/30 to-transparent opacity-40 blur-xl" />
+            )}
             
             <div className="relative">
               <motion.p 
