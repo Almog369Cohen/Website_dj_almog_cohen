@@ -262,7 +262,7 @@ export default function Home() {
         {/* Fade masks for smooth transitions */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-40 bg-gradient-to-b from-brand-dark via-brand-dark/60 to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-40 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-transparent" />
-        {/* Morphing Blobs Background */}
+        {/* Morphing Blobs Background - Desktop Only */}
         <motion.div
           animate={{ 
             scale: [1, 1.3, 0.9, 1],
@@ -270,7 +270,7 @@ export default function Home() {
             borderRadius: ["40% 60% 70% 30% / 40% 50% 60% 50%", "60% 40% 30% 70% / 60% 50% 40% 50%", "40% 60% 70% 30% / 40% 50% 60% 50%"]
           }}
           transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-          className="pointer-events-none absolute -right-40 top-20 -z-20 h-[600px] w-[600px] bg-gradient-to-br from-brand-green/20 to-brand-blue/20 blur-3xl"
+          className="pointer-events-none absolute -right-40 top-20 -z-20 h-[600px] w-[600px] bg-gradient-to-br from-brand-green/20 to-brand-blue/20 blur-3xl hidden md:block"
         />
         <motion.div
           animate={{ 
@@ -279,11 +279,11 @@ export default function Home() {
             borderRadius: ["60% 40% 50% 60% / 50% 60% 40% 50%", "40% 60% 50% 40% / 50% 40% 60% 50%", "60% 40% 50% 60% / 50% 60% 40% 50%"]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="pointer-events-none absolute -left-40 bottom-20 -z-20 h-[500px] w-[500px] bg-gradient-to-br from-brand-blue/20 to-brand-green/20 blur-3xl"
+          className="pointer-events-none absolute -left-40 bottom-20 -z-20 h-[500px] w-[500px] bg-gradient-to-br from-brand-blue/20 to-brand-green/20 blur-3xl hidden md:block"
         />
 
-        {/* Floating Particles */}
-        {[...Array(8)].map((_, i) => (
+        {/* Floating Particles - Desktop Only */}
+        {!isMobile && [...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             animate={{
@@ -320,12 +320,14 @@ export default function Home() {
           >
             <source src="https://storage.googleapis.com/www.compaktt.com/assets/hero-main-optimized.mp4" type="video/mp4" />
           </video>
-          {/* Scanline Effect */}
-          <motion.div
-            animate={{ y: ["-100%", "200%"] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-            className="pointer-events-none absolute inset-x-0 h-40 bg-gradient-to-b from-transparent via-brand-blue/10 to-transparent"
-          />
+          {/* Scanline Effect - Desktop Only */}
+          {!isMobile && (
+            <motion.div
+              animate={{ y: ["-100%", "200%"] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              className="pointer-events-none absolute inset-x-0 h-40 bg-gradient-to-b from-transparent via-brand-blue/10 to-transparent"
+            />
+          )}
         </div>
         
         <div className="absolute inset-0 -z-10 bg-black/60" />
@@ -356,15 +358,10 @@ export default function Home() {
                     letterSpacing: "-0.05em",
                     lineHeight: 0.95,
                     background: "linear-gradient(135deg, #059cc0 0%, #ffffff 50%, #03b28c 100%)",
-                    backgroundSize: "200% 200%",
                     backgroundClip: "text",
                     WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
+                    color: "transparent",
                   }}
-                  animate={{
-                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                  }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                 >
                   לא עוד DJ. ארכיטקט של אנרגיה.
                 </motion.h1>
@@ -477,14 +474,16 @@ export default function Home() {
 
       {/* --- WHO IS THIS FOR (LEVEL 1000) --- */}
       <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-32">
-        {/* Animated brand element */}
-        <motion.div 
-          animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="pointer-events-none absolute -left-10 top-4 hidden h-24 w-24 opacity-30 md:block"
-        >
-          <Image src="/assets/brand/arrows-color.png" alt="אלמנט חצים מותגי" fill className="object-contain" />
-        </motion.div>
+        {/* Animated brand element - Desktop Only */}
+        {!isMobile && (
+          <motion.div 
+            animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="pointer-events-none absolute -left-10 top-4 h-24 w-24 opacity-30"
+          >
+            <Image src="/assets/brand/arrows-color.png" alt="אלמנט חצים מותגי" fill className="object-contain" />
+          </motion.div>
+        )}
         
         {/* Header with kinetic typography */}
         <motion.div 
