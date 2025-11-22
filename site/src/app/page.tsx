@@ -889,28 +889,32 @@ export default function Home() {
       </section>
 
       {/* --- MUSIC / LISTEN NOW (LEVEL 1000) --- */}
-      <section id="music-section" className="relative py-24">
+      <section id="music-section" className="relative py-16 md:py-24">
         {/* Fade mask at bottom only */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
-        {/* Morphing background blobs */}
-        <motion.div
-          animate={{ 
-            scale: [1, 1.3, 1],
-            x: [0, -60, 0],
-            borderRadius: ["50% 50%", "40% 60%", "50% 50%"]
-          }}
-          transition={{ duration: 22, repeat: Infinity }}
-          className="pointer-events-none absolute -left-32 top-10 -z-10 h-96 w-96 bg-brand-blue/10 blur-3xl"
-        />
-        <motion.div
-          animate={{ 
-            scale: [1, 1.2, 1],
-            x: [0, 60, 0],
-            borderRadius: ["50% 50%", "60% 40%", "50% 50%"]
-          }}
-          transition={{ duration: 18, repeat: Infinity }}
-          className="pointer-events-none absolute -right-32 bottom-10 -z-10 h-96 w-96 bg-brand-green/10 blur-3xl"
-        />
+        {/* Morphing background blobs - Desktop Only */}
+        {!isMobile && (
+          <>
+            <motion.div
+              animate={{ 
+                scale: [1, 1.3, 1],
+                x: [0, -60, 0],
+                borderRadius: ["50% 50%", "40% 60%", "50% 50%"]
+              }}
+              transition={{ duration: 22, repeat: Infinity }}
+              className="pointer-events-none absolute -left-32 top-10 -z-10 h-96 w-96 bg-brand-blue/10 blur-3xl"
+            />
+            <motion.div
+              animate={{ 
+                scale: [1, 1.2, 1],
+                x: [0, 60, 0],
+                borderRadius: ["50% 50%", "60% 40%", "50% 50%"]
+              }}
+              transition={{ duration: 18, repeat: Infinity }}
+              className="pointer-events-none absolute -right-32 bottom-10 -z-10 h-96 w-96 bg-brand-green/10 blur-3xl"
+            />
+          </>
+        )}
 
         <div className="relative mx-auto w-full max-w-6xl px-4">
           {/* Header with kinetic typography */}
@@ -1186,28 +1190,33 @@ export default function Home() {
       </section>
 
       {/* --- DJ EVENTS SECTION (LEVEL 1000) --- */}
-      <section id="events-section" className="relative bg-section-events py-24">
+      <section id="events-section" className="relative bg-section-events py-16 md:py-24">
         {/* Fade mask at bottom only */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-16 bg-gradient-to-t from-brand-dark/60 to-transparent" />
-        {/* Morphing background blobs */}
-        <motion.div
-          animate={{ 
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-            borderRadius: ["40% 60%", "60% 40%", "40% 60%"]
-          }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="pointer-events-none absolute right-0 top-20 -z-10 h-96 w-96 bg-brand-green/10 blur-3xl"
-        />
-        <motion.div
-          animate={{ 
-            scale: [1, 1.3, 1],
-            x: [0, -50, 0],
-            borderRadius: ["60% 40%", "40% 60%", "60% 40%"]
-          }}
-          transition={{ duration: 25, repeat: Infinity }}
-          className="pointer-events-none absolute left-0 bottom-20 -z-10 h-96 w-96 bg-brand-blue/10 blur-3xl"
-        />
+        
+        {/* Morphing background blobs - Desktop Only */}
+        {!isMobile && (
+          <>
+            <motion.div
+              animate={{ 
+                scale: [1, 1.2, 1],
+                x: [0, 50, 0],
+                borderRadius: ["40% 60%", "60% 40%", "40% 60%"]
+              }}
+              transition={{ duration: 20, repeat: Infinity }}
+              className="pointer-events-none absolute right-0 top-20 -z-10 h-96 w-96 bg-brand-green/10 blur-3xl"
+            />
+            <motion.div
+              animate={{ 
+                scale: [1, 1.3, 1],
+                x: [0, -50, 0],
+                borderRadius: ["60% 40%", "40% 60%", "60% 40%"]
+              }}
+              transition={{ duration: 25, repeat: Infinity }}
+              className="pointer-events-none absolute left-0 bottom-20 -z-10 h-96 w-96 bg-brand-blue/10 blur-3xl"
+            />
+          </>
+        )}
 
         <div className="relative mx-auto w-full max-w-6xl px-4">
           {/* Header with kinetic typography */}
@@ -1378,45 +1387,52 @@ export default function Home() {
       </section>
 
       {/* --- ABOUT THE ARTIST (LEVEL 1000 ULTRA) --- */}
-      <section className="relative overflow-hidden py-40">
+      <section className="relative overflow-hidden py-20 md:py-40">
         {/* Fade masks for clean transitions */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-32 bg-gradient-to-b from-brand-dark to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-32 bg-gradient-to-t from-brand-dark to-transparent" />
-        {/* Dynamic Gradient Background with Animation */}
+        
+        {/* Dynamic Gradient Background - Desktop Only Animation */}
         <motion.div 
           className="absolute inset-0"
-          animate={{
+          animate={!isMobile ? {
             background: [
               "radial-gradient(circle at 20% 50%, rgba(5,156,192,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(3,178,140,0.15) 0%, transparent 50%)",
               "radial-gradient(circle at 80% 50%, rgba(5,156,192,0.15) 0%, transparent 50%), radial-gradient(circle at 20% 50%, rgba(3,178,140,0.15) 0%, transparent 50%)",
             ]
+          } : {
+             background: "radial-gradient(circle at 50% 50%, rgba(5,156,192,0.1) 0%, transparent 70%)"
           }}
           transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
         />
         <div className="brand-noise opacity-20" aria-hidden="true" />
         
-        {/* Morphing Blobs */}
-        <motion.div
-          animate={{ 
-            scale: [1, 1.2, 0.8, 1],
-            rotate: [0, 90, 180, 270, 360],
-            borderRadius: ["30% 70% 70% 30% / 30% 30% 70% 70%", "70% 30% 30% 70% / 70% 70% 30% 30%", "30% 70% 70% 30% / 30% 30% 70% 70%"]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="pointer-events-none absolute -right-32 top-20 h-96 w-96 bg-gradient-to-br from-brand-blue/20 to-brand-green/20 blur-3xl"
-        />
-        <motion.div
-          animate={{ 
-            scale: [1, 0.8, 1.2, 1],
-            rotate: [360, 270, 180, 90, 0],
-            borderRadius: ["70% 30% 30% 70% / 30% 70% 70% 30%", "30% 70% 70% 30% / 70% 30% 30% 70%", "70% 30% 30% 70% / 30% 70% 70% 30%"]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="pointer-events-none absolute -left-32 bottom-20 h-96 w-96 bg-gradient-to-br from-brand-green/20 to-brand-blue/20 blur-3xl"
-        />
+        {/* Morphing Blobs - Desktop Only */}
+        {!isMobile && (
+          <>
+            <motion.div
+              animate={{ 
+                scale: [1, 1.2, 0.8, 1],
+                rotate: [0, 90, 180, 270, 360],
+                borderRadius: ["30% 70% 70% 30% / 30% 30% 70% 70%", "70% 30% 30% 70% / 70% 70% 30% 30%", "30% 70% 70% 30% / 30% 30% 70% 70%"]
+              }}
+              transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+              className="pointer-events-none absolute -right-32 top-20 h-96 w-96 bg-gradient-to-br from-brand-blue/20 to-brand-green/20 blur-3xl"
+            />
+            <motion.div
+              animate={{ 
+                scale: [1, 0.8, 1.2, 1],
+                rotate: [360, 270, 180, 90, 0],
+                borderRadius: ["70% 30% 30% 70% / 30% 70% 70% 30%", "30% 70% 70% 30% / 70% 30% 30% 70%", "70% 30% 30% 70% / 30% 70% 70% 30%"]
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+              className="pointer-events-none absolute -left-32 bottom-20 h-96 w-96 bg-gradient-to-br from-brand-green/20 to-brand-blue/20 blur-3xl"
+            />
+          </>
+        )}
 
-        {/* Floating Particles */}
-        {[...Array(6)].map((_, i) => (
+        {/* Floating Particles - Desktop Only */}
+        {!isMobile && [...Array(6)].map((_, i) => (
           <motion.div
             key={i}
             animate={{
@@ -1477,30 +1493,38 @@ export default function Home() {
                 
                 {/* Animated Badge - ULTRA */}
                 <motion.div
-                  animate={{ 
+                  animate={!isMobile ? { 
                     y: [0, -12, 0],
                     scale: [1, 1.05, 1]
-                  }}
+                  } : {}}
                   transition={{ duration: 4, repeat: Infinity }}
                   className="absolute bottom-4 right-4 md:bottom-8 md:right-8 overflow-hidden rounded-full border-2 border-brand-green/60 bg-black/90 backdrop-blur-xl"
                 >
-                  <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-brand-green/20 to-brand-blue/20" />
+                  {!isMobile && (
+                    <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-brand-green/20 to-brand-blue/20" />
+                  )}
                   <div className="relative flex items-center gap-2 px-4 py-2 md:gap-3 md:px-5 backdrop-blur-md">
                     <span className="relative flex h-4 w-4">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-green opacity-75" />
-                      <span className="absolute inline-flex h-full w-full animate-pulse rounded-full bg-brand-green opacity-75" style={{ animationDelay: "0.5s" }} />
+                      {!isMobile && (
+                        <>
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-green opacity-75" />
+                          <span className="absolute inline-flex h-full w-full animate-pulse rounded-full bg-brand-green opacity-75" style={{ animationDelay: "0.5s" }} />
+                        </>
+                      )}
                       <span className="relative inline-flex h-4 w-4 rounded-full bg-brand-green shadow-[0_0_15px_rgba(3,178,140,0.8)]" />
                     </span>
                     <span className="text-xs md:text-base font-bold text-brand-green">זמין לאירועים</span>
                   </div>
                 </motion.div>
 
-                {/* Scanline Effect */}
-                <motion.div
-                  animate={{ y: ["-100%", "200%"] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  className="pointer-events-none absolute inset-x-0 h-32 bg-gradient-to-b from-transparent via-brand-green/10 to-transparent"
-                />
+                {/* Scanline Effect - Desktop Only */}
+                {!isMobile && (
+                  <motion.div
+                    animate={{ y: ["-100%", "200%"] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    className="pointer-events-none absolute inset-x-0 h-32 bg-gradient-to-b from-transparent via-brand-green/10 to-transparent"
+                  />
+                )}
               </motion.div>
             </motion.div>
 
@@ -1923,28 +1947,33 @@ export default function Home() {
       </section>
 
       {/* --- FINAL CTA (LEVEL 1000) --- */}
-      <section className="relative mx-auto w-full max-w-6xl px-4 py-24">
+      <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
         {/* Fade mask at bottom only */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/70 to-transparent" />
-        {/* Morphing blobs */}
-        <motion.div
-          animate={{ 
-            scale: [1, 1.4, 1],
-            rotate: [0, 180, 360],
-            borderRadius: ["40% 60%", "60% 40%", "40% 60%"]
-          }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="pointer-events-none absolute -left-32 -top-20 -z-10 h-96 w-96 bg-brand-green/15 blur-3xl"
-        />
-        <motion.div
-          animate={{ 
-            scale: [1, 1.3, 1],
-            rotate: [360, 180, 0],
-            borderRadius: ["60% 40%", "40% 60%", "60% 40%"]
-          }}
-          transition={{ duration: 25, repeat: Infinity }}
-          className="pointer-events-none absolute -bottom-20 -right-32 -z-10 h-96 w-96 bg-brand-blue/15 blur-3xl"
-        />
+        
+        {/* Morphing blobs - Desktop Only */}
+        {!isMobile && (
+          <>
+            <motion.div
+              animate={{ 
+                scale: [1, 1.4, 1],
+                rotate: [0, 180, 360],
+                borderRadius: ["40% 60%", "60% 40%", "40% 60%"]
+              }}
+              transition={{ duration: 20, repeat: Infinity }}
+              className="pointer-events-none absolute -left-32 -top-20 -z-10 h-96 w-96 bg-brand-green/15 blur-3xl"
+            />
+            <motion.div
+              animate={{ 
+                scale: [1, 1.3, 1],
+                rotate: [360, 180, 0],
+                borderRadius: ["60% 40%", "40% 60%", "60% 40%"]
+              }}
+              transition={{ duration: 25, repeat: Infinity }}
+              className="pointer-events-none absolute -bottom-20 -right-32 -z-10 h-96 w-96 bg-brand-blue/15 blur-3xl"
+            />
+          </>
+        )}
 
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
@@ -1953,8 +1982,10 @@ export default function Home() {
           className="relative"
         >
           <div className="relative overflow-hidden rounded-3xl border-2 border-white/10 bg-gradient-to-br from-black/90 via-black/70 to-brand-blue/20 p-12 text-center shadow-2xl backdrop-blur-xl md:p-16">
-            {/* Multi-layer glow */}
-            <div className="absolute -inset-2 -z-10 animate-pulse rounded-3xl bg-gradient-to-r from-brand-green/30 via-brand-blue/30 to-brand-green/30 opacity-50 blur-2xl" />
+            {/* Multi-layer glow - Desktop Only */}
+            {!isMobile && (
+              <div className="absolute -inset-2 -z-10 rounded-3xl bg-gradient-to-r from-brand-green/30 via-brand-blue/30 to-brand-green/30 opacity-50 blur-2xl" />
+            )}
             
             <div className="brand-noise opacity-20" aria-hidden="true" />
             
@@ -1986,26 +2017,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                whileHover={{ scale: 1.05 }}
+                whileHover={!isMobile ? { scale: 1.05 } : {}}
                 whileTap={{ scale: 0.95 }}
                 className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-10 py-5 text-lg font-bold text-black shadow-[0_0_50px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_80px_rgba(3,178,140,1)]"
               >
                 <span className="relative z-20 drop-shadow-sm">לבדיקת זמינות ב-WhatsApp</span>
-                <motion.svg 
+                <svg 
                   className="relative z-20 h-6 w-6 drop-shadow-sm"
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </motion.svg>
-                <motion.div
-                  animate={{ x: ["-200%", "200%"] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 z-10 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
-                />
+                </svg>
+                {!isMobile && (
+                  <motion.div
+                    animate={{ x: ["-200%", "200%"] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 z-10 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
+                  />
+                )}
               </motion.a>
             </div>
           </div>
