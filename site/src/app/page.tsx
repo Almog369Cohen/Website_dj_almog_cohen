@@ -132,8 +132,8 @@ export default function Home() {
       {/* Fluid Typography System - Mobile Optimized */}
       <style jsx global>{`
         :root {
-          --font-fluid-h1: clamp(1.75rem, 8vw + 1rem, 9rem);
-          --font-fluid-h2: clamp(1.5rem, 5vw + 0.5rem, 5rem);
+          --font-fluid-h1: clamp(2.5rem, 10vw, 6rem);
+          --font-fluid-h2: clamp(2rem, 6vw, 4rem);
           --font-fluid-h3: clamp(1.125rem, 3vw + 0.5rem, 3rem);
           --font-fluid-p: clamp(0.875rem, 1vw + 0.5rem, 1.25rem);
         }
@@ -327,7 +327,7 @@ export default function Home() {
           />
         </div>
         
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-dark/95 via-brand-dark/70 to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-black/60" />
         <AnimatedBackground />
 
         {/* Main Content - Ultra */}
@@ -365,7 +365,7 @@ export default function Home() {
                   }}
                   transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                 >
-                  DJ ALMOG COHEN
+                  לא עוד DJ. ארכיטקט של אנרגיה.
                 </motion.h1>
               </RevealText>
 
@@ -374,13 +374,13 @@ export default function Home() {
                 <h2
                   style={{
                     fontSize: "var(--font-fluid-p)",
-                    fontWeight: 300,
+                    fontWeight: 400,
                     lineHeight: 1.6,
-                    opacity: 0.8,
+                    opacity: 0.9,
                   }}
                   className="mx-auto max-w-3xl"
                 >
-                  הפסקול המדויק של הרגעים הכי חשובים בחיים שלכם
+                  12 שנים. מאות רחבות. חוק אחד: הקהל הוא המנצח.
                 </h2>
               </RevealText>
 
@@ -475,7 +475,7 @@ export default function Home() {
       </section>
 
       {/* --- WHO IS THIS FOR (LEVEL 1000) --- */}
-      <section className="relative mx-auto w-full max-w-6xl px-4 pb-20">
+      <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-32">
         {/* Animated brand element */}
         <motion.div 
           animate={{ rotate: 360, scale: [1, 1.1, 1] }}
@@ -528,7 +528,7 @@ export default function Home() {
           </motion.p>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2">
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-0 md:gap-8">
           {/* Card 1 - Events */}
           <motion.div
             initial={{ opacity: 0, x: -50, rotateY: -10 }}
@@ -544,7 +544,7 @@ export default function Home() {
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{ transformStyle: "preserve-3d" }}
-            className="group relative overflow-hidden rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl"
+            className="group relative overflow-hidden min-h-[50vh] md:min-h-0 rounded-none md:rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-8 md:p-8 text-right backdrop-blur-xl"
           >
             {/* Multi-layer glow */}
             <div className="absolute -inset-1 -z-10 animate-pulse rounded-3xl bg-gradient-to-r from-brand-green/40 to-transparent opacity-50 blur-xl" />
@@ -605,7 +605,7 @@ export default function Home() {
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{ transformStyle: "preserve-3d" }}
-            className="group relative overflow-hidden rounded-3xl border-2 border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 via-black/50 to-transparent p-8 text-right backdrop-blur-xl"
+            className="group relative overflow-hidden min-h-[50vh] md:min-h-0 rounded-none md:rounded-3xl border-2 border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 via-black/50 to-transparent p-8 text-right backdrop-blur-xl"
           >
             {/* Multi-layer glow */}
             <div className="absolute -inset-1 -z-10 animate-pulse rounded-3xl bg-gradient-to-r from-brand-blue/40 to-transparent opacity-50 blur-xl" />
