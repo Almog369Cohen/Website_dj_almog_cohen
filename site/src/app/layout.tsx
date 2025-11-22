@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { Assistant, Noto_Sans_Hebrew } from "next/font/google";
+import { Heebo, Rubik } from "next/font/google";
 import Link from "next/link";
+import Image from "next/image";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AccessibilityMenu } from "@/components/AccessibilityMenu";
 import { MobileMenu } from "@/components/MobileMenu";
 import "./globals.css";
 
-const hebrew = Noto_Sans_Hebrew({
+const rubik = Rubik({
   variable: "--font-hebrew-sans",
   subsets: ["hebrew"],
-  weight: ["400", "500", "700"],
+  weight: ["300", "400", "500", "700"],
 });
 
-const assistant = Assistant({
-  variable: "--font-assistant",
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
+const heebo = Heebo({
+  variable: "--font-assistant", // Keeping the variable name to avoid changing globals.css
+  subsets: ["hebrew"],
+  weight: ["400", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -54,7 +55,7 @@ export default function RootLayout({
   );
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning>
-      <body suppressHydrationWarning className={`${hebrew.variable} ${assistant.variable} antialiased bg-background text-foreground`}>
+      <body suppressHydrationWarning className={`${rubik.variable} ${heebo.variable} antialiased bg-background text-foreground`}>
         <a href="#main-content" className="skip-to-content">
           דלג לתוכן הראשי
         </a>
@@ -62,14 +63,29 @@ export default function RootLayout({
         <div className="min-h-dvh flex flex-col">
           <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/60" role="banner">
             <div className="mx-auto w-full max-w-6xl px-4 py-3">
-              <div className="flex items-center justify-between gap-4">
-                <Link href="/" className="text-lg font-semibold text-brand-blue" aria-label="חזרה לדף הבית">
-                  DJ Almog Cohen
-                </Link>
+              <div className="relative flex items-center justify-between gap-4">
+                {/* Right Side (Start): Mobile Menu & Theme */}
                 <div className="flex items-center gap-3">
-                  <ThemeToggle />
                   <MobileMenu waNumber={waNumber} waText={waText} />
-                  <nav className="hidden gap-6 text-sm md:flex" role="navigation" aria-label="תפריט ראשי">
+                  <ThemeToggle />
+                </div>
+
+                {/* Center: Logo */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <Link href="/" aria-label="חזרה לדף הבית">
+                    <Image 
+                      src="/assets/logo/icon-white.png" 
+                      alt="DJ Almog Cohen" 
+                      width={40} 
+                      height={40} 
+                      className="h-10 w-auto object-contain hover:opacity-90 transition-opacity"
+                      priority
+                    />
+                  </Link>
+                </div>
+
+                {/* Left Side (End): Desktop Nav */}
+                <nav className="hidden gap-6 text-sm md:flex" role="navigation" aria-label="תפריט ראשי">
                   <Link href="/services" className="hover:text-brand-blue">שירותים</Link>
                   <Link href="/chogeg-menagen" className="hover:text-brand-green">חוגג מנגן</Link>
                   <Link href="/music" className="hover:text-brand-blue">מוזיקה</Link>
@@ -84,7 +100,9 @@ export default function RootLayout({
                     צור קשר
                   </a>
                 </nav>
-                </div>
+                
+                {/* Spacer for mobile layout balance */}
+                <div className="w-10 md:hidden" aria-hidden="true" />
               </div>
             </div>
           </header>

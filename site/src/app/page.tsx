@@ -189,40 +189,41 @@ export default function Home() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.5 }}
-        className="relative overflow-hidden border-b border-brand-green/30 bg-gradient-to-r from-brand-green/10 via-brand-blue/10 to-brand-green/10 py-3"
+        className="relative overflow-hidden border-b border-brand-green/30 bg-gradient-to-r from-brand-green/10 via-brand-blue/10 to-brand-green/10 py-3 hover:bg-brand-green/5 transition-colors"
       >
-        <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-brand-green/5 to-transparent" />
-        <div className="mx-auto flex max-w-6xl items-center justify-center gap-3 px-4">
-          {!isMobile ? (
-            <motion.span
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-              className="text-2xl"
-            >
-              ⭐
-            </motion.span>
-          ) : (
-            <span className="text-2xl">⭐</span>
-          )}
-          <div className="text-center">
-            <span className="rounded-full bg-brand-green/20 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-brand-green">
-              חדש!
-            </span>
-            <span className="mx-2 text-xs font-semibold md:text-sm lg:text-base">
-              <span className="bg-gradient-to-l from-brand-green via-white to-brand-blue bg-clip-text text-transparent">
-                חוגג מנגן
+        <Link href="/chogeg-menagen" className="group block w-full">
+          <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-brand-green/5 to-transparent" />
+          <div className="mx-auto flex max-w-6xl items-center justify-center gap-3 px-4">
+            {!isMobile ? (
+              <motion.span
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+                className="text-2xl"
+              >
+                ⭐
+              </motion.span>
+            ) : (
+              <span className="text-2xl">⭐</span>
+            )}
+            <div className="text-center">
+              <span className="rounded-full bg-brand-green/20 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-brand-green">
+                חדש!
               </span>
-              <span className="hidden md:inline">{" "}- הקונספט שהופך את בעלי השמחה לכוכבי הערב</span>
-              <span className="md:hidden">{" "}- קונספט חדש!</span>
+              <span className="mx-2 text-xs font-semibold md:text-sm lg:text-base text-white">
+                <span className="bg-gradient-to-l from-brand-green via-white to-brand-blue bg-clip-text text-transparent">
+                  חוגג מנגן
+                </span>
+                <span className="hidden md:inline">{" "}- הקונספט שהופך את בעלי השמחה לכוכבי הערב</span>
+                <span className="md:hidden">{" "}- קונספט חדש!</span>
+              </span>
+            </div>
+            <span
+              className="inline-block rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-3 py-1 text-xs md:px-4 md:py-1.5 font-bold text-black shadow-lg transition group-hover:scale-105 group-hover:shadow-brand-green/50"
+            >
+              גלה עוד →
             </span>
           </div>
-          <Link
-            href="/chogeg-menagen"
-            className="inline-block rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-3 py-1 text-xs md:px-4 md:py-1.5 font-bold text-black shadow-lg transition hover:scale-105 hover:shadow-brand-green/50"
-          >
-            גלה עוד →
-          </Link>
-        </div>
+        </Link>
       </motion.div>
 
       {/* --- STICKY SOCIAL SIDEBAR --- */}
@@ -976,8 +977,8 @@ export default function Home() {
             </div>
             <div className="p-4">
               <p className="text-xs text-brand-blue/80">Live Set</p>
-              <h3 className="mt-1 text-base font-semibold">מיקס לייב מהרחבה</h3>
-              <p className="mt-2 text-xs text-white/70">סט חתונה מלא - מקבלת פנים ועד אפטר מטורף.</p>
+              <h3 className="mt-1 text-base font-semibold">Live Set - ים המלח</h3>
+              <p className="mt-2 text-xs text-white/70">סט לייב מלא מים המלח - מקבלת פנים ועד אפטר מטורף.</p>
             </div>
           </a>
 
@@ -1004,9 +1005,9 @@ export default function Home() {
               </div>
             </div>
             <div className="p-4">
-              <p className="text-xs text-brand-blue/80">Behind the Decks</p>
-              <h3 className="mt-1 text-base font-semibold">מאחורי הבמה</h3>
-              <p className="mt-2 text-xs text-white/70">צילומים מהקונסול בזמן אירוע – האנרגיה בזמן אמת.</p>
+              <p className="text-xs text-brand-blue/80">New Release</p>
+              <h3 className="mt-1 text-base font-semibold">Remix - הסוד שלי ממך</h3>
+              <p className="mt-2 text-xs text-white/70">רמיקס רשמי לשיר הקלאסי, בגרסת רחבות מחשמלת.</p>
             </div>
           </a>
 
@@ -1033,9 +1034,9 @@ export default function Home() {
               </div>
             </div>
             <div className="p-4">
-              <p className="text-xs text-brand-blue/80">Event Highlights</p>
-              <h3 className="mt-1 text-base font-semibold">רגעים מהאירועים</h3>
-              <p className="mt-2 text-xs text-white/70">תקציר קצר מאירועים שונים – מוזיקה, אנשים, אנרגיה.</p>
+              <p className="text-xs text-brand-blue/80">Mix Tape</p>
+              <h3 className="mt-1 text-base font-semibold">Mainstream Vol. 1</h3>
+              <p className="mt-2 text-xs text-white/70">אוסף להיטים ורגעים נבחרים במיקס אחד זורם.</p>
             </div>
           </a>
         </div>
