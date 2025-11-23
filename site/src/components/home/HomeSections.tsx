@@ -11,11 +11,11 @@ import { SmoothScrollLink } from "@/components/ui/SmoothScrollLink";
 import { TagsPills } from "@/components/ui/TagsPills";
 import { ContactFormLevel100 } from "@/components/ui/ContactFormLevel100";
 import { WeddingsLevel100 } from "./sections/WeddingsLevel100";
-import { CoursesLevel100 } from "./sections/CoursesLevel100";
 import { ChogegMenagenLevel100 } from "./sections/ChogegMenagenLevel100";
 
 export const HomeSections = () => {
   const { isRaveMode } = useEnergy();
+  const [schoolOpen, setSchoolOpen] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [faqOpen, setFaqOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -359,8 +359,104 @@ export const HomeSections = () => {
         </div>
       </section>
 
-      {/* --- COURSES SECTION LEVEL 100 --- */}
-      <CoursesLevel100 />
+      {/* --- COLLAPSIBLE SCHOOL SECTION --- */}
+      <section id="school-section" className="relative mx-auto w-full max-w-6xl px-4 py-12">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
+        <button
+          onClick={() => setSchoolOpen(!schoolOpen)}
+          className="group w-full rounded-2xl border border-brand-blue/30 bg-gradient-to-r from-brand-blue/10 to-brand-blue/5 px-6 py-5 text-right transition hover:border-brand-blue/50 hover:from-brand-blue/15 hover:to-brand-blue/10"
+          aria-expanded={schoolOpen}
+          aria-controls="school-content"
+        >
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand-blue/70">
+                למי שרוצה ללמוד לתקלט
+              </p>
+              <h2 className="text-2xl font-bold md:text-3xl">בית הספר של אלמוג – מאפס ועד רחבה מלאה</h2>
+              <p className="mt-2 text-sm text-white/60">10+ שנים מלמד • עשרות תלמידים מופיעים היום • מתחילים ועד מתקדמים</p>
+            </div>
+            <motion.div
+              animate={{ rotate: schoolOpen ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-blue/20 text-brand-blue"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </motion.div>
+          </div>
+        </button>
+
+        <motion.div
+          id="school-content"
+          initial={false}
+          animate={{
+            height: schoolOpen ? "auto" : 0,
+            opacity: schoolOpen ? 1 : 0,
+          }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="overflow-hidden"
+        >
+          <div className="px-2 pt-8 pb-4">
+            <div className="mb-8 grid grid-cols-1 gap-4 text-center sm:grid-cols-3 md:grid-cols-3">
+              <div className="rounded-xl border border-brand-blue/20 bg-brand-blue/5 px-4 py-3">
+                <div className="text-2xl font-bold text-brand-blue">10+</div>
+                <div className="text-xs text-white/60">שנים מלמד DJ&apos;ים</div>
+              </div>
+              <div className="rounded-xl border border-brand-blue/20 bg-brand-blue/5 px-4 py-3">
+                <div className="text-2xl font-bold text-brand-blue">50+</div>
+                <div className="text-xs text-white/60">תלמידים הופיעו ברחבות</div>
+              </div>
+              <div className="rounded-xl border border-brand-blue/20 bg-brand-blue/5 px-4 py-3">
+                <div className="text-2xl font-bold text-brand-blue">100%</div>
+                <div className="text-xs text-white/60">ליווי אישי מותאם</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                className="card-glow rounded-2xl border border-brand-blue/20 bg-white/5 p-6 text-center shadow-[0_0_30px_-10px_rgba(5,156,192,0.35)] backdrop-blur"
+              >
+                <h3 className="mb-2 text-xl font-semibold">קורס מתחילים</h3>
+                <p className="mb-4 text-sm text-white/70">מאפס מוחלט ועד המיקס הראשון שלך. כל מה שצריך כדי להתחיל נכון.</p>
+                <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
+                <TagsPills 
+                  tags={['קורס DJ', 'לימודי תקלוט', 'ציוד DJ', 'מתחילים', 'איך להיות DJ', 'Pioneer DJ', 'Serato DJ', 'בית ספר DJ', 'קורס בתל אביב', 'DJ מאפס']}
+                  variant="blue"
+                />
+              </motion.div>
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                className="card-glow rounded-2xl border border-brand-blue/20 bg-white/5 p-6 text-center shadow-[0_0_30px_-10px_rgba(5,156,192,0.35)] backdrop-blur"
+              >
+                <h3 className="mb-2 text-xl font-semibold">קורס מתקדמים</h3>
+                <p className="mb-4 text-sm text-white/70">טכניקות מתקדמות, בניית סט מקצועי והבנת דינמיקת רחבה.</p>
+                <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
+                <TagsPills 
+                  tags={['טכניקות מיקס', 'בניית קריירה', 'מנטורינג DJ', 'הפקה', 'Harmonic mixing', 'קריאת קהל', 'שיווק לאמנים', 'מיתוג אישי', 'DJ מקצועי']}
+                  variant="blue"
+                />
+              </motion.div>
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                className="card-glow rounded-2xl border border-brand-blue/20 bg-white/5 p-6 text-center shadow-[0_0_30px_-10px_rgba(5,156,192,0.35)] backdrop-blur"
+              >
+                <h3 className="mb-2 text-xl font-semibold">ליווי אישי</h3>
+                <p className="mb-4 text-sm text-white/70">Artist Development מלא - מיתוג, שיווק, הפקה ובניית קריירה.</p>
+                <a href={wa("היי, אשמח לפרטים על ליווי אישי")} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-blue hover:underline">קבע פגישת ייעוץ →</a>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </section>
 
       {/* --- CHOGEG MENAGEN SECTION LEVEL 100 --- */}
       <ChogegMenagenLevel100 />
