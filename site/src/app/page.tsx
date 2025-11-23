@@ -465,8 +465,12 @@ function HomeContent() {
                 {/* Line 2 - Bold, powerful statement */}
                 <RevealText delay={0.4}>
                   <motion.h1
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.3 }}
+                    whileHover={{ 
+                      scale: 1.03,
+                      textShadow: "0 0 30px rgba(5, 156, 192, 0.6), 0 0 60px rgba(3, 178, 140, 0.4)",
+                      transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+                    }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                     style={{ 
                       fontSize: "var(--font-fluid-h1)",
                       fontWeight: 900,
@@ -477,6 +481,8 @@ function HomeContent() {
                       WebkitBackgroundClip: "text",
                       color: "transparent",
                       textAlign: "center",
+                      cursor: "default",
+                      transformOrigin: "center center",
                     }}
                   >
                     רק באלה שראויים.

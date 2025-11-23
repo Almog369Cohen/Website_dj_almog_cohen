@@ -172,8 +172,26 @@ body {
   }
 }
 
+/* Typography - Anti-Shake & Smooth Rendering */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-assistant), var(--font-hebrew-sans), system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue";
+  /* Prevent text shaking/jittering during scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Stabilize transforms */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  /* Prevent subpixel shifts */
+  will-change: transform;
+}
+
+/* Body text - Smooth rendering */
+p, span, li, a {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Light Mode - Enhanced Typography */
