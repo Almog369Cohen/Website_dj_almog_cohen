@@ -29,7 +29,7 @@ export const CoursesLevel100 = () => {
             <br />
             <span className="text-[#059cc0]">לומדים להיות מישהו ששמים עליו את האירוע.</span>
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-white/70">
+          <p className="mx-auto max-w-2xl text-lg text-white/85">
             אם אתה מחפש "קורס מגניב", תמשיך הלאה. 
             אם אתה רוצה לשלוט באווירה — תשאיר תירוצים בחוץ.
           </p>
@@ -48,16 +48,16 @@ export const CoursesLevel100 = () => {
           >
             <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
             <div className="relative z-10">
-              <div className="mb-4 inline-block rounded-full bg-white/5 px-4 py-1 text-sm font-bold text-white/60">
+              <div className="mb-4 inline-block rounded-full bg-white/5 px-4 py-1 text-sm font-bold text-white/80">
                 חבילה 1
               </div>
               <h3 className="mb-3 text-3xl font-black text-white" style={{ fontWeight: 900 }}>
-                1,250 ₪
+                ₪ 1,250
               </h3>
-              <p className="mb-6 text-white/80">
+              <p className="mb-6 text-white/90">
                 טעימה שמראה אם זה בשבילך. בוא תגלה אם יש לך את זה.
               </p>
-              <ul className="mb-8 space-y-3 text-sm text-white/70">
+              <ul className="mb-8 space-y-3 text-sm text-white/85">
                 <li className="flex items-start gap-2">
                   <span className="text-[#03b28c]">✓</span>
                   <span>היכרות עם הציוד</span>
@@ -98,12 +98,12 @@ export const CoursesLevel100 = () => {
                 חבילה 2
               </div>
               <h3 className="mb-3 text-3xl font-black text-white" style={{ fontWeight: 900 }}>
-                3,500 ₪
+                ₪ 3,500
               </h3>
-              <p className="mb-6 text-white/80">
+              <p className="mb-6 text-white/90">
                 השלב שבו מפסיקים להיראות כמו תלמיד ומתחילים להישמע כמו מקצוען.
               </p>
-              <ul className="mb-8 space-y-3 text-sm text-white/70">
+              <ul className="mb-8 space-y-3 text-sm text-white/85">
                 <li className="flex items-start gap-2">
                   <span className="text-[#03b28c]">✓</span>
                   <span>טכניקות מיקס מתקדמות</span>
@@ -141,16 +141,16 @@ export const CoursesLevel100 = () => {
           >
             <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
             <div className="relative z-10">
-              <div className="mb-4 inline-block rounded-full bg-white/5 px-4 py-1 text-sm font-bold text-white/60">
+              <div className="mb-4 inline-block rounded-full bg-white/5 px-4 py-1 text-sm font-bold text-white/80">
                 PRO
               </div>
               <h3 className="mb-3 text-3xl font-black text-white" style={{ fontWeight: 900 }}>
-                6,000-7,000 ₪
+                ₪ 6,000-7,000
               </h3>
-              <p className="mb-6 text-white/80">
+              <p className="mb-6 text-white/90">
                 מי שבקצה הזה לא שואל כמה זה עולה. הוא שואל איך נכנסים.
               </p>
-              <ul className="mb-8 space-y-3 text-sm text-white/70">
+              <ul className="mb-8 space-y-3 text-sm text-white/85">
                 <li className="flex items-start gap-2">
                   <span className="text-[#03b28c]">✓</span>
                   <span>מנטורינג אישי 1:1</span>

@@ -32,7 +32,7 @@ export const ChogegMenagenLevel100 = () => {
             <span className="text-[#03b28c]">זה לא מתנה. זה הישג.</span>
           </h2>
           
-          <p className="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-white/80">
+          <p className="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-white/90">
             הילד לא מקבל "הזדמנות לנגן". הוא מקבל רגע בספוטלייט שמראה שיש לו אומץ ורצינות. 
             <br className="hidden md:inline" />
             לא עוד גימיק — הצגה.
@@ -49,15 +49,15 @@ export const ChogegMenagenLevel100 = () => {
             <div className="brand-noise absolute inset-0 opacity-20" aria-hidden="true" />
             <div className="relative z-10">
               <div className="mb-6 flex items-center justify-center gap-4">
-                <span className="text-2xl font-bold text-white/40 line-through md:text-3xl">2800 ₪</span>
+                <span className="text-2xl font-bold text-white/60 line-through md:text-3xl">₪ 2800</span>
                 <svg className="h-8 w-8 text-[#03b28c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
                 <span className="text-4xl font-black text-[#03b28c] md:text-5xl" style={{ fontWeight: 900 }}>
-                  2300 ₪
+                  ₪ 2300
                 </span>
               </div>
-              <p className="mb-8 text-sm text-white/60">
+              <p className="mb-8 text-sm text-white/80">
                 מחיר היכרות מיוחד
               </p>
 
@@ -70,7 +70,7 @@ export const ChogegMenagenLevel100 = () => {
                 תנו להם רגע שמגיע רק למי שעובד עליו
               </Link>
               
-              <p className="mt-6 text-xs text-white/40">
+              <p className="mt-6 text-xs text-white/70">
                 יצירת קשר ישירה ב-WhatsApp
               </p>
             </div>
@@ -84,7 +84,7 @@ export const ChogegMenagenLevel100 = () => {
             transition={{ delay: 0.5 }}
             className="mt-12 text-center"
           >
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-white/75">
               הזמינות מוגבלת. ככה זה עובד ברמה הזו.
             </p>
           </motion.div>
