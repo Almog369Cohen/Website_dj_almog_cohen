@@ -2,17 +2,30 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { SectionTransition } from "@/components/ui/SectionTransition";
 
 export const ChogegMenagenLevel100 = () => {
   const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972502427616";
   
   return (
     <section id="chogeg-menagen-level-100" className="relative overflow-hidden bg-[#1f1f21] py-12 md:py-20 lg:py-32">
-      {/* Top Fade: White to Dark */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white via-white/50 to-transparent" />
+      {/* Smooth Transition from White */}
+      <SectionTransition
+        fromColor="#ffffff"
+        toColor="#1f1f21"
+        accentColor="#03b28c"
+        position="top"
+        showArrow={true}
+      />
       
-      {/* Bottom Fade: Dark to Darker Blue */}
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0b1120] via-[#0b1120]/50 to-transparent" />
+      {/* Smooth Transition to Deeper Dark */}
+      <SectionTransition
+        fromColor="#1f1f21"
+        toColor="#0b1120"
+        accentColor="#03b28c"
+        position="bottom"
+        showArrow={true}
+      />
       
       <div className="pointer-events-none absolute inset-0">
         <div className="brand-noise absolute inset-0 opacity-40" aria-hidden="true" />

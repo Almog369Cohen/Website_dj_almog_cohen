@@ -3,12 +3,19 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ContactFormLevel100 } from "@/components/ui/ContactFormLevel100";
+import { SectionTransition } from "@/components/ui/SectionTransition";
 
 export const CoursesLevel100 = () => {
   return (
     <section id="academy-level-100" className="relative overflow-hidden bg-[#0b1120] py-12 md:py-20 lg:py-32">
-      {/* Top Fade: Medium Dark to Deep Dark */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#1f1f21] via-[#1f1f21]/50 to-transparent" />
+      {/* Smooth Transition from Medium Dark */}
+      <SectionTransition
+        fromColor="#1f1f21"
+        toColor="#0b1120"
+        accentColor="#059cc0"
+        position="top"
+        showArrow={true}
+      />
       
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">

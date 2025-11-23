@@ -2,15 +2,28 @@
 
 import { motion } from "framer-motion";
 import { ContactFormLevel100 } from "@/components/ui/ContactFormLevel100";
+import { SectionTransition } from "@/components/ui/SectionTransition";
 
 export const WeddingsLevel100 = () => {
   return (
     <section id="weddings-level-100" className="relative overflow-hidden bg-white py-12 md:py-20 lg:py-32">
-      {/* Top Fade: Dark to White */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#1f1f21] via-[#1f1f21]/50 to-transparent" />
+      {/* Smooth Transition from Dark */}
+      <SectionTransition
+        fromColor="#1f1f21"
+        toColor="#ffffff"
+        accentColor="#059cc0"
+        position="top"
+        showArrow={true}
+      />
       
-      {/* Bottom Fade: White to Dark */}
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#1f1f21] via-[#1f1f21]/50 to-transparent" />
+      {/* Smooth Transition to Dark */}
+      <SectionTransition
+        fromColor="#ffffff"
+        toColor="#1f1f21"
+        accentColor="#059cc0"
+        position="bottom"
+        showArrow={true}
+      />
       
       {/* Background Elements */}
       <div className="pointer-events-none absolute inset-0">
