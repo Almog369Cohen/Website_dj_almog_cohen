@@ -111,12 +111,8 @@ export const HomeSections = () => {
               borderColor: isRaveMode ? "#03b28c" : "", 
               boxShadow: isRaveMode ? "0 0 30px rgba(3, 178, 140, 0.4)" : "" 
             }}
-            className="group relative overflow-hidden rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl transition-all duration-300"
+            className="group glass-card glass-card-green glass-card-green-glow glass-card-green-corner p-5 md:p-8 text-right"
           >
-            {/* Single glow - Desktop only */}
-            {!isMobile && (
-              <div className="absolute -inset-1 -z-10 rounded-3xl bg-gradient-to-r from-brand-green/30 to-transparent opacity-40 blur-xl" />
-            )}
             
             <div className="relative">
               <motion.p 
@@ -156,8 +152,7 @@ export const HomeSections = () => {
               </div>
             </div>
 
-            {/* Decorative corner element */}
-            <div className="pointer-events-none absolute -bottom-10 -left-10 -z-10 h-32 w-32 rounded-full bg-brand-green/10 blur-2xl" />
+            {/* Corner decoration handled by glass-card-green-corner class */}
           </motion.div>
 
           {/* Card 2 - School */}
@@ -172,12 +167,8 @@ export const HomeSections = () => {
               borderColor: isRaveMode ? "#059cc0" : "", 
               boxShadow: isRaveMode ? "0 0 30px rgba(5, 156, 192, 0.4)" : "" 
             }}
-            className="group relative overflow-hidden rounded-3xl border-2 border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl transition-all duration-300"
+            className="group glass-card glass-card-glow glass-card-corner p-5 md:p-8 text-right"
           >
-            {/* Single glow - Desktop only */}
-            {!isMobile && (
-              <div className="absolute -inset-1 -z-10 rounded-3xl bg-gradient-to-r from-brand-blue/30 to-transparent opacity-40 blur-xl" />
-            )}
             
             <div className="relative">
               <motion.p 
@@ -210,8 +201,7 @@ export const HomeSections = () => {
               </div>
             </div>
 
-            {/* Decorative corner element */}
-            <div className="pointer-events-none absolute -bottom-10 -right-10 -z-10 h-32 w-32 rounded-full bg-brand-blue/10 blur-2xl" />
+            {/* Corner decoration handled by glass-card-corner class */}
           </motion.div>
         </div>
       </section>
