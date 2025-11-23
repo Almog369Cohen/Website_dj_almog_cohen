@@ -6,10 +6,16 @@ import { ContactFormLevel100 } from "@/components/ui/ContactFormLevel100";
 
 export const CoursesLevel100 = () => {
   return (
-    <section id="academy-level-100" className="relative overflow-hidden bg-brand-dark py-20 md:py-32">
+    <section id="academy-level-100" className="relative overflow-hidden bg-[#0b1120] py-20 md:py-32">
+      {/* Gradient transition from previous dark section */}
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#1f1f21] to-[#0b1120]" />
+      
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
         <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
+        <div className="absolute left-0 top-0 h-[500px] w-[500px] bg-[#059cc0]/10 blur-[150px]" />
+        <div className="absolute right-0 bottom-0 h-[500px] w-[500px] bg-[#059cc0]/10 blur-[150px]" />
+        <div className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 bg-[#059cc0]/5 blur-[120px]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
@@ -44,7 +50,7 @@ export const CoursesLevel100 = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
             whileHover={{ y: -8 }}
-            className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#1f1f21] p-8"
+            className="relative overflow-hidden rounded-3xl border border-[#059cc0]/20 bg-[#0a0e1a]/80 p-8 backdrop-blur-sm"
           >
             <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
             <div className="relative z-10">
@@ -137,7 +143,7 @@ export const CoursesLevel100 = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
             whileHover={{ y: -8 }}
-            className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#1f1f21] p-8"
+            className="relative overflow-hidden rounded-3xl border border-[#059cc0]/20 bg-[#0a0e1a]/80 p-8 backdrop-blur-sm"
           >
             <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
             <div className="relative z-10">

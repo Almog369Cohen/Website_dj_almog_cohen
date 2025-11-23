@@ -9,9 +9,14 @@ export const ChogegMenagenLevel100 = () => {
   return (
     <section id="chogeg-menagen-level-100" className="relative overflow-hidden bg-[#1f1f21] py-20 md:py-32">
       {/* Background */}
+      {/* Gradient transition from previous white section */}
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white to-[#1f1f21]" />
+      
       <div className="pointer-events-none absolute inset-0">
         <div className="brand-noise absolute inset-0 opacity-40" aria-hidden="true" />
-        <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 bg-[#03b28c]/10 blur-[150px]" />
+        <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 bg-[#03b28c]/20 blur-[150px]" />
+        <div className="absolute left-1/4 top-1/4 h-[400px] w-[400px] bg-[#03b28c]/15 blur-[120px]" />
+        <div className="absolute right-1/4 bottom-1/4 h-[400px] w-[400px] bg-[#03b28c]/15 blur-[120px]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl px-6">
@@ -44,7 +49,7 @@ export const ChogegMenagenLevel100 = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="relative mx-auto max-w-2xl overflow-hidden rounded-3xl border border-[#03b28c]/30 bg-white/5 p-8 backdrop-blur-md md:p-12"
+            className="relative mx-auto max-w-2xl overflow-hidden rounded-3xl border-2 border-[#03b28c]/50 bg-[#03b28c]/5 p-8 backdrop-blur-md shadow-[0_0_60px_rgba(3,178,140,0.4)] md:p-12"
           >
             <div className="brand-noise absolute inset-0 opacity-20" aria-hidden="true" />
             <div className="relative z-10">
@@ -53,11 +58,11 @@ export const ChogegMenagenLevel100 = () => {
                 <svg className="h-8 w-8 text-[#03b28c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
-                <span className="text-4xl font-black text-[#03b28c] md:text-5xl" style={{ fontWeight: 900 }}>
+                <span className="text-4xl font-black text-[#03b28c] drop-shadow-[0_0_20px_rgba(3,178,140,0.8)] md:text-5xl" style={{ fontWeight: 900 }}>
                   ₪ 2300
                 </span>
               </div>
-              <p className="mb-8 text-sm text-white/80">
+              <p className="mb-8 text-sm text-[#03b28c]/90 font-semibold">
                 מחיר היכרות מיוחד
               </p>
 
@@ -65,7 +70,7 @@ export const ChogegMenagenLevel100 = () => {
                 href={`https://wa.me/${waNumber}?text=${encodeURIComponent("היי אלמוג, רציתי לשמוע על 'חוגג מנגן'")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block w-full rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-8 py-4 text-center text-lg font-bold text-black shadow-[0_0_40px_rgba(3,178,140,0.5)] transition hover:shadow-[0_0_60px_rgba(3,178,140,0.8)]"
+                className="inline-block w-full rounded-full bg-gradient-to-r from-[#03b28c] to-[#03b28c]/80 px-8 py-4 text-center text-lg font-bold text-black shadow-[0_0_50px_rgba(3,178,140,0.7)] transition hover:scale-105 hover:shadow-[0_0_80px_rgba(3,178,140,1)]"
               >
                 תנו להם רגע שמגיע רק למי שעובד עליו
               </Link>
