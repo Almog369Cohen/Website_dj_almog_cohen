@@ -9,7 +9,6 @@ import { useEnergy } from "@/context/EnergyContext";
 import { RevealText } from "@/components/ui/RevealText";
 import { SmoothScrollLink } from "@/components/ui/SmoothScrollLink";
 import { TagsPills } from "@/components/ui/TagsPills";
-import { ContactFormLevel100 } from "@/components/ui/ContactFormLevel100";
 import { WeddingsLevel100 } from "./sections/WeddingsLevel100";
 import { ChogegMenagenLevel100 } from "./sections/ChogegMenagenLevel100";
 
@@ -19,7 +18,6 @@ export const HomeSections = () => {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [faqOpen, setFaqOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-  const [isPlaying, setIsPlaying] = useState(false);
   const isMobile = useIsMobile();
 
   const carouselImages = [
@@ -42,7 +40,143 @@ export const HomeSections = () => {
 
   return (
     <>
-      {/* --- WHO IS THIS FOR (LEVEL 1000) --- */}
+      {/* --- 1. STORIES (MOVED UP) --- */}
+      <section id="stories" className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-16 bg-gradient-to-t from-brand-dark/80 to-transparent" />
+        
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-16 text-right"
+        >
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="mt-3 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+          >
+            יותר ממוזיקה. סיפורים.
+          </motion.h2>
+        </motion.div>
+
+        <div className="space-y-8">
+          <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5/90 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
+            <div className="brand-noise" aria-hidden="true" />
+            <div className="relative space-y-4 text-right">
+              <h3 className="text-2xl font-black text-white">כשהמרצים שלי הפכו לקהל שלי.</h3>
+              <div className="mt-6 space-y-4">
+                <p className="text-base leading-relaxed text-white/85">
+                  בקורונה נרשמתי ללמוד שיווק אצל גל ודימה. כשהם ביקשו שאנגן בחתונה שלהם, התהפכו היוצרות. זה כבר לא היה מבחן על הנייר, אלא מבחן על הרחבה.
+                </p>
+                <p className="text-base leading-relaxed text-white/85">
+                  כשהם לא הפסיקו לרקוד, ידעתי שקיבלתי את הציון הסופי.
+                </p>
+              </div>
+            </div>
+            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-black/50 shadow-lg shadow-black/60">
+              <div className="brand-noise" aria-hidden="true" />
+              <Image src="/assets/almog/wedding-1.jpg" alt="החתונה של גל ודימה" fill className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+            </div>
+          </div>
+
+          <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-black/50 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
+            <div className="relative space-y-4 text-right order-first md:order-last">
+              <h3 className="text-2xl font-black text-white">רגעים שהפכו למזכרת.</h3>
+              <p className="text-sm text-white/70">גלריית תמונות מהרחבה</p>
+            </div>
+            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:col-span-2">
+              <motion.div
+                key={carouselIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="relative h-full w-full"
+              >
+                <Image src={carouselImages[carouselIndex]} alt={`מסיבת רחוב מעלה אדומים ${carouselIndex + 1}`} fill className="object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+              </motion.div>
+
+              <button
+                onClick={prevImage}
+                className="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 md:p-3 text-white backdrop-blur-sm transition hover:bg-black/80"
+                aria-label="תמונה קודמת"
+              >
+                <svg className="h-4 w-4 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 md:p-3 text-white backdrop-blur-sm transition hover:bg-black/80"
+                aria-label="תמונה הבאה"
+              >
+                <svg className="h-4 w-4 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- 2. VALUE PROPOSITION (NEW) --- */}
+      <section className="relative mx-auto w-full max-w-6xl px-4 py-12 md:py-24">
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold text-white md:text-4xl">למה דווקא אלמוג?</h2>
+          <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-gradient-to-r from-brand-blue to-brand-green" />
+        </div>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {[
+            {
+              title: "12 שנות ניסיון",
+              desc: "כשאתם בוחרים בי, אתם בוחרים בשקט נפשי. אין הפתעות, אין 'שכחתי', יש רק מקצוענות נטו.",
+              icon: (
+                <svg className="h-8 w-8 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              )
+            },
+            {
+              title: "קריאת קהל מדויקת",
+              desc: "לדעת מתי להרים ומתי להוריד זה המפתח. אני לא מנגן לעצמי, אני מנגן לרחבה שלכם.",
+              icon: (
+                <svg className="h-8 w-8 text-brand-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              )
+            },
+            {
+              title: "ציוד וגיבוי מלא",
+              desc: "ציוד קצה ברמה הגבוהה ביותר, ותמיד עם מערכת גיבוי מלאה. שום דבר לא יעצור את המסיבה.",
+              icon: (
+                <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+              )
+            }
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="glass-card glass-card-corner p-6 text-center hover:bg-white/5 transition-colors"
+            >
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 border border-white/10">
+                {item.icon}
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-white">{item.title}</h3>
+              <p className="text-white/70 leading-relaxed">{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* --- 3. THE SPLIT (WHO IS THIS FOR) --- */}
       <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-32 bg-[#1f1f21]">
         {/* Animated brand element - Desktop Only */}
         {!isMobile && (
@@ -55,7 +189,6 @@ export const HomeSections = () => {
           </motion.div>
         )}
         
-        {/* Header with kinetic typography */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -96,7 +229,6 @@ export const HomeSections = () => {
             }}
             className="group glass-card glass-card-green glass-card-green-glow glass-card-green-corner p-5 md:p-8 text-right"
           >
-            
             <div className="relative">
               <motion.p 
                 initial={{ opacity: 0 }}
@@ -110,7 +242,6 @@ export const HomeSections = () => {
               <p className="mt-4 leading-relaxed text-white/85">
                 האירוע שלכם מתקרב ואתם מחפשים "ראש שקט". מישהו שיקרא את הקהל, יעיף את האנרגיות, ויתן לכם להיות אורחים באירוע של עצמכם.
               </p>
-              
               <div className="mt-6 flex justify-end">
                 <motion.div whileHover={!isMobile ? { scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
                   <SmoothScrollLink
@@ -133,8 +264,6 @@ export const HomeSections = () => {
                 </motion.div>
               </div>
             </div>
-
-            {/* Corner decoration handled by glass-card-green-corner class */}
           </motion.div>
 
           {/* Card 2 - School */}
@@ -151,7 +280,6 @@ export const HomeSections = () => {
             }}
             className="group glass-card glass-card-glow glass-card-corner p-5 md:p-8 text-right"
           >
-            
             <div className="relative">
               <motion.p 
                 initial={{ opacity: 0 }}
@@ -165,9 +293,8 @@ export const HomeSections = () => {
               <p className="mt-4 leading-relaxed text-white/85">
                 החלום הוא לא רק לרקוד, אלא לשלוט בקצב. אם אתם רוצים להפוך את האהבה למוזיקה למקצוע אמיתי (ולא סתם חוג) – המקום שלכם איתי.
               </p>
-              
               <div className="mt-6 flex justify-end">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={{ scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
                   <SmoothScrollLink
                     href="#school-section"
                     ariaLabel="גלילה לסקשן בית הספר והקורסים"
@@ -181,13 +308,12 @@ export const HomeSections = () => {
                 </motion.div>
               </div>
             </div>
-
-            {/* Corner decoration handled by glass-card-corner class */}
           </motion.div>
         </div>
       </section>
 
-      {/* --- QUICK ACTION ICONS (LEVEL 1000) --- */}
+
+      {/* --- 4. QUICK ACTIONS --- */}
       <section className="relative mx-auto w-full max-w-6xl px-4 py-16">
         {/* Fade mask at bottom only */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-16 bg-gradient-to-t from-brand-dark/80 to-transparent" />
@@ -330,109 +456,8 @@ export const HomeSections = () => {
         </div>
       </section>
 
-      {/* --- COLLAPSIBLE SCHOOL SECTION --- */}
-      <section id="school-section" className="relative mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
-        <button
-          onClick={() => setSchoolOpen(!schoolOpen)}
-          className="group w-full glass-panel px-6 py-5 text-right hover:border-brand-blue/50"
-          aria-expanded={schoolOpen}
-          aria-controls="school-content"
-        >
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex-1">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand-blue/70">
-                למי שרוצה ללמוד לתקלט
-              </p>
-              <h2 className="text-2xl font-bold md:text-3xl">בית הספר של אלמוג – מאפס ועד רחבה מלאה</h2>
-              <p className="mt-2 text-sm text-white/60">10+ שנים מלמד • עשרות תלמידים מופיעים היום • מתחילים ועד מתקדמים</p>
-            </div>
-            <motion.div
-              animate={{ rotate: schoolOpen ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-blue/20 text-brand-blue"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </motion.div>
-          </div>
-        </button>
 
-        <motion.div
-          id="school-content"
-          initial={false}
-          animate={{
-            height: schoolOpen ? "auto" : 0,
-            opacity: schoolOpen ? 1 : 0,
-          }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-          className="overflow-hidden"
-        >
-          <div className="px-2 pt-8 pb-4">
-            <div className="mb-8 grid grid-cols-1 gap-4 text-center sm:grid-cols-3 md:grid-cols-3">
-              <div className="glass-panel px-4 py-3">
-                <div className="text-2xl font-bold text-brand-blue">10+</div>
-                <div className="text-xs text-white/60">שנים מלמד DJ&apos;ים</div>
-              </div>
-              <div className="glass-panel px-4 py-3">
-                <div className="text-2xl font-bold text-brand-blue">50+</div>
-                <div className="text-xs text-white/60">תלמידים הופיעו ברחבות</div>
-              </div>
-              <div className="glass-panel px-4 py-3">
-                <div className="text-2xl font-bold text-brand-blue">100%</div>
-                <div className="text-xs text-white/60">ליווי אישי מותאם</div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
-              <motion.div
-                whileHover={{ y: -6, scale: 1.02 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                className="glass-card glass-card-glow glass-card-corner p-6 text-center"
-              >
-                <h3 className="mb-2 text-xl font-semibold">קורס מתחילים</h3>
-                <p className="mb-4 text-sm text-white/70">מאפס מוחלט ועד המיקס הראשון שלך. כל מה שצריך כדי להתחיל נכון.</p>
-                <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
-                <TagsPills 
-                  tags={['קורס DJ', 'לימודי תקלוט', 'ציוד DJ', 'מתחילים', 'איך להיות DJ', 'Pioneer DJ', 'Serato DJ', 'בית ספר DJ', 'קורס בתל אביב', 'DJ מאפס']}
-                  variant="blue"
-                />
-              </motion.div>
-              <motion.div
-                whileHover={{ y: -6, scale: 1.02 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                className="glass-card glass-card-glow glass-card-corner p-6 text-center"
-              >
-                <h3 className="mb-2 text-xl font-semibold">קורס מתקדמים</h3>
-                <p className="mb-4 text-sm text-white/70">טכניקות מתקדמות, בניית סט מקצועי והבנת דינמיקת רחבה.</p>
-                <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
-                <TagsPills 
-                  tags={['טכניקות מיקס', 'בניית קריירה', 'מנטורינג DJ', 'הפקה', 'Harmonic mixing', 'קריאת קהל', 'שיווק לאמנים', 'מיתוג אישי', 'DJ מקצועי']}
-                  variant="blue"
-                />
-              </motion.div>
-              <motion.div
-                whileHover={{ y: -6, scale: 1.02 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                className="glass-card glass-card-glow glass-card-corner p-6 text-center"
-              >
-                <h3 className="mb-2 text-xl font-semibold">ליווי אישי</h3>
-                <p className="mb-4 text-sm text-white/70">Artist Development מלא - מיתוג, שיווק, הפקה ובניית קריירה.</p>
-                <a href={wa("היי, אשמח לפרטים על ליווי אישי")} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-blue hover:underline">קבע פגישת ייעוץ →</a>
-              </motion.div>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* --- CHOGEG MENAGEN SECTION LEVEL 100 --- */}
-      <ChogegMenagenLevel100 />
-
-      {/* --- MUSIC / LISTEN NOW (LEVEL 1000) --- */}
+      {/* --- 5. MUSIC (MOVED UP) --- */}
       <section id="music-section" className="relative py-16 md:py-24">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
         {!isMobile && (
@@ -572,132 +597,231 @@ export const HomeSections = () => {
         </div>
       </section>
 
-      {/* --- CASE STUDIES (LEVEL 1000) --- */}
-      <section id="case-studies" className="relative mx-auto w-full max-w-6xl px-4 pb-24">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-16 bg-gradient-to-t from-brand-dark/80 to-transparent" />
-        <motion.div 
-          animate={{ 
-            rotate: [0, 180, 360],
-            y: [0, -20, 0]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="pointer-events-none absolute -left-8 top-6 hidden h-24 w-24 opacity-30 md:block"
+
+      {/* --- 6. WEDDINGS (DEEP DIVE) --- */}
+      <WeddingsLevel100 />
+
+
+      {/* --- 7. CHOGEG MENAGEN (DEEP DIVE) --- */}
+      <ChogegMenagenLevel100 />
+
+
+      {/* --- 8. SCHOOL (DEEP DIVE) --- */}
+      <section id="school-section" className="relative mx-auto w-full max-w-6xl px-4 py-12">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
+        <button
+          onClick={() => setSchoolOpen(!schoolOpen)}
+          className="group w-full glass-panel px-6 py-5 text-right hover:border-brand-blue/50"
+          aria-expanded={schoolOpen}
+          aria-controls="school-content"
         >
-          <Image src="/assets/brand/triangle-color.png" alt="אלמנט משולש מותגי" fill className="object-contain" />
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand-blue/70">
+                למי שרוצה ללמוד לתקלט
+              </p>
+              <h2 className="text-2xl font-bold md:text-3xl">בית הספר של אלמוג – מאפס ועד רחבה מלאה</h2>
+              <p className="mt-2 text-sm text-white/60">10+ שנים מלמד • עשרות תלמידים מופיעים היום • מתחילים ועד מתקדמים</p>
+            </div>
+            <motion.div
+              animate={{ rotate: schoolOpen ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-blue/20 text-brand-blue"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </motion.div>
+          </div>
+        </button>
+
+        <motion.div
+          id="school-content"
+          initial={false}
+          animate={{
+            height: schoolOpen ? "auto" : 0,
+            opacity: schoolOpen ? 1 : 0,
+          }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="overflow-hidden"
+        >
+          <div className="px-2 pt-8 pb-4">
+            <div className="mb-8 grid grid-cols-1 gap-4 text-center sm:grid-cols-3 md:grid-cols-3">
+              <div className="glass-panel px-4 py-3">
+                <div className="text-2xl font-bold text-brand-blue">10+</div>
+                <div className="text-xs text-white/60">שנים מלמד DJ&apos;ים</div>
+              </div>
+              <div className="glass-panel px-4 py-3">
+                <div className="text-2xl font-bold text-brand-blue">50+</div>
+                <div className="text-xs text-white/60">תלמידים הופיעו ברחבות</div>
+              </div>
+              <div className="glass-panel px-4 py-3">
+                <div className="text-2xl font-bold text-brand-blue">100%</div>
+                <div className="text-xs text-white/60">ליווי אישי מותאם</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                className="glass-card glass-card-glow glass-card-corner p-6 text-center"
+              >
+                <h3 className="mb-2 text-xl font-semibold">קורס מתחילים</h3>
+                <p className="mb-4 text-sm text-white/70">מאפס מוחלט ועד המיקס הראשון שלך. כל מה שצריך כדי להתחיל נכון.</p>
+                <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
+                <TagsPills 
+                  tags={['קורס DJ', 'לימודי תקלוט', 'ציוד DJ', 'מתחילים', 'איך להיות DJ', 'Pioneer DJ', 'Serato DJ', 'בית ספר DJ', 'קורס בתל אביב', 'DJ מאפס']}
+                  variant="blue"
+                />
+              </motion.div>
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                className="glass-card glass-card-glow glass-card-corner p-6 text-center"
+              >
+                <h3 className="mb-2 text-xl font-semibold">קורס מתקדמים</h3>
+                <p className="mb-4 text-sm text-white/70">טכניקות מתקדמות, בניית סט מקצועי והבנת דינמיקת רחבה.</p>
+                <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
+                <TagsPills 
+                  tags={['טכניקות מיקס', 'בניית קריירה', 'מנטורינג DJ', 'הפקה', 'Harmonic mixing', 'קריאת קהל', 'שיווק לאמנים', 'מיתוג אישי', 'DJ מקצועי']}
+                  variant="blue"
+                />
+              </motion.div>
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                className="glass-card glass-card-glow glass-card-corner p-6 text-center"
+              >
+                <h3 className="mb-2 text-xl font-semibold">ליווי אישי</h3>
+                <p className="mb-4 text-sm text-white/70">Artist Development מלא - מיתוג, שיווק, הפקה ובניית קריירה.</p>
+                <a href={wa("היי, אשמח לפרטים על ליווי אישי")} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-blue hover:underline">קבע פגישת ייעוץ →</a>
+              </motion.div>
+            </div>
+          </div>
         </motion.div>
+      </section>
+
+
+      {/* --- 9. BLOG --- */}
+      <section className="relative mx-auto w-full max-w-6xl px-4 pb-24" aria-labelledby="home-blog-heading">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
 
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-16 text-right"
+          className="mb-12 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between"
         >
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+          <div className="text-right">
+            <motion.p 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="text-xs font-bold uppercase tracking-[0.3em] text-brand-blue"
+            >
+              מהבלוג
+            </motion.p>
+            <motion.h2 
+              id="home-blog-heading"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="mt-2 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-2xl font-bold text-transparent md:text-4xl lg:text-5xl"
+            >
+              מדריכים וטיפים לאירוע המושלם
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="mt-3 max-w-2xl text-lg text-white/80"
+            >
+              תוכן מקצועי לזוגות, מפיקים ו-DJ&apos;ים – בחירת DJ, פלייליסט לחופה, קורסים ועוד.
+            </motion.p>
+          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="mt-3 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+            transition={{ delay: 0.3 }}
           >
-            יותר ממוזיקה. סיפורים.
-          </motion.h2>
+            <Link 
+              href="/blog" 
+              className="inline-flex items-center gap-2 rounded-full border-2 border-brand-blue bg-brand-blue/10 px-6 py-3 text-sm font-bold text-brand-blue backdrop-blur-sm transition hover:bg-brand-blue/20 hover:shadow-[0_0_30px_rgba(5,156,192,0.4)]"
+            >
+              לכל המאמרים
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </motion.div>
         </motion.div>
 
-        <div className="space-y-8">
-          <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5/90 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
-            <div className="brand-noise" aria-hidden="true" />
-            <div className="relative space-y-4 text-right">
-              <h3 className="text-2xl font-black text-white">כשהמרצים שלי הפכו לקהל שלי.</h3>
-              <div className="mt-6 space-y-4">
-                <p className="text-base leading-relaxed text-white/85">
-                  בקורונה נרשמתי ללמוד שיווק אצל גל ודימה. כשהם ביקשו שאנגן בחתונה שלהם, התהפכו היוצרות. זה כבר לא היה מבחן על הנייר, אלא מבחן על הרחבה.
-                </p>
-                <p className="text-base leading-relaxed text-white/85">
-                  כשהם לא הפסיקו לרקוד, ידעתי שקיבלתי את הציון הסופי.
-                </p>
-              </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          <motion.article
+            whileHover={{ y: -6, scale: 1.02 }}
+            whileTap={{ scale: 0.99 }}
+            transition={{ type: "spring", stiffness: 260, damping: 18 }}
+            className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/30 backdrop-blur"
+          >
+            <div className="space-y-3">
+              <p className="text-xs text-brand-blue/80">חתונות</p>
+              <h3 className="text-lg font-semibold">איך לבחור DJ לחתונה: 5 שאלות חובה לפני שסוגרים</h3>
+              <p className="text-sm text-white/75">המדריך לזוגות שמחפשים DJ ברמה הגבוהה ביותר – עם 5 שאלות מפתח לפגישת הייעוץ.</p>
             </div>
-            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-black/50 shadow-lg shadow-black/60">
-              <div className="brand-noise" aria-hidden="true" />
-              <Image src="/assets/almog/wedding-1.jpg" alt="החתונה של גל ודימה" fill className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+            <div className="mt-4">
+              <Link href="/blog/how-to-choose-wedding-dj" className="text-sm font-semibold text-brand-blue hover:underline">
+                לקריאת המאמר →
+              </Link>
             </div>
-          </div>
+          </motion.article>
 
-          <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-black/50 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
-            <div className="brand-noise" aria-hidden="true" />
-            <div className="relative space-y-4 text-right order-first md:order-last">
-              <h3 className="text-2xl font-black text-white">רגעים שהפכו למזכרת.</h3>
-              <p className="text-sm text-white/70">גלריית תמונות מהרחבה</p>
+          <motion.article
+            whileHover={{ y: -6, scale: 1.02 }}
+            whileTap={{ scale: 0.99 }}
+            transition={{ type: "spring", stiffness: 260, damping: 18 }}
+            className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/30 backdrop-blur"
+          >
+            <div className="space-y-3">
+              <p className="text-xs text-brand-blue/80">חופה</p>
+              <h3 className="text-lg font-semibold">20 שירי כניסה לחופה שישברו את הרשת</h3>
+              <p className="text-sm text-white/75">פלייליסט חופה מחולק לקטגוריות – קלאסיים, ייחודיים ושירים לכניסת הורים וסבים.</p>
             </div>
-            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:col-span-2">
-              <motion.div
-                key={carouselIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="relative h-full w-full"
-              >
-                <Image src={carouselImages[carouselIndex]} alt={`מסיבת רחוב מעלה אדומים ${carouselIndex + 1}`} fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-              </motion.div>
-
-              <button
-                onClick={prevImage}
-                className="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 md:p-3 text-white backdrop-blur-sm transition hover:bg-black/80"
-                aria-label="תמונה קודמת"
-              >
-                <svg className="h-4 w-4 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                onClick={nextImage}
-                className="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-2 md:p-3 text-white backdrop-blur-sm transition hover:bg-black/80"
-                aria-label="תמונה הבאה"
-              >
-                <svg className="h-4 w-4 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-
-              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2">
-                {carouselImages.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCarouselIndex(idx)}
-                    className={`h-2 w-2 rounded-full transition ${
-                      idx === carouselIndex ? "bg-brand-blue w-6" : "bg-white/40"
-                    }`}
-                    aria-label={`מעבר לתמונה ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              <div className="absolute top-3 right-3 rounded-full bg-black/60 px-3 py-1 text-xs text-white/80 backdrop-blur-sm">
-                📸 {carouselIndex + 1} / {carouselImages.length}
-              </div>
+            <div className="mt-4">
+              <Link href="/blog/chuppah-20-songs" className="text-sm font-semibold text-brand-blue hover:underline">
+                לקריאת המאמר →
+              </Link>
             </div>
-            <div className="relative space-y-4 text-right">
-              <h3 className="text-xl font-semibold">מסיבת רחוב במעלה אדומים</h3>
-              <p className="text-xs uppercase tracking-[0.2em] text-white/50">CITY EVENT • MAALEH ADUMIM</p>
-              <div className="border-r-2 border-white/20 pr-3 text-sm text-white/75">
-                <div className="text-xs font-semibold text-[#059cc0]">הזמנה</div>
-                <p className="mt-1">עיריית מעלה אדומים הזמינו אותי לסט.</p>
-              </div>
-              <div className="border-r-2 border-brand-green pr-3 text-sm text-white">
-                <div className="text-xs font-semibold text-[#03b28c]">התוצאה</div>
-                <p className="mt-1">רחוב שלם רקד, מאות אנשים בהילוך גבוה מהתחלה ועד סוף.</p>
-              </div>
+          </motion.article>
+
+          <motion.article
+            whileHover={{ y: -6, scale: 1.02 }}
+            whileTap={{ scale: 0.99 }}
+            transition={{ type: "spring", stiffness: 260, damping: 18 }}
+            className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/30 backdrop-blur"
+          >
+            <div className="space-y-3">
+              <p className="text-xs text-brand-blue/80">החלטות מוזיקליות</p>
+              <h3 className="text-lg font-semibold">DJ או להקה? המדריך המאוזן שיעזור לכם להחליט</h3>
+              <p className="text-sm text-white/75">סקירה של היתרונות, החסרונות והפתרון המנצח – DJ עם נגנים חיים.</p>
             </div>
-          </div>
+            <div className="mt-4">
+              <Link href="/blog/dj-or-band-guide" className="text-sm font-semibold text-brand-blue hover:underline">
+                לקריאת המאמר →
+              </Link>
+            </div>
+          </motion.article>
         </div>
       </section>
 
-      {/* --- WEDDINGS SECTION LEVEL 100 --- */}
-      <WeddingsLevel100 />
 
-      {/* --- ABOUT THE ARTIST (LEVEL 1000 ULTRA) --- */}
+      {/* --- 10. ABOUT --- */}
       <section className="relative overflow-hidden py-20 md:py-40">
         <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-32 bg-gradient-to-b from-brand-dark to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-32 bg-gradient-to-t from-brand-dark to-transparent" />
@@ -1010,121 +1134,8 @@ export const HomeSections = () => {
         </div>
       </section>
 
-      {/* --- FROM THE BLOG (LEVEL 1000) --- */}
-      <section className="relative mx-auto w-full max-w-6xl px-4 pb-24" aria-labelledby="home-blog-heading">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
 
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-12 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between"
-        >
-          <div className="text-right">
-            <motion.p 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="text-xs font-bold uppercase tracking-[0.3em] text-brand-blue"
-            >
-              מהבלוג
-            </motion.p>
-            <motion.h2 
-              id="home-blog-heading"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="mt-2 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-2xl font-bold text-transparent md:text-4xl lg:text-5xl"
-            >
-              מדריכים וטיפים לאירוע המושלם
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="mt-3 max-w-2xl text-lg text-white/80"
-            >
-              תוכן מקצועי לזוגות, מפיקים ו-DJ&apos;ים – בחירת DJ, פלייליסט לחופה, קורסים ועוד.
-            </motion.p>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
-            <Link 
-              href="/blog" 
-              className="inline-flex items-center gap-2 rounded-full border-2 border-brand-blue bg-brand-blue/10 px-6 py-3 text-sm font-bold text-brand-blue backdrop-blur-sm transition hover:bg-brand-blue/20 hover:shadow-[0_0_30px_rgba(5,156,192,0.4)]"
-            >
-              לכל המאמרים
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          <motion.article
-            whileHover={{ y: -6, scale: 1.02 }}
-            whileTap={{ scale: 0.99 }}
-            transition={{ type: "spring", stiffness: 260, damping: 18 }}
-            className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/30 backdrop-blur"
-          >
-            <div className="space-y-3">
-              <p className="text-xs text-brand-blue/80">חתונות</p>
-              <h3 className="text-lg font-semibold">איך לבחור DJ לחתונה: 5 שאלות חובה לפני שסוגרים</h3>
-              <p className="text-sm text-white/75">המדריך לזוגות שמחפשים DJ ברמה הגבוהה ביותר – עם 5 שאלות מפתח לפגישת הייעוץ.</p>
-            </div>
-            <div className="mt-4">
-              <Link href="/blog/how-to-choose-wedding-dj" className="text-sm font-semibold text-brand-blue hover:underline">
-                לקריאת המאמר →
-              </Link>
-            </div>
-          </motion.article>
-
-          <motion.article
-            whileHover={{ y: -6, scale: 1.02 }}
-            whileTap={{ scale: 0.99 }}
-            transition={{ type: "spring", stiffness: 260, damping: 18 }}
-            className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/30 backdrop-blur"
-          >
-            <div className="space-y-3">
-              <p className="text-xs text-brand-blue/80">חופה</p>
-              <h3 className="text-lg font-semibold">20 שירי כניסה לחופה שישברו את הרשת</h3>
-              <p className="text-sm text-white/75">פלייליסט חופה מחולק לקטגוריות – קלאסיים, ייחודיים ושירים לכניסת הורים וסבים.</p>
-            </div>
-            <div className="mt-4">
-              <Link href="/blog/chuppah-20-songs" className="text-sm font-semibold text-brand-blue hover:underline">
-                לקריאת המאמר →
-              </Link>
-            </div>
-          </motion.article>
-
-          <motion.article
-            whileHover={{ y: -6, scale: 1.02 }}
-            whileTap={{ scale: 0.99 }}
-            transition={{ type: "spring", stiffness: 260, damping: 18 }}
-            className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/30 backdrop-blur"
-          >
-            <div className="space-y-3">
-              <p className="text-xs text-brand-blue/80">החלטות מוזיקליות</p>
-              <h3 className="text-lg font-semibold">DJ או להקה? המדריך המאוזן שיעזור לכם להחליט</h3>
-              <p className="text-sm text-white/75">סקירה של היתרונות, החסרונות והפתרון המנצח – DJ עם נגנים חיים.</p>
-            </div>
-            <div className="mt-4">
-              <Link href="/blog/dj-or-band-guide" className="text-sm font-semibold text-brand-blue hover:underline">
-                לקריאת המאמר →
-              </Link>
-            </div>
-          </motion.article>
-        </div>
-      </section>
-
-      {/* --- COLLAPSIBLE FAQ (LEVEL 1000) --- */}
+      {/* --- 11. FAQ --- */}
       <section id="faq" className="relative mx-auto w-full max-w-4xl px-4 pb-20">
         <button
           onClick={() => setFaqOpen(!faqOpen)}
@@ -1240,7 +1251,8 @@ export const HomeSections = () => {
         </motion.div>
       </section>
 
-      {/* --- FINAL CTA (LEVEL 1000) --- */}
+
+      {/* --- 12. FINAL CTA --- */}
       <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/70 to-transparent" />
         
@@ -1334,7 +1346,8 @@ export const HomeSections = () => {
         </motion.div>
       </section>
 
-      {/* --- MOBILE STICKY ACTION BAR --- */}
+
+      {/* --- STICKY ELEMENTS --- */}
       <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-black/90 py-3 shadow-[0_-4px_25px_rgba(0,0,0,0.8)] md:hidden">
         <div className="mx-auto flex w-full max-w-6xl gap-3 px-4">
           <a
@@ -1370,20 +1383,8 @@ export const HomeSections = () => {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => setIsPlaying((p: boolean) => !p)}
-              aria-label={isPlaying ? "הפסקת ניגון" : "ניגון"}
-              aria-pressed={isPlaying}
-              className={`flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/10 text-xs font-semibold text-white hover:bg-white/20 ${isPlaying ? "animate-pulse" : ""}`}
-            >
-              {isPlaying ? "⏸" : "▶"}
-            </button>
-          </div>
-          <span className="hidden text-[11px] text-white/50 md:inline">
-            חוויה מלאה עם סאונד – מומלץ לשמוע בווליום נמוך בזמן הגלילה באתר
-          </span>
-        </div>
+
       </div>
     </>
   );
 }
-
