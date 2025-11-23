@@ -311,7 +311,7 @@ function HomeContent() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="פתיחת שיחה בוואטסאפ"
-          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-brand-green/30 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-green hover:bg-brand-green/10"
+          className="glass-panel flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border-brand-green/30 transition hover:scale-110 hover:border-brand-green"
         >
           <Image src="/assets/icons/whatsapp.png" alt="WhatsApp" width={24} height={24} />
         </a>
@@ -320,7 +320,7 @@ function HomeContent() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="מעבר לאינסטגרם"
-          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-white/20 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-blue hover:bg-brand-blue/10"
+          className="glass-panel flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full transition hover:scale-110 hover:border-brand-blue"
         >
           <Image src="/assets/icons/instagram.png" alt="Instagram" width={24} height={24} />
         </a>
@@ -329,7 +329,7 @@ function HomeContent() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="מעבר ליוטיוב"
-          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-white/20 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-blue hover:bg-brand-blue/10"
+          className="glass-panel flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full transition hover:scale-110 hover:border-brand-blue"
         >
           <Image src="/assets/icons/youtube.png" alt="YouTube" width={24} height={24} />
         </a>
@@ -338,7 +338,7 @@ function HomeContent() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="מעבר לסאונדקלאוד"
-          className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border border-white/20 bg-black/60 backdrop-blur-sm transition hover:scale-110 hover:border-brand-blue hover:bg-brand-blue/10"
+          className="glass-panel flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full transition hover:scale-110 hover:border-brand-blue"
         >
           <Image src="/assets/icons/soundcloud.png" alt="SoundCloud" width={24} height={24} />
         </a>
@@ -436,7 +436,7 @@ function HomeContent() {
             <div className="absolute -inset-2 -z-10 animate-pulse rounded-[40px] bg-gradient-to-r from-brand-blue/40 via-brand-green/40 to-brand-blue/40 opacity-40 blur-2xl" />
             <div className="absolute -inset-4 -z-10 rounded-[40px] bg-gradient-to-r from-brand-green/30 via-brand-blue/30 to-brand-green/30 opacity-20 blur-3xl" />
             
-            <div className="relative overflow-hidden rounded-[40px] border-2 border-white/30 bg-black/25 px-5 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-md md:px-10 md:py-12">
+            <div className="glass-card relative overflow-hidden px-5 py-6 md:px-10 md:py-12" style={{ borderRadius: '40px' }}>
               {/* Title - Elegant Multi-line Design (Level 100) */}
               <div className="mb-8 space-y-4">
                 {/* Line 1 - Lighter, elegant intro */}

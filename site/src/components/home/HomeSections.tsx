@@ -190,7 +190,7 @@ export const HomeSections = () => {
                   <SmoothScrollLink
                     href="#school-section"
                     ariaLabel="גלילה לסקשן בית הספר והקורסים"
-                    className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full border-2 border-brand-blue bg-brand-blue/10 px-6 py-3 text-sm font-bold text-brand-blue backdrop-blur-sm transition hover:bg-brand-blue/20 hover:shadow-[0_0_40px_rgba(5,156,192,0.5)]"
+                    className="glass-button group/btn relative inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-brand-blue transition"
                   >
                     <span className="relative z-10">לפרטים על הקורסים</span>
                     <svg className="relative z-10 h-4 w-4 transition group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
