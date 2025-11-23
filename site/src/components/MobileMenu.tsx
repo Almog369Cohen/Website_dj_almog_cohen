@@ -48,6 +48,7 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
   };
 
   const menuItems = [
+    { href: "/courses", label: "קורסים" },
     { href: "/services", label: "שירותים" },
     { href: "/chogeg-menagen", label: "חוגג מנגן" },
     { href: "/music", label: "מוזיקה" },

@@ -131,6 +131,7 @@ export default function RootLayout({
 
                 {/* Left Side (End): Desktop Nav */}
                 <nav className="hidden gap-6 text-sm md:flex" role="navigation" aria-label="תפריט ראשי">
+                  <Link href="/courses" className="hover:text-brand-green">קורסים</Link>
                   <Link href="/services" className="hover:text-brand-blue">שירותים</Link>
                   <Link href="/chogeg-menagen" className="hover:text-brand-green">חוגג מנגן</Link>
                   <Link href="/music" className="hover:text-brand-blue">מוזיקה</Link>
