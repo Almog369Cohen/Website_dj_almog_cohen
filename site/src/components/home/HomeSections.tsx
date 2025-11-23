@@ -465,14 +465,6 @@ export const HomeSections = () => {
             viewport={{ once: true }}
             className="mb-16 text-right"
           >
-            <motion.p 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="text-xs font-bold uppercase tracking-[0.3em] text-brand-blue"
-            >
-              LISTEN NOW
-            </motion.p>
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -480,7 +472,7 @@ export const HomeSections = () => {
               transition={{ delay: 0.1 }}
               className="mt-3 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-2xl font-bold text-transparent md:text-4xl lg:text-5xl"
             >
-              לשמוע את אלמוג לפני שפוגשים אותו
+              לא משמיע להיטים. יוצר אותם מחדש.
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -489,7 +481,7 @@ export const HomeSections = () => {
               transition={{ delay: 0.2 }}
               className="mt-4 max-w-2xl text-lg text-white/80"
             >
-              סטים חיים מהרחבה, מיקסים לאפטרים וקלאסים לחופות. כך תוכלו להרגיש את העולם המוזיקלי לפני הפגישה.
+              ההבדל בין שיר טוב לרגע בלתי נשכח נמצא בגרסה המיוחדת שלא שמעתם בשום מקום אחר. קבלו הצצה לאדיטים ולחומרים בלעדיים.
             </motion.p>
           </motion.div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -515,9 +507,9 @@ export const HomeSections = () => {
                 </div>
               </div>
               <div className="p-4">
-                <p className="text-xs text-brand-blue/80">Live Set</p>
+                <p className="text-xs text-brand-blue/80 font-semibold">לייב</p>
                 <h3 className="mt-1 text-base font-semibold">Live Set - ים המלח</h3>
-                <p className="mt-2 text-xs text-white/70">סט לייב מלא מים המלח - מקבלת פנים ועד אפטר מטורף.</p>
+                <p className="mt-2 text-xs text-white/70">סט מהרחבה - אנרגיה חיה מתחילה עד סוף.</p>
               </div>
             </a>
 
@@ -600,14 +592,6 @@ export const HomeSections = () => {
           viewport={{ once: true }}
           className="mb-16 text-right"
         >
-          <motion.p 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="text-xs font-bold uppercase tracking-[0.3em] text-white/50"
-          >
-            REAL WORLD CASE STUDIES
-          </motion.p>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -615,36 +599,22 @@ export const HomeSections = () => {
             transition={{ delay: 0.1 }}
             className="mt-3 bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
           >
-            סיפורי רחבה מהעולם האמיתי
+            יותר ממוזיקה. סיפורים.
           </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="mt-4 max-w-2xl text-lg text-white/80"
-          >
-            כדי להבין באמת מה קורה באירוע, צריך לראות איך פותרים אתגרים בשטח – עם קהל אמיתי, מגבלות אמיתיות ורגעים שלא חוזרים.
-          </motion.p>
         </motion.div>
 
         <div className="space-y-8">
           <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5/90 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
             <div className="brand-noise" aria-hidden="true" />
             <div className="relative space-y-4 text-right">
-              <h3 className="text-xl font-semibold">סגירת מעגל: כשהמרצים שלי בחרו בי</h3>
-              <p className="text-xs uppercase tracking-[0.2em] text-white/50">GAL & DIMA • REAL STORY</p>
-              <div className="border-r-2 border-white/20 pr-3 text-sm text-white/75">
-                <div className="text-xs font-semibold text-[#059cc0]">הרקע</div>
-                <p className="mt-1">קורונה. עולם האירועים ב-Mute. נרשמתי לקורס שיווק כדי להתפתח. המרצים היו גל ודימה. הם זיהו אצלי את התשוקה למוזיקה עוד לפני ששמעו אותי מנגן.</p>
-              </div>
-              <div className="border-r-2 border-white/20 pr-3 text-sm text-white/75">
-                <div className="text-xs font-semibold text-[#059cc0]">המהלך</div>
-                <p className="mt-1">הם בחרו בי להוביל את האירוע הכי חשוב שלהם. המעבר מסטודנט בכיתה ל-DJ ששולט ברחבה שלהם היה טבעי ומחשמל.</p>
-              </div>
-              <div className="border-r-2 border-brand-green pr-3 text-sm text-white">
-                <div className="text-xs font-semibold text-[#03b28c]">התוצאה</div>
-                <p className="mt-1">חתונה בלתי נשכחת שבה המרצים הפכו לרוקדים, והתלמיד הפך למאסטר על העמדה.</p>
+              <h3 className="text-2xl font-black text-white">כשהמרצים שלי הפכו לקהל שלי.</h3>
+              <div className="mt-6 space-y-4">
+                <p className="text-base leading-relaxed text-white/85">
+                  בקורונה נרשמתי ללמוד שיווק אצל גל ודימה. כשהם ביקשו שאנגן בחתונה שלהם, התהפכו היוצרות. זה כבר לא היה מבחן על הנייר, אלא מבחן על הרחבה.
+                </p>
+                <p className="text-base leading-relaxed text-white/85">
+                  כשהם לא הפסיקו לרקוד, ידעתי שקיבלתי את הציון הסופי.
+                </p>
               </div>
             </div>
             <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-black/50 shadow-lg shadow-black/60">
@@ -656,7 +626,11 @@ export const HomeSections = () => {
 
           <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-black/50 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
             <div className="brand-noise" aria-hidden="true" />
-            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+            <div className="relative space-y-4 text-right order-first md:order-last">
+              <h3 className="text-2xl font-black text-white">רגעים שהפכו למזכרת.</h3>
+              <p className="text-sm text-white/70">גלריית תמונות מהרחבה</p>
+            </div>
+            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:col-span-2">
               <motion.div
                 key={carouselIndex}
                 initial={{ opacity: 0 }}
@@ -1323,7 +1297,7 @@ export const HomeSections = () => {
                 transition={{ delay: 0.2 }}
                 className="mx-auto mb-10 max-w-3xl text-lg leading-relaxed text-white/95 md:text-xl md:leading-relaxed"
               >
-                האירוע שלכם הוא לא &quot;עוד תאריך&quot; ביומן. אני יודע כמה השקעתם בערב הזה. האחריות שלי היא לוודא שהכול יעבוד מושלם – מהשיר הראשון ועד אחרון הרוקדים. בואו נכיר, נתאם ציפיות, ונבנה לכם ראש שקט ומסיבה מנצחת.
+                אני זמין לשאלות, להתייעצויות, או סתם כדי להבין אם יש בינינו קליק. בלי התחייבות, ובלי לחץ. פשוט דברו איתי.
               </motion.p>
               
               <motion.a
