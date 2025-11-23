@@ -6,7 +6,7 @@ import { ContactFormLevel100 } from "@/components/ui/ContactFormLevel100";
 
 export const CoursesLevel100 = () => {
   return (
-    <section id="academy-level-100" className="relative overflow-hidden bg-[#0b1120] py-20 md:py-32">
+    <section id="academy-level-100" className="relative overflow-hidden bg-[#0b1120] py-12 md:py-20 lg:py-32">
       {/* Gradient transition from previous dark section */}
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#1f1f21] to-[#0b1120]" />
       
@@ -18,7 +18,7 @@ export const CoursesLevel100 = () => {
         <div className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 bg-[#059cc0]/5 blur-[120px]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Headline */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}

@@ -406,6 +406,29 @@ p, span, li, a {
   );
 }
 
+/* ========================================
+   MOBILE-FIRST OPTIMIZATIONS
+   Primary user base is mobile!
+   ======================================== */
+
+/* Reduce blur intensity on mobile for performance */
+@media (max-width: 768px) {
+  .glass-card {
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+  }
+  
+  .glass-button {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+  
+  .glass-section {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
+}
+
 /* Disable glow effects on mobile for performance */
 @media (max-width: 768px) {
   .glass-card-glow::before,
@@ -413,5 +436,67 @@ p, span, li, a {
   .glass-card-green-glow::before,
   .glass-card-green-corner::after {
     display: none;
+  }
+  
+  /* Reduce complex shadows on mobile */
+  .glass-card {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+/* Touch-friendly interactions on mobile */
+@media (max-width: 768px) {
+  .glass-button {
+    min-height: 48px; /* Touch target size */
+    padding: 12px 24px;
+  }
+  
+  /* Disable hover effects, use active instead */
+  .glass-button:hover {
+    transform: none;
+    background: rgba(5, 156, 192, 0.1);
+  }
+  
+  .glass-button:active {
+    transform: scale(0.98);
+    background: rgba(5, 156, 192, 0.25);
+  }
+}
+
+/* Mobile-First Typography & Spacing */
+@media (max-width: 640px) {
+  /* Increase body text readability on small screens */
+  body {
+    font-size: 16px; /* Minimum for iOS Safari zoom prevention */
+    line-height: 1.6;
+  }
+  
+  /* Comfortable padding for mobile content */
+  section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Reduce heading sizes slightly for mobile */
+  h1, h2, h3 {
+    line-height: 1.2;
+    word-break: break-word;
+  }
+  
+  /* Stack grid columns on mobile */
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Reduce animation complexity on mobile */
+  * {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Optimize images for mobile */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }

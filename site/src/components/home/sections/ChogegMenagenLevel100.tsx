@@ -7,7 +7,7 @@ export const ChogegMenagenLevel100 = () => {
   const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972502427616";
   
   return (
-    <section id="chogeg-menagen-level-100" className="relative overflow-hidden bg-[#1f1f21] py-20 md:py-32">
+    <section id="chogeg-menagen-level-100" className="relative overflow-hidden bg-[#1f1f21] py-12 md:py-20 lg:py-32">
       {/* Background */}
       {/* Gradient transition from previous white section */}
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white to-[#1f1f21]" />
@@ -19,7 +19,7 @@ export const ChogegMenagenLevel100 = () => {
         <div className="absolute right-1/4 bottom-1/4 h-[400px] w-[400px] bg-[#03b28c]/15 blur-[120px]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-6">
+      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -5,7 +5,7 @@ import { ContactFormLevel100 } from "@/components/ui/ContactFormLevel100";
 
 export const WeddingsLevel100 = () => {
   return (
-    <section id="weddings-level-100" className="relative overflow-hidden bg-white py-20 md:py-32">
+    <section id="weddings-level-100" className="relative overflow-hidden bg-white py-12 md:py-20 lg:py-32">
       {/* Wave Divider Transition from Dark to White */}
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#1f1f21] to-transparent" />
       
@@ -16,24 +16,24 @@ export const WeddingsLevel100 = () => {
         <div className="absolute right-0 bottom-0 h-96 w-96 bg-slate-100 blur-[120px]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Headline - MASSIVE */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-12 text-center"
+          className="mb-8 sm:mb-12 text-center"
         >
           <h2 
-            className="mb-6 text-4xl font-black leading-tight text-slate-900 md:text-6xl lg:text-7xl"
+            className="mb-4 sm:mb-6 text-3xl sm:text-4xl font-black leading-tight text-slate-900 md:text-6xl lg:text-7xl"
             style={{ fontWeight: 900, letterSpacing: "-0.02em" }}
           >
             לא כל זוג מתאים אליי.
             <br />
             <span className="text-[#059cc0]">וזה בסדר.</span>
           </h2>
-          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-slate-700 md:text-xl">
+          <p className="mx-auto max-w-3xl text-base sm:text-lg leading-relaxed text-slate-700 md:text-xl">
             אם אתם רוצים חוויה שמייצגת מי שאתם באמת — אז בואו נבדוק אם זה הדדי. 
             <br className="hidden md:inline" />
             אני לא מנגן כדי לעשות בלגן. אני מנגן כדי לעשות רושם שנשאר גם כשהשמפניה נגמרת.
