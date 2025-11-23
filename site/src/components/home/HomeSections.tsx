@@ -43,7 +43,7 @@ export const HomeSections = () => {
   return (
     <>
       {/* --- WHO IS THIS FOR (LEVEL 1000) --- */}
-      <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-32">
+      <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-32 bg-[#1f1f21]">
         {/* Animated brand element - Desktop Only */}
         {!isMobile && (
           <motion.div 
@@ -77,7 +77,7 @@ export const HomeSections = () => {
                 fontWeight: 900,
                 letterSpacing: "-0.05em",
                 lineHeight: 0.95,
-                background: "linear-gradient(90deg, #03b28c 0%, #ffffff 50%, #059cc0 100%)",
+                background: "linear-gradient(90deg, #03b28c 0%, #66f4d9 50%, #059cc0 100%)",
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 color: "transparent",
