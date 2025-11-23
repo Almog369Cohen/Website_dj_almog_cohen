@@ -6,8 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { EnergyProvider, useEnergy } from "@/context/EnergyContext";
-import { ThemeProvider } from "@/context/ThemeContext";
-import { EnergyFaderV2 } from "@/components/EnergyFaderV2";
+import { EnergyFader } from "@/components/EnergyFader";
 
 const AnimatedBackground = dynamic(
   () => import("@/components/AnimatedBackground"),
@@ -23,9 +22,7 @@ type Path = "none" | "school" | "events";
 export default function Home() {
   return (
     <EnergyProvider>
-      <ThemeProvider>
-        <HomeContent />
-      </ThemeProvider>
+      <HomeContent />
     </EnergyProvider>
   );
 }
@@ -96,55 +93,15 @@ function HomeContent() {
 
   return (
     <>
-      <EnergyFaderV2 />
+      <EnergyFader />
       
-      {/* Fluid Typography System + Dynamic Theme Colors */}
+      {/* Fluid Typography System - Mobile Optimized */}
       <style jsx global>{`
         :root {
           --font-fluid-h1: clamp(2.5rem, 10vw, 6rem);
           --font-fluid-h2: clamp(2rem, 6vw, 4rem);
           --font-fluid-h3: clamp(1.125rem, 3vw + 0.5rem, 3rem);
           --font-fluid-p: clamp(0.875rem, 1vw + 0.5rem, 1.25rem);
-          
-          /* Dynamic Theme Colors (set by EnergyFader) */
-          --theme-bg: #0a0a0a;
-          --theme-text: #ffffff;
-          --theme-accent: #03b28c;
-        }
-        
-        /* Smooth Color Transitions - UI/UX Level 500 */
-        body, html {
-          background-color: var(--theme-bg);
-          color: var(--theme-text);
-          transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                      color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* All text elements transition smoothly */
-        h1, h2, h3, h4, h5, h6, p, span, a, button, div {
-          transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Brand dark background adapts to theme */
-        .bg-brand-dark {
-          background-color: var(--theme-bg) !important;
-          transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Text colors adapt to theme */
-        .text-brand-white, .text-white {
-          color: var(--theme-text) !important;
-        }
-        
-        /* Accent colors adapt */
-        .text-brand-blue, .text-brand-green {
-          color: var(--theme-accent) !important;
-        }
-        
-        /* Border colors adapt */
-        .border-white\\/10, .border-white\\/20, .border-white\\/30 {
-          border-color: color-mix(in srgb, var(--theme-text) 20%, transparent) !important;
-          transition: border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         /* Prevent layout shifts on mobile */
@@ -157,7 +114,7 @@ function HomeContent() {
         /* Energy System Global Overrides */
         h1, h2, h3 {
           text-shadow: var(--text-glow) !important;
-          transition: text-shadow 0.2s ease, color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: text-shadow 0.2s ease;
         }
         
         .brand-noise {
