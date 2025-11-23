@@ -92,6 +92,96 @@ function HomeContent() {
 
   return (
     <>
+      {/* Structured Data (JSON-LD) for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Person",
+                "@id": "https://www.compaktt.com/#person",
+                name: "Almog Cohen",
+                alternateName: "DJ Almog Cohen",
+                description: "DJ מקצועי לחתונות ואירועים, מורה ומנטור DJ בתל אביב",
+                url: "https://www.compaktt.com",
+                image: "https://www.compaktt.com/assets/almog/IMG_6561.jpg",
+                sameAs: [
+                  "https://www.instagram.com/almog.dj",
+                  "https://www.youtube.com/@djalmogcohen",
+                  "https://soundcloud.com/almogcohen",
+                ],
+                jobTitle: "DJ & Music Producer",
+                worksFor: {
+                  "@type": "Organization",
+                  name: "DJ Almog Cohen",
+                },
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: "תל אביב",
+                  addressCountry: "IL",
+                },
+              },
+              {
+                "@type": "LocalBusiness",
+                "@id": "https://www.compaktt.com/#business",
+                name: "DJ Almog Cohen",
+                description: "DJ לחתונות ואירועים מובחרים, בית ספר DJ ומנטורינג לאמנים",
+                url: "https://www.compaktt.com",
+                telephone: "+972-50-242-7616",
+                priceRange: "₪₪₪",
+                image: "https://www.compaktt.com/assets/almog/IMG_6561.jpg",
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: "תל אביב",
+                  addressCountry: "IL",
+                },
+                geo: {
+                  "@type": "GeoCoordinates",
+                  latitude: 32.0853,
+                  longitude: 34.7818,
+                },
+                openingHoursSpecification: {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
+                  opens: "10:00",
+                  closes: "22:00",
+                },
+                aggregateRating: {
+                  "@type": "AggregateRating",
+                  ratingValue: "5",
+                  reviewCount: "50",
+                },
+              },
+              {
+                "@type": "Service",
+                "@id": "https://www.compaktt.com/#service-weddings",
+                name: "DJ לחתונות",
+                description: "ליווי מלא לחתונות מובחרות - מפגישת ייעוץ ועד מסיבה בלתי נשכחת",
+                provider: {
+                  "@id": "https://www.compaktt.com/#person",
+                },
+                areaServed: {
+                  "@type": "Country",
+                  name: "Israel",
+                },
+              },
+              {
+                "@type": "Course",
+                "@id": "https://www.compaktt.com/courses#course",
+                name: "קורס DJ",
+                description: "קורסי DJ למתחילים ומתקדמים, מנטורינג ואימון אישי",
+                provider: {
+                  "@id": "https://www.compaktt.com/#person",
+                },
+                educationalLevel: "Beginner to Advanced",
+              },
+            ],
+          }),
+        }}
+      />
+      
       {/* Fluid Typography System - Mobile Optimized */}
       <style jsx global>{`
         :root {

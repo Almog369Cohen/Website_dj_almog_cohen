@@ -21,10 +21,28 @@ const heebo = Heebo({
 });
 
 export const metadata: Metadata = {
-  title: "DJ Almog Cohen — DJ • Mentor • Creator",
+  title: "DJ Almog Cohen | לא מנגן בכל אירוע. רק באלה שראויים.",
   description:
-    "Premium DJ brand site. Events, DJ courses & mentorship. Energy, emotion, and human connection through sound.",
+    "12 שנים, סטנדרטים ברזל. DJ לחתונות ואירועים מובחרים, קורסי DJ למתחילים ומתקדמים, ומנטורינג לאמנים. תל אביב.",
+  keywords: [
+    "DJ לחתונות",
+    "DJ תל אביב",
+    "קורס DJ",
+    "בית ספר DJ",
+    "מנטורינג DJ",
+    "DJ לאירועים",
+    "חוגג מנגן",
+    "DJ מקצועי",
+    "DJ Almog Cohen",
+    "אלמוג כהן DJ",
+  ],
+  authors: [{ name: "DJ Almog Cohen" }],
+  creator: "DJ Almog Cohen",
+  publisher: "DJ Almog Cohen",
   metadataBase: new URL("https://www.compaktt.com"),
+  alternates: {
+    canonical: "https://www.compaktt.com",
+  },
   icons: {
     icon: [
       { url: "/icon.png", type: "image/png" },
@@ -35,12 +53,39 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "DJ Almog Cohen",
-    description:
-      "Events, DJ courses & mentorship. Energy, emotion, and human connection through sound.",
     type: "website",
+    locale: "he_IL",
     url: "https://www.compaktt.com",
-    images: [{ url: "https://www.compaktt.com/icon.png", width: 1011, height: 1184 }],
+    siteName: "DJ Almog Cohen",
+    title: "DJ Almog Cohen | לא מנגן בכל אירוע. רק באלה שראויים.",
+    description:
+      "12 שנים, סטנדרטים ברזל. DJ לחתונות ואירועים מובחרים, קורסי DJ ומנטורינג. תל אביב.",
+    images: [
+      {
+        url: "https://www.compaktt.com/assets/almog/IMG_6561.jpg",
+        width: 1200,
+        height: 630,
+        alt: "DJ Almog Cohen",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DJ Almog Cohen | לא מנגן בכל אירוע. רק באלה שראויים.",
+    description:
+      "12 שנים, סטנדרטים ברזל. DJ לחתונות ואירועים מובחרים, קורסי DJ ומנטורינג.",
+    images: ["https://www.compaktt.com/assets/almog/IMG_6561.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
