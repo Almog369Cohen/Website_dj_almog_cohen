@@ -35,7 +35,7 @@ export const CoursesLevel100 = () => {
             <br />
             <span className="text-[#059cc0]">לומדים להיות מישהו ששמים עליו את האירוע.</span>
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-white/85">
+          <p className="mx-auto max-w-2xl text-lg text-white">
             אם אתה מחפש "קורס מגניב", תמשיך הלאה. 
             אם אתה רוצה לשלוט באווירה — תשאיר תירוצים בחוץ.
           </p>
@@ -65,10 +65,10 @@ export const CoursesLevel100 = () => {
               <h3 className="mb-3 text-3xl font-black text-white" style={{ fontWeight: 900 }}>
                 ₪ 1,250
               </h3>
-              <p className="mb-6 text-white/90">
+              <p className="mb-6 text-white">
                 טעימה שמראה אם זה בשבילך. בוא תגלה אם יש לך את זה.
               </p>
-              <ul className="mb-8 space-y-3 text-sm text-white/85">
+              <ul className="mb-8 space-y-3 text-sm text-white">
                 <li className="flex items-start gap-2">
                   <span className="text-[#03b28c]">✓</span>
                   <span>היכרות עם הציוד</span>
@@ -84,7 +84,7 @@ export const CoursesLevel100 = () => {
               </ul>
               <Link
                 href="/courses"
-                className="block w-full rounded-full border-2 border-[#059cc0] bg-[#059cc0]/10 px-6 py-3 text-center font-bold text-[#059cc0] transition hover:bg-[#059cc0]/20"
+                className="block w-full rounded-full border-2 border-[#059cc0] bg-[#059cc0]/20 px-6 py-3 text-center font-bold text-[#059cc0] transition hover:bg-[#059cc0]/20"
               >
                 פרטים נוספים
               </Link>
@@ -111,10 +111,10 @@ export const CoursesLevel100 = () => {
               <h3 className="mb-3 text-3xl font-black text-white" style={{ fontWeight: 900 }}>
                 ₪ 3,500
               </h3>
-              <p className="mb-6 text-white/90">
+              <p className="mb-6 text-white">
                 השלב שבו מפסיקים להיראות כמו תלמיד ומתחילים להישמע כמו מקצוען.
               </p>
-              <ul className="mb-8 space-y-3 text-sm text-white/85">
+              <ul className="mb-8 space-y-3 text-sm text-white">
                 <li className="flex items-start gap-2">
                   <span className="text-[#03b28c]">✓</span>
                   <span>טכניקות מיקס מתקדמות</span>
@@ -163,10 +163,10 @@ export const CoursesLevel100 = () => {
               <h3 className="mb-3 text-3xl font-black text-white" style={{ fontWeight: 900 }}>
                 ₪ 6,000-7,000
               </h3>
-              <p className="mb-6 text-white/90">
+              <p className="mb-6 text-white">
                 מי שבקצה הזה לא שואל כמה זה עולה. הוא שואל איך נכנסים.
               </p>
-              <ul className="mb-8 space-y-3 text-sm text-white/85">
+              <ul className="mb-8 space-y-3 text-sm text-white">
                 <li className="flex items-start gap-2">
                   <span className="text-[#03b28c]">✓</span>
                   <span>מנטורינג אישי 1:1</span>
@@ -190,7 +190,7 @@ export const CoursesLevel100 = () => {
               </ul>
               <Link
                 href="/courses"
-                className="block w-full rounded-full border-2 border-[#059cc0] bg-[#059cc0]/10 px-6 py-3 text-center font-bold text-[#059cc0] transition hover:bg-[#059cc0]/20"
+                className="block w-full rounded-full border-2 border-[#059cc0] bg-[#059cc0]/20 px-6 py-3 text-center font-bold text-[#059cc0] transition hover:bg-[#059cc0]/20"
               >
                 בואו נדבר
               </Link>

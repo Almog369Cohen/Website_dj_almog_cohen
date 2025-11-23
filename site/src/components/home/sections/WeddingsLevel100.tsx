@@ -36,7 +36,7 @@ export const WeddingsLevel100 = () => {
             <br />
             <span className="text-[#059cc0]">וזה בסדר.</span>
           </h2>
-          <p className="mx-auto max-w-3xl text-base sm:text-lg leading-relaxed text-slate-700 md:text-xl">
+          <p className="mx-auto max-w-3xl text-base sm:text-lg leading-relaxed text-slate-800 md:text-xl">
             אם אתם רוצים חוויה שמייצגת מי שאתם באמת — אז בואו נבדוק אם זה הדדי. 
             <br className="hidden md:inline" />
             אני לא מנגן כדי לעשות בלגן. אני מנגן כדי לעשות רושם שנשאר גם כשהשמפניה נגמרת.
@@ -85,10 +85,10 @@ export const WeddingsLevel100 = () => {
               </ul>
 
               <div className="mt-8 border-t border-slate-200 pt-6">
-                <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-500">
+                <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-700">
                   מי לא מתאים?
                 </h4>
-                <ul className="space-y-2 text-sm text-slate-600">
+                <ul className="space-y-2 text-sm text-slate-800">
                   <li>• מי שמחפש "שיבוא, ינגן, ונראה מה יהיה"</li>
                   <li>• מי שבוחרים לפי מחיר, לא לפי התאמה</li>
                   <li>• מי שלא אכפת לו מה הוא משאיר לאורחים</li>

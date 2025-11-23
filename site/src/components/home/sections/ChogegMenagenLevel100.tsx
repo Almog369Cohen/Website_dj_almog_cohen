@@ -39,7 +39,7 @@ export const ChogegMenagenLevel100 = () => {
             <span className="text-[#03b28c]">זה לא מתנה. זה הישג.</span>
           </h2>
           
-          <p className="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-white/90">
+          <p className="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-white">
             הילד לא מקבל "הזדמנות לנגן". הוא מקבל רגע בספוטלייט שמראה שיש לו אומץ ורצינות. 
             <br className="hidden md:inline" />
             לא עוד גימיק — הצגה.
@@ -83,7 +83,7 @@ export const ChogegMenagenLevel100 = () => {
                 תנו להם רגע שמגיע רק למי שעובד עליו
               </Link>
               
-              <p className="mt-6 text-xs text-white/70">
+              <p className="mt-6 text-xs text-white/85">
                 יצירת קשר ישירה ב-WhatsApp
               </p>
             </div>
@@ -97,7 +97,7 @@ export const ChogegMenagenLevel100 = () => {
             transition={{ delay: 0.5 }}
             className="mt-12 text-center"
           >
-            <p className="text-sm text-white/75">
+            <p className="text-sm text-white/85">
               הזמינות מוגבלת. ככה זה עובד ברמה הזו.
             </p>
           </motion.div>
