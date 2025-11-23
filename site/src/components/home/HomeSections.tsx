@@ -62,15 +62,15 @@ export const HomeSections = () => {
         </motion.div>
 
         <div className="space-y-8">
-          <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5/90 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
+          <div className="glass-card relative grid grid-cols-1 gap-6 p-6 md:grid-cols-2 md:p-8">
             <div className="brand-noise" aria-hidden="true" />
-            <div className="relative space-y-4 text-right">
-              <h3 className="text-2xl font-black text-white">כשהמרצים שלי הפכו לקהל שלי.</h3>
+            <div className="glass-card-content relative space-y-4 text-right">
+              <h3 className="text-2xl font-black text-white drop-shadow-md">כשהמרצים שלי הפכו לקהל שלי.</h3>
               <div className="mt-6 space-y-4">
-                <p className="text-base leading-relaxed text-white/85">
+                <p className="text-base font-medium leading-relaxed text-white/90 text-glass-body">
                   בקורונה נרשמתי ללמוד שיווק אצל גל ודימה. כשהם ביקשו שאנגן בחתונה שלהם, התהפכו היוצרות. זה כבר לא היה מבחן על הנייר, אלא מבחן על הרחבה.
                 </p>
-                <p className="text-base leading-relaxed text-white/85">
+                <p className="text-base font-medium leading-relaxed text-white/90 text-glass-body">
                   כשהם לא הפסיקו לרקוד, ידעתי שקיבלתי את הציון הסופי.
                 </p>
               </div>
@@ -82,10 +82,10 @@ export const HomeSections = () => {
             </div>
           </div>
 
-          <div className="relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-black/50 p-6 shadow-xl shadow-black/50 backdrop-blur-lg md:grid-cols-2 md:p-8">
-            <div className="relative space-y-4 text-right order-first md:order-last">
-              <h3 className="text-2xl font-black text-white">רגעים שהפכו למזכרת.</h3>
-              <p className="text-sm text-white/70">גלריית תמונות מהרחבה</p>
+          <div className="glass-card relative grid grid-cols-1 gap-6 p-6 md:grid-cols-2 md:p-8">
+            <div className="glass-card-content relative space-y-4 text-right order-first md:order-last">
+              <h3 className="text-2xl font-black text-white drop-shadow-md">רגעים שהפכו למזכרת.</h3>
+              <p className="text-sm font-medium text-white/80">גלריית תמונות מהרחבה</p>
             </div>
             <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:col-span-2">
               <motion.div
@@ -134,7 +134,7 @@ export const HomeSections = () => {
               title: "12 שנות ניסיון",
               desc: "כשאתם בוחרים בי, אתם בוחרים בשקט נפשי. אין הפתעות, אין 'שכחתי', יש רק מקצוענות נטו.",
               icon: (
-                <svg className="h-8 w-8 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-8 w-8 text-brand-blue drop-shadow-[0_0_8px_rgba(5,156,192,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               )
@@ -143,7 +143,7 @@ export const HomeSections = () => {
               title: "קריאת קהל מדויקת",
               desc: "לדעת מתי להרים ומתי להוריד זה המפתח. אני לא מנגן לעצמי, אני מנגן לרחבה שלכם.",
               icon: (
-                <svg className="h-8 w-8 text-brand-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-8 w-8 text-brand-green drop-shadow-[0_0_8px_rgba(3,178,140,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               )
@@ -152,7 +152,7 @@ export const HomeSections = () => {
               title: "ציוד וגיבוי מלא",
               desc: "ציוד קצה ברמה הגבוהה ביותר, ותמיד עם מערכת גיבוי מלאה. שום דבר לא יעצור את המסיבה.",
               icon: (
-                <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-8 w-8 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                 </svg>
               )
@@ -164,13 +164,13 @@ export const HomeSections = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="glass-card glass-card-corner p-6 text-center hover:bg-white/5 transition-colors"
+              className="glass-card glass-card-content p-6 text-center hover:bg-white/5 transition-colors"
             >
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 border border-white/10">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 border border-white/10 shadow-inner">
                 {item.icon}
               </div>
-              <h3 className="mb-2 text-xl font-bold text-white">{item.title}</h3>
-              <p className="text-white/70 leading-relaxed">{item.desc}</p>
+              <h3 className="mb-2 text-xl font-black text-white drop-shadow-sm">{item.title}</h3>
+              <p className="text-white/80 font-medium leading-relaxed text-glass-body">{item.desc}</p>
             </motion.div>
           ))}
         </div>
