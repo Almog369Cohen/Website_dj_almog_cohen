@@ -923,10 +923,10 @@ export const HomeSections = () => {
                         delay: 0.6 + i * 0.15,
                         ease: "easeOut"
                       }}
-                      className="inline-block"
+                      className="inline-block mr-2 sm:mr-3"
                       style={{ transformStyle: "preserve-3d" }}
                     >
-                      {word}{" "}
+                      {word}
                     </motion.span>
                   ))}
                   <br />
@@ -941,10 +941,10 @@ export const HomeSections = () => {
                         delay: 1.1 + i * 0.15,
                         ease: "easeOut"
                       }}
-                      className="inline-block"
+                      className="inline-block mr-2 sm:mr-3"
                       style={{ transformStyle: "preserve-3d" }}
                     >
-                      {word}{" "}
+                      {word}
                     </motion.span>
                   ))}
                 </motion.h2>
