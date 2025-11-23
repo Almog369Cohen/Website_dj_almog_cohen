@@ -106,7 +106,7 @@ export default function RootLayout({
         </a>
         <ThemeProvider>
         <div className="min-h-dvh flex flex-col">
-          <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/60" role="banner">
+          <header className="glass-section sticky top-0 z-40" role="banner">
             <div className="mx-auto w-full max-w-6xl px-4 py-3">
               <div className="relative flex items-center justify-between gap-4">
                 {/* Right Side (Start): Mobile Menu & Theme */}
@@ -154,7 +154,7 @@ export default function RootLayout({
           </header>
           <main id="main-content" className="flex-1" role="main">{children}</main>
           <AccessibilityMenu />
-          <footer className="border-t border-white/10 bg-black/70" role="contentinfo">
+          <footer className="glass-panel border-t" role="contentinfo">
             <div className="mx-auto w-full max-w-6xl px-4 py-8 text-sm text-white/70">
               <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <p>© {new Date().getFullYear()} DJ Almog Cohen</p>
@@ -168,7 +168,7 @@ export default function RootLayout({
           href={`https://wa.me/${waNumber}?text=${waText}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-4 left-4 z-50 rounded-full bg-gradient-to-r from-brand-blue to-brand-green px-5 py-3 text-sm font-medium text-black shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-black md:block hidden"
+          className="glass-button fixed bottom-4 left-4 z-50 px-5 py-3 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-black md:block hidden"
           aria-label="פתיחת שיחה בוואטסאפ"
         >
           WhatsApp
@@ -177,7 +177,7 @@ export default function RootLayout({
           href={`https://wa.me/${waNumber}?text=${waText}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-4 left-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-brand-blue to-brand-green shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-black md:hidden"
+          className="glass-button fixed bottom-4 left-4 z-50 flex h-14 w-14 items-center justify-center focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-black md:hidden"
           aria-label="פתיחת שיחה בוואטסאפ"
         >
           <svg className="h-6 w-6 text-black" fill="currentColor" viewBox="0 0 24 24">

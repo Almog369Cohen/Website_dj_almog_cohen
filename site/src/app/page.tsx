@@ -541,7 +541,7 @@ function HomeContent() {
                   <SmoothScrollLink
                     href="#school-section"
                     ariaLabel="גלילה לסקשן בית הספר והקורסים"
-                    className="group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden rounded-full border-2 border-brand-blue bg-brand-blue/20 px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-white backdrop-blur-md transition hover:scale-105 hover:bg-brand-blue/30 hover:shadow-[0_0_40px_rgba(5,156,192,0.5)]"
+                    className="glass-button group relative inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-white transition"
                   >
                     <span className="relative z-10">לקורסי DJ</span>
                     <svg 
@@ -563,7 +563,7 @@ function HomeContent() {
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/60 text-right">
             בין לקוחותינו
           </p>
-          <div className="relative overflow-hidden rounded-full border border-white/10 bg-black/40 py-4">
+          <div className="glass-panel relative overflow-hidden rounded-full py-4">
             <div className="flex animate-[marquee_30s_linear_infinite] items-center gap-8 pr-8">
               {/* First set of client logos */}
               {[
