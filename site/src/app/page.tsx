@@ -5,6 +5,8 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useIsMobile } from "@/hooks/useMediaQuery";
+import { EnergyProvider, useEnergy } from "@/context/EnergyContext";
+import { EnergyFader } from "@/components/EnergyFader";
 
 const AnimatedBackground = dynamic(
   () => import("@/components/AnimatedBackground"),
@@ -12,6 +14,8 @@ const AnimatedBackground = dynamic(
 );
 
 type Path = "none" | "school" | "events";
+
+// ... (Start of existing components like RevealText, SmoothScrollLink remain here)
 
 // RevealText - Kinetic Typography Component (Level 1000)
 const RevealText = ({ 
@@ -75,6 +79,15 @@ const SmoothScrollLink = ({
 };
 
 export default function Home() {
+  return (
+    <EnergyProvider>
+      <HomeContent />
+    </EnergyProvider>
+  );
+}
+
+function HomeContent() {
+  const { energyLevel, energyRatio, isRaveMode } = useEnergy();
   const [path, setPath] = useState<Path>("none");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -83,6 +96,16 @@ export default function Home() {
   const [faqOpen, setFaqOpen] = useState(false);
   const isMobile = useIsMobile();
   
+  // Reactive Styles for Energy System
+  const reactiveStyles = {
+    "--energy": energyLevel,
+    "--energy-ratio": energyRatio,
+    "--glow-opacity": energyRatio, // 0 to 1
+    "--anim-speed": `${1.2 - (energyRatio * 0.8)}s`, // Faster as energy goes up
+    "--text-glow": `0 0 ${energyLevel / 2}px rgba(5, 156, 192, ${energyRatio})`,
+    "--border-pulse": isRaveMode ? "pulse-border 1s infinite" : "none",
+  } as React.CSSProperties;
+
   // Completely disable animations on mobile to prevent flickering
   const animationConfig = isMobile ? {
     duration: 0,
@@ -129,6 +152,8 @@ export default function Home() {
 
   return (
     <>
+      <EnergyFader />
+      
       {/* Fluid Typography System - Mobile Optimized */}
       <style jsx global>{`
         :root {
@@ -144,9 +169,34 @@ export default function Home() {
             will-change: auto !important;
           }
         }
+        
+        /* Energy System Global Overrides */
+        h1, h2, h3 {
+          text-shadow: var(--text-glow) !important;
+          transition: text-shadow 0.2s ease;
+        }
+        
+        .brand-noise {
+          opacity: calc(0.05 + (var(--energy) / 500)) !important; /* 0.05 to 0.25 */
+        }
+        
+        /* Rave Mode Glitch Effect */
+        @keyframes glitch {
+          0% { transform: translate(0) }
+          20% { transform: translate(-2px, 2px) }
+          40% { transform: translate(-2px, -2px) }
+          60% { transform: translate(2px, 2px) }
+          80% { transform: translate(2px, -2px) }
+          100% { transform: translate(0) }
+        }
+        
+        .rave-glitch {
+           animation: ${isRaveMode ? "glitch 0.2s cubic-bezier(.25, .46, .45, .94) both infinite" : "none"};
+        }
       `}</style>
       
-      <div className="overflow-x-hidden text-brand-white">
+      <div className="overflow-x-hidden text-brand-white" style={reactiveStyles}>
+
       {/* --- FLOATING CTA FOR CHOGEG MENAGEN --- */}
       <motion.div
         initial={{ x: 100, opacity: 0 }}
@@ -357,7 +407,7 @@ export default function Home() {
             <div className="relative overflow-hidden rounded-[40px] border-2 border-white/30 bg-black/25 px-5 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-md md:px-10 md:py-12">
               {/* Title - Fluid Typography with Kinetic Reveal (Level 1000) */}
               <RevealText 
-                className="mb-6" 
+                  className={`mb-6 ${isRaveMode ? "rave-glitch" : ""}`} 
                 delay={0}
               >
                 <motion.h1 
@@ -551,7 +601,11 @@ export default function Home() {
             whileHover={!isMobile ? { y: -8, scale: 1.02 } : {}}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="group relative overflow-hidden rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl"
+            style={{ 
+              borderColor: isRaveMode ? "#03b28c" : "", 
+              boxShadow: isRaveMode ? "0 0 30px rgba(3, 178, 140, 0.4)" : "" 
+            }}
+            className="group relative overflow-hidden rounded-3xl border-2 border-brand-green/30 bg-gradient-to-br from-brand-green/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl transition-all duration-300"
           >
             {/* Single glow - Desktop only */}
             {!isMobile && (
@@ -608,7 +662,11 @@ export default function Home() {
             whileHover={!isMobile ? { y: -8, scale: 1.02 } : {}}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="group relative overflow-hidden rounded-3xl border-2 border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl"
+            style={{ 
+              borderColor: isRaveMode ? "#059cc0" : "", 
+              boxShadow: isRaveMode ? "0 0 30px rgba(5, 156, 192, 0.4)" : "" 
+            }}
+            className="group relative overflow-hidden rounded-3xl border-2 border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 via-black/50 to-transparent p-5 md:p-8 text-right backdrop-blur-xl transition-all duration-300"
           >
             {/* Single glow - Desktop only */}
             {!isMobile && (
