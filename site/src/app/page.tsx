@@ -437,29 +437,55 @@ function HomeContent() {
             <div className="absolute -inset-4 -z-10 rounded-[40px] bg-gradient-to-r from-brand-green/30 via-brand-blue/30 to-brand-green/30 opacity-20 blur-3xl" />
             
             <div className="relative overflow-hidden rounded-[40px] border-2 border-white/30 bg-black/25 px-5 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-md md:px-10 md:py-12">
-              {/* Title - Fluid Typography with Kinetic Reveal (Level 100) */}
-              <RevealText 
-                  className={`mb-6 ${isRaveMode ? "rave-glitch" : ""}`} 
-                delay={0}
-              >
-                <motion.h1 
-                  style={{ 
-                    fontSize: "var(--font-fluid-h1)",
-                    fontWeight: 900,
-                    letterSpacing: "-0.05em",
-                    lineHeight: 0.95,
-                    background: "linear-gradient(135deg, #059cc0 0%, #ffffff 50%, #03b28c 100%)",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    color: "transparent",
-                  }}
-                >
-                  לא מנגן בכל אירוע.<br />רק באלה שראויים.
-                </motion.h1>
-              </RevealText>
+              {/* Title - Elegant Multi-line Design (Level 100) */}
+              <div className="mb-8 space-y-4">
+                {/* Line 1 - Lighter, elegant intro */}
+                <RevealText delay={0}>
+                  <motion.div 
+                    className={`text-center ${isRaveMode ? "rave-glitch" : ""}`}
+                    style={{
+                      fontSize: "clamp(1.5rem, 5vw, 3rem)",
+                      fontWeight: 300,
+                      letterSpacing: "0.05em",
+                      color: "rgba(255, 255, 255, 0.6)",
+                    }}
+                  >
+                    לא מנגן בכל אירוע.
+                  </motion.div>
+                </RevealText>
+
+                {/* Decorative Divider */}
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-brand-blue to-transparent"
+                />
+
+                {/* Line 2 - Bold, powerful statement */}
+                <RevealText delay={0.4}>
+                  <motion.h1
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                    style={{ 
+                      fontSize: "var(--font-fluid-h1)",
+                      fontWeight: 900,
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1.1,
+                      background: "linear-gradient(135deg, #059cc0 0%, #ffffff 50%, #03b28c 100%)",
+                      backgroundClip: "text",
+                      WebkitBackgroundClip: "text",
+                      color: "transparent",
+                      textAlign: "center",
+                    }}
+                  >
+                    רק באלה שראויים.
+                  </motion.h1>
+                </RevealText>
+              </div>
 
               {/* Subtitle - Fluid Typography */}
-              <RevealText delay={0.3}>
+              <RevealText delay={0.7}>
                 <h2
                   style={{
                     fontSize: "var(--font-fluid-p)",
