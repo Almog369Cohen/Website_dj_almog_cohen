@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { EnergyProvider, useEnergy } from "@/context/EnergyContext";
-import { EnergyFader } from "@/components/EnergyFader";
 
 const AnimatedBackground = dynamic(
   () => import("@/components/AnimatedBackground"),
@@ -93,8 +92,6 @@ function HomeContent() {
 
   return (
     <>
-      <EnergyFader />
-      
       {/* Fluid Typography System - Mobile Optimized */}
       <style jsx global>{`
         :root {
