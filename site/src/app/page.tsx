@@ -347,7 +347,7 @@ function HomeContent() {
             <div className="absolute -inset-4 -z-10 rounded-[40px] bg-gradient-to-r from-brand-green/30 via-brand-blue/30 to-brand-green/30 opacity-20 blur-3xl" />
             
             <div className="relative overflow-hidden rounded-[40px] border-2 border-white/30 bg-black/25 px-5 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-md md:px-10 md:py-12">
-              {/* Title - Fluid Typography with Kinetic Reveal (Level 1000) */}
+              {/* Title - Fluid Typography with Kinetic Reveal (Level 100) */}
               <RevealText 
                   className={`mb-6 ${isRaveMode ? "rave-glitch" : ""}`} 
                 delay={0}
@@ -364,7 +364,7 @@ function HomeContent() {
                     color: "transparent",
                   }}
                 >
-                  לא עוד DJ. ארכיטקט של אנרגיה.
+                  לא מנגן בכל אירוע.<br />רק באלה שראויים.
                 </motion.h1>
               </RevealText>
 
@@ -379,7 +379,7 @@ function HomeContent() {
                   }}
                   className="mx-auto max-w-3xl"
                 >
-                  12 שנים. מאות רחבות. חוק אחד: הקהל הוא המנצח.
+                  12 שנים, סטנדרטים ברזל, ואפס התנצלויות.
                 </h2>
               </RevealText>
 
