@@ -42,14 +42,14 @@ export const WeddingsLevel100 = () => {
           className="mb-8 sm:mb-12 text-center"
         >
           <h2 
-            className="mb-4 sm:mb-6 text-3xl sm:text-4xl font-black leading-tight text-slate-900 md:text-6xl lg:text-7xl"
+            className="mb-4 sm:mb-6 text-3xl sm:text-4xl font-black leading-tight text-gray-900 drop-shadow-lg md:text-6xl lg:text-7xl"
             style={{ fontWeight: 900, letterSpacing: "-0.02em" }}
           >
             לא כל זוג מתאים אליי.
             <br />
-            <span className="text-[#059cc0]">וזה בסדר.</span>
+            <span className="drop-shadow-xl" style={{ color: '#059cc0' }}>וזה בסדר.</span>
           </h2>
-          <p className="mx-auto max-w-3xl text-base sm:text-lg leading-relaxed text-slate-800 md:text-xl">
+          <p className="mx-auto max-w-3xl text-base sm:text-lg leading-relaxed text-gray-800 font-medium drop-shadow-sm md:text-xl">
             אם אתם רוצים חוויה שמייצגת מי שאתם באמת — אז בואו נבדוק אם זה הדדי. 
             <br className="hidden md:inline" />
             אני לא מנגן כדי לעשות בלגן. אני מנגן כדי לעשות רושם שנשאר גם כשהשמפניה נגמרת.
@@ -72,7 +72,7 @@ export const WeddingsLevel100 = () => {
           >
             <div className="brand-noise absolute inset-0 opacity-5" aria-hidden="true" />
             <div className="relative z-10">
-              <h3 className="mb-6 text-2xl font-black text-[#059cc0]" style={{ fontWeight: 900 }}>
+              <h3 className="mb-6 text-2xl font-black drop-shadow-md" style={{ fontWeight: 900, color: '#059cc0' }}>
                 למי זה מתאים?
               </h3>
               <ul className="space-y-4">
@@ -89,19 +89,19 @@ export const WeddingsLevel100 = () => {
                     transition={{ delay: 0.3 + idx * 0.1 }}
                     className="flex items-start gap-3 text-right"
                   >
-                    <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#059cc0]/20 text-[#059cc0]">
+                    <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full font-bold drop-shadow-sm" style={{ backgroundColor: 'rgba(5, 156, 192, 0.25)', color: '#059cc0' }}>
                       ✓
                     </span>
-                    <span className="flex-1 text-slate-800">{item}</span>
+                    <span className="flex-1 text-gray-900 font-medium">{item}</span>
                   </motion.li>
                 ))}
               </ul>
 
               <div className="mt-8 border-t border-slate-200 pt-6">
-                <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-700">
+                <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-gray-700 drop-shadow-sm">
                   מי לא מתאים?
                 </h4>
-                <ul className="space-y-2 text-sm text-slate-800">
+                <ul className="space-y-2 text-sm text-gray-800 font-medium">
                   <li>• מי שמחפש "שיבוא, ינגן, ונראה מה יהיה"</li>
                   <li>• מי שבוחרים לפי מחיר, לא לפי התאמה</li>
                   <li>• מי שלא אכפת לו מה הוא משאיר לאורחים</li>
@@ -129,16 +129,16 @@ export const WeddingsLevel100 = () => {
           <div className="brand-noise absolute inset-0 opacity-5" aria-hidden="true" />
           
           <div className="relative z-10">
-            <h3 className="mb-6 text-3xl font-black text-slate-900 md:text-5xl" style={{ fontWeight: 900, letterSpacing: "-0.02em" }}>
-              תפסיקו לגלול. <span className="text-[#059cc0]">מצאתם.</span>
+            <h3 className="mb-6 text-3xl font-black text-gray-900 drop-shadow-md md:text-5xl" style={{ fontWeight: 900, letterSpacing: "-0.02em" }}>
+              תפסיקו לגלול. <span className="drop-shadow-lg" style={{ color: '#059cc0' }}>מצאתם.</span>
             </h3>
             
-            <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-slate-700 md:text-xl">
+            <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-gray-700 font-medium drop-shadow-sm md:text-xl">
               האירוע שלכם הוא לא "עוד תאריך" ביומן. אני יודע כמה השקעתם בערב הזה. 
               האחריות שלי היא לוודא שהכול יעבוד מושלם – מהשיר הראשון ועד אחרון הרוקדים. 
               <br />
               <br />
-              <strong className="text-slate-900">בואו נכיר, נתאם ציפיות, ונבנה לכם ראש שקט ומסיבה מנצחת.</strong>
+              <strong className="text-gray-900 drop-shadow-md">בואו נכיר, נתאם ציפיות, ונבנה לכם ראש שקט ומסיבה מנצחת.</strong>
             </p>
 
             <motion.a
@@ -147,7 +147,8 @@ export const WeddingsLevel100 = () => {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-10 py-5 text-lg font-bold text-black shadow-[0_0_40px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_60px_rgba(3,178,140,0.8)]"
+              className="inline-flex items-center gap-3 rounded-full px-10 py-5 text-lg font-bold text-black shadow-[0_0_40px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_60px_rgba(3,178,140,0.8)] hover:scale-105"
+              style={{ background: 'linear-gradient(to right, #059cc0, #03b28c)' }}
             >
               <span>לבדיקת זמינות ב-WhatsApp</span>
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

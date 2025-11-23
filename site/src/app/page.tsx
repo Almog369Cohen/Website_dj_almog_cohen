@@ -287,12 +287,18 @@ function HomeContent() {
               <span className="rounded-full bg-brand-green/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-green">
                 ⭐ חדש!
               </span>
-              <span className="mx-2 text-sm font-bold md:text-base lg:text-lg text-white">
-                הרגע שגונב את ההצגה
-              </span>
-              <span className="hidden sm:inline text-xs md:text-sm text-white/80">
-                {" "}– זה לא עוד סרטון לארכיון, זה הסטורי של המחר. הרגע שבו כל הטלפונים נשלפים והילד שלכם הופך לכוכב.
-              </span>
+              <div className="mx-2">
+                <span className="text-sm font-bold md:text-base lg:text-lg text-white">
+                  הרגע שגונב את ההצגה
+                </span>
+                <span className="hidden sm:inline text-xs md:text-sm text-white/80">
+                  {" "}– זה לא עוד סרטון לארכיון, זה הסטורי של המחר.
+                </span>
+                <br className="sm:hidden" />
+                <span className="text-xs md:text-sm text-white/80">
+                  הרגע שבו כל הטלפונים נשלפים והילד שלכם הופך לכוכב.
+                </span>
+              </div>
             </div>
             <span
               className="inline-block rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-4 py-2 text-xs md:px-5 md:py-2.5 md:text-sm font-bold text-black shadow-lg transition group-hover:scale-105 group-hover:shadow-brand-green/50 whitespace-nowrap"

@@ -123,7 +123,7 @@ export default function RootLayout({
                       alt="DJ Almog Cohen" 
                       width={40} 
                       height={40} 
-                      className="h-10 w-auto object-contain hover:opacity-90 transition-opacity"
+                      className="h-8 w-auto md:h-10 object-contain hover:opacity-90 transition-opacity"
                       priority
                     />
                   </Link>

@@ -388,6 +388,174 @@ p, span, li, a {
   transform: scale(1.05);
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   PREMIUM FADE SYSTEM - Level 500
+   "מערכת פיד מאסק מתקדמת" - Advanced Section Transitions
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Base Fade Mask - Level 500 */
+.fade-mask-premium {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 10;
+  height: 8rem; /* 128px - larger than before */
+  pointer-events: none;
+  
+  /* Multi-layer gradient system */
+  background: 
+    /* Layer 1: Primary fade */
+    linear-gradient(to top, 
+      rgba(31, 31, 33, 0.95) 0%,
+      rgba(31, 31, 33, 0.7) 25%,
+      rgba(31, 31, 33, 0.3) 50%,
+      transparent 100%
+    ),
+    /* Layer 2: Color accent */
+    radial-gradient(ellipse 100% 50% at center bottom,
+      rgba(5, 156, 192, 0.08) 0%,
+      transparent 70%
+    ),
+    /* Layer 3: Noise texture for organic feel */
+    radial-gradient(ellipse 120% 30% at center bottom,
+      rgba(3, 178, 140, 0.04) 0%,
+      transparent 80%
+    );
+    
+  /* Advanced animation */
+  animation: fade-breathe 8s ease-in-out infinite;
+}
+
+/* Animated breathing effect */
+@keyframes fade-breathe {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.05);
+  }
+}
+
+/* Premium Fade - Green Accent */
+.fade-mask-green {
+  background: 
+    linear-gradient(to top, 
+      rgba(31, 31, 33, 0.95) 0%,
+      rgba(31, 31, 33, 0.7) 25%,
+      rgba(31, 31, 33, 0.3) 50%,
+      transparent 100%
+    ),
+    radial-gradient(ellipse 100% 50% at center bottom,
+      rgba(3, 178, 140, 0.12) 0%,
+      transparent 70%
+    ),
+    radial-gradient(ellipse 120% 30% at center bottom,
+      rgba(5, 156, 192, 0.04) 0%,
+      transparent 80%
+    );
+}
+
+/* Premium Fade - Blue Accent */
+.fade-mask-blue {
+  background: 
+    linear-gradient(to top, 
+      rgba(31, 31, 33, 0.95) 0%,
+      rgba(31, 31, 33, 0.7) 25%,
+      rgba(31, 31, 33, 0.3) 50%,
+      transparent 100%
+    ),
+    radial-gradient(ellipse 100% 50% at center bottom,
+      rgba(5, 156, 192, 0.12) 0%,
+      transparent 70%
+    ),
+    radial-gradient(ellipse 120% 30% at center bottom,
+      rgba(3, 178, 140, 0.04) 0%,
+      transparent 80%
+    );
+}
+
+/* Premium Fade - Double (Top & Bottom) */
+.fade-mask-double-top {
+  top: 0;
+  bottom: auto;
+  background: 
+    linear-gradient(to bottom, 
+      rgba(31, 31, 33, 0.98) 0%,
+      rgba(31, 31, 33, 0.8) 20%,
+      rgba(31, 31, 33, 0.4) 40%,
+      transparent 100%
+    ),
+    radial-gradient(ellipse 100% 50% at center top,
+      rgba(5, 156, 192, 0.06) 0%,
+      transparent 70%
+    );
+  animation: fade-breathe-reverse 8s ease-in-out infinite;
+}
+
+@keyframes fade-breathe-reverse {
+  0%, 100% {
+    opacity: 0.95;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.03);
+  }
+}
+
+/* Image Overlay Premium */
+.image-fade-premium {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  
+  /* Advanced image overlay with color zones */
+  background: 
+    /* Bottom dark fade */
+    linear-gradient(to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.4) 30%,
+      transparent 60%
+    ),
+    /* Top colored fade */
+    linear-gradient(to bottom,
+      rgba(5, 156, 192, 0.15) 0%,
+      transparent 40%
+    ),
+    /* Center focus enhancement */
+    radial-gradient(ellipse 70% 100% at center,
+      transparent 20%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+    
+  animation: image-fade-pulse 6s ease-in-out infinite;
+}
+
+@keyframes image-fade-pulse {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+
+/* Contextual Smart Fade */
+.fade-mask-smart {
+  /* Will be controlled by JavaScript for dynamic colors */
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Mobile optimized fade (smaller, less intensive) */
+@media (max-width: 768px) {
+  .fade-mask-premium {
+    height: 4rem; /* 64px on mobile */
+    animation-duration: 12s; /* Slower on mobile for battery */
+  }
+  
+  .fade-mask-double-top {
+    height: 3rem; /* 48px on mobile */
+  }
+}
+
 /* Glass Section - Full-width section background */
 .glass-section {
   backdrop-filter: blur(20px);

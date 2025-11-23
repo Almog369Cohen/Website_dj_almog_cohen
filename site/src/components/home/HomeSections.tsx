@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -19,6 +19,33 @@ export const HomeSections = () => {
   const [faqOpen, setFaqOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const isMobile = useIsMobile();
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setPrefersReducedMotion(mediaQuery.matches);
+    }
+  }, []);
+
+  const animationConfig = isMobile || prefersReducedMotion ? {
+    duration: 0.3,
+    ease: "easeOut"
+  } : {
+    duration: 0.6,
+    ease: [0.25, 0.46, 0.45, 0.94]
+  };
+
+  const brandGlowAnimation = !isMobile && !prefersReducedMotion ? {
+    animate: {
+      boxShadow: [
+        "0 0 20px rgba(5, 156, 192, 0.3)",
+        "0 0 30px rgba(3, 178, 140, 0.5)",
+        "0 0 20px rgba(5, 156, 192, 0.3)"
+      ]
+    },
+    transition: { duration: 2, repeat: Infinity }
+  } : {};
 
   const carouselImages = [
     "/assets/almog/IMG_6561.jpg",
@@ -42,7 +69,7 @@ export const HomeSections = () => {
     <>
       {/* --- 1. STORIES (MOVED UP) --- */}
       <section id="stories" className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-16 bg-gradient-to-t from-brand-dark/80 to-transparent" />
+        <div className="fade-mask-premium fade-mask-green" />
         
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -85,7 +112,7 @@ export const HomeSections = () => {
           <div className="glass-card relative grid grid-cols-1 gap-6 p-6 md:grid-cols-2 md:p-8">
             <div className="glass-card-content relative space-y-4 text-right order-first md:order-last">
               <h3 className="text-2xl font-black text-white drop-shadow-md">רגעים שהפכו למזכרת.</h3>
-              <p className="text-sm font-medium text-white/80">גלריית תמונות מהרחבה</p>
+              <p className="text-sm font-medium text-white/95 drop-shadow-sm">גלריית תמונות מהרחבה</p>
             </div>
             <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:col-span-2">
               <motion.div
@@ -96,7 +123,7 @@ export const HomeSections = () => {
                 className="relative h-full w-full"
               >
                 <Image src={carouselImages[carouselIndex]} alt={`מסיבת רחוב מעלה אדומים ${carouselIndex + 1}`} fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <div className="image-fade-premium" />
               </motion.div>
 
               <button
@@ -174,6 +201,96 @@ export const HomeSections = () => {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* --- 2.5 SPECIAL MOMENT SECTION (NEW) --- */}
+      <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
+        <div className="fade-mask-premium fade-mask-blue" />
+        
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="glass-card glass-card-content p-8 md:p-12 text-center bg-gradient-to-br from-cyan-900/20 via-blue-900/10 to-teal-900/20 border-2 border-cyan-500/30"
+        >
+          {/* Highlight Badge */}
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+            className="inline-flex items-center gap-2 mb-6 rounded-full border border-cyan-400/60 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 px-4 py-2 backdrop-blur-md shadow-lg shadow-cyan-500/25"
+          >
+            <motion.span 
+              animate={!isMobile && !prefersReducedMotion ? { rotate: 360, scale: [1, 1.2, 1] } : {}}
+              transition={!isMobile && !prefersReducedMotion ? { duration: 2, repeat: Infinity, ease: "linear" } : { duration: 0.3 }}
+              className="text-lg"
+            >
+              ⭐
+            </motion.span>
+            <span className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300 drop-shadow-md">חדש</span>
+          </motion.div>
+
+          {/* Main Headline */}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="mb-6 text-3xl font-black md:text-5xl"
+          >
+            <span className="bg-gradient-to-r from-cyan-400 via-white to-blue-400 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,188,212,0.5)]">
+              הרגע שגונב את ההצגה
+            </span>
+          </motion.h2>
+
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-white font-semibold drop-shadow-md"
+          >
+            זה לא עוד סרטון לארכיון, זה הסטורי של המחר. 
+            <br />
+            הרגע שבו כל הטלפונים נשלפים והילד שלכם הופך לכוכב.
+          </motion.p>
+
+          {/* CTA Button */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.7, type: "spring" }}
+          >
+            <SmoothScrollLink
+              href="#chogeg-menagen"
+              ariaLabel="מעבר לסקשן חוגג מנגן"
+              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-8 py-4 text-lg font-bold text-black shadow-[0_0_40px_-10px_rgba(3,178,140,0.6)] transition-all hover:scale-105 hover:shadow-[0_0_60px_-15px_rgba(3,178,140,0.8)]"
+            >
+              <span className="relative z-10">בואו לראות איך זה נראה</span>
+              <motion.svg 
+                className="relative z-10 h-5 w-5"
+                animate={!isMobile && !prefersReducedMotion ? { x: [0, 5, 0] } : {}}
+                transition={!isMobile && !prefersReducedMotion ? { duration: 1.5, repeat: Infinity } : { duration: 0.3 }}
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </motion.svg>
+              
+              {!isMobile && !prefersReducedMotion && (
+                <motion.div
+                  animate={{ x: ["-200%", "200%"] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
+                />
+              )}
+            </SmoothScrollLink>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* --- 3. THE SPLIT (WHO IS THIS FOR) --- */}
@@ -294,7 +411,7 @@ export const HomeSections = () => {
                 החלום הוא לא רק לרקוד, אלא לשלוט בקצב. אם אתם רוצים להפוך את האהבה למוזיקה למקצוע אמיתי (ולא סתם חוג) – המקום שלכם איתי.
               </p>
               <div className="mt-6 flex justify-end">
-                <motion.div whileHover={{ scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={!isMobile ? { scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
                   <SmoothScrollLink
                     href="#school-section"
                     ariaLabel="גלילה לסקשן בית הספר והקורסים"
@@ -322,7 +439,7 @@ export const HomeSections = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-8 flex items-center justify-between text-sm text-white/60"
+          className="mb-8 flex items-center justify-between text-sm text-white/85 drop-shadow-sm"
         >
           <motion.div 
             initial={{ scaleX: 0 }}
@@ -420,7 +537,7 @@ export const HomeSections = () => {
               />
               <div className="glass-panel relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-brand-blue/30 transition group-hover:border-brand-blue group-hover:shadow-[0_0_30px_rgba(5,156,192,0.6)]">
                 <svg className="h-8 w-8 text-brand-blue" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
               </div>
             </div>
@@ -504,7 +621,7 @@ export const HomeSections = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="mt-4 max-w-2xl text-lg text-white/80"
+              className="mt-4 max-w-2xl text-lg text-white/95 font-medium drop-shadow-sm"
             >
               ההבדל בין שיר טוב לרגע בלתי נשכח נמצא בגרסה המיוחדת שלא שמעתם בשום מקום אחר. קבלו הצצה לאדיטים ולחומרים בלעדיים.
             </motion.p>
@@ -532,9 +649,9 @@ export const HomeSections = () => {
                 </div>
               </div>
               <div className="p-4">
-                <p className="text-xs text-brand-blue/80 font-semibold">לייב</p>
+                <p className="text-xs text-brand-blue font-bold drop-shadow-sm">לייב</p>
                 <h3 className="mt-1 text-base font-semibold">Live Set - ים המלח</h3>
-                <p className="mt-2 text-xs text-white/70">סט מהרחבה - אנרגיה חיה מתחילה עד סוף.</p>
+                <p className="mt-2 text-xs text-white/90 font-medium">סט מהרחבה - אנרגיה חיה מתחילה עד סוף.</p>
               </div>
             </a>
 
@@ -560,7 +677,7 @@ export const HomeSections = () => {
                 </div>
               </div>
               <div className="p-4">
-                <p className="text-xs text-brand-blue/80">New Release</p>
+                <p className="text-xs text-brand-blue font-bold drop-shadow-sm">New Release</p>
                 <h3 className="mt-1 text-base font-semibold">Remix - הסוד שלי ממך</h3>
                 <p className="mt-2 text-xs text-white/70">רמיקס רשמי לשיר הקלאסי, בגרסת רחבות מחשמלת.</p>
               </div>
@@ -608,7 +725,7 @@ export const HomeSections = () => {
 
       {/* --- 8. SCHOOL (DEEP DIVE) --- */}
       <section id="school-section" className="relative mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
+        <div className="fade-mask-premium" />
         <button
           onClick={() => setSchoolOpen(!schoolOpen)}
           className="group w-full glass-panel px-6 py-5 text-right hover:border-brand-blue/50"
@@ -617,11 +734,44 @@ export const HomeSections = () => {
         >
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand-blue/70">
-                למי שרוצה ללמוד לתקלט
-              </p>
-              <h2 className="text-2xl font-bold md:text-3xl">בית הספר של אלמוג – מאפס ועד רחבה מלאה</h2>
-              <p className="mt-2 text-sm text-white/60">10+ שנים מלמד • עשרות תלמידים מופיעים היום • מתחילים ועד מתקדמים</p>
+              <div className="mb-1 flex items-center gap-2">
+                <motion.div
+                  animate={!isMobile && !prefersReducedMotion ? { 
+                    rotate: [0, 360],
+                    scale: [1, 1.1, 1]
+                  } : {}}
+                  transition={!isMobile && !prefersReducedMotion ? { 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  } : { duration: 0.3 }}
+                  className="flex h-6 w-6 items-center justify-center"
+                >
+                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                    <path 
+                      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" 
+                      fill="url(#starGradient)" 
+                      stroke="url(#starStroke)" 
+                      strokeWidth="1"
+                    />
+                    <defs>
+                      <linearGradient id="starGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#03b28c" />
+                        <stop offset="100%" stopColor="#059cc0" />
+                      </linearGradient>
+                      <linearGradient id="starStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#059cc0" />
+                        <stop offset="100%" stopColor="#03b28c" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </motion.div>
+                <span className="text-xs font-black uppercase tracking-[0.3em] text-white bg-brand-blue/20 px-3 py-1 rounded-full border border-brand-blue/40 drop-shadow-lg">
+                  למי שרוצה ללמוד לתקלט
+                </span>
+              </div>
+              <h2 className="text-2xl font-bold md:text-3xl text-white drop-shadow-md">בית הספר של אלמוג – מאפס ועד רחבה מלאה</h2>
+              <p className="mt-2 text-sm text-white/90 font-medium drop-shadow-sm">10+ שנים מלמד • עשרות תלמידים מופיעים היום • מתחילים ועד מתקדמים</p>
             </div>
             <motion.div
               animate={{ rotate: schoolOpen ? 180 : 0 }}
@@ -1377,14 +1527,6 @@ export const HomeSections = () => {
         </div>
       </div>
 
-      {/* --- DESKTOP STICKY AUDIO PLAYER --- */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 hidden border-t border-white/10 bg-black/80/90 px-4 py-3 md:flex">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between text-xs text-white/80">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-
-      </div>
     </>
   );
 }
