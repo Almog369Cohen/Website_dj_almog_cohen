@@ -8,6 +8,7 @@ import { useIsMobile } from "@/hooks/useMediaQuery";
 import { useEnergy } from "@/context/EnergyContext";
 import { RevealText } from "@/components/ui/RevealText";
 import { SmoothScrollLink } from "@/components/ui/SmoothScrollLink";
+import { TagsPills } from "@/components/ui/TagsPills";
 
 export const HomeSections = () => {
   const { isRaveMode } = useEnergy();
@@ -420,6 +421,10 @@ export const HomeSections = () => {
                 <h3 className="mb-2 text-xl font-semibold">קורס מתחילים</h3>
                 <p className="mb-4 text-sm text-white/70">מאפס מוחלט ועד המיקס הראשון שלך. כל מה שצריך כדי להתחיל נכון.</p>
                 <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
+                <TagsPills 
+                  tags={['קורס DJ', 'לימודי תקלוט', 'ציוד DJ', 'מתחילים', 'איך להיות DJ', 'Pioneer DJ', 'Serato DJ', 'בית ספר DJ', 'קורס בתל אביב', 'DJ מאפס']}
+                  variant="blue"
+                />
               </motion.div>
               <motion.div
                 whileHover={{ y: -6, scale: 1.02 }}
@@ -430,6 +435,10 @@ export const HomeSections = () => {
                 <h3 className="mb-2 text-xl font-semibold">קורס מתקדמים</h3>
                 <p className="mb-4 text-sm text-white/70">טכניקות מתקדמות, בניית סט מקצועי והבנת דינמיקת רחבה.</p>
                 <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
+                <TagsPills 
+                  tags={['טכניקות מיקס', 'בניית קריירה', 'מנטורינג DJ', 'הפקה', 'Harmonic mixing', 'קריאת קהל', 'שיווק לאמנים', 'מיתוג אישי', 'DJ מקצועי']}
+                  variant="blue"
+                />
               </motion.div>
               <motion.div
                 whileHover={{ y: -6, scale: 1.02 }}
@@ -900,6 +909,10 @@ export const HomeSections = () => {
                 <Link className="font-medium text-brand-green hover:underline" href="/services/weddings">
                   חבילות חתונה
                 </Link>
+                <TagsPills 
+                  tags={["דיג'יי לחתונה", "מוזיקה לחופה", "אפטר פארטי", "חתונות יוקרה", "DJ תל אביב", "פלייליסט חתונה", "קבלת פנים", "שיר חופה", "חתונה מושלמת"]}
+                  variant="green"
+                />
               </motion.div>
               <motion.div
                 whileHover={{ y: -6, scale: 1.02 }}
@@ -912,6 +925,10 @@ export const HomeSections = () => {
                 <Link className="font-medium text-brand-green hover:underline" href="/services/corporate">
                   פרטים נוספים
                 </Link>
+                <TagsPills 
+                  tags={['אירועי חברה', 'השקות', 'מסיבות קונספט', 'DJ לכנסים', 'ערב עובדים', 'מסיבת סוף שנה', 'אירועי תדמית', 'DJ עסקי']}
+                  variant="green"
+                />
               </motion.div>
             </div>
           </div>
