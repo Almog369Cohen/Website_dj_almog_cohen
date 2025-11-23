@@ -102,7 +102,7 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
             animate="open"
             exit="closed"
             variants={menuVariants}
-            className="fixed right-0 top-0 z-50 flex h-full w-[280px] flex-col bg-gradient-to-b from-brand-dark via-brand-dark/95 to-black p-6 shadow-2xl md:hidden"
+            className="fixed right-0 top-0 z-50 flex h-full w-[280px] flex-col bg-[#1f1f21] p-6 shadow-2xl backdrop-blur-xl md:hidden"
             role="dialog"
             aria-label="תפריט ניווט נייד"
           >
@@ -139,7 +139,7 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
                   <Link
                     href={item.href}
                     onClick={closeMenu}
-                    className="block rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-right text-base font-medium text-white transition hover:border-brand-blue hover:bg-brand-blue/10 hover:text-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    className="block rounded-lg border border-white/20 bg-white/10 px-4 py-3 text-right text-base font-medium text-white transition hover:border-brand-blue hover:bg-brand-blue/20 hover:text-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue"
                   >
                     {item.label}
                   </Link>
