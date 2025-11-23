@@ -1609,15 +1609,12 @@ export const HomeSections = () => {
             <button
               type="button"
               onClick={() => setIsPlaying((p: boolean) => !p)}
-              aria-label={isPlaying ? "הפסקת ניגון הסט" : "ניגון הסט"}
+              aria-label={isPlaying ? "הפסקת ניגון" : "ניגון"}
               aria-pressed={isPlaying}
               className={`flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/10 text-xs font-semibold text-white hover:bg-white/20 ${isPlaying ? "animate-pulse" : ""}`}
             >
               {isPlaying ? "⏸" : "▶"}
             </button>
-            <span className="text-sm">
-              מנגן עכשיו: <span className="font-semibold">סט חתונות 2025</span>
-            </span>
           </div>
           <span className="hidden text-[11px] text-white/50 md:inline">
             חוויה מלאה עם סאונד – מומלץ לשמוע בווליום נמוך בזמן הגלילה באתר

@@ -304,19 +304,23 @@ function HomeContent() {
 
         <div className="brand-noise opacity-30" aria-hidden="true" />
         
-        {/* Video with Scanline */}
+        {/* YouTube Video Background */}
         <div className="absolute inset-0 -z-20 overflow-hidden">
-          <video
-            className="h-full w-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster="/assets/almog/hero-poster.jpg"
-          >
-            <source src="/assets/almog/hero.mp4" type="video/mp4" />
-          </video>
+          <iframe
+            className="absolute top-1/2 left-1/2 w-[100vw] h-[100vh] -translate-x-1/2 -translate-y-1/2"
+            style={{
+              minWidth: "100vw",
+              minHeight: "100vh",
+              width: isMobile ? "300%" : "177.77vh", // 16:9 aspect ratio
+              height: isMobile ? "56.25vw" : "100vh",
+              pointerEvents: "none",
+            }}
+            src="https://www.youtube.com/embed/yarUtbqD0BI?autoplay=1&mute=1&loop=1&playlist=yarUtbqD0BI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=https://www.compaktt.com"
+            title="DJ Almog Cohen - Hero Video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
           {/* Scanline Effect - Desktop Only */}
           {!isMobile && (
             <motion.div
