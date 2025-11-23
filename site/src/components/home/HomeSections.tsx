@@ -62,14 +62,6 @@ export const HomeSections = () => {
           viewport={{ once: true }}
           className="mb-12 text-right"
         >
-          <motion.p 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="text-xs font-bold uppercase tracking-[0.3em] text-white/50"
-          >
-            למי זה מתאים
-          </motion.p>
           <RevealText delay={0.1}>
             <h2 
               style={{
@@ -82,20 +74,11 @@ export const HomeSections = () => {
                 WebkitBackgroundClip: "text",
                 color: "transparent",
               }}
-              className="mt-2"
+              className="text-center"
             >
-              שתי דרכים, מטרה אחת: לנצח על הרחבה.
+              אז, לשם מה התכנסנו?
             </h2>
           </RevealText>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="mt-3 text-base leading-relaxed text-white/85 md:text-lg"
-          >
-            בין אם אתם עולים לעמדה ובין אם אתם אלו ששורפים את הרחבה למטה – הגעתם למקום שמדבר אנרגיה.
-          </motion.p>
         </motion.div>
 
         <div className="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2">
@@ -123,10 +106,9 @@ export const HomeSections = () => {
               >
                 לאירוע שלכם
               </motion.p>
-              <h3 className="mt-3 text-2xl font-black text-white md:text-3xl lg:text-4xl">לחגוג</h3>
-              <p className="mt-2 text-sm font-semibold text-brand-green/90">לזוגות שרוצים ללכת על בטוח.</p>
+              <h3 className="mt-3 text-2xl font-black text-white md:text-3xl lg:text-4xl">באנו לחגוג</h3>
               <p className="mt-4 leading-relaxed text-white/85">
-                האירוע שלכם הוא חד פעמי. האחריות שלי היא לוודא שהמוזיקה תהיה מדויקת, שהאנרגיה לא תיפול לרגע, ושאתם תהיו עסוקים רק בליהנות. אני דואג לווייב, אתם דואגים לאורחים.
+                האירוע שלכם מתקרב ואתם מחפשים "ראש שקט". מישהו שיקרא את הקהל, יעיף את האנרגיות, ויתן לכם להיות אורחים באירוע של עצמכם.
               </p>
               
               <div className="mt-6 flex justify-end">
@@ -136,7 +118,7 @@ export const HomeSections = () => {
                     ariaLabel="גלילה לסקשן האירועים"
                     className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 text-sm font-bold text-black shadow-[0_0_30px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_50px_rgba(3,178,140,0.9)]"
                   >
-                    <span className="relative z-10">בואו נרים אירוע</span>
+                    <span className="relative z-10">בואו נרים אירוע ←</span>
                     <svg className="relative z-10 h-4 w-4 transition group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
@@ -179,10 +161,9 @@ export const HomeSections = () => {
               >
                 לעתיד שלך כדיג'יי
               </motion.p>
-              <h3 className="mt-3 text-2xl font-black text-white md:text-3xl lg:text-4xl">ללמוד</h3>
-              <p className="mt-2 text-sm font-semibold text-brand-blue/90">למי שרוצה להפוך תשוקה למקצוע.</p>
+              <h3 className="mt-3 text-2xl font-black text-white md:text-3xl lg:text-4xl">באתי ללמוד</h3>
               <p className="mt-4 leading-relaxed text-white/85">
-                רוצים לדעת להחזיק רחבה באמת? אני אלמד אתכם את כל מה שלא כתוב בספרים. טכניקה, פסיכולוגיה של קהל, ואיך לבנות לעצמכם שם בתעשייה. לא חוג, קריירה.
+                החלום הוא לא רק לרקוד, אלא לשלוט בקצב. אם אתם רוצים להפוך את האהבה למוזיקה למקצוע אמיתי (ולא סתם חוג) – המקום שלכם איתי.
               </p>
               
               <div className="mt-6 flex justify-end">
@@ -192,7 +173,7 @@ export const HomeSections = () => {
                     ariaLabel="גלילה לסקשן בית הספר והקורסים"
                     className="glass-button group/btn relative inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-brand-blue transition"
                   >
-                    <span className="relative z-10">לפרטים על הקורסים</span>
+                    <span className="relative z-10">לפרטים על הקורסים ←</span>
                     <svg className="relative z-10 h-4 w-4 transition group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>

@@ -283,22 +283,21 @@ function HomeContent() {
             ) : (
               <span className="text-2xl">⭐</span>
             )}
-            <div className="text-center">
-              <span className="rounded-full bg-brand-green/20 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-brand-green">
-                חדש!
+            <div className="flex-1 text-center">
+              <span className="rounded-full bg-brand-green/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-green">
+                ⭐ חדש!
               </span>
-              <span className="mx-2 text-xs font-semibold md:text-sm lg:text-base text-white">
-                <span className="bg-gradient-to-l from-brand-green via-white to-brand-blue bg-clip-text text-transparent">
-                  חוגג מנגן
-                </span>
-                <span className="hidden md:inline">{" "}- הקונספט שהופך את בעלי השמחה לכוכבי הערב</span>
-                <span className="md:hidden">{" "}- קונספט חדש!</span>
+              <span className="mx-2 text-sm font-bold md:text-base lg:text-lg text-white">
+                הרגע שגונב את ההצגה
+              </span>
+              <span className="hidden sm:inline text-xs md:text-sm text-white/80">
+                {" "}– זה לא עוד סרטון לארכיון, זה הסטורי של המחר. הרגע שבו כל הטלפונים נשלפים והילד שלכם הופך לכוכב.
               </span>
             </div>
             <span
-              className="inline-block rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-3 py-1 text-xs md:px-4 md:py-1.5 font-bold text-black shadow-lg transition group-hover:scale-105 group-hover:shadow-brand-green/50"
+              className="inline-block rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-4 py-2 text-xs md:px-5 md:py-2.5 md:text-sm font-bold text-black shadow-lg transition group-hover:scale-105 group-hover:shadow-brand-green/50 whitespace-nowrap"
             >
-              גלה עוד →
+              בואו לראות איך זה נראה ←
             </span>
           </div>
         </Link>
@@ -450,7 +449,7 @@ function HomeContent() {
                       color: "rgba(255, 255, 255, 0.6)",
                     }}
                   >
-                    לא מנגן בכל אירוע.
+                    לא מחפש למלא יומן.
                   </motion.div>
                 </RevealText>
 
@@ -485,7 +484,7 @@ function HomeContent() {
                       transformOrigin: "center center",
                     }}
                   >
-                    רק באלה שראויים.
+                    מחפש ליצור רגעים.
                   </motion.h1>
                 </RevealText>
               </div>
@@ -499,9 +498,9 @@ function HomeContent() {
                     lineHeight: 1.6,
                     opacity: 0.9,
                   }}
-                  className="mx-auto max-w-3xl"
+                  className="mx-auto max-w-3xl text-center"
                 >
-                  12 שנים, סטנדרטים ברזל, ואפס התנצלויות.
+                  12 שנים בתחום לימדו אותי דבר אחד: מוזיקה טובה זה הבסיס, אבל חיבור אנושי זה הקסם. אני בוחר את האירועים שלי בפינצטה, כדי לוודא שכל ערב הוא לא סתם "עבודה", אלא הצגה.
                 </h2>
               </RevealText>
 
@@ -513,20 +512,20 @@ function HomeContent() {
                 className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
               >
                 <motion.div whileHover={!isMobile ? { scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
-                  <SmoothScrollLink
-                    href="#events-section"
-                    ariaLabel="גלילה לסקשן האירועים"
+                  <a
+                    href={wa("היי אלמוג, רוצה לבדוק התאמה לאירוע")}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-black shadow-[0_0_40px_rgba(3,178,140,0.7)] transition hover:scale-105 hover:shadow-[0_0_60px_rgba(3,178,140,1)]"
                   >
-                    <span className="relative z-20">לאירוע הבא שלכם</span>
-                    <svg 
-                      className="relative z-20 h-5 w-5"
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
+                    <span className="relative z-20">בואו נבדוק התאמה ב-WhatsApp</span>
+                    <Image 
+                      src="/assets/icons/whatsapp.png" 
+                      alt="WhatsApp" 
+                      width={20} 
+                      height={20}
+                      className="relative z-20"
+                    />
                     {!isMobile && (
                       <motion.div
                         animate={{ x: ["-200%", "200%"] }}
@@ -534,25 +533,25 @@ function HomeContent() {
                         className="absolute inset-0 z-10 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
                       />
                     )}
-                  </SmoothScrollLink>
+                  </a>
                 </motion.div>
 
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <SmoothScrollLink
-                    href="#school-section"
-                    ariaLabel="גלילה לסקשן בית הספר והקורסים"
+                  <Link
+                    href="/media"
                     className="glass-button group relative inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-white transition"
                   >
-                    <span className="relative z-10">לקורסי DJ</span>
+                    <span className="relative z-10">לשמוע סטים</span>
                     <svg 
                       className="relative z-10 h-5 w-5"
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                  </SmoothScrollLink>
+                  </Link>
                 </motion.div>
               </motion.div>
             </div>

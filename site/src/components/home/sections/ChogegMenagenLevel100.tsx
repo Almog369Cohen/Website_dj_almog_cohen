@@ -47,15 +47,13 @@ export const ChogegMenagenLevel100 = () => {
             className="mb-6 text-4xl font-black leading-tight text-white md:text-6xl"
             style={{ fontWeight: 900 }}
           >
-            חוגג מנגן:
+            לא עוד אטרקציה.
             <br />
-            <span className="text-[#03b28c]">זה לא מתנה. זה הישג.</span>
+            <span className="text-[#03b28c]">הופעה.</span>
           </h2>
           
           <p className="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-white">
-            הילד לא מקבל "הזדמנות לנגן". הוא מקבל רגע בספוטלייט שמראה שיש לו אומץ ורצינות. 
-            <br className="hidden md:inline" />
-            לא עוד גימיק — הצגה.
+            אתם רגילים לזיקוקים או מגנטים? תשכחו מזה. ב'חוגג מנגן' אתם הכוכבים האמיתיים. בין אם זה החתן, הכלה או חתן הבר מצווה – אנחנו מכינים את הרקע, <strong className="text-[#03b28c] font-black">השואו נטו על החוגג!!</strong> זה הרגע הכי חזק של הערב, באחריות.
           </p>
 
           {/* Price Card */}
@@ -83,8 +81,11 @@ export const ChogegMenagenLevel100 = () => {
                   ₪ 2300
                 </span>
               </div>
-              <p className="mb-8 text-sm text-[#03b28c]/90 font-semibold">
-                מחיר היכרות מיוחד
+              <p className="mb-2 text-sm text-[#03b28c]/90 font-semibold">
+                מחיר השקה
+              </p>
+              <p className="mb-8 text-xs text-white/70">
+                מספר המקומות מוגבל
               </p>
 
               <Link
@@ -93,7 +94,7 @@ export const ChogegMenagenLevel100 = () => {
                 rel="noopener noreferrer"
                 className="inline-block w-full rounded-full bg-gradient-to-r from-[#03b28c] to-[#03b28c]/80 px-8 py-4 text-center text-lg font-bold text-black shadow-[0_0_50px_rgba(3,178,140,0.7)] transition hover:scale-105 hover:shadow-[0_0_80px_rgba(3,178,140,1)]"
               >
-                תנו להם רגע שמגיע רק למי שעובד עליו
+                בואו נשמע איך זה עובד ←
               </Link>
               
               <p className="mt-6 text-xs text-white/85">
@@ -110,9 +111,6 @@ export const ChogegMenagenLevel100 = () => {
             transition={{ delay: 0.5 }}
             className="mt-12 text-center"
           >
-            <p className="text-sm text-white/85">
-              הזמינות מוגבלת. ככה זה עובד ברמה הזו.
-            </p>
           </motion.div>
         </motion.div>
       </div>
