@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { EnergyProvider, useEnergy } from "@/context/EnergyContext";
-import { EnergyFader } from "@/components/EnergyFader";
+import { ThemeProvider } from "@/context/ThemeContext";
+import { EnergyFaderV2 } from "@/components/EnergyFaderV2";
 
 const AnimatedBackground = dynamic(
   () => import("@/components/AnimatedBackground"),
@@ -22,7 +23,9 @@ type Path = "none" | "school" | "events";
 export default function Home() {
   return (
     <EnergyProvider>
-      <HomeContent />
+      <ThemeProvider>
+        <HomeContent />
+      </ThemeProvider>
     </EnergyProvider>
   );
 }
@@ -93,7 +96,7 @@ function HomeContent() {
 
   return (
     <>
-      <EnergyFader />
+      <EnergyFaderV2 />
       
       {/* Fluid Typography System + Dynamic Theme Colors */}
       <style jsx global>{`
@@ -478,39 +481,51 @@ function HomeContent() {
 
         <div className="z-10 mt-4 w-full max-w-4xl px-4">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/60 text-right">
-            TRUSTED BY
+            בין לקוחותינו
           </p>
-          <div className="relative overflow-hidden rounded-full border border-white/10 bg-black/40 py-3">
-            <div className="flex animate-[marquee_28s_linear_infinite] items-center gap-10 pr-10">
+          <div className="relative overflow-hidden rounded-full border border-white/10 bg-black/40 py-4">
+            <div className="flex animate-[marquee_30s_linear_infinite] items-center gap-8 pr-8">
+              {/* First set of client logos */}
               {[
-                "Zappa",
-                "Hangar 11",
-                "KTM",
-                "DHL",
-                "April",
-                "Ort Network",
-              ].map((name) => (
-                <span
-                  key={name}
-                  className="whitespace-nowrap text-xs font-medium uppercase tracking-[0.25em] text-white/60"
+                "client-1.jpg",
+                "client-2.jpg",
+                "client-3.jpg",
+                "client-4.jpg",
+                "client-5.jpg",
+                "client-6.jpg",
+              ].map((logo, idx) => (
+                <div
+                  key={logo}
+                  className="relative h-12 w-24 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
                 >
-                  {name}
-                </span>
+                  <Image
+                    src={`/assets/clients/${logo}`}
+                    alt={`לקוח ${idx + 1}`}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               ))}
+              {/* Duplicate set for seamless loop */}
               {[
-                "Zappa",
-                "Hangar 11",
-                "KTM",
-                "DHL",
-                "April",
-                "Ort Network",
-              ].map((name) => (
-                <span
-                  key={`${name}-dup`}
-                  className="whitespace-nowrap text-xs font-medium uppercase tracking-[0.25em] text-white/60"
+                "client-1.jpg",
+                "client-2.jpg",
+                "client-3.jpg",
+                "client-4.jpg",
+                "client-5.jpg",
+                "client-6.jpg",
+              ].map((logo, idx) => (
+                <div
+                  key={`${logo}-dup`}
+                  className="relative h-12 w-24 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
                 >
-                  {name}
-                </span>
+                  <Image
+                    src={`/assets/clients/${logo}`}
+                    alt={`לקוח ${idx + 1}`}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               ))}
             </div>
           </div>
