@@ -47,7 +47,7 @@ export const WeddingsLevel100 = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="glass-card relative overflow-hidden rounded-3xl p-8"
+            className="glass-card relative overflow-hidden rounded-3xl p-4 md:p-6 lg:p-8"
             style={{ 
               background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.95) 100%)',
               borderColor: 'rgba(5, 156, 192, 0.2)'
@@ -55,10 +55,10 @@ export const WeddingsLevel100 = () => {
           >
             <div className="brand-noise absolute inset-0 opacity-5" aria-hidden="true" />
             <div className="relative z-10">
-              <h3 className="mb-4 text-lg font-black drop-shadow-md md:text-xl" style={{ fontWeight: 900, color: '#059cc0' }}>
+              <h3 className="mb-3 text-base font-black drop-shadow-md md:text-lg" style={{ fontWeight: 900, color: '#059cc0' }}>
                 למי זה מתאים?
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {[
                   "זוגות שיודעים להעריך איכות",
                   "אנשים שמאמינים שמוזיקה היא החלטה",
@@ -72,19 +72,19 @@ export const WeddingsLevel100 = () => {
                     transition={{ delay: 0.3 + idx * 0.1 }}
                     className="flex items-start gap-3 text-right"
                   >
-                    <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full font-bold drop-shadow-sm" style={{ backgroundColor: 'rgba(5, 156, 192, 0.25)', color: '#059cc0' }}>
+                    <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold drop-shadow-sm" style={{ backgroundColor: 'rgba(5, 156, 192, 0.25)', color: '#059cc0' }}>
                       ✓
                     </span>
-                    <span className="flex-1 text-sm text-gray-900 font-medium leading-relaxed md:text-base">{item}</span>
+                    <span className="flex-1 text-xs text-gray-900 font-medium leading-snug md:text-sm">{item}</span>
                   </motion.li>
                 ))}
               </ul>
 
-              <div className="mt-6 border-t border-slate-200 pt-4 md:mt-8 md:pt-6">
-                <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-gray-700 drop-shadow-sm">
+              <div className="mt-4 border-t border-slate-200 pt-3 md:mt-6 md:pt-4">
+                <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-gray-700 drop-shadow-sm md:text-sm">
                   מי לא מתאים?
                 </h4>
-                <ul className="space-y-2 text-xs text-gray-800 font-medium md:text-sm">
+                <ul className="space-y-1.5 text-[10px] text-gray-800 font-medium md:text-xs">
                   <li>• מי שמחפש "שיבוא, ינגן, ונראה מה יהיה"</li>
                   <li>• מי שבוחרים לפי מחיר, לא לפי התאמה</li>
                   <li>• מי שלא אכפת לו מה הוא משאיר לאורחים</li>

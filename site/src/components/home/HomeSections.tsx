@@ -267,9 +267,9 @@ export const HomeSections = () => {
             transition={{ delay: 0.5 }}
             className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-white font-semibold drop-shadow-md"
           >
-            זה לא עוד סרטון לארכיון, זה הסטורי של המחר. 
+            12 שנים בתחום לימדו אותי דבר אחד: מוזיקה טובה זה הבסיס, אבל חיבור אנושי זה הקסם.
             <br />
-            הרגע שבו כל הטלפונים נשלפים והילד שלכם הופך לכוכב.
+            אני בוחר את האירועים שלי והאנשים שלצידי בפינצטה, ככה אני מוודא שכל ערב הוא לא סתם עבודה אלא הצגה.
           </motion.p>
 
           {/* CTA Button */}

@@ -49,7 +49,7 @@ export const ChogegMenagenLevel100 = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="glass-card relative mx-auto max-w-2xl overflow-hidden rounded-3xl p-8 md:p-12"
+            className="glass-card relative mx-auto max-w-2xl overflow-hidden rounded-3xl p-4 md:p-6 lg:p-8"
             style={{
               background: 'linear-gradient(135deg, rgba(3,178,140,0.15) 0%, rgba(31,31,33,0.8) 50%, rgba(3,178,140,0.1) 100%)',
               borderColor: 'rgba(3, 178, 140, 0.5)',
