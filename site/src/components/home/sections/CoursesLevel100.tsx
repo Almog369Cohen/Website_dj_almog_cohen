@@ -50,7 +50,12 @@ export const CoursesLevel100 = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
             whileHover={{ y: -8 }}
-            className="relative overflow-hidden rounded-3xl border border-[#059cc0]/20 bg-[#0a0e1a]/80 p-8 backdrop-blur-sm"
+            className="glass-card relative overflow-hidden rounded-3xl p-8"
+            style={{
+              background: 'linear-gradient(135deg, rgba(5,156,192,0.12) 0%, rgba(10,14,26,0.9) 50%, rgba(5,156,192,0.08) 100%)',
+              borderColor: 'rgba(5, 156, 192, 0.3)',
+              boxShadow: '0 8px 32px rgba(5,156,192,0.15), inset 0 0 30px rgba(5,156,192,0.03)'
+            }}
           >
             <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
             <div className="relative z-10">
@@ -143,7 +148,12 @@ export const CoursesLevel100 = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
             whileHover={{ y: -8 }}
-            className="relative overflow-hidden rounded-3xl border border-[#059cc0]/20 bg-[#0a0e1a]/80 p-8 backdrop-blur-sm"
+            className="glass-card relative overflow-hidden rounded-3xl p-8"
+            style={{
+              background: 'linear-gradient(135deg, rgba(5,156,192,0.12) 0%, rgba(10,14,26,0.9) 50%, rgba(5,156,192,0.08) 100%)',
+              borderColor: 'rgba(5, 156, 192, 0.3)',
+              boxShadow: '0 8px 32px rgba(5,156,192,0.15), inset 0 0 30px rgba(5,156,192,0.03)'
+            }}
           >
             <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
             <div className="relative z-10">

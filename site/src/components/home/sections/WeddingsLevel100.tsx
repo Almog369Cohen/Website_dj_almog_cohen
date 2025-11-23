@@ -48,7 +48,11 @@ export const WeddingsLevel100 = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative overflow-hidden rounded-3xl border border-slate-200 bg-slate-50/80 p-8 backdrop-blur-md shadow-xl"
+            className="glass-card relative overflow-hidden rounded-3xl p-8"
+            style={{ 
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.95) 100%)',
+              borderColor: 'rgba(5, 156, 192, 0.2)'
+            }}
           >
             <div className="brand-noise absolute inset-0 opacity-5" aria-hidden="true" />
             <div className="relative z-10">
@@ -100,7 +104,11 @@ export const WeddingsLevel100 = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="relative mt-16 overflow-hidden rounded-3xl border border-[#059cc0]/30 bg-gradient-to-br from-[#059cc0]/10 via-white to-[#059cc0]/5 p-10 text-center backdrop-blur-md shadow-2xl md:p-16"
+          className="glass-card relative mt-16 overflow-hidden rounded-3xl p-10 text-center md:p-16"
+          style={{
+            background: 'linear-gradient(135deg, rgba(5,156,192,0.08) 0%, rgba(255,255,255,0.95) 50%, rgba(5,156,192,0.05) 100%)',
+            borderColor: 'rgba(5, 156, 192, 0.3)'
+          }}
         >
           <div className="brand-noise absolute inset-0 opacity-5" aria-hidden="true" />
           

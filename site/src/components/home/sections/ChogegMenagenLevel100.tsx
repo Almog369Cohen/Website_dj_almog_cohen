@@ -49,7 +49,13 @@ export const ChogegMenagenLevel100 = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="relative mx-auto max-w-2xl overflow-hidden rounded-3xl border-2 border-[#03b28c]/50 bg-[#03b28c]/5 p-8 backdrop-blur-md shadow-[0_0_60px_rgba(3,178,140,0.4)] md:p-12"
+            className="glass-card relative mx-auto max-w-2xl overflow-hidden rounded-3xl p-8 md:p-12"
+            style={{
+              background: 'linear-gradient(135deg, rgba(3,178,140,0.15) 0%, rgba(31,31,33,0.8) 50%, rgba(3,178,140,0.1) 100%)',
+              borderColor: 'rgba(3, 178, 140, 0.5)',
+              borderWidth: '2px',
+              boxShadow: '0 0 60px rgba(3,178,140,0.4), inset 0 0 40px rgba(3,178,140,0.05)'
+            }}
           >
             <div className="brand-noise absolute inset-0 opacity-20" aria-hidden="true" />
             <div className="relative z-10">
