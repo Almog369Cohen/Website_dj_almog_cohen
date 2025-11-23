@@ -6,8 +6,11 @@ import { ContactFormLevel100 } from "@/components/ui/ContactFormLevel100";
 export const WeddingsLevel100 = () => {
   return (
     <section id="weddings-level-100" className="relative overflow-hidden bg-white py-12 md:py-20 lg:py-32">
-      {/* Wave Divider Transition from Dark to White */}
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#1f1f21] to-transparent" />
+      {/* Top Fade: Dark to White */}
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#1f1f21] via-[#1f1f21]/50 to-transparent" />
+      
+      {/* Bottom Fade: White to Dark */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#1f1f21] via-[#1f1f21]/50 to-transparent" />
       
       {/* Background Elements */}
       <div className="pointer-events-none absolute inset-0">

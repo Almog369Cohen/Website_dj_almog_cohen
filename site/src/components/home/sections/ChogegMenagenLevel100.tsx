@@ -8,9 +8,11 @@ export const ChogegMenagenLevel100 = () => {
   
   return (
     <section id="chogeg-menagen-level-100" className="relative overflow-hidden bg-[#1f1f21] py-12 md:py-20 lg:py-32">
-      {/* Background */}
-      {/* Gradient transition from previous white section */}
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white to-[#1f1f21]" />
+      {/* Top Fade: White to Dark */}
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white via-white/50 to-transparent" />
+      
+      {/* Bottom Fade: Dark to Darker Blue */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0b1120] via-[#0b1120]/50 to-transparent" />
       
       <div className="pointer-events-none absolute inset-0">
         <div className="brand-noise absolute inset-0 opacity-40" aria-hidden="true" />
