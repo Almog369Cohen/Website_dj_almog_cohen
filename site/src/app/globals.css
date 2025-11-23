@@ -9,10 +9,12 @@
   --brand-white: #ffffff;
 }
 
-/* Light Mode */
+/* Light Mode - Enhanced Readability */
 .light {
   --background: #f5f5f7;
-  --foreground: #1f1f21;
+  --foreground: #1a1a1c; /* Darker gray for body text */
+  --foreground-heading: #0d4f5e; /* Deep blue-gray for headings */
+  --foreground-secondary: #3a3a3c; /* Medium gray for secondary text */
   --brand-dark: #f5f5f7;
   --brand-white: #1f1f21;
 }
@@ -49,6 +51,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-foreground-heading: var(--foreground-heading, var(--foreground));
+  --color-foreground-secondary: var(--foreground-secondary, var(--foreground));
   --color-brand-blue: var(--brand-blue);
   --color-brand-green: var(--brand-green);
   --color-brand-dark: var(--brand-dark);
@@ -170,6 +174,42 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-assistant), var(--font-hebrew-sans), system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue";
+}
+
+/* Light Mode - Enhanced Typography */
+.light h1,
+.light h2,
+.light h3,
+.light h4,
+.light h5,
+.light h6 {
+  color: var(--foreground-heading);
+  font-weight: 800;
+}
+
+.light p,
+.light li,
+.light span {
+  color: var(--foreground);
+}
+
+/* Light Mode - Link Colors */
+.light a:not(.rounded-full):not([class*="bg-"]) {
+  color: #047a97; /* Darker blue for links */
+  font-weight: 600;
+}
+
+.light a:not(.rounded-full):not([class*="bg-"]):hover {
+  color: var(--brand-blue);
+}
+
+/* Light Mode - Secondary Text */
+.light .text-white\/60,
+.light .text-white\/70,
+.light .text-white\/80,
+.light .text-white\/90 {
+  color: var(--foreground-secondary) !important;
+  opacity: 0.8;
 }
 
 .bg-section-school {
