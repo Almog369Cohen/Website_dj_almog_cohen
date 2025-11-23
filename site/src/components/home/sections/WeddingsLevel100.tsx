@@ -7,23 +7,6 @@ import { SectionTransition } from "@/components/ui/SectionTransition";
 export const WeddingsLevel100 = () => {
   return (
     <section id="weddings-level-100" className="relative overflow-hidden bg-white py-12 md:py-20 lg:py-32">
-      {/* Smooth Transition from Dark */}
-      <SectionTransition
-        fromColor="#1f1f21"
-        toColor="#ffffff"
-        accentColor="#059cc0"
-        position="top"
-        showArrow={true}
-      />
-      
-      {/* Smooth Transition to Dark */}
-      <SectionTransition
-        fromColor="#ffffff"
-        toColor="#1f1f21"
-        accentColor="#059cc0"
-        position="bottom"
-        showArrow={true}
-      />
       
       {/* Background Elements */}
       <div className="pointer-events-none absolute inset-0">
@@ -72,10 +55,10 @@ export const WeddingsLevel100 = () => {
           >
             <div className="brand-noise absolute inset-0 opacity-5" aria-hidden="true" />
             <div className="relative z-10">
-              <h3 className="mb-6 text-2xl font-black drop-shadow-md" style={{ fontWeight: 900, color: '#059cc0' }}>
+              <h3 className="mb-4 text-lg font-black drop-shadow-md md:text-xl" style={{ fontWeight: 900, color: '#059cc0' }}>
                 למי זה מתאים?
               </h3>
-              <ul className="space-y-4">
+              <ul className="space-y-3">
                 {[
                   "זוגות שיודעים להעריך איכות",
                   "אנשים שמאמינים שמוזיקה היא החלטה",
@@ -92,16 +75,16 @@ export const WeddingsLevel100 = () => {
                     <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full font-bold drop-shadow-sm" style={{ backgroundColor: 'rgba(5, 156, 192, 0.25)', color: '#059cc0' }}>
                       ✓
                     </span>
-                    <span className="flex-1 text-gray-900 font-medium">{item}</span>
+                    <span className="flex-1 text-sm text-gray-900 font-medium leading-relaxed md:text-base">{item}</span>
                   </motion.li>
                 ))}
               </ul>
 
-              <div className="mt-8 border-t border-slate-200 pt-6">
+              <div className="mt-6 border-t border-slate-200 pt-4 md:mt-8 md:pt-6">
                 <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-gray-700 drop-shadow-sm">
                   מי לא מתאים?
                 </h4>
-                <ul className="space-y-2 text-sm text-gray-800 font-medium">
+                <ul className="space-y-2 text-xs text-gray-800 font-medium md:text-sm">
                   <li>• מי שמחפש "שיבוא, ינגן, ונראה מה יהיה"</li>
                   <li>• מי שבוחרים לפי מחיר, לא לפי התאמה</li>
                   <li>• מי שלא אכפת לו מה הוא משאיר לאורחים</li>

@@ -9,23 +9,6 @@ export const ChogegMenagenLevel100 = () => {
   
   return (
     <section id="chogeg-menagen-level-100" className="relative overflow-hidden bg-[#1f1f21] py-12 md:py-20 lg:py-32">
-      {/* Smooth Transition from White */}
-      <SectionTransition
-        fromColor="#ffffff"
-        toColor="#1f1f21"
-        accentColor="#03b28c"
-        position="top"
-        showArrow={true}
-      />
-      
-      {/* Smooth Transition to Deeper Dark */}
-      <SectionTransition
-        fromColor="#1f1f21"
-        toColor="#0b1120"
-        accentColor="#03b28c"
-        position="bottom"
-        showArrow={true}
-      />
       
       <div className="pointer-events-none absolute inset-0">
         <div className="brand-noise absolute inset-0 opacity-40" aria-hidden="true" />
@@ -53,7 +36,11 @@ export const ChogegMenagenLevel100 = () => {
           </h2>
           
           <p className="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-white">
-            אתם רגילים לזיקוקים או מגנטים? תשכחו מזה. ב'חוגג מנגן' אתם הכוכבים האמיתיים. בין אם זה החתן, הכלה או חתן הבר מצווה – אנחנו מכינים את הרקע, <strong className="text-[#03b28c] font-black">השואו נטו על החוגג!!</strong> זה הרגע הכי חזק של הערב, באחריות.
+            אתם רגילים לזיקוקים או מגנטים? תשכחו מזה. ב'חוגג מנגן' אתם הכוכבים האמיתיים.
+            <br className="hidden md:block" />
+            לא משנה אם זו <strong className="text-[#03b28c]">חתונה, בר מצווה או אירוע פרטי</strong> – אנחנו מכינים את הרקע, והשואו נטו עליכם!
+            <br className="hidden md:block" />
+            הרגע שבו החתן, הכלה או בעל השמחה עולים לעמדה ומרעידים את הרחבה. זה הרגע הכי חזק של הערב, באחריות.
           </p>
 
           {/* Price Card */}

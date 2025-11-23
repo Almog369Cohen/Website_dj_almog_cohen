@@ -107,7 +107,7 @@ export default function RootLayout({
         <ThemeProvider>
         <div className="min-h-dvh flex flex-col">
           <header className="glass-section sticky top-0 z-40" role="banner">
-            <div className="mx-auto w-full max-w-6xl px-4 py-3">
+            <div className="mx-auto w-full max-w-6xl px-4 py-2.5 md:py-3">
               <div className="relative flex items-center justify-between gap-4">
                 {/* Right Side (Start): Mobile Menu & Theme */}
                 <div className="flex items-center gap-3">
@@ -116,14 +116,14 @@ export default function RootLayout({
                 </div>
 
                 {/* Center: Logo */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <Link href="/" aria-label="חזרה לדף הבית">
+                <div className="absolute left-1/2 -translate-x-1/2 flex items-center">
+                  <Link href="/" aria-label="חזרה לדף הבית" className="flex items-center">
                     <Image 
                       src="/assets/logo/icon-white.png" 
                       alt="DJ Almog Cohen" 
                       width={40} 
                       height={40} 
-                      className="h-8 w-auto md:h-10 object-contain hover:opacity-90 transition-opacity"
+                      className="h-7 w-auto md:h-10 object-contain hover:opacity-90 transition-opacity max-h-[28px] md:max-h-[40px]"
                       priority
                     />
                   </Link>

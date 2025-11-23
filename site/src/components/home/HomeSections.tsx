@@ -69,7 +69,6 @@ export const HomeSections = () => {
     <>
       {/* --- 1. STORIES (MOVED UP) --- */}
       <section id="stories" className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
-        <div className="fade-mask-premium fade-mask-green" />
         
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -205,7 +204,6 @@ export const HomeSections = () => {
 
       {/* --- 2.5 SPECIAL MOMENT SECTION (NEW) --- */}
       <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
-        <div className="fade-mask-premium fade-mask-blue" />
         
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -221,14 +219,31 @@ export const HomeSections = () => {
             transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
             className="inline-flex items-center gap-2 mb-6 rounded-full border border-cyan-400/60 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 px-4 py-2 backdrop-blur-md shadow-lg shadow-cyan-500/25"
           >
-            <motion.span 
+            <motion.div 
               animate={!isMobile && !prefersReducedMotion ? { rotate: 360, scale: [1, 1.2, 1] } : {}}
               transition={!isMobile && !prefersReducedMotion ? { duration: 2, repeat: Infinity, ease: "linear" } : { duration: 0.3 }}
-              className="text-lg"
+              className="flex h-6 w-6 items-center justify-center"
             >
-              ⭐
-            </motion.span>
-            <span className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300 drop-shadow-md">חדש</span>
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                <path 
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" 
+                  fill="url(#starBrandGradient)" 
+                  stroke="url(#starBrandStroke)" 
+                  strokeWidth="1"
+                />
+                <defs>
+                  <linearGradient id="starBrandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#059cc0" />
+                    <stop offset="100%" stopColor="#03b28c" />
+                  </linearGradient>
+                  <linearGradient id="starBrandStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#03b28c" />
+                    <stop offset="100%" stopColor="#059cc0" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </motion.div>
+            <span className="text-sm font-bold uppercase tracking-[0.25em] text-white drop-shadow-lg" style={{ color: '#059cc0' }}>חדש</span>
           </motion.div>
 
           {/* Main Headline */}
@@ -432,8 +447,6 @@ export const HomeSections = () => {
 
       {/* --- 4. QUICK ACTIONS --- */}
       <section className="relative mx-auto w-full max-w-6xl px-4 py-16">
-        {/* Fade mask at bottom only */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-16 bg-gradient-to-t from-brand-dark/80 to-transparent" />
         
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -576,7 +589,6 @@ export const HomeSections = () => {
 
       {/* --- 5. MUSIC (MOVED UP) --- */}
       <section id="music-section" className="relative py-16 md:py-24">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
         {!isMobile && (
           <>
             <motion.div
@@ -725,7 +737,6 @@ export const HomeSections = () => {
 
       {/* --- 8. SCHOOL (DEEP DIVE) --- */}
       <section id="school-section" className="relative mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="fade-mask-premium" />
         <button
           onClick={() => setSchoolOpen(!schoolOpen)}
           className="group w-full glass-panel px-6 py-5 text-right hover:border-brand-blue/50"
@@ -858,7 +869,6 @@ export const HomeSections = () => {
 
       {/* --- 9. BLOG --- */}
       <section className="relative mx-auto w-full max-w-6xl px-4 pb-24" aria-labelledby="home-blog-heading">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/80 to-transparent" />
 
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -1404,7 +1414,6 @@ export const HomeSections = () => {
 
       {/* --- 12. FINAL CTA --- */}
       <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-12 bg-gradient-to-t from-brand-dark/70 to-transparent" />
         
         {!isMobile && (
           <>

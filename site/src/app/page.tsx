@@ -241,15 +241,21 @@ function HomeContent() {
           className="group relative flex items-center gap-3 overflow-hidden rounded-full border-2 border-brand-green bg-gradient-to-r from-brand-green to-brand-blue px-6 py-4 shadow-[0_0_40px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_60px_rgba(3,178,140,0.9)]"
         >
           {!isMobile ? (
-            <motion.span
-              animate={{ scale: [1, 1.3, 1] }}
+            <motion.div
+              animate={{ scale: [1, 1.2, 1] }}
               transition={{ repeat: Infinity, duration: 2 }}
-              className="text-2xl"
+              className="flex h-6 w-6 items-center justify-center"
             >
-              ⭐
-            </motion.span>
+              <svg className="h-5 w-5 text-black" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            </motion.div>
           ) : (
-            <span className="text-2xl">⭐</span>
+            <div className="flex h-5 w-5 items-center justify-center">
+              <svg className="h-4 w-4 text-black" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            </div>
           )}
           <div className="relative z-20 text-right">
             <div className="text-xs font-bold uppercase tracking-wider text-black drop-shadow-sm">חדש!</div>
@@ -273,30 +279,35 @@ function HomeContent() {
           <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-brand-green/5 to-transparent" />
           <div className="mx-auto flex max-w-6xl items-center justify-center gap-3 px-4">
             {!isMobile ? (
-              <motion.span
-                animate={{ scale: [1, 1.3, 1] }}
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
                 transition={{ repeat: Infinity, duration: 2 }}
-                className="text-2xl"
+                className="flex h-6 w-6 items-center justify-center"
               >
-                ⭐
-              </motion.span>
+                <svg className="h-5 w-5 text-brand-green" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              </motion.div>
             ) : (
-              <span className="text-2xl">⭐</span>
+              <div className="flex h-5 w-5 items-center justify-center">
+                <svg className="h-4 w-4 text-brand-green" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              </div>
             )}
             <div className="flex-1 text-center">
-              <span className="rounded-full bg-brand-green/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-green">
-                ⭐ חדש!
+              <span className="flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-brand-green">
+                <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                חדש!
               </span>
               <div className="mx-2">
                 <span className="text-sm font-bold md:text-base lg:text-lg text-white">
                   הרגע שגונב את ההצגה
                 </span>
-                <span className="hidden sm:inline text-xs md:text-sm text-white/80">
-                  {" "}– זה לא עוד סרטון לארכיון, זה הסטורי של המחר.
-                </span>
-                <br className="sm:hidden" />
                 <span className="text-xs md:text-sm text-white/80">
-                  הרגע שבו כל הטלפונים נשלפים והילד שלכם הופך לכוכב.
+                  {" "}– זה לא עוד סרטון לארכיון, זה הסטורי של המחר והשיחה של השבת
                 </span>
               </div>
             </div>
