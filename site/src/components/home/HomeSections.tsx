@@ -12,6 +12,7 @@ import { TagsPills } from "@/components/ui/TagsPills";
 import { ContactFormLevel100 } from "@/components/ui/ContactFormLevel100";
 import { WeddingsLevel100 } from "./sections/WeddingsLevel100";
 import { CoursesLevel100 } from "./sections/CoursesLevel100";
+import { ChogegMenagenLevel100 } from "./sections/ChogegMenagenLevel100";
 
 export const HomeSections = () => {
   const { isRaveMode } = useEnergy();
@@ -360,6 +361,9 @@ export const HomeSections = () => {
 
       {/* --- COURSES SECTION LEVEL 100 --- */}
       <CoursesLevel100 />
+
+      {/* --- CHOGEG MENAGEN SECTION LEVEL 100 --- */}
+      <ChogegMenagenLevel100 />
 
       {/* --- MUSIC / LISTEN NOW (LEVEL 1000) --- */}
       <section id="music-section" className="relative py-16 md:py-24">
