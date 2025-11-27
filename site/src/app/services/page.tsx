@@ -66,7 +66,7 @@ export default function ServicesPage() {
         }
       `}</style>
 
-    <div className="text-brand-white bg-[#0a0a0a]">
+    <div className="min-h-screen bg-background text-foreground">
       {/* === CINEMATIC HERO === */}
       <section ref={heroRef} className="relative flex min-h-[70vh] items-center justify-center overflow-hidden">
         {/* Video Background */}
@@ -83,7 +83,7 @@ export default function ServicesPage() {
           >
             <source src="https://storage.googleapis.com/www.compaktt.com/assets/hero-main-optimized.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/90 via-[#0a0a0a]/70 to-[#0a0a0a]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background" />
         </motion.div>
 
         {/* Hero Content */}
@@ -117,7 +117,7 @@ export default function ServicesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             style={{ fontSize: "var(--font-fluid-p)" }}
-            className="mx-auto mt-6 max-w-3xl leading-relaxed text-white/80"
+            className="mx-auto mt-6 max-w-3xl leading-relaxed text-foreground-secondary"
           >
             מוזיקה שמייצרת רגעים. אנרגיה שמחזיקה קהל. מקצועיות ללא פשרות.
           </motion.p>
@@ -135,19 +135,19 @@ export default function ServicesPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               whileHover={{ scale: 1.02 }}
-              className="relative flex h-full flex-col overflow-hidden rounded-3xl border-2 border-white/10 bg-gradient-to-br from-brand-green/10 to-transparent p-8 text-right backdrop-blur-xl transition-all duration-300 hover:border-brand-green/40 hover:shadow-[0_0_60px_rgba(3,178,140,0.4)]"
+              className="relative flex h-full flex-col overflow-hidden rounded-3xl border-2 border-border bg-gradient-to-br from-brand-green/10 to-transparent p-8 text-right backdrop-blur-xl transition-all duration-300 hover:border-brand-green/40 hover:shadow-[0_0_60px_rgba(3,178,140,0.4)]"
             >
               {/* Icon/Number */}
               <div className="mb-4 text-6xl font-black text-brand-green/20">01</div>
               
-              <h2 className="mb-3 text-2xl font-black text-white md:text-3xl">חתונות</h2>
+              <h2 className="mb-3 text-2xl font-black text-foreground-heading md:text-3xl">חתונות</h2>
               
-              <p className="mb-6 flex-1 leading-relaxed text-white/75">
+              <p className="mb-6 flex-1 leading-relaxed text-foreground-secondary">
                 שביל חופה מרגש, ריקוד ראשון מושלם, ורחבה שלא מפסיקה לרקוד. 
                 כל רגע מתוכנן, כל שיר במקום הנכון.
               </p>
               
-              <ul className="mb-6 space-y-2 text-sm text-white/60">
+              <ul className="mb-6 space-y-2 text-sm text-foreground-secondary">
                 <li className="flex items-start gap-2">
                   <span className="text-brand-green">✓</span>
                   <span>פלייליסט מותאם אישית</span>
@@ -187,18 +187,18 @@ export default function ServicesPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
               whileHover={{ scale: 1.02 }}
-              className="relative flex h-full flex-col overflow-hidden rounded-3xl border-2 border-white/10 bg-gradient-to-br from-brand-blue/10 to-transparent p-8 text-right backdrop-blur-xl transition-all duration-300 hover:border-brand-blue/40 hover:shadow-[0_0_60px_rgba(5,156,192,0.4)]"
+              className="relative flex h-full flex-col overflow-hidden rounded-3xl border-2 border-border bg-gradient-to-br from-brand-blue/10 to-transparent p-8 text-right backdrop-blur-xl transition-all duration-300 hover:border-brand-blue/40 hover:shadow-[0_0_60px_rgba(5,156,192,0.4)]"
             >
               <div className="mb-4 text-6xl font-black text-brand-blue/20">02</div>
               
-              <h2 className="mb-3 text-2xl font-black text-white md:text-3xl">אירועים עסקיים</h2>
+              <h2 className="mb-3 text-2xl font-black text-foreground-heading md:text-3xl">אירועים עסקיים</h2>
               
-              <p className="mb-6 flex-1 leading-relaxed text-white/75">
+              <p className="mb-6 flex-1 leading-relaxed text-foreground-secondary">
                 כנסים, השקות, ערבי חברה. מוזיקה שמחזיקה אנרגיה מקצועית 
                 ומתאימה לקהל מגוון.
               </p>
               
-              <ul className="mb-6 space-y-2 text-sm text-white/60">
+              <ul className="mb-6 space-y-2 text-sm text-foreground-secondary">
                 <li className="flex items-start gap-2">
                   <span className="text-brand-blue">✓</span>
                   <span>התאמה לאופי החברה</span>
@@ -237,35 +237,35 @@ export default function ServicesPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
               whileHover={{ scale: 1.02 }}
-              className="relative flex h-full flex-col overflow-hidden rounded-3xl border-2 border-white/10 bg-gradient-to-br from-white/10 to-transparent p-8 text-right backdrop-blur-xl transition-all duration-300 hover:border-white/30 hover:shadow-[0_0_60px_rgba(255,255,255,0.2)]"
+              className="relative flex h-full flex-col overflow-hidden rounded-3xl border-2 border-border bg-gradient-to-br from-foreground/10 to-transparent p-8 text-right backdrop-blur-xl transition-all duration-300 hover:border-foreground/30 hover:shadow-[0_0_60px_rgba(255,255,255,0.2)]"
             >
-              <div className="mb-4 text-6xl font-black text-white/20">03</div>
+              <div className="mb-4 text-6xl font-black text-foreground/20">03</div>
               
-              <h2 className="mb-3 text-2xl font-black text-white md:text-3xl">אירועים פרטיים</h2>
+              <h2 className="mb-3 text-2xl font-black text-foreground-heading md:text-3xl">אירועים פרטיים</h2>
               
-              <p className="mb-6 flex-1 leading-relaxed text-white/75">
+              <p className="mb-6 flex-1 leading-relaxed text-foreground-secondary">
                 בר/בת מצווה, מסיבות, אפטרים. פסקול אישי שמרגיש כמו 
                 במה גדולה.
               </p>
               
-              <ul className="mb-6 space-y-2 text-sm text-white/60">
+              <ul className="mb-6 space-y-2 text-sm text-foreground-secondary">
                 <li className="flex items-start gap-2">
-                  <span className="text-white">✓</span>
+                  <span className="text-foreground">✓</span>
                   <span>חווייה מותאמת אישית</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-white">✓</span>
+                  <span className="text-foreground">✓</span>
                   <span>גמישות מלאה</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-white">✓</span>
+                  <span className="text-foreground">✓</span>
                   <span>מחירים הוגנים</span>
                 </li>
               </ul>
               
               <Link 
                 href="/services/private"
-                className="group/link inline-flex items-center gap-2 text-sm font-bold text-white transition hover:gap-3"
+                className="group/link inline-flex items-center gap-2 text-sm font-bold text-foreground transition hover:gap-3"
               >
                 <span>למידע מלא</span>
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -326,7 +326,7 @@ export default function ServicesPage() {
             <div className="p-6 text-right">
               <h3 className="mb-2 text-xl font-black text-white">Live Set</h3>
               <p className="mb-2 text-sm font-semibold text-brand-green">מיקס לייב מהרחבה</p>
-              <p className="text-sm leading-relaxed text-white/70">
+              <p className="text-sm leading-relaxed text-white/85">
                 סט חתונה מלא - מקבלת פנים ועד אפטר מטורף.
               </p>
             </div>
@@ -360,7 +360,7 @@ export default function ServicesPage() {
             <div className="p-6 text-right">
               <h3 className="mb-2 text-xl font-black text-white">Behind the Decks</h3>
               <p className="mb-2 text-sm font-semibold text-brand-blue">מאחורי הבמה</p>
-              <p className="text-sm leading-relaxed text-white/70">
+              <p className="text-sm leading-relaxed text-white/85">
                 צילומים מהקונסול בזמן אירוע – האנרגיה בזמן אמת.
               </p>
             </div>
@@ -393,7 +393,7 @@ export default function ServicesPage() {
             <div className="p-6 text-right">
               <h3 className="mb-2 text-xl font-black text-white">Event Highlights</h3>
               <p className="mb-2 text-sm font-semibold text-white/90">רגעים מהאירועים</p>
-              <p className="text-sm leading-relaxed text-white/70">
+              <p className="text-sm leading-relaxed text-white/85">
                 תקציר קצר מאירועים שונים – מוזיקה, אנשים, אנרגיה.
               </p>
             </div>
@@ -445,7 +445,7 @@ export default function ServicesPage() {
             </div>
             <div className="p-6 text-center">
               <p className="text-lg font-semibold text-brand-green">המלצה מזוג מרוצה</p>
-              <p className="mt-2 text-sm text-white/70">צפו בעדות של זוג שחגג איתנו את היום הכי חשוב</p>
+              <p className="mt-2 text-sm text-white/85">צפו בעדות של זוג שחגג איתנו את היום הכי חשוב</p>
             </div>
           </div>
         </motion.div>
@@ -471,7 +471,7 @@ export default function ServicesPage() {
             </p>
             <div className="text-right">
               <p className="font-semibold text-white">שרה ויונתן</p>
-              <p className="text-sm text-white/50">חתונה • יוני 2024</p>
+              <p className="text-sm text-white/75">חתונה • יוני 2024</p>
             </div>
           </motion.div>
 
@@ -495,7 +495,7 @@ export default function ServicesPage() {
             </p>
             <div className="text-right">
               <p className="font-semibold text-white">רועי כהן</p>
-              <p className="text-sm text-white/50">אירוע עסקי • מרץ 2024</p>
+              <p className="text-sm text-white/75">אירוע עסקי • מרץ 2024</p>
             </div>
           </motion.div>
         </div>
@@ -550,7 +550,7 @@ export default function ServicesPage() {
               className="rounded-xl border border-white/10 bg-white/5 p-6 text-right backdrop-blur-xl"
             >
               <h3 className="mb-3 text-lg font-bold text-white">{item.q}</h3>
-              <p className="leading-relaxed text-white/70">{item.a}</p>
+              <p className="leading-relaxed text-white/85">{item.a}</p>
             </motion.div>
           ))}
         </div>
@@ -578,7 +578,7 @@ export default function ServicesPage() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-10 py-4 text-base font-black text-black shadow-[0_0_40px_rgba(3,178,140,0.4)] transition-all hover:shadow-[0_0_60px_rgba(3,178,140,0.6)]"
+              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-10 py-4 text-base font-black text-white shadow-[0_0_40px_rgba(3,178,140,0.4)] transition-all hover:shadow-[0_0_60px_rgba(3,178,140,0.6)]"
             >
               <span>בקשת הצעת מחיר ב־WhatsApp</span>
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

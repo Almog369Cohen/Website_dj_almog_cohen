@@ -47,15 +47,15 @@ const posts = [
 
 export default function BlogPage() {
   return (
-    <div className="text-brand-white">
+    <div className="min-h-screen bg-background text-foreground">
       <section className="mx-auto w-full max-w-6xl px-4 py-16">
         <div className="mb-4 text-right">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-brand-blue/80">
             BLOG & GUIDES
           </p>
-          <h1 className="mt-2 text-3xl font-bold md:text-4xl">בלוג / תוכן דיגיטלי</h1>
+          <h1 className="mt-2 text-3xl font-bold text-foreground-heading md:text-4xl">בלוג / תוכן דיגיטלי</h1>
         </div>
-        <p className="mb-10 max-w-2xl text-sm text-white/80 md:text-base">
+        <p className="mb-10 max-w-2xl text-sm text-foreground-secondary md:text-base">
           מדריכים, טיפים מאחורי הקלעים והשראה לזוגות, מפיקים ו-DJ&apos;ים – מתוך הניסיון של מאות
           אירועים.
         </p>
@@ -63,12 +63,12 @@ export default function BlogPage() {
           {posts.map((post) => (
             <article
               key={post.slug}
-              className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-black/50 p-6 text-right shadow-xl shadow-black/40 backdrop-blur-md transition-transform hover:-translate-y-1.5 hover:shadow-[0_0_35px_-12px_rgba(5,156,192,0.7)]"
+              className="flex h-full flex-col justify-between rounded-2xl border border-border bg-background/50 p-6 text-right shadow-xl backdrop-blur-md transition-transform hover:-translate-y-1.5 hover:border-brand-blue/50"
             >
               <div className="space-y-3">
                 <p className="text-xs text-brand-blue/80">{post.category}</p>
-                <h2 className="text-lg font-semibold md:text-xl">{post.title}</h2>
-                <p className="text-sm text-white/75">{post.excerpt}</p>
+                <h2 className="text-lg font-semibold text-foreground-heading md:text-xl">{post.title}</h2>
+                <p className="text-sm text-foreground-secondary">{post.excerpt}</p>
               </div>
               <div className="mt-4">
                 <Link

@@ -1,0 +1,100 @@
+name: 🎨 Contrast & Accessibility Check
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main ]
+
+jobs:
+  contrast-check:
+    name: Check Color Contrast
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+      
+      - name: 🔍 Run contrast checker
+        run: |
+          chmod +x check-contrast.sh
+          ./check-contrast.sh > contrast-report.txt
+          
+      - name: 📊 Analyze results
+        id: analyze
+        run: |
+          # Count critical issues (text-black on gradients)
+          CRITICAL=$(grep -c "text-black" contrast-report.txt || echo "0")
+          
+          # Count all issues
+          TOTAL=$(grep "Found.*potential contrast issues" contrast-report.txt | grep -oE '[0-9]+' || echo "0")
+          
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          
+          # Display report
+          cat contrast-report.txt
+          
+      - name: ✅ Validate results
+        run: |
+          CRITICAL=${{ steps.analyze.outputs.critical }}
+          TOTAL=${{ steps.analyze.outputs.total }}
+          
+          echo "📊 Contrast Check Results:"
+          echo "   Critical Issues: $CRITICAL"
+          echo "   Total Issues: $TOTAL"
+          
+          if [ "$CRITICAL" -gt "0" ]; then
+            echo ""
+            echo "❌ FAILED: Found $CRITICAL critical contrast issues!"
+            echo "Please fix text-black on dark backgrounds."
+            echo "See CONTRAST_RULES.md for guidelines."
+            exit 1
+          fi
+          
+          if [ "$TOTAL" -gt "300" ]; then
+            echo ""
+            echo "⚠️  WARNING: Found $TOTAL contrast issues"
+            echo "Consider improving contrast ratios."
+          fi
+          
+          echo ""
+          echo "✅ Contrast check passed!"
+          
+      - name: 💬 Comment on PR
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## ❌ Contrast Check Failed
+              
+              Found critical contrast issues in this PR.
+              
+              ### Issues:
+              - \`text-black\` found on dark backgrounds
+              - This will cause severe readability problems
+              
+              ### How to fix:
+              1. Replace \`text-black\` with \`text-white\` on dark backgrounds
+              2. Use \`text-white/75+\` for good contrast (not 40% or 50%)
+              3. Check both Light and Dark modes
+              
+              ### Resources:
+              - See [CONTRAST_RULES.md](../CONTRAST_RULES.md) for full guidelines
+              - Run \`./check-contrast.sh\` locally to check
+              - Use WCAG 2.1 AA standards (4.5:1 contrast ratio minimum)
+              
+              Please fix these issues before merging.`
+            })
+            
+      - name: 📤 Upload report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: contrast-report
+          path: contrast-report.txt
+          retention-days: 30

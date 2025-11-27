@@ -74,14 +74,14 @@ const TimelineItem = ({
 
       {/* Content - Right Side */}
       <div className="space-y-2 pb-8 md:pb-12">
-        <h3 className="text-base md:text-lg font-bold text-white">{title}</h3>
-        <p className="text-xs md:text-sm leading-relaxed text-white/70">{description}</p>
+        <h3 className="text-base md:text-lg font-bold text-foreground-heading">{title}</h3>
+        <p className="text-xs md:text-sm leading-relaxed text-foreground-secondary">{description}</p>
       </div>
 
       {/* Connection Dot */}
       <div
         className={`absolute -right-1 md:-right-2 top-2 h-3 w-3 md:h-4 md:w-4 rounded-full transition-all duration-300 ${
-          isInView ? 'bg-brand-blue shadow-[0_0_10px_#059cc0]' : 'bg-white/20'
+          isInView ? 'bg-brand-blue shadow-[0_0_10px_#059cc0]' : 'bg-foreground-secondary/20'
         }`}
       />
     </motion.div>
@@ -186,7 +186,7 @@ export default function AboutPage() {
         }
       `}</style>
 
-      <div ref={pageRef} className="relative bg-[#0a0a0a] text-brand-white">
+      <div ref={pageRef} className="relative min-h-screen bg-background text-foreground">
         {/* Noise Texture */}
         <div className="about-noise" aria-hidden="true" />
         
@@ -216,7 +216,7 @@ export default function AboutPage() {
             <source src="https://storage.googleapis.com/www.compaktt.com/assets/hero-main-optimized.mp4" type="video/mp4" />
           </video>
           {/* Dark Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/60 to-[#0a0a0a]/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/80" />
         </div>
 
         {/* Content */}
@@ -243,7 +243,7 @@ export default function AboutPage() {
                 fontWeight: 300,
                 lineHeight: 1.6
               }}
-              className="mx-auto max-w-3xl text-white/80"
+              className="mx-auto max-w-3xl text-foreground-secondary"
             >
               10+ שנים מחדד חוויות קוליות. מהרחבה לעמדה, ומהעמדה לרחבות מלאות.
             </p>
@@ -314,7 +314,7 @@ export default function AboutPage() {
                 fontWeight: 300,
                 lineHeight: 1.8
               }}
-              className="text-white/85"
+              className="text-foreground-secondary"
             >
               בגיל 14, חוג דיג'יי בבית הספר היה הרגע שבו הכל התחבר. לא רק שירים - איך לקרוא רחבה, 
               איך לבנות אנרגיה, איך רגע אחד נכון יכול לשנות הכל.
@@ -326,7 +326,7 @@ export default function AboutPage() {
                 fontWeight: 300,
                 lineHeight: 1.8
               }}
-              className="text-white/85"
+              className="text-foreground-secondary"
             >
               שנים עבדתי כיחצן. מועדונים, מסיבות, פסטיבלים - לומד את הקהל מהצד. אבל תמיד ידעתי 
               שאני רוצה להיות מאחורי העמדה, לא ליד הבר.
@@ -338,7 +338,7 @@ export default function AboutPage() {
                 fontWeight: 300,
                 lineHeight: 1.8
               }}
-              className="text-white/85"
+              className="text-foreground-secondary"
             >
               הרגע הראשון על הבמה? מפיק התקשר: "אתה פותח הערב". 900 איש, 15 שנים, והרגשתי שזה הבית. 
               מאז - איה נאפה בקפריסין, מרתון ירושלים, הדזרט, מדיסון, ארנה. רחבות של אלפים.
@@ -350,7 +350,7 @@ export default function AboutPage() {
                 fontWeight: 300,
                 lineHeight: 1.8
               }}
-              className="text-white/85"
+              className="text-foreground-secondary"
             >
               היום זה לא רק תקלוט. זה בית ספר, ליווי אישי, קונספטים כמו "חוגג מנגן", והפקות שלמות. 
               כל אירוע הוא עולם משלו.
@@ -366,7 +366,7 @@ export default function AboutPage() {
             className="rounded-2xl border-2 border-brand-blue/20 bg-gradient-to-br from-brand-blue/10 to-transparent p-6 backdrop-blur-xl"
           >
             <h3 className="mb-4 text-xl font-bold text-brand-blue">במבט מהיר</h3>
-            <ul className="space-y-3 text-sm text-white/80">
+            <ul className="space-y-3 text-sm text-foreground-secondary">
               <li className="flex items-start gap-3">
                 <span className="mt-1 text-brand-green">●</span>
                 <span>10+ שנות ניסיון באירועים, חתונות ואירועי חברה</span>
@@ -410,7 +410,7 @@ export default function AboutPage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-base md:text-lg text-white/70"
+            className="text-base md:text-lg text-foreground-secondary"
           >
             הרגעים שעיצבו את הדרך
           </motion.p>
@@ -419,7 +419,7 @@ export default function AboutPage() {
         {/* Timeline Container */}
         <div className="relative">
           {/* Vertical Line with Gradient Fill */}
-          <div className="absolute right-0 top-0 h-full w-0.5 md:w-1 bg-white/10">
+          <div className="absolute right-0 top-0 h-full w-0.5 md:w-1 bg-border">
             <motion.div
               style={{ scaleY: timelineProgress }}
               className="h-full w-full origin-top bg-gradient-to-b from-brand-blue via-brand-green to-brand-blue"
@@ -469,15 +469,15 @@ export default function AboutPage() {
               boxShadow: "0 0 40px rgba(3,178,140,0.4)",
               scale: 1.02
             }}
-            className="group rounded-3xl border-2 border-white/10 bg-white/5 p-8 text-right backdrop-blur-xl transition-all duration-300"
+            className="group rounded-3xl border-2 border-border bg-background/50 p-8 text-right backdrop-blur-xl transition-all duration-300"
           >
             <motion.h3 
-              className="mb-4 text-xl md:text-2xl font-black text-white"
+              className="mb-4 text-xl md:text-2xl font-black text-foreground-heading"
               whileHover={{ scale: 1.05 }}
             >
               אנרגיה זה לא מה ששומעים
             </motion.h3>
-            <p className="text-sm md:text-base leading-relaxed text-white/75">
+            <p className="text-sm md:text-base leading-relaxed text-foreground-secondary">
               זה מה שמרגישים. כל שיר הוא החלטה - איך הרחבה נושמת, איפה היא הולכת, מתי לבנות ומתי לשבור.
             </p>
           </motion.div>
@@ -493,15 +493,15 @@ export default function AboutPage() {
               boxShadow: "0 0 40px rgba(3,178,140,0.4)",
               scale: 1.02
             }}
-            className="group rounded-3xl border-2 border-white/10 bg-white/5 p-8 text-right backdrop-blur-xl transition-all duration-300"
+            className="group rounded-3xl border-2 border-border bg-background/50 p-8 text-right backdrop-blur-xl transition-all duration-300"
           >
             <motion.h3 
-              className="mb-4 text-xl md:text-2xl font-black text-white"
+              className="mb-4 text-xl md:text-2xl font-black text-foreground-heading"
               whileHover={{ scale: 1.05 }}
             >
               כל אירוע הוא עולם
             </motion.h3>
-            <p className="text-sm md:text-base leading-relaxed text-white/75">
+            <p className="text-sm md:text-base leading-relaxed text-foreground-secondary">
               אין תבניות. יש רק קשב - לאנשים, לאווירה, לרגע. הסט הטוב ביותר הוא זה שמותאם לערב הספציפי הזה.
             </p>
           </motion.div>
@@ -517,15 +517,15 @@ export default function AboutPage() {
               boxShadow: "0 0 40px rgba(3,178,140,0.4)",
               scale: 1.02
             }}
-            className="group rounded-3xl border-2 border-white/10 bg-white/5 p-8 text-right backdrop-blur-xl transition-all duration-300"
+            className="group rounded-3xl border-2 border-border bg-background/50 p-8 text-right backdrop-blur-xl transition-all duration-300"
           >
             <motion.h3 
-              className="mb-4 text-xl md:text-2xl font-black text-white"
+              className="mb-4 text-xl md:text-2xl font-black text-foreground-heading"
               whileHover={{ scale: 1.05 }}
             >
               לא DJ - שותף מוזיקלי
             </motion.h3>
-            <p className="text-sm md:text-base leading-relaxed text-white/75">
+            <p className="text-sm md:text-base leading-relaxed text-foreground-secondary">
               אתם לא שוכרים מישהו להפעיל פלייליסט. אתם מביאים מישהו שיבין את האנשים שלכם ויחזיק את הערב מבפנים.
             </p>
           </motion.div>
@@ -542,7 +542,7 @@ export default function AboutPage() {
               letterSpacing: "-0.05em",
               lineHeight: 1.1
             }}
-            className="mb-16 text-center text-white"
+            className="mb-16 text-center text-foreground-heading"
           >
             מה אומרים זוגות שחגגו איתי
           </h2>
@@ -577,7 +577,7 @@ export default function AboutPage() {
               <p className="text-lg font-bold text-brand-green md:text-xl">
                 "החתונה הכי טובה שהיינו בה" 💚
               </p>
-              <p className="mt-2 text-sm text-white/60 md:text-base">
+              <p className="mt-2 text-sm text-foreground-secondary md:text-base">
                 שמעו ישירות מזוג שחגג את היום הכי חשוב איתי
               </p>
             </div>
@@ -622,7 +622,7 @@ export default function AboutPage() {
                 fontWeight: 300,
                 lineHeight: 1.8
               }}
-              className="mb-12 text-white/70"
+              className="mb-12 text-foreground-secondary"
             >
               הערב שלכם לא צריך להיות עוד פרויקט שמלחיץ. בואו נדבר, נבין מה אתם רוצים, ונבנה את הפסקול המדויק לרגעים הכי חשובים בחיים שלכם.
             </p>
@@ -641,7 +641,7 @@ export default function AboutPage() {
                 boxShadow: "0 0 60px rgba(3,178,140,0.6)"
               }}
               whileTap={{ scale: 0.95 }}
-              className="group relative inline-flex items-center gap-3 md:gap-4 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-8 py-4 md:px-12 md:py-6 text-base md:text-xl font-black text-black shadow-[0_0_40px_rgba(3,178,140,0.4)] transition-all duration-300"
+              className="group relative inline-flex items-center gap-3 md:gap-4 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-8 py-4 md:px-12 md:py-6 text-base md:text-xl font-black text-white shadow-[0_0_40px_rgba(3,178,140,0.4)] transition-all duration-300"
             >
               <span className="relative z-20">בדיקת זמינות ב-WhatsApp</span>
               <motion.svg 

@@ -92,7 +92,7 @@ function HomeContent() {
 
   return (
     <>
-      {/* Structured Data (JSON-LD) for SEO */}
+      {/* Structured Data (JSON-LD) for SEO - Wedding-Focused */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -101,53 +101,60 @@ function HomeContent() {
             "@graph": [
               {
                 "@type": "Person",
-                "@id": "https://www.compaktt.com/#person",
+                "@id": "https://www.compaktt.com/#almog",
                 name: "Almog Cohen",
-                alternateName: "DJ Almog Cohen",
-                description: "DJ מקצועי לחתונות ואירועים, מורה ומנטור DJ בתל אביב",
+                alternateName: ["DJ Almog Cohen", "אלמוג כהן", "Energy Architect"],
+                jobTitle: "Wedding DJ & Music Producer",
+                description: "DJ לחתונות בישראל עם 12 שנות ניסיון. התמחות בחתונות בוטיק, קהלים מעורבים, טכנו והאוס. מייסד Compakt Academy – בית ספר ל-DJ והפקה מוזיקלית.",
                 url: "https://www.compaktt.com",
                 image: "https://www.compaktt.com/assets/almog/IMG_6561.jpg",
                 sameAs: [
-                  "https://www.instagram.com/almog.dj",
+                  "https://www.instagram.com/dj_almog_cohen",
                   "https://www.youtube.com/@djalmogcohen",
                   "https://soundcloud.com/almogcohen",
                 ],
-                jobTitle: "DJ & Music Producer",
                 worksFor: {
                   "@type": "Organization",
-                  name: "DJ Almog Cohen",
+                  name: "DJ Almog Cohen – Energy Architect",
                 },
                 address: {
                   "@type": "PostalAddress",
                   addressLocality: "תל אביב",
+                  addressRegion: "Tel Aviv District",
                   addressCountry: "IL",
                 },
+                telephone: "+972-50-242-7616",
               },
               {
-                "@type": "LocalBusiness",
-                "@id": "https://www.compaktt.com/#business",
-                name: "DJ Almog Cohen",
-                description: "DJ לחתונות ואירועים מובחרים, בית ספר DJ ומנטורינג לאמנים",
+                "@type": "ProfessionalService",
+                "@id": "https://www.compaktt.com/#wedding-dj-service",
+                name: "DJ לחתונות בישראל – DJ Almog Cohen",
+                alternateName: "Energy Architect – אדריכל האנרגיה",
+                description: "שירות DJ מקצועי לחתונות יוקרה בישראל. התמחות בבניית פסקול מוזיקלי מותאם אישית, קריאת קהל מדויקת וחתונות קונספט. כולל ליווי מהחופה ועד האפטר פארטי עם סטים של Melodic Techno, Afro House וקהלים מעורבים.",
                 url: "https://www.compaktt.com",
+                areaServed: {
+                  "@type": "Country",
+                  name: "Israel",
+                },
+                provider: {
+                  "@id": "https://www.compaktt.com/#almog",
+                },
+                serviceType: [
+                  "Wedding DJ",
+                  "DJ לחתונות",
+                  "דיג'יי לחתונה",
+                  "מוזיקה לחתונה",
+                  "אפטר פארטי לחתונה",
+                  "DJ לאירועים עסקיים",
+                ],
+                availableChannel: {
+                  "@type": "ServiceChannel",
+                  serviceUrl: "https://www.compaktt.com",
+                  availableLanguage: ["he-IL", "en-US"],
+                },
                 telephone: "+972-50-242-7616",
                 priceRange: "₪₪₪",
                 image: "https://www.compaktt.com/assets/almog/IMG_6561.jpg",
-                address: {
-                  "@type": "PostalAddress",
-                  addressLocality: "תל אביב",
-                  addressCountry: "IL",
-                },
-                geo: {
-                  "@type": "GeoCoordinates",
-                  latitude: 32.0853,
-                  longitude: 34.7818,
-                },
-                openingHoursSpecification: {
-                  "@type": "OpeningHoursSpecification",
-                  dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Sunday"],
-                  opens: "10:00",
-                  closes: "22:00",
-                },
                 aggregateRating: {
                   "@type": "AggregateRating",
                   ratingValue: "5",
@@ -155,27 +162,37 @@ function HomeContent() {
                 },
               },
               {
-                "@type": "Service",
-                "@id": "https://www.compaktt.com/#service-weddings",
-                name: "DJ לחתונות",
-                description: "ליווי מלא לחתונות מובחרות - מפגישת ייעוץ ועד מסיבה בלתי נשכחת",
-                provider: {
-                  "@id": "https://www.compaktt.com/#person",
+                "@type": "EducationalOrganization",
+                "@id": "https://www.compaktt.com/#academy",
+                name: "Compakt Academy – DJ Almog Cohen",
+                description: "Compakt Academy: בית ספר לדיג'ייז ואמנים. קורס DJ למתחילים, תכנית מנטורינג פרמיום לבניית קריירה בתחום הלילה, וחתן מתקלט - אטרקציה מיוחדת לחתונות. הכשרה מעשית על ציוד Pioneer מקצועי.",
+                url: "https://www.compaktt.com/academy",
+                founder: {
+                  "@id": "https://www.compaktt.com/#almog",
                 },
-                areaServed: {
-                  "@type": "Country",
-                  name: "Israel",
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: "תל אביב",
+                  addressCountry: "IL",
                 },
-              },
-              {
-                "@type": "Course",
-                "@id": "https://www.compaktt.com/courses#course",
-                name: "קורס DJ",
-                description: "קורסי DJ למתחילים ומתקדמים, מנטורינג ואימון אישי",
-                provider: {
-                  "@id": "https://www.compaktt.com/#person",
-                },
-                educationalLevel: "Beginner to Advanced",
+                courseOffered: [
+                  {
+                    "@type": "Course",
+                    name: "קורס DJ למתחילים",
+                    description: "תקלוט מהבסיס: ביט-מיקס, ציוד Pioneer, מבנה מוזיקלי, קריאת קהל ותרגול מעשי.",
+                    provider: {
+                      "@id": "https://www.compaktt.com/#academy",
+                    },
+                  },
+                  {
+                    "@type": "Course",
+                    name: "תכנית מנטורינג פרמיום",
+                    description: "ליווי אישי לבניית קריירה: מיתוג, עסקים, שיווק דיגיטלי וניהול קריירה בתחום הלילה.",
+                    provider: {
+                      "@id": "https://www.compaktt.com/#academy",
+                    },
+                  },
+                ],
               },
             ],
           }),
@@ -246,20 +263,20 @@ function HomeContent() {
               transition={{ repeat: Infinity, duration: 2 }}
               className="flex h-6 w-6 items-center justify-center"
             >
-              <svg className="h-5 w-5 text-black" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
             </motion.div>
           ) : (
             <div className="flex h-5 w-5 items-center justify-center">
-              <svg className="h-4 w-4 text-black" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
             </div>
           )}
           <div className="relative z-20 text-right">
-            <div className="text-xs font-bold uppercase tracking-wider text-black drop-shadow-sm">חדש!</div>
-            <div className="text-sm font-bold text-black drop-shadow-sm">חוגג מנגן</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-white drop-shadow-sm">חדש!</div>
+            <div className="text-sm font-bold text-white drop-shadow-sm">חוגג מנגן</div>
           </div>
           {/* Pulse ring */}
           <span className="absolute -inset-1 -z-10 animate-ping rounded-full bg-brand-green opacity-20" />
@@ -312,7 +329,7 @@ function HomeContent() {
               </div>
             </div>
             <span
-              className="inline-block rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-4 py-2 text-xs md:px-5 md:py-2.5 md:text-sm font-bold text-black shadow-lg transition group-hover:scale-105 group-hover:shadow-brand-green/50 whitespace-nowrap"
+              className="inline-block rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-4 py-2 text-xs md:px-5 md:py-2.5 md:text-sm font-bold text-white shadow-lg transition group-hover:scale-105 group-hover:shadow-brand-green/50 whitespace-nowrap"
             >
               בואו לראות איך זה נראה ←
             </span>
@@ -513,9 +530,8 @@ function HomeContent() {
                     fontSize: "var(--font-fluid-p)",
                     fontWeight: 400,
                     lineHeight: 1.6,
-                    opacity: 0.9,
                   }}
-                  className="mx-auto max-w-3xl text-center"
+                  className="mx-auto max-w-3xl text-center text-white/90"
                 >
                   12 שנים בתחום לימדו אותי דבר אחד: מוזיקה טובה זה הבסיס, אבל חיבור אנושי זה הקסם. אני בוחר את האירועים שלי בפינצטה, כדי לוודא שכל ערב הוא לא סתם "עבודה", אלא הצגה.
                 </h2>
@@ -533,7 +549,7 @@ function HomeContent() {
                     href={wa("היי אלמוג, רוצה לבדוק התאמה לאירוע")}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-black shadow-[0_0_40px_rgba(3,178,140,0.7)] transition hover:scale-105 hover:shadow-[0_0_60px_rgba(3,178,140,1)]"
+                    className="group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-white shadow-[0_0_40px_rgba(3,178,140,0.7)] transition hover:scale-105 hover:shadow-[0_0_60px_rgba(3,178,140,1)]"
                   >
                     <span className="relative z-20">בואו נבדוק התאמה ב-WhatsApp</span>
                     <Image 
@@ -576,7 +592,7 @@ function HomeContent() {
         </motion.div>
 
         <div className="z-10 mt-4 w-full max-w-4xl px-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/60 text-right">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/80 text-right">
             בין לקוחותינו
           </p>
           <div className="glass-panel relative overflow-hidden rounded-full py-4">

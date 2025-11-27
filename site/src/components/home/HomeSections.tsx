@@ -88,29 +88,59 @@ export const HomeSections = () => {
         </motion.div>
 
         <div className="space-y-8">
-          <div className="glass-card relative grid grid-cols-1 gap-6 p-6 md:grid-cols-2 md:p-8">
-            <div className="brand-noise" aria-hidden="true" />
-            <div className="glass-card-content relative space-y-4 text-right">
-              <h3 className="text-2xl font-black text-white drop-shadow-md">כשהמרצים שלי הפכו לקהל שלי.</h3>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -4 }}
+            className="group relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-500 hover:border-brand-green/30 hover:bg-white/10 hover:shadow-[0_20px_60px_rgba(3,178,140,0.2)] md:grid-cols-2 md:p-8"
+          >
+            {/* Top Gradient Border */}
+            <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-brand-green via-emerald-400 to-brand-blue opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            
+            {/* Side Color Indicator */}
+            <div className="absolute right-0 top-1/2 h-0 w-1.5 -translate-y-1/2 rounded-l-full bg-gradient-to-b from-brand-green via-emerald-400 to-brand-blue shadow-lg shadow-brand-green/50 transition-all duration-500 group-hover:h-40" />
+            
+            <div className="brand-noise opacity-10" aria-hidden="true" />
+            <div className="relative space-y-4 text-right">
+              <h3 className="text-2xl font-black text-white drop-shadow-md transition-transform duration-300 group-hover:scale-105">כשהמרצים שלי הפכו לקהל שלי.</h3>
               <div className="mt-6 space-y-4">
-                <p className="text-base font-medium leading-relaxed text-white/90 text-glass-body">
+                <p className="text-base font-medium leading-relaxed text-white/90">
                   בקורונה נרשמתי ללמוד שיווק אצל גל ודימה. כשהם ביקשו שאנגן בחתונה שלהם, התהפכו היוצרות. זה כבר לא היה מבחן על הנייר, אלא מבחן על הרחבה.
                 </p>
-                <p className="text-base font-medium leading-relaxed text-white/90 text-glass-body">
+                <p className="text-base font-medium leading-relaxed text-white/90">
                   כשהם לא הפסיקו לרקוד, ידעתי שקיבלתי את הציון הסופי.
                 </p>
               </div>
             </div>
-            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-black/50 shadow-lg shadow-black/60">
-              <div className="brand-noise" aria-hidden="true" />
-              <Image src="/assets/almog/wedding-1.jpg" alt="החתונה של גל ודימה" fill className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-black/50 shadow-lg shadow-black/60 transition-all duration-500 group-hover:scale-[1.02] group-hover:shadow-xl">
+              <div className="brand-noise opacity-10" aria-hidden="true" />
+              <Image src="/assets/almog/wedding-1.jpg" alt="החתונה של גל ודימה" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
+              
+              {/* Photo label */}
+              <div className="absolute bottom-4 left-4 rounded-full border border-brand-green/40 bg-black/80 px-3 py-1 backdrop-blur-sm">
+                <span className="text-xs font-semibold text-brand-green">גל ודימה • 2020</span>
+              </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="glass-card relative grid grid-cols-1 gap-6 p-6 md:grid-cols-2 md:p-8">
-            <div className="glass-card-content relative space-y-4 text-right order-first md:order-last">
-              <h3 className="text-2xl font-black text-white drop-shadow-md">רגעים שהפכו למזכרת.</h3>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            whileHover={{ y: -4 }}
+            className="group relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-500 hover:border-brand-blue/30 hover:bg-white/10 hover:shadow-[0_20px_60px_rgba(5,156,192,0.2)] md:grid-cols-2 md:p-8"
+          >
+            {/* Top Gradient Border */}
+            <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-brand-blue via-cyan-400 to-brand-green opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            
+            {/* Side Color Indicator */}
+            <div className="absolute left-0 top-1/2 h-0 w-1.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-brand-blue via-cyan-400 to-brand-green shadow-lg shadow-brand-blue/50 transition-all duration-500 group-hover:h-40" />
+            
+            <div className="relative space-y-4 text-right order-first md:order-last">
+              <h3 className="text-2xl font-black text-white drop-shadow-md transition-transform duration-300 group-hover:scale-105">רגעים שהפכו למזכרת.</h3>
               <p className="text-sm font-medium text-white/95 drop-shadow-sm">גלריית תמונות מהרחבה</p>
             </div>
             <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:col-span-2">
@@ -144,7 +174,7 @@ export const HomeSections = () => {
                 </svg>
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -190,13 +220,32 @@ export const HomeSections = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="glass-card glass-card-content p-6 text-center hover:bg-white/5 transition-colors"
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-[0_16px_48px_rgba(255,255,255,0.1)]"
             >
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 border border-white/10 shadow-inner">
+              {/* Top Gradient Border */}
+              <div className={`absolute left-0 right-0 top-0 h-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
+                i === 0 ? 'bg-gradient-to-r from-brand-blue to-cyan-400' :
+                i === 1 ? 'bg-gradient-to-r from-brand-green to-emerald-400' :
+                'bg-gradient-to-r from-white to-gray-300'
+              }`} />
+              
+              {/* Side Color Indicator */}
+              <div className={`absolute right-0 top-1/2 h-0 w-1.5 -translate-y-1/2 rounded-l-full shadow-lg transition-all duration-500 group-hover:h-24 ${
+                i === 0 ? 'bg-gradient-to-b from-brand-blue to-cyan-400 shadow-brand-blue/50' :
+                i === 1 ? 'bg-gradient-to-b from-brand-green to-emerald-400 shadow-brand-green/50' :
+                'bg-gradient-to-b from-white to-gray-300 shadow-white/50'
+              }`} />
+              
+              <div className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border shadow-inner transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg ${
+                i === 0 ? 'bg-brand-blue/10 border-brand-blue/30 group-hover:shadow-brand-blue/30' :
+                i === 1 ? 'bg-brand-green/10 border-brand-green/30 group-hover:shadow-brand-green/30' :
+                'bg-white/10 border-white/30 group-hover:shadow-white/30'
+              }`}>
                 {item.icon}
               </div>
-              <h3 className="mb-2 text-xl font-black text-white drop-shadow-sm">{item.title}</h3>
-              <p className="text-white/80 font-medium leading-relaxed text-glass-body">{item.desc}</p>
+              <h3 className="mb-2 text-xl font-black text-white drop-shadow-sm transition-transform duration-300 group-hover:scale-105">{item.title}</h3>
+              <p className="text-white/80 font-medium leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -209,8 +258,20 @@ export const HomeSections = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="glass-card glass-card-content p-8 md:p-12 text-center bg-gradient-to-br from-cyan-900/20 via-blue-900/10 to-teal-900/20 border-2 border-cyan-500/30"
+          whileHover={{ scale: 1.01, y: -4 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          className="group relative overflow-hidden rounded-3xl border border-cyan-400/30 bg-gradient-to-br from-cyan-900/20 via-blue-900/10 to-teal-900/20 p-8 text-center backdrop-blur-xl transition-all duration-500 hover:border-cyan-400/60 hover:shadow-[0_30px_80px_rgba(0,188,212,0.3)] md:p-12"
         >
+          {/* Animated Glow Background */}
+          <div className="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-blue-500/0 opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-100" />
+          
+          {/* Top Gradient Border */}
+          <div className="absolute left-0 right-0 top-0 h-1.5 bg-gradient-to-r from-cyan-400 via-blue-400 to-teal-400 opacity-0 transition-opacity duration-400 group-hover:opacity-100" />
+          
+          {/* Side Indicators */}
+          <div className="absolute left-0 top-1/2 h-0 w-1.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-cyan-400 via-blue-400 to-teal-400 shadow-lg shadow-cyan-400/50 transition-all duration-600 group-hover:h-48" />
+          <div className="absolute right-0 top-1/2 h-0 w-1.5 -translate-y-1/2 rounded-l-full bg-gradient-to-b from-teal-400 via-blue-400 to-cyan-400 shadow-lg shadow-teal-400/50 transition-all duration-600 group-hover:h-48" />
+
           {/* Highlight Badge */}
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
@@ -282,7 +343,7 @@ export const HomeSections = () => {
             <SmoothScrollLink
               href="#chogeg-menagen"
               ariaLabel="מעבר לסקשן חוגג מנגן"
-              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-8 py-4 text-lg font-bold text-black shadow-[0_0_40px_-10px_rgba(3,178,140,0.6)] transition-all hover:scale-105 hover:shadow-[0_0_60px_-15px_rgba(3,178,140,0.8)]"
+              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-8 py-4 text-lg font-bold text-white shadow-[0_0_40px_-10px_rgba(3,178,140,0.6)] transition-all hover:scale-105 hover:shadow-[0_0_60px_-15px_rgba(3,178,140,0.8)]"
             >
               <span className="relative z-10">בואו לראות איך זה נראה</span>
               <motion.svg 
@@ -355,12 +416,17 @@ export const HomeSections = () => {
             whileHover={!isMobile ? { y: -8, scale: 1.02 } : {}}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ 
-              borderColor: isRaveMode ? "#03b28c" : "", 
-              boxShadow: isRaveMode ? "0 0 30px rgba(3, 178, 140, 0.4)" : "" 
-            }}
-            className="group glass-card glass-card-green glass-card-green-glow glass-card-green-corner p-5 md:p-8 text-right"
+            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 text-right backdrop-blur-xl transition-all duration-500 hover:border-brand-green/40 hover:bg-white/10 hover:shadow-[0_20px_60px_rgba(3,178,140,0.25)] md:p-8"
           >
+            {/* Glow effect */}
+            <div className="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-r from-brand-green/0 via-brand-green/10 to-brand-blue/0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
+            
+            {/* Top gradient border */}
+            <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-brand-green via-emerald-400 to-brand-blue opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            
+            {/* Color indicator line */}
+            <div className="absolute right-0 top-1/2 h-0 w-1.5 -translate-y-1/2 rounded-full bg-gradient-to-b from-brand-green via-emerald-400 to-brand-blue shadow-lg shadow-brand-green/50 transition-all duration-500 group-hover:h-32" />
+            
             <div className="relative">
               <motion.p 
                 initial={{ opacity: 0 }}
@@ -372,16 +438,16 @@ export const HomeSections = () => {
               </motion.p>
               <h3 className="mt-3 text-2xl font-black text-white md:text-3xl lg:text-4xl">באנו לחגוג</h3>
               <p className="mt-4 leading-relaxed text-white/85">
-                האירוע שלכם מתקרב ואתם מחפשים "ראש שקט". מישהו שיקרא את הקהל, יעיף את האנרגיות, ויתן לכם להיות אורחים באירוע של עצמכם.
+                האירוע שלכם מתקרב ואתם מחפשים "ראש שקט". מישהו שיקרא את הקהל, יעיף את האנרגיות, ויתן לכם להיות אורחים באירוע של עצמכם. 
+                התמחות ב<strong className="text-white">חתונות בוטיק</strong> ואפטר פארטי של <strong className="text-white">טכנו והאוס</strong>.
               </p>
               <div className="mt-6 flex justify-end">
                 <motion.div whileHover={!isMobile ? { scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
-                  <SmoothScrollLink
-                    href="#events-section"
-                    ariaLabel="גלילה לסקשן האירועים"
-                    className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 text-sm font-bold text-black shadow-[0_0_30px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_50px_rgba(3,178,140,0.9)]"
+                  <Link
+                    href="/weddings"
+                    className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 text-sm font-bold text-white shadow-[0_0_30px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_50px_rgba(3,178,140,0.9)]"
                   >
-                    <span className="relative z-10">בואו נרים אירוע ←</span>
+                    <span className="relative z-10">DJ לחתונות ואירועים ←</span>
                     <svg className="relative z-10 h-4 w-4 transition group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
@@ -392,7 +458,7 @@ export const HomeSections = () => {
                         className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
                       />
                     )}
-                  </SmoothScrollLink>
+                  </Link>
                 </motion.div>
               </div>
             </div>
@@ -406,12 +472,17 @@ export const HomeSections = () => {
             whileHover={!isMobile ? { y: -8, scale: 1.02 } : {}}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ 
-              borderColor: isRaveMode ? "#059cc0" : "", 
-              boxShadow: isRaveMode ? "0 0 30px rgba(5, 156, 192, 0.4)" : "" 
-            }}
-            className="group glass-card glass-card-glow glass-card-corner p-5 md:p-8 text-right"
+            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 text-right backdrop-blur-xl transition-all duration-500 hover:border-brand-blue/40 hover:bg-white/10 hover:shadow-[0_20px_60px_rgba(5,156,192,0.25)] md:p-8"
           >
+            {/* Glow effect */}
+            <div className="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-r from-brand-blue/0 via-brand-blue/10 to-brand-green/0 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
+            
+            {/* Top gradient border */}
+            <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-brand-blue via-cyan-400 to-brand-green opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            
+            {/* Color indicator line */}
+            <div className="absolute right-0 top-1/2 h-0 w-1.5 -translate-y-1/2 rounded-full bg-gradient-to-b from-brand-blue via-cyan-400 to-brand-green shadow-lg shadow-brand-blue/50 transition-all duration-500 group-hover:h-32" />
+            
             <div className="relative">
               <motion.p 
                 initial={{ opacity: 0 }}
@@ -423,20 +494,21 @@ export const HomeSections = () => {
               </motion.p>
               <h3 className="mt-3 text-2xl font-black text-white md:text-3xl lg:text-4xl">באתי ללמוד</h3>
               <p className="mt-4 leading-relaxed text-white/85">
-                החלום הוא לא רק לרקוד, אלא לשלוט בקצב. אם אתם רוצים להפוך את האהבה למוזיקה למקצוע אמיתי (ולא סתם חוג) – המקום שלכם איתי.
+                החלום הוא לא רק לרקוד, אלא לשלוט בקצב. אם אתם רוצים להפוך את האהבה למוזיקה למקצוע אמיתי (ולא סתם חוג) – הכירו את <strong className="text-brand-blue">Compakt Academy</strong>.
               </p>
               <div className="mt-6 flex justify-end">
                 <motion.div whileHover={!isMobile ? { scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
-                  <SmoothScrollLink
-                    href="#school-section"
-                    ariaLabel="גלילה לסקשן בית הספר והקורסים"
-                    className="glass-button group/btn relative inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-brand-blue transition"
+                  <Link
+                    href="/academy"
+                    className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-brand-blue/30 bg-brand-blue/10 px-6 py-3 text-sm font-bold text-brand-blue backdrop-blur-sm transition hover:border-brand-blue hover:bg-brand-blue/20 hover:shadow-[0_0_30px_rgba(5,156,192,0.3)]"
                   >
-                    <span className="relative z-10">לפרטים על הקורסים ←</span>
+                    <span className="relative z-10">גלו את Compakt Academy ←</span>
                     <svg className="relative z-10 h-4 w-4 transition group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
-                  </SmoothScrollLink>
+                    {/* Color indicator line */}
+                    <div className="absolute right-0 top-1/2 h-0 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-brand-blue to-brand-green transition-all duration-300 group-hover/btn:h-8" />
+                  </Link>
                 </motion.div>
               </div>
             </div>
@@ -691,7 +763,7 @@ export const HomeSections = () => {
               <div className="p-4">
                 <p className="text-xs text-brand-blue font-bold drop-shadow-sm">New Release</p>
                 <h3 className="mt-1 text-base font-semibold">Remix - הסוד שלי ממך</h3>
-                <p className="mt-2 text-xs text-white/70">רמיקס רשמי לשיר הקלאסי, בגרסת רחבות מחשמלת.</p>
+                <p className="mt-2 text-xs text-white/85">רמיקס רשמי לשיר הקלאסי, בגרסת רחבות מחשמלת.</p>
               </div>
             </a>
 
@@ -719,7 +791,7 @@ export const HomeSections = () => {
               <div className="p-4">
                 <p className="text-xs text-brand-blue/80">Mix Tape</p>
                 <h3 className="mt-1 text-base font-semibold">Mainstream Vol. 1</h3>
-                <p className="mt-2 text-xs text-white/70">אוסף להיטים ורגעים נבחרים במיקס אחד זורם.</p>
+                <p className="mt-2 text-xs text-white/85">אוסף להיטים ורגעים נבחרים במיקס אחד זורם.</p>
               </div>
             </a>
           </div>
@@ -810,15 +882,15 @@ export const HomeSections = () => {
             <div className="mb-8 grid grid-cols-1 gap-4 text-center sm:grid-cols-3 md:grid-cols-3">
               <div className="glass-panel px-4 py-3">
                 <div className="text-2xl font-bold text-brand-blue">10+</div>
-                <div className="text-xs text-white/60">שנים מלמד DJ&apos;ים</div>
+                <div className="text-xs text-foreground-secondary">שנים מלמד DJ&apos;ים</div>
               </div>
               <div className="glass-panel px-4 py-3">
                 <div className="text-2xl font-bold text-brand-blue">50+</div>
-                <div className="text-xs text-white/60">תלמידים הופיעו ברחבות</div>
+                <div className="text-xs text-foreground-secondary">תלמידים הופיעו ברחבות</div>
               </div>
               <div className="glass-panel px-4 py-3">
                 <div className="text-2xl font-bold text-brand-blue">100%</div>
-                <div className="text-xs text-white/60">ליווי אישי מותאם</div>
+                <div className="text-xs text-foreground-secondary">ליווי אישי מותאם</div>
               </div>
             </div>
 
@@ -830,7 +902,7 @@ export const HomeSections = () => {
                 className="glass-card glass-card-glow glass-card-corner p-6 text-center"
               >
                 <h3 className="mb-2 text-xl font-semibold">קורס מתחילים</h3>
-                <p className="mb-4 text-sm text-white/70">מאפס מוחלט ועד המיקס הראשון שלך. כל מה שצריך כדי להתחיל נכון.</p>
+                <p className="mb-4 text-sm text-white/85">מאפס מוחלט ועד המיקס הראשון שלך. כל מה שצריך כדי להתחיל נכון.</p>
                 <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
                 <TagsPills 
                   tags={['קורס DJ', 'לימודי תקלוט', 'ציוד DJ', 'מתחילים', 'איך להיות DJ', 'Pioneer DJ', 'Serato DJ', 'בית ספר DJ', 'קורס בתל אביב', 'DJ מאפס']}
@@ -844,7 +916,7 @@ export const HomeSections = () => {
                 className="glass-card glass-card-glow glass-card-corner p-6 text-center"
               >
                 <h3 className="mb-2 text-xl font-semibold">קורס מתקדמים</h3>
-                <p className="mb-4 text-sm text-white/70">טכניקות מתקדמות, בניית סט מקצועי והבנת דינמיקת רחבה.</p>
+                <p className="mb-4 text-sm text-white/85">טכניקות מתקדמות, בניית סט מקצועי והבנת דינמיקת רחבה.</p>
                 <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
                 <TagsPills 
                   tags={['טכניקות מיקס', 'בניית קריירה', 'מנטורינג DJ', 'הפקה', 'Harmonic mixing', 'קריאת קהל', 'שיווק לאמנים', 'מיתוג אישי', 'DJ מקצועי']}
@@ -858,7 +930,7 @@ export const HomeSections = () => {
                 className="glass-card glass-card-glow glass-card-corner p-6 text-center"
               >
                 <h3 className="mb-2 text-xl font-semibold">ליווי אישי</h3>
-                <p className="mb-4 text-sm text-white/70">Artist Development מלא - מיתוג, שיווק, הפקה ובניית קריירה.</p>
+                <p className="mb-4 text-sm text-white/85">Artist Development מלא - מיתוג, שיווק, הפקה ובניית קריירה.</p>
                 <a href={wa("היי, אשמח לפרטים על ליווי אישי")} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-blue hover:underline">קבע פגישת ייעוץ →</a>
               </motion.div>
             </div>
@@ -1119,15 +1191,18 @@ export const HomeSections = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="space-y-8 text-right"
+              className="relative z-10 space-y-8 text-right"
             >
               <motion.div
                 initial={{ scale: 0, rotate: -180 }}
                 whileInView={{ scale: 1, rotate: 0 }}
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 200, delay: 0.5 }}
-                className="inline-flex items-center gap-3 overflow-hidden rounded-full border border-brand-blue/40 bg-gradient-to-r from-brand-blue/15 to-brand-green/15 px-5 py-2 backdrop-blur-md"
+                whileHover={{ scale: 1.05 }}
+                className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-brand-blue/40 bg-gradient-to-r from-brand-blue/15 to-brand-green/15 px-5 py-2 backdrop-blur-md transition-all duration-300 hover:border-brand-blue/60 hover:shadow-[0_0_20px_rgba(5,156,192,0.3)]"
               >
+                {/* Side color indicator */}
+                <div className="absolute right-0 top-1/2 h-0 w-0.5 -translate-y-1/2 rounded-l-full bg-gradient-to-b from-brand-blue to-brand-green shadow-sm shadow-brand-blue/50 transition-all duration-300 group-hover:h-4" />
                 <motion.span 
                   animate={{ rotate: 360 }}
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
@@ -1194,7 +1269,7 @@ export const HomeSections = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 1.6 }}
-                className="text-xl leading-relaxed text-white/95"
+                className="relative z-10 text-xl leading-relaxed text-white/95"
               >
                 שמי{" "}
                 <span className="font-bold text-brand-green">
@@ -1249,11 +1324,11 @@ export const HomeSections = () => {
                       <div className={`text-4xl font-black ${
                         stat.color === "blue" ? "text-brand-blue" :
                         stat.color === "green" ? "text-brand-green" :
-                        "text-white"
+                        "text-foreground-heading"
                       }`}>
                         {stat.num}
                       </div>
-                      <div className="mt-1 text-xs font-medium text-white/70">{stat.label}</div>
+                      <div className="mt-1 text-xs font-medium text-foreground-secondary">{stat.label}</div>
                     </div>
                   </motion.div>
                 ))}
@@ -1264,10 +1339,11 @@ export const HomeSections = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 2.1, type: "spring" }}
+                className="relative z-10"
               >
                 <Link 
                   href="/about"
-                  className="group relative inline-flex items-center gap-4 overflow-hidden rounded-full bg-gradient-to-r from-brand-blue via-brand-green to-brand-blue px-10 py-5 text-xl font-black text-black shadow-[0_0_60px_rgba(3,178,140,0.6)] transition-all duration-500 hover:scale-105 hover:shadow-[0_0_80px_rgba(3,178,140,0.9)]"
+                  className="group relative inline-flex items-center gap-4 overflow-hidden rounded-full bg-gradient-to-r from-brand-blue via-brand-green to-brand-blue px-10 py-5 text-xl font-black text-white shadow-[0_0_60px_rgba(3,178,140,0.6)] transition-all duration-500 hover:scale-105 hover:shadow-[0_0_80px_rgba(3,178,140,0.9)]"
                   style={{ backgroundSize: '200% 200%' }}
                 >
                   <span className="relative z-10">הסיפור המלא שלי</span>
@@ -1299,22 +1375,22 @@ export const HomeSections = () => {
       <section id="faq" className="relative mx-auto w-full max-w-4xl px-4 pb-20">
         <button
           onClick={() => setFaqOpen(!faqOpen)}
-          className="group w-full rounded-2xl border border-white/10 bg-black/40 px-6 py-5 text-right backdrop-blur-sm transition hover:border-white/20 hover:bg-black/50"
+          className="group w-full rounded-2xl border border-border bg-background/40 px-6 py-5 text-right backdrop-blur-sm transition hover:border-border hover:bg-background/50"
           aria-expanded={faqOpen}
           aria-controls="faq-content"
         >
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.25em] text-white/50">FAQ</p>
-              <h2 className="text-xl font-bold md:text-2xl">שאלות נפוצות – לפני שסוגרים תאריך</h2>
-              <p className="mt-2 text-sm text-white/60">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.25em] text-foreground-secondary">FAQ</p>
+              <h2 className="text-xl font-bold text-foreground-heading md:text-2xl">שאלות נפוצות – לפני שסוגרים תאריך</h2>
+              <p className="mt-2 text-sm text-foreground-secondary">
                 8 שאלות שתעזרנה לכם להחליט • לחצו להרחבה
               </p>
             </div>
             <motion.div
               animate={{ rotate: faqOpen ? 180 : 0 }}
               transition={{ duration: 0.3 }}
-              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/10 text-white"
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-background/10 text-foreground"
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -1333,7 +1409,7 @@ export const HomeSections = () => {
           transition={{ duration: 0.4, ease: "easeInOut" }}
           className="overflow-hidden"
         >
-          <div className="mt-4 divide-y divide-white/10 rounded-2xl border border-white/10 bg-black/40">
+          <div className="mt-4 divide-y divide-border rounded-2xl border border-border bg-background/40">
           {[
             {
               q: "איך אנחנו בוחרים את המוזיקה לאירוע?",
@@ -1376,14 +1452,14 @@ export const HomeSections = () => {
                 key={item.q}
                 type="button"
                 onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                className="w-full text-right transition-colors hover:bg-white/5"
+                className="w-full text-right transition-colors hover:bg-background/5"
               >
                 <div className="flex items-center justify-between px-5 py-4">
                   <div className="flex-1">
-                    <h3 className="text-sm font-semibold md:text-base">{item.q}</h3>
-                    {isOpen && <p className="mt-2 text-xs text-white/75 md:text-sm">{item.a}</p>}
+                    <h3 className="text-sm font-semibold text-foreground-heading md:text-base">{item.q}</h3>
+                    {isOpen && <p className="mt-2 text-xs text-foreground-secondary md:text-sm">{item.a}</p>}
                   </div>
-                  <div className="ml-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/5">
+                  <div className="ml-3 flex h-8 w-8 items-center justify-center rounded-full bg-background/5 text-foreground">
                     <span className={`inline-block text-xs transition-transform ${isOpen ? "rotate-180" : ""}`}>
                       ˅
                     </span>
@@ -1394,7 +1470,7 @@ export const HomeSections = () => {
           })}
           </div>
           <div className="mt-6 flex flex-col items-center gap-3 px-2 pb-2 text-center">
-            <p className="text-xs text-white/70 md:text-sm">
+            <p className="text-xs text-foreground-secondary md:text-sm">
               עברנו על השאלות? אם זה מרגיש מתאים, בואו נבדוק ביחד תאריך פנוי.
             </p>
             <motion.a
@@ -1442,35 +1518,90 @@ export const HomeSections = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="relative"
+          className="relative group"
         >
-          <div className="relative overflow-hidden rounded-3xl border-2 border-white/10 bg-gradient-to-br from-black/90 via-black/70 to-brand-blue/20 p-12 text-center shadow-2xl backdrop-blur-xl md:p-16">
-            {!isMobile && (
-              <div className="absolute -inset-2 -z-10 rounded-3xl bg-gradient-to-r from-brand-green/30 via-brand-blue/30 to-brand-green/30 opacity-50 blur-2xl" />
-            )}
+          {/* Gradient Glow Background */}
+          {!isMobile && (
+            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-r from-brand-green/20 via-brand-blue/20 to-brand-green/20 opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
+          )}
+          
+          {/* Main Card */}
+          <div className="relative overflow-hidden rounded-3xl border-2 border-border bg-background/80 p-8 text-center shadow-2xl backdrop-blur-2xl md:p-16">
             
-            <div className="brand-noise opacity-20" aria-hidden="true" />
+            {/* Top Gradient Border - Always Visible */}
+            <div className="absolute left-0 right-0 top-0 h-2 bg-gradient-to-r from-brand-green via-emerald-400 via-brand-blue to-brand-green opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
+            
+            {/* Side Indicators - Always Visible */}
+            <div className="absolute left-0 top-1/2 h-40 w-2 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-brand-green via-emerald-400 to-brand-blue shadow-lg shadow-brand-green/50 transition-all duration-500 group-hover:h-64" />
+            <div className="absolute right-0 top-1/2 h-40 w-2 -translate-y-1/2 rounded-l-full bg-gradient-to-b from-brand-blue via-cyan-400 to-brand-green shadow-lg shadow-brand-blue/50 transition-all duration-500 group-hover:h-64" />
+            
+            {/* Noise Overlay */}
+            <div className="brand-noise pointer-events-none absolute inset-0 opacity-20" aria-hidden="true" />
+            
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-brand-green/30 bg-brand-green/10 px-6 py-2 backdrop-blur-sm"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-green opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-green" />
+              </span>
+              <span className="text-sm font-bold uppercase tracking-wider text-brand-green">זמין עכשיו</span>
+            </motion.div>
             
             <div className="relative">
+              {/* Main Headline */}
               <motion.h2 
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="mb-6 bg-gradient-to-l from-brand-green via-white to-brand-blue bg-clip-text text-4xl font-bold text-transparent md:text-6xl"
+                className="mb-4 text-4xl font-black leading-tight text-foreground-heading md:text-6xl md:leading-tight"
+                style={{ fontWeight: 900 }}
               >
-                תפסיקו לגלול. מצאתם.
+                תפסיקו לגלול.
+                <br />
+                <span className="bg-gradient-to-l from-brand-green via-emerald-400 to-brand-blue bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(3,178,140,0.3)]">
+                  מצאתם.
+                </span>
               </motion.h2>
               
+              {/* Description */}
               <motion.p 
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="mx-auto mb-10 max-w-3xl text-lg leading-relaxed text-white/95 md:text-xl md:leading-relaxed"
+                className="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-foreground-secondary md:text-lg md:leading-relaxed"
               >
-                אני זמין לשאלות, להתייעצויות, או סתם כדי להבין אם יש בינינו קליק. בלי התחייבות, ובלי לחץ. פשוט דברו איתי.
+                אני זמין לשאלות, להתייעצויות, או סתם כדי להבין אם יש בינינו קליק.
+                <br />
+                <strong className="text-foreground">בלי התחייבות, ובלי לחץ. פשוט דברו איתי.</strong>
               </motion.p>
+
+              {/* Trust Indicators */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="mb-10 flex flex-wrap items-center justify-center gap-6"
+              >
+                {[
+                  { icon: "⚡", text: "תשובה תוך דקות" },
+                  { icon: "🎯", text: "ייעוץ ללא עלות" },
+                  { icon: "✨", text: "אפס התחייבות" },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <span className="text-2xl">{item.icon}</span>
+                    <span className="text-xs font-medium text-foreground-secondary md:text-sm">{item.text}</span>
+                  </div>
+                ))}
+              </motion.div>
               
+              {/* CTA Button */}
               <motion.a
                 href={wa("שלום אלמוג, אשמח לבדוק זמינות לאירוע שלי")}
                 target="_blank"
@@ -1479,27 +1610,47 @@ export const HomeSections = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                whileHover={!isMobile ? { scale: 1.05 } : {}}
+                whileHover={!isMobile ? { scale: 1.05, y: -2 } : {}}
                 whileTap={{ scale: 0.95 }}
-                className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-10 py-5 text-lg font-bold text-black shadow-[0_0_50px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_80px_rgba(3,178,140,1)]"
+                className="group/btn relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green via-emerald-500 to-brand-blue px-12 py-6 text-lg font-bold text-white shadow-[0_0_50px_rgba(3,178,140,0.6)] transition-all duration-300 hover:shadow-[0_0_80px_rgba(3,178,140,1)] md:text-xl"
               >
-                <span className="relative z-20 drop-shadow-sm">לבדיקת זמינות ב-WhatsApp</span>
-                <svg 
-                  className="relative z-20 h-6 w-6 drop-shadow-sm"
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+                {/* Shimmer Effect */}
                 {!isMobile && (
                   <motion.div
                     animate={{ x: ["-200%", "200%"] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                    className="absolute inset-0 z-10 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear", repeatDelay: 1 }}
+                    className="absolute inset-0 z-10 w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
                   />
                 )}
+                
+                {/* WhatsApp Icon */}
+                <span className="relative z-20">
+                  <svg className="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                </span>
+                
+                <span className="relative z-20 flex items-center gap-2">
+                  בדיקת זמינות ב-WhatsApp
+                  <motion.span
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    ←
+                  </motion.span>
+                </span>
               </motion.a>
+
+              {/* Bottom Text */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                className="mt-6 text-xs text-foreground-secondary"
+              >
+                💬 תשובה מהירה בדרך כלל תוך 5-10 דקות
+              </motion.p>
             </div>
           </div>
         </motion.div>

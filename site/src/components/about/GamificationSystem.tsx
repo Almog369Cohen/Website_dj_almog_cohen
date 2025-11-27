@@ -199,7 +199,7 @@ export default function GamificationSystem({
                     <span className="text-lg">{ach.icon}</span>
                     <div className="flex-1">
                       <p className="text-xs font-semibold text-white">{ach.title}</p>
-                      <p className="text-xs text-white/60">{ach.description}</p>
+                      <p className="text-xs text-white/80">{ach.description}</p>
                       {!ach.unlocked && ach.total > 1 && (
                         <div className="mt-1 h-1 overflow-hidden rounded-full bg-white/10">
                           <div
@@ -232,7 +232,7 @@ export default function GamificationSystem({
                 <div className="text-right">
                   <p className="text-xs font-semibold uppercase tracking-wider text-brand-green">הישג חדש!</p>
                   <p className="text-lg font-bold text-white">{newUnlock.title}</p>
-                  <p className="text-sm text-white/70">{newUnlock.description}</p>
+                  <p className="text-sm text-white/85">{newUnlock.description}</p>
                 </div>
               </div>
             </div>

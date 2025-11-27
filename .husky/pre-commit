@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 🎨 Contrast Checker - Pre-commit Hook
+echo "🔍 Checking for contrast issues..."
+
+# Run contrast check script
+if [ -f "./check-contrast.sh" ]; then
+    ./check-contrast.sh > /tmp/contrast-check.log 2>&1
+    
+    # Check if there are critical issues (text-black on gradients)
+    if grep -q "text-black" /tmp/contrast-check.log; then
+        echo ""
+        echo "❌ COMMIT BLOCKED: Critical contrast issues found!"
+        echo ""
+        echo "Found text-black on dark backgrounds - this will cause readability issues."
+        echo "Please fix these issues before committing."
+        echo ""
+        echo "Run ./check-contrast.sh to see all issues."
+        echo "See CONTRAST_RULES.md for guidelines."
+        echo ""
+        exit 1
+    fi
+    
+    echo "✅ Contrast check passed!"
+else
+    echo "⚠️  Warning: check-contrast.sh not found, skipping contrast check"
+fi
+
+# Continue with other pre-commit hooks
+# npm run lint

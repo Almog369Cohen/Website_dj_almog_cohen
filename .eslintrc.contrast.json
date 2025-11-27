@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "JSXAttribute[name.name='className'][value.value=/text-black/]",
+        "message": "⚠️ CONTRAST ISSUE: Avoid 'text-black' on dark backgrounds. Use 'text-white' or 'text-foreground' instead. See CONTRAST_RULES.md"
+      },
+      {
+        "selector": "JSXAttribute[name.name='className'][value.value=/text-white\\/[1-5]0/]",
+        "message": "⚠️ CONTRAST ISSUE: text-white/10-50 has poor contrast. Use text-white/75+ for better readability. See CONTRAST_RULES.md"
+      },
+      {
+        "selector": "JSXAttribute[name.name='className'][value.value=/placeholder-white\\/[1-5]0/]",
+        "message": "⚠️ CONTRAST ISSUE: placeholder-white/10-50 has poor contrast. Use placeholder:text-white/60+ instead. See CONTRAST_RULES.md"
+      }
+    ]
+  }
+}

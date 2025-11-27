@@ -14,9 +14,9 @@ export default function ProGearBehindTheScenesPage() {
   );
 
   return (
-    <div className="bg-brand-dark text-brand-white">
+    <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 md:py-16">
-        <nav className="text-sm text-white/60" aria-label="breadcrumb">
+        <nav className="text-sm text-foreground-secondary" aria-label="breadcrumb">
           <ol className="flex flex-wrap gap-1">
             <li>
               <Link href="/" className="hover:text-brand-blue">
@@ -30,7 +30,7 @@ export default function ProGearBehindTheScenesPage() {
               </Link>
               <span className="mx-1">/</span>
             </li>
-            <li className="text-white">מאחורי הקלעים: הציוד המקצועי</li>
+            <li className="text-foreground-heading">מאחורי הקלעים: הציוד המקצועי</li>
           </ol>
         </nav>
 
@@ -38,16 +38,16 @@ export default function ProGearBehindTheScenesPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-blue/80">
             מאחורי הקלעים
           </p>
-          <h1 className="text-2xl font-bold leading-tight sm:text-3xl md:text-4xl">
+          <h1 className="text-2xl font-bold leading-tight text-foreground-heading sm:text-3xl md:text-4xl">
             מאחורי הקלעים: הציוד המקצועי שמשדרג כל אירוע
           </h1>
-          <p className="text-sm text-white/70 md:text-base">
+          <p className="text-sm text-foreground-secondary md:text-base">
             DJ מוביל הוא לא רק טעם מוזיקלי. הוא גם מהנדס סאונד קטן. הציוד הנכון משפיע ישירות
             על איכות הסאונד, האווירה והביטחון שלכם באירוע.
           </p>
-          <div className="flex flex-wrap items-center gap-3 text-xs text-white/60">
-            <span className="rounded-full border border-white/10 px-3 py-1">קטגוריה: ציוד</span>
-            <span className="rounded-full border border-white/10 px-3 py-1">זמן קריאה: ~7 דקות</span>
+          <div className="flex flex-wrap items-center gap-3 text-xs text-foreground-secondary">
+            <span className="rounded-full border border-border px-3 py-1">קטגוריה: ציוד</span>
+            <span className="rounded-full border border-border px-3 py-1">זמן קריאה: ~7 דקות</span>
           </div>
         </header>
 
@@ -123,7 +123,7 @@ export default function ProGearBehindTheScenesPage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/rental"
-              className="rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-black hover:opacity-90"
+              className="rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
             >
               לפרטים על השכרת ציוד
             </Link>

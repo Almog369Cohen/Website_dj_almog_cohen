@@ -1,0 +1,375 @@
+{
+  "date": "2025-11-26T22:46:54.448Z",
+  "summary": {
+    "total": 22,
+    "checked": 22,
+    "withIssues": 20,
+    "critical": 0,
+    "warnings": 20
+  },
+  "results": [
+    {
+      "page": "/events",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 5,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "bg-[#059cc0]",
+            "bg-[#03b28c]",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/events/weddings-dj",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 3,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "bg-[#059cc0]",
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/events/bar-mitzvah-dj",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 2,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/events/bat-mitzvah-dj",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 2,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/events/henna-dj",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 2,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/events/corporate-events",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 2,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/events/chogeg-menagen",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 2,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/events/live-on-dj",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 2,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/academy",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 9,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "bg-[#059cc0]",
+            "bg-[#03b28c]",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/academy/dj-course",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 5,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "bg-[#ffaa00]",
+            "text-[#ffaa00]"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/academy/groom-dj",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 3,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/academy/premium",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 32,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "bg-[#ffaa00]",
+            "bg-[#059cc0]",
+            "text-[#ffaa00]"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/blog",
+      "found": true,
+      "issuesCount": 0,
+      "issues": []
+    },
+    {
+      "page": "/blog/how-to-choose-wedding-dj",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 3,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/blog/chuppah-20-songs",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 5,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/blog/dj-course-5-mistakes",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 2,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/blog/dj-or-band-guide",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 7,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/blog/pro-gear-behind-the-scenes",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 2,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/music",
+      "found": true,
+      "issuesCount": 0,
+      "issues": []
+    },
+    {
+      "page": "/contact",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 2,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/about",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 3,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "text-white",
+            "bg-black",
+            "text-white"
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/services",
+      "found": true,
+      "issuesCount": 1,
+      "issues": [
+        {
+          "type": "hardcodedColors",
+          "severity": "warning",
+          "count": 25,
+          "message": "צבע hardcoded שעלול לגרום לבעיות במעבר בין modes",
+          "examples": [
+            "bg-black",
+            "text-white",
+            "text-white"
+          ]
+        }
+      ]
+    }
+  ]
+}

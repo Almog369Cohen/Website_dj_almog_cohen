@@ -117,7 +117,7 @@ const CinematicPreloader = () => {
 
         {/* Loading Text */}
         <motion.p
-          className="mt-6 text-sm font-light tracking-widest text-white/60"
+          className="mt-6 text-sm font-light tracking-widest text-white/80"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}

@@ -126,7 +126,7 @@ export default function ChogegMenagenPage() {
             הקונספט שהופך את <span className="text-brand-green">בעלי השמחה</span> ל<span className="text-brand-blue">כוכבי הערב</span>
           </p>
 
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-white/70">
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-white/85">
             זה לא עוד אירוע שבו אתם רק צופים. זה הרגע שבו אתם עולים לעמדה, שולטים במוזיקה, ויוצרים זיכרון שהאורחים לא ישכחו.
           </p>
 
@@ -136,7 +136,7 @@ export default function ChogegMenagenPage() {
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
-              className="group relative overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-10 py-4 text-lg font-bold text-black shadow-[0_0_40px_rgba(3,178,140,0.6)]"
+              className="group relative overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-10 py-4 text-lg font-bold text-white shadow-[0_0_40px_rgba(3,178,140,0.6)]"
             >
               <span className="relative z-10">בואו נדבר</span>
               <div className="absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover:translate-x-[100%]" />
@@ -159,7 +159,7 @@ export default function ChogegMenagenPage() {
                 <Image src="/assets/almog/hero-poster.jpg" alt="תכנון" fill className="object-cover" />
               </div>
               <div className="space-y-4 text-right">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-blue text-2xl font-bold text-black">1</div>
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-blue text-2xl font-bold text-white">1</div>
                 <h3 className="text-3xl font-bold text-brand-green">תכנון מותאם אישית</h3>
                 <p className="text-lg text-white/80">נפגשים מראש ומתכננים את הרגע המושלם. בוחרים יחד את השיר, הטיימינג, והסגנון.</p>
               </div>
@@ -168,7 +168,7 @@ export default function ChogegMenagenPage() {
             {/* שלב 2 - תמונה 3: בעל שמחה על העמדה */}
             <div className="grid gap-8 md:grid-cols-2 md:items-center">
               <div className="order-2 space-y-4 text-right md:order-1">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-blue to-brand-green text-2xl font-bold text-black">2</div>
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-blue to-brand-green text-2xl font-bold text-white">2</div>
                 <h3 className="text-3xl font-bold text-brand-blue">הרגע הגדול</h3>
                 <p className="text-lg text-white/80">ברגע הנכון, אתם עולים לעמדה. האורחים רואים, הקהל מתלהב, והאנרגיה עולה.</p>
               </div>
@@ -185,7 +185,7 @@ export default function ChogegMenagenPage() {
                 <Image src="/assets/almog/hero-poster.jpg" alt="זיכרון" fill className="object-cover" />
               </div>
               <div className="space-y-4 text-right">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-blue text-2xl font-bold text-black">3</div>
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-blue text-2xl font-bold text-white">3</div>
                 <h3 className="text-3xl font-bold text-brand-green">זיכרון לכל החיים</h3>
                 <p className="text-lg text-white/80">הקטע מצולם, נשמר, ומשותף ברשתות. אתם נשארים עם הסיפור: "תיקלטנו בחתונה שלנו".</p>
               </div>
@@ -228,7 +228,7 @@ export default function ChogegMenagenPage() {
                 </svg>
               </motion.div>
               <h3 className="mb-3 text-xl font-bold text-brand-green">חוויה אישית</h3>
-              <p className="text-white/70">האורחים רואים אתכם במרכז ומרגישים שזה באמת הערב שלכם</p>
+              <p className="text-white/85">האורחים רואים אתכם במרכז ומרגישים שזה באמת הערב שלכם</p>
             </motion.div>
             </TiltCard>
 
@@ -248,7 +248,7 @@ export default function ChogegMenagenPage() {
                 </svg>
               </motion.div>
               <h3 className="mb-3 text-xl font-bold text-brand-blue">רגע וירלי</h3>
-              <p className="text-white/70">תיעוד שמעלה את האווירה ברשתות ומייצר זיכרון דיגיטלי</p>
+              <p className="text-white/85">תיעוד שמעלה את האווירה ברשתות ומייצר זיכרון דיגיטלי</p>
             </motion.div>
             </TiltCard>
 
@@ -268,7 +268,7 @@ export default function ChogegMenagenPage() {
                 </svg>
               </motion.div>
               <h3 className="mb-3 text-xl font-bold text-brand-green">סיפור ייחודי</h3>
-              <p className="text-white/70">זה האירוע שכולם יזכרו ויספרו עליו</p>
+              <p className="text-white/85">זה האירוע שכולם יזכרו ויספרו עליו</p>
             </motion.div>
             </TiltCard>
           </div>
@@ -283,7 +283,7 @@ export default function ChogegMenagenPage() {
             <Image src="/assets/almog/hero-poster.jpg" alt="וידאו" fill className="object-cover" />
             <div className="absolute inset-0 flex items-center justify-center bg-black/60">
               <motion.div whileHover={{ scale: 1.2 }} className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-brand-green to-brand-blue">
-                <svg className="h-12 w-12 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                <svg className="h-12 w-12 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
               </motion.div>
             </div>
           </div>
@@ -328,7 +328,7 @@ export default function ChogegMenagenPage() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-12 py-5 text-xl font-bold text-black shadow-[0_0_50px_rgba(3,178,140,0.7)]"
+              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-12 py-5 text-xl font-bold text-white shadow-[0_0_50px_rgba(3,178,140,0.7)]"
             >
               <span className="relative z-10">בואו נדבר על חוגג מנגן</span>
               <svg className="relative z-10 h-6 w-6 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בדיקת ניגודיות אוטומטית - DJ Almog Cohen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+      direction: rtl;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #0a2540;
+      border-bottom: 3px solid #059cc0;
+      padding-bottom: 10px;
+    }
+    .controls {
+      margin: 20px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    button {
+      background: #059cc0;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #03b28c;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .status {
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .status.running {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+    .status.complete {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .results {
+      margin-top: 30px;
+    }
+    .page-result {
+      margin: 15px 0;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+    }
+    .page-result.pass {
+      background: #d4edda;
+      border-color: #28a745;
+    }
+    .page-result.warning {
+      background: #fff3cd;
+      border-color: #ffc107;
+    }
+    .page-result.fail {
+      background: #f8d7da;
+      border-color: #dc3545;
+    }
+    .page-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .issue {
+      margin: 8px 0;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .issue.critical {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .issue.warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .summary-card {
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .summary-card.total {
+      background: #e3f2fd;
+      color: #0d47a1;
+    }
+    .summary-card.pass {
+      background: #d4edda;
+      color: #155724;
+    }
+    .summary-card.warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .summary-card.fail {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .summary-number {
+      font-size: 36px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .progress {
+      width: 100%;
+      height: 30px;
+      background: #e0e0e0;
+      border-radius: 15px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #059cc0, #03b28c);
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 בדיקת ניגודיות אוטומטית - Dark & Light Mode</h1>
+    
+    <div class="controls">
+      <h3>בקרות בדיקה:</h3>
+      <button id="startTest" onclick="startTest()">▶️ התחל בדיקה</button>
+      <button id="stopTest" onclick="stopTest()" disabled>⏹️ עצור בדיקה</button>
+      <button onclick="exportResults()">📥 ייצא תוצאות</button>
+      <button onclick="clearResults()">🗑️ נקה תוצאות</button>
+    </div>
+
+    <div id="status"></div>
+    
+    <div class="progress" id="progressContainer" style="display:none;">
+      <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+
+    <div id="summary"></div>
+    <div id="results" class="results"></div>
+  </div>
+
+  <script>
+    // רשימת כל הדפים לבדיקה
+    const pagesToTest = [
+      { path: '/events', name: 'Events - Main' },
+      { path: '/events/weddings-dj', name: 'Events - Weddings DJ' },
+      { path: '/events/bar-mitzvah-dj', name: 'Events - Bar Mitzvah DJ' },
+      { path: '/events/bat-mitzvah-dj', name: 'Events - Bat Mitzvah DJ' },
+      { path: '/events/henna-dj', name: 'Events - Henna DJ' },
+      { path: '/events/corporate-events', name: 'Events - Corporate' },
+      { path: '/events/chogeg-menagen', name: 'Events - Chogeg Menagen' },
+      { path: '/events/live-on-dj', name: 'Events - Live On DJ' },
+      { path: '/academy', name: 'Academy - Main' },
+      { path: '/academy/dj-course', name: 'Academy - DJ Course' },
+      { path: '/academy/groom-dj', name: 'Academy - Groom DJ' },
+      { path: '/academy/premium', name: 'Academy - Premium' },
+      { path: '/blog', name: 'Blog - Main' },
+      { path: '/blog/how-to-choose-wedding-dj', name: 'Blog - Choose DJ' },
+      { path: '/blog/chuppah-20-songs', name: 'Blog - Chuppah Songs' },
+      { path: '/blog/dj-course-5-mistakes', name: 'Blog - DJ Mistakes' },
+      { path: '/blog/dj-or-band-guide', name: 'Blog - DJ or Band' },
+      { path: '/blog/pro-gear-behind-the-scenes', name: 'Blog - Pro Gear' },
+      { path: '/music', name: 'Music' },
+      { path: '/contact', name: 'Contact' },
+      { path: '/about', name: 'About' },
+      { path: '/services', name: 'Services - Main' },
+    ];
+
+    let testResults = [];
+    let isRunning = false;
+    let currentTestIndex = 0;
+
+    function calculateContrast(rgb1, rgb2) {
+      const luminance = (r, g, b) => {
+        const [rs, gs, bs] = [r, g, b].map(c => {
+          c = c / 255;
+          return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+        });
+        return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+      };
+
+      const parseRgb = (rgb) => {
+        const match = rgb.match(/\d+/g);
+        return match ? match.map(Number) : [0, 0, 0];
+      };
+
+      const [r1, g1, b1] = parseRgb(rgb1);
+      const [r2, g2, b2] = parseRgb(rgb2);
+
+      const lum1 = luminance(r1, g1, b1);
+      const lum2 = luminance(r2, g2, b2);
+
+      const brightest = Math.max(lum1, lum2);
+      const darkest = Math.min(lum1, lum2);
+
+      return (brightest + 0.05) / (darkest + 0.05);
+    }
+
+    async function testPage(pageUrl, mode) {
+      return new Promise((resolve) => {
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = pageUrl;
+        
+        iframe.onload = () => {
+          try {
+            const doc = iframe.contentDocument;
+            const html = doc.documentElement;
+            
+            // Set theme
+            html.classList.remove('light', 'dark');
+            html.classList.add(mode);
+            
+            // Wait for theme to apply
+            setTimeout(() => {
+              const issues = [];
+              
+              // Check all text elements
+              const textElements = doc.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, li, button, label');
+              
+              textElements.forEach((el, index) => {
+                if (index > 100) return; // Limit to first 100 elements
+                
+                const styles = window.getComputedStyle(el);
+                const color = styles.color;
+                const bgColor = styles.backgroundColor;
+                const text = el.textContent.trim();
+                
+                if (!text || text.length < 2) return;
+                
+                // Calculate contrast
+                const contrast = calculateContrast(color, bgColor);
+                
+                // WCAG AA requires 4.5:1 for normal text, 3:1 for large text
+                const fontSize = parseFloat(styles.fontSize);
+                const isLargeText = fontSize >= 18 || (fontSize >= 14 && styles.fontWeight >= 700);
+                const minContrast = isLargeText ? 3 : 4.5;
+                
+                if (contrast < minContrast) {
+                  issues.push({
+                    type: contrast < 2 ? 'critical' : 'warning',
+                    element: el.tagName,
+                    text: text.substring(0, 50),
+                    contrast: contrast.toFixed(2),
+                    required: minContrast,
+                    color: color,
+                    bgColor: bgColor
+                  });
+                }
+              });
+              
+              document.body.removeChild(iframe);
+              resolve({ mode, issues });
+            }, 1000);
+          } catch (error) {
+            document.body.removeChild(iframe);
+            resolve({ mode, issues: [{ type: 'critical', text: `Error: ${error.message}` }] });
+          }
+        };
+        
+        iframe.onerror = () => {
+          document.body.removeChild(iframe);
+          resolve({ mode, issues: [{ type: 'critical', text: 'Failed to load page' }] });
+        };
+        
+        document.body.appendChild(iframe);
+      });
+    }
+
+    async function startTest() {
+      isRunning = true;
+      testResults = [];
+      currentTestIndex = 0;
+      
+      document.getElementById('startTest').disabled = true;
+      document.getElementById('stopTest').disabled = false;
+      document.getElementById('progressContainer').style.display = 'block';
+      document.getElementById('results').innerHTML = '';
+      document.getElementById('summary').innerHTML = '';
+      
+      updateStatus('running', '🔄 בודק דפים...');
+      
+      for (let i = 0; i < pagesToTest.length && isRunning; i++) {
+        currentTestIndex = i;
+        const page = pagesToTest[i];
+        
+        updateProgress((i / pagesToTest.length) * 100, `בודק: ${page.name}`);
+        
+        const darkResult = await testPage(page.path, 'dark');
+        const lightResult = await testPage(page.path, 'light');
+        
+        const result = {
+          page: page.name,
+          path: page.path,
+          dark: darkResult,
+          light: lightResult,
+          status: determineStatus(darkResult, lightResult)
+        };
+        
+        testResults.push(result);
+        displayResult(result);
+      }
+      
+      if (isRunning) {
+        updateProgress(100, 'הבדיקה הושלמה!');
+        updateStatus('complete', '✅ הבדיקה הושלמה בהצלחה!');
+        displaySummary();
+      }
+      
+      document.getElementById('startTest').disabled = false;
+      document.getElementById('stopTest').disabled = true;
+    }
+
+    function determineStatus(darkResult, lightResult) {
+      const totalIssues = darkResult.issues.length + lightResult.issues.length;
+      const criticalIssues = [...darkResult.issues, ...lightResult.issues].filter(i => i.type === 'critical').length;
+      
+      if (criticalIssues > 0) return 'fail';
+      if (totalIssues > 5) return 'warning';
+      return 'pass';
+    }
+
+    function stopTest() {
+      isRunning = false;
+      updateStatus('complete', '⏹️ הבדיקה הופסקה');
+      document.getElementById('stopTest').disabled = true;
+      document.getElementById('startTest').disabled = false;
+    }
+
+    function updateStatus(type, message) {
+      const statusEl = document.getElementById('status');
+      statusEl.className = `status ${type}`;
+      statusEl.textContent = message;
+    }
+
+    function updateProgress(percent, message) {
+      const progressBar = document.getElementById('progressBar');
+      progressBar.style.width = percent + '%';
+      progressBar.textContent = `${Math.round(percent)}% - ${message}`;
+    }
+
+    function displayResult(result) {
+      const resultsEl = document.getElementById('results');
+      const resultDiv = document.createElement('div');
+      resultDiv.className = `page-result ${result.status}`;
+      
+      const statusEmoji = {
+        pass: '✅',
+        warning: '⚠️',
+        fail: '❌'
+      };
+      
+      let html = `
+        <div class="page-title">${statusEmoji[result.status]} ${result.page}</div>
+      `;
+      
+      // Dark mode issues
+      if (result.dark.issues.length > 0) {
+        html += `<strong>🌙 Dark Mode:</strong><br>`;
+        result.dark.issues.slice(0, 5).forEach(issue => {
+          html += `<div class="issue ${issue.type}">
+            ${issue.element}: "${issue.text}" - ניגודיות: ${issue.contrast} (נדרש: ${issue.required})
+          </div>`;
+        });
+        if (result.dark.issues.length > 5) {
+          html += `<div class="issue">+ ${result.dark.issues.length - 5} בעיות נוספות</div>`;
+        }
+      } else {
+        html += `<div>🌙 Dark Mode: ✅ תקין</div>`;
+      }
+      
+      // Light mode issues
+      if (result.light.issues.length > 0) {
+        html += `<strong>☀️ Light Mode:</strong><br>`;
+        result.light.issues.slice(0, 5).forEach(issue => {
+          html += `<div class="issue ${issue.type}">
+            ${issue.element}: "${issue.text}" - ניגודיות: ${issue.contrast} (נדרש: ${issue.required})
+          </div>`;
+        });
+        if (result.light.issues.length > 5) {
+          html += `<div class="issue">+ ${result.light.issues.length - 5} בעיות נוספות</div>`;
+        }
+      } else {
+        html += `<div>☀️ Light Mode: ✅ תקין</div>`;
+      }
+      
+      resultDiv.innerHTML = html;
+      resultsEl.appendChild(resultDiv);
+    }
+
+    function displaySummary() {
+      const total = testResults.length;
+      const passed = testResults.filter(r => r.status === 'pass').length;
+      const warnings = testResults.filter(r => r.status === 'warning').length;
+      const failed = testResults.filter(r => r.status === 'fail').length;
+      
+      const summaryEl = document.getElementById('summary');
+      summaryEl.innerHTML = `
+        <h2>📊 סיכום תוצאות</h2>
+        <div class="summary">
+          <div class="summary-card total">
+            <div>סה"כ דפים</div>
+            <div class="summary-number">${total}</div>
+          </div>
+          <div class="summary-card pass">
+            <div>✅ תקין</div>
+            <div class="summary-number">${passed}</div>
+          </div>
+          <div class="summary-card warning">
+            <div>⚠️ אזהרות</div>
+            <div class="summary-number">${warnings}</div>
+          </div>
+          <div class="summary-card fail">
+            <div>❌ כשל</div>
+            <div class="summary-number">${failed}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function exportResults() {
+      if (testResults.length === 0) {
+        alert('אין תוצאות לייצוא. הרץ את הבדיקה תחילה.');
+        return;
+      }
+      
+      const report = {
+        date: new Date().toISOString(),
+        summary: {
+          total: testResults.length,
+          passed: testResults.filter(r => r.status === 'pass').length,
+          warnings: testResults.filter(r => r.status === 'warning').length,
+          failed: testResults.filter(r => r.status === 'fail').length,
+        },
+        results: testResults
+      };
+      
+      const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `contrast-test-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function clearResults() {
+      testResults = [];
+      document.getElementById('results').innerHTML = '';
+      document.getElementById('summary').innerHTML = '';
+      document.getElementById('status').innerHTML = '';
+      document.getElementById('progressContainer').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

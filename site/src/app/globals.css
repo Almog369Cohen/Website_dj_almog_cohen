@@ -3,20 +3,28 @@
 :root {
   --background: #1f1f21;
   --foreground: #ffffff;
+  --foreground-heading: #ffffff;
+  --foreground-secondary: #a3a3a3;
+  --muted-foreground: #737373;
+  --border: rgba(255, 255, 255, 0.1);
   --brand-blue: #059cc0;
   --brand-green: #03b28c;
   --brand-dark: #1f1f21;
   --brand-white: #ffffff;
 }
 
-/* Light Mode - Enhanced Readability */
+/* Light Mode - Enhanced Readability & Contrast */
 .light {
-  --background: #f5f5f7;
-  --foreground: #1a1a1c; /* Darker gray for body text */
-  --foreground-heading: #0d4f5e; /* Deep blue-gray for headings */
-  --foreground-secondary: #3a3a3c; /* Medium gray for secondary text */
-  --brand-dark: #f5f5f7;
-  --brand-white: #1f1f21;
+  --background: #ffffff; /* Pure white for better contrast */
+  --foreground: #1a1a1a; /* Darker for better readability (WCAG AAA) */
+  --foreground-heading: #0a2540; /* Deep navy blue for headings (High contrast) */
+  --foreground-secondary: #525252; /* Medium gray for secondary text (WCAG AA+) */
+  --muted-foreground: #737373; /* Lighter gray for muted text */
+  --border: rgba(0, 0, 0, 0.1); /* Subtle borders */
+  --brand-dark: #ffffff;
+  --brand-white: #1a1a1a;
+  --brand-blue: #0588a3; /* Darker blue for better contrast in light mode */
+  --brand-green: #028c6e; /* Darker green for better contrast in light mode */
 }
 
 /* High Contrast Mode */
@@ -53,11 +61,18 @@
   --color-foreground: var(--foreground);
   --color-foreground-heading: var(--foreground-heading, var(--foreground));
   --color-foreground-secondary: var(--foreground-secondary, var(--foreground));
+  --color-muted-foreground: var(--muted-foreground, var(--foreground-secondary));
+  --color-border: var(--border);
   --color-brand-blue: var(--brand-blue);
   --color-brand-green: var(--brand-green);
   --color-brand-dark: var(--brand-dark);
   --color-brand-white: var(--brand-white);
   --font-sans: var(--font-hebrew-sans);
+  
+  /* Additional theme colors */
+  --color-emerald-500: #10b981;
+  --color-indigo-500: #6366f1;
+  --color-blue-600: #2563eb;
 }
 
 body {
@@ -75,6 +90,224 @@ body {
     radial-gradient(circle at top left, rgba(5, 156, 192, 0.08), transparent 60%),
     radial-gradient(circle at bottom right, rgba(3, 178, 140, 0.06), transparent 55%),
     var(--background);
+}
+
+/* Modern Glassmorphism Effects */
+.glass-modern {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light .glass-modern {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.glass-modern:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(5, 156, 192, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(5, 156, 192, 0.15);
+}
+
+.light .glass-modern:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(5, 156, 192, 0.3);
+  box-shadow: 0 8px 32px rgba(5, 156, 192, 0.12);
+}
+
+/* Gradient Text Effects */
+.text-gradient-modern {
+  background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Modern Button Styles */
+.btn-modern {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-green));
+  color: white;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(5, 156, 192, 0.3);
+}
+
+/* Glass Effects - Modern & Premium with Color Accents */
+.glass-panel {
+  border-radius: 0.75rem;
+  border: 1px solid;
+  border-color: var(--border);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, rgba(5, 156, 192, 0.03) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(3, 178, 140, 0.03) 100%);
+}
+
+.light .glass-panel {
+  background: linear-gradient(135deg, rgba(5, 156, 192, 0.05) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(3, 178, 140, 0.05) 100%);
+}
+
+.glass-panel:hover {
+  border-color: rgba(5, 156, 192, 0.3);
+  background: linear-gradient(135deg, rgba(5, 156, 192, 0.08) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(3, 178, 140, 0.08) 100%);
+  box-shadow: 0 8px 32px rgba(5, 156, 192, 0.15), 0 0 0 1px rgba(3, 178, 140, 0.1) inset;
+}
+
+.light .glass-panel:hover {
+  background: linear-gradient(135deg, rgba(5, 156, 192, 0.1) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(3, 178, 140, 0.1) 100%);
+}
+
+.glass-card {
+  border-radius: 1rem;
+  border: 1px solid;
+  border-color: var(--border);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, rgba(3, 178, 140, 0.04) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(5, 156, 192, 0.04) 100%);
+}
+
+.light .glass-card {
+  background: linear-gradient(135deg, rgba(3, 178, 140, 0.06) 0%, rgba(255, 255, 255, 0.85) 50%, rgba(5, 156, 192, 0.06) 100%);
+}
+
+.glass-card:hover {
+  border-color: rgba(3, 178, 140, 0.3);
+  background: linear-gradient(135deg, rgba(3, 178, 140, 0.1) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(5, 156, 192, 0.1) 100%);
+  box-shadow: 0 12px 40px rgba(3, 178, 140, 0.2);
+}
+
+.glass-card-glow {
+  box-shadow: 
+    0 8px 32px rgba(3, 178, 140, 0.15),
+    0 0 80px rgba(5, 156, 192, 0.1),
+    0 0 0 1px rgba(3, 178, 140, 0.05) inset;
+}
+
+.glass-card-corner {
+  position: relative;
+}
+
+.glass-card-corner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at top right, rgba(3, 178, 140, 0.15) 0%, rgba(5, 156, 192, 0.08) 40%, transparent 70%);
+  border-radius: 0 1rem 0 0;
+  pointer-events: none;
+}
+
+.glass-card-corner::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at bottom left, rgba(5, 156, 192, 0.15) 0%, rgba(3, 178, 140, 0.08) 40%, transparent 70%);
+  border-radius: 0 0 0 1rem;
+  pointer-events: none;
+}
+
+.btn-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(5, 156, 192, 0.4);
+}
+
+.btn-modern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.btn-modern:hover::before {
+  left: 100%;
+}
+
+/* Color Indicator Line (from Dropdown) */
+.color-indicator {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 0;
+  border-radius: 9999px;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .color-indicator {
+  height: 2rem;
+}
+
+/* Enhanced Cards with Modern Shadow */
+.card-modern {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.light .card-modern {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.card-modern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-green));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card-modern:hover::before {
+  opacity: 1;
+}
+
+.card-modern:hover {
+  transform: translateY(-4px);
+  border-color: rgba(5, 156, 192, 0.3);
+  box-shadow: 0 12px 40px rgba(5, 156, 192, 0.15);
+}
+
+.light .card-modern:hover {
+  box-shadow: 0 12px 40px rgba(5, 156, 192, 0.12);
+}
+
+/* Homepage Cards - Light Mode Support */
+.light .group.relative {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.light .group.relative:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(5, 156, 192, 0.3);
+  box-shadow: 0 20px 60px rgba(5, 156, 192, 0.15);
 }
 
 /* Focus Visible for Accessibility */

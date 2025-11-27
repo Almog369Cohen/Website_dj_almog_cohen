@@ -159,7 +159,7 @@ export default function VoiceControl() {
               <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
             </svg>
           ) : (
-            <svg className="h-6 w-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-6 w-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
             </svg>
           )}
@@ -172,7 +172,7 @@ export default function VoiceControl() {
           {/* Tooltip */}
           <div className="absolute bottom-full right-0 mb-2 hidden w-48 rounded-lg bg-black/90 p-3 text-xs text-white backdrop-blur-md group-hover:block">
             <p className="mb-2 font-semibold">🎤 בקרה קולית</p>
-            <p className="text-white/70">לחץ והגד פקודות כמו:</p>
+            <p className="text-white/85">לחץ והגד פקודות כמו:</p>
             <p className="mt-1 text-brand-blue">"הראה אירועים"</p>
             <p className="text-brand-blue">"גלול למטה"</p>
             <p className="text-brand-blue">"וואטסאפ"</p>
@@ -190,7 +190,7 @@ export default function VoiceControl() {
             className="fixed bottom-40 right-8 z-50 max-w-xs"
           >
             <div className="rounded-xl border border-white/10 bg-black/80 p-4 backdrop-blur-xl">
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/50">שומע...</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/75">שומע...</p>
               <p className="mt-1 text-sm text-white">{transcript}</p>
             </div>
           </motion.div>

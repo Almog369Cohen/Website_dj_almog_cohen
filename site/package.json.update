@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "contrast:check": "bash ../check-contrast.sh",
+    "contrast:fix": "npm run contrast:check && echo 'Please review the report and fix issues manually'",
+    "precommit": "npm run contrast:check"
+  }
+}

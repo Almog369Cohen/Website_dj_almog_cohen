@@ -14,10 +14,10 @@ export default function HowToChooseWeddingDJPage() {
   );
 
   return (
-    <div className="text-brand-white">
+    <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 md:py-16">
         {/* Breadcrumb */}
-        <nav className="text-sm text-white/60" aria-label="breadcrumb">
+        <nav className="text-sm text-foreground-secondary" aria-label="breadcrumb">
           <ol className="flex flex-wrap gap-1">
             <li>
               <Link href="/" className="hover:text-brand-blue">
@@ -31,7 +31,7 @@ export default function HowToChooseWeddingDJPage() {
               </Link>
               <span className="mx-1">/</span>
             </li>
-            <li className="text-white">איך לבחור DJ לחתונה</li>
+            <li className="text-foreground-heading">איך לבחור DJ לחתונה</li>
           </ol>
         </nav>
 
@@ -40,21 +40,21 @@ export default function HowToChooseWeddingDJPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-blue/80">
             מדריך לזוגות
           </p>
-          <h1 className="text-2xl font-bold leading-tight sm:text-3xl md:text-4xl">
+          <h1 className="text-2xl font-bold leading-tight text-foreground-heading sm:text-3xl md:text-4xl">
             איך לבחור DJ לחתונה: 5 שאלות חובה לפני שסוגרים
           </h1>
-          <p className="text-sm text-white/70 md:text-base">
+          <p className="text-sm text-foreground-secondary md:text-base">
             בחירת ה-DJ לחתונה היא אחת ההחלטות הקריטיות ביותר לאירוע שלכם. DJ טוב יכול
             להפוך רחבה מנומנמת למסיבה שלא נגמרת. DJ פחות טוב... ובכן, אתם לא רוצים לגלות.
           </p>
-          <div className="flex flex-wrap items-center gap-3 text-xs text-white/60">
-            <span className="rounded-full border border-white/10 px-3 py-1">קטגוריה: חתונות</span>
-            <span className="rounded-full border border-white/10 px-3 py-1">זמן קריאה: ~8 דקות</span>
+          <div className="flex flex-wrap items-center gap-3 text-xs text-foreground-secondary">
+            <span className="rounded-full border border-border px-3 py-1">קטגוריה: חתונות</span>
+            <span className="rounded-full border border-border px-3 py-1">זמן קריאה: ~8 דקות</span>
           </div>
         </header>
 
         {/* Article body */}
-        <article className="space-y-10 rounded-3xl border border-white/10 bg-black/60 p-6 leading-relaxed text-sm shadow-2xl shadow-black/40 backdrop-blur-md md:p-8 md:text-base">
+        <article className="space-y-10 rounded-3xl border border-border bg-background/50 p-6 leading-relaxed text-sm shadow-2xl backdrop-blur-md md:p-8 md:text-base">
           <section className="space-y-4">
             <p>
               המדריך הזה נועד לעזור לכם להגיע לפגישת הייעוץ עם ה-DJ חכמים יותר, חדים יותר,
@@ -238,7 +238,7 @@ export default function HowToChooseWeddingDJPage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/contact"
-              className="rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-black hover:opacity-90"
+              className="rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
             >
               לטופס יצירת קשר
             </Link>

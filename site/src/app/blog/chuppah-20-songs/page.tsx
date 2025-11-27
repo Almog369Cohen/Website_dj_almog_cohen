@@ -14,9 +14,9 @@ export default function Chuppah20SongsPage() {
   );
 
   return (
-    <div className="bg-brand-dark text-brand-white">
+    <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 md:py-16">
-        <nav className="text-sm text-white/60" aria-label="breadcrumb">
+        <nav className="text-sm text-foreground-secondary" aria-label="breadcrumb">
           <ol className="flex flex-wrap gap-1">
             <li>
               <Link href="/" className="hover:text-brand-blue">
@@ -30,7 +30,7 @@ export default function Chuppah20SongsPage() {
               </Link>
               <span className="mx-1">/</span>
             </li>
-            <li className="text-white">20 שירי כניסה לחופה</li>
+            <li className="text-foreground-heading">20 שירי כניסה לחופה</li>
           </ol>
         </nav>
 
@@ -38,16 +38,16 @@ export default function Chuppah20SongsPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-blue/80">
             מדריך לחופה
           </p>
-          <h1 className="text-2xl font-bold leading-tight sm:text-3xl md:text-4xl">
+          <h1 className="text-2xl font-bold leading-tight text-foreground-heading sm:text-3xl md:text-4xl">
             הפלייליסט המרגש: 20 שירי כניסה לחופה שישברו את הרשת
           </h1>
-          <p className="text-sm text-white/70 md:text-base">
+          <p className="text-sm text-foreground-secondary md:text-base">
             רגע החופה הוא אחד הרגעים הכי אישיים ומרגשים בחתונה. הבחירה המוזיקלית כאן היא
             הפסקול לזיכרון שיישאר אתכם לכל החיים.
           </p>
-          <div className="flex flex-wrap items-center gap-3 text-xs text-white/60">
-            <span className="rounded-full border border-white/10 px-3 py-1">קטגוריה: חופה</span>
-            <span className="rounded-full border border-white/10 px-3 py-1">זמן קריאה: ~9 דקות</span>
+          <div className="flex flex-wrap items-center gap-3 text-xs text-foreground-secondary">
+            <span className="rounded-full border border-border px-3 py-1">קטגוריה: חופה</span>
+            <span className="rounded-full border border-border px-3 py-1">זמן קריאה: ~9 דקות</span>
           </div>
         </header>
 
@@ -127,7 +127,7 @@ export default function Chuppah20SongsPage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/contact"
-              className="rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-black hover:opacity-90"
+              className="rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
             >
               לקביעת ייעוץ מוזיקלי
             </Link>

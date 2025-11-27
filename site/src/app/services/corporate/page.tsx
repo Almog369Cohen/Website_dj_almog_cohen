@@ -11,7 +11,7 @@ export default function CorporatePage() {
           מוזיקה שמרימה ומייצרת אווירה מקצועית ונעימה: כנסים, האקתונים, קוקטיילים,
           ערבי חברה ונטוורקינג. מיתוג מוזיקלי שמחזק את המסר של האירוע.
         </p>
-        <ul className="mb-6 list-disc pr-6 text-white/70">
+        <ul className="mb-6 list-disc pr-6 text-white/85">
           <li>פלייליסט אלגנטי שמאפשר שיחה</li>
           <li>סטים קצביים לרגעי שיא והכרזות</li>
           <li>הגשה מדויקת ועבודה מתואמת עם ההפקה</li>
@@ -21,7 +21,7 @@ export default function CorporatePage() {
         </div>
         <a href={wa("שלום, אשמח להצעת מחיר לאירוע עסקי")}
            target="_blank" rel="noopener noreferrer"
-           className="inline-flex rounded-full bg-brand-blue px-5 py-3 text-black font-medium hover:opacity-90">
+           className="inline-flex rounded-full bg-brand-blue px-5 py-3 text-white font-medium hover:opacity-90">
           בקשת הצעת מחיר ב־WhatsApp
         </a>
       </section>

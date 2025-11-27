@@ -228,11 +228,11 @@ export const EnergyFader = () => {
         {!isMobile && (
           <>
             <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-widest text-brand-blue uppercase">Rave</div>
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-widest text-white/40 uppercase">Chill</div>
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-widest text-white/80 uppercase">Chill</div>
             
             {/* Current Theme Name */}
             <div className="absolute -right-24 top-1/2 -translate-y-1/2 rounded-lg border border-white/10 bg-black/60 px-3 py-2 backdrop-blur-sm">
-              <div className="text-[9px] font-semibold uppercase tracking-wider text-white/50">Theme</div>
+              <div className="text-[9px] font-semibold uppercase tracking-wider text-white/75">Theme</div>
               <div className="mt-0.5 text-xs font-bold text-white" style={{ direction: 'rtl' }}>
                 {COLOR_THEMES[Math.floor((energyLevel / 100) * (COLOR_THEMES.length - 1))].name}
               </div>

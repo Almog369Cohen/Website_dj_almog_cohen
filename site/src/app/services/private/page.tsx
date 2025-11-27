@@ -34,7 +34,7 @@ export default function PrivateEventsPage() {
           href={wa("שלום, אשמח לפרטים על אירוע פרטי")}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex rounded-full bg-brand-blue px-7 py-3 text-sm font-semibold text-black shadow-lg shadow-brand-blue/40 transition hover:scale-[1.03] hover:shadow-brand-green/60"
+          className="inline-flex rounded-full bg-brand-blue px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-blue/40 transition hover:scale-[1.03] hover:shadow-brand-green/60"
         >
           דברו איתי ב־WhatsApp
         </a>

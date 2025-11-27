@@ -66,16 +66,16 @@ export const CoursesLevel100 = () => {
           >
             <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
             <div className="relative z-10">
-              <div className="mb-4 inline-block rounded-full bg-white/5 px-4 py-1 text-sm font-bold text-white/80">
+              <div className="mb-4 inline-block rounded-full bg-white/5 px-4 py-1 text-sm font-bold text-white/85">
                 חבילה 1
               </div>
-              <h3 className="mb-3 text-3xl font-black text-white" style={{ fontWeight: 900 }}>
+              <h3 className="mb-3 text-3xl font-black text-foreground-heading" style={{ fontWeight: 900 }}>
                 ₪ 1,250
               </h3>
-              <p className="mb-6 text-white">
+              <p className="mb-6 text-foreground-secondary">
                 טעימה שמראה אם זה בשבילך. בוא תגלה אם יש לך את זה.
               </p>
-              <ul className="mb-8 space-y-3 text-sm text-white">
+              <ul className="mb-8 space-y-3 text-sm text-foreground">
                 <li className="flex items-start gap-2">
                   <span className="text-[#03b28c]">✓</span>
                   <span>היכרות עם הציוד</span>
@@ -105,23 +105,29 @@ export const CoursesLevel100 = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
             whileHover={{ y: -8 }}
-            className="relative overflow-hidden rounded-3xl border-2 border-[#03b28c] bg-[#1f1f21] p-8 shadow-[0_0_40px_rgba(3,178,140,0.3)]"
+            className="group relative overflow-hidden rounded-3xl border-2 border-[#03b28c] bg-background p-8 shadow-[0_0_40px_rgba(3,178,140,0.3)]"
           >
+            {/* Top Gradient Border - Always Visible */}
+            <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-brand-green via-emerald-400 to-brand-blue opacity-60 transition-opacity duration-300 group-hover:opacity-100" />
+            
+            {/* Side Color Indicator */}
+            <div className="absolute left-0 top-1/2 h-32 w-1.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-brand-green via-emerald-400 to-brand-blue shadow-lg shadow-brand-green/50 transition-all duration-500 group-hover:h-40" />
+            
             <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
-            <div className="absolute right-4 top-4 rounded-full bg-[#03b28c] px-3 py-1 text-xs font-bold text-black">
+            <div className="absolute right-4 top-4 z-20 rounded-full bg-[#03b28c] px-3 py-1 text-xs font-bold text-white">
               הכי פופולרי
             </div>
             <div className="relative z-10">
               <div className="mb-4 inline-block rounded-full bg-[#03b28c]/20 px-4 py-1 text-sm font-bold text-[#03b28c]">
                 חבילה 2
               </div>
-              <h3 className="mb-3 text-3xl font-black text-white" style={{ fontWeight: 900 }}>
+              <h3 className="mb-3 text-3xl font-black text-foreground-heading" style={{ fontWeight: 900 }}>
                 ₪ 3,500
               </h3>
-              <p className="mb-6 text-white">
+              <p className="mb-6 text-foreground-secondary">
                 השלב שבו מפסיקים להיראות כמו תלמיד ומתחילים להישמע כמו מקצוען.
               </p>
-              <ul className="mb-8 space-y-3 text-sm text-white">
+              <ul className="mb-8 space-y-3 text-sm text-foreground">
                 <li className="flex items-start gap-2">
                   <span className="text-[#03b28c]">✓</span>
                   <span>טכניקות מיקס מתקדמות</span>
@@ -141,7 +147,7 @@ export const CoursesLevel100 = () => {
               </ul>
               <Link
                 href="/courses"
-                className="block w-full rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-6 py-3 text-center font-bold text-black shadow-[0_0_30px_rgba(3,178,140,0.5)] transition hover:shadow-[0_0_50px_rgba(3,178,140,0.8)]"
+                className="block w-full rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-6 py-3 text-center font-bold text-white shadow-[0_0_30px_rgba(3,178,140,0.5)] transition hover:shadow-[0_0_50px_rgba(3,178,140,0.8)]"
               >
                 שריין מקום
               </Link>
@@ -164,16 +170,16 @@ export const CoursesLevel100 = () => {
           >
             <div className="brand-noise absolute inset-0 opacity-30" aria-hidden="true" />
             <div className="relative z-10">
-              <div className="mb-4 inline-block rounded-full bg-white/5 px-4 py-1 text-sm font-bold text-white/80">
+              <div className="mb-4 inline-block rounded-full bg-white/5 px-4 py-1 text-sm font-bold text-white/85">
                 PRO
               </div>
-              <h3 className="mb-3 text-3xl font-black text-white" style={{ fontWeight: 900 }}>
+              <h3 className="mb-3 text-3xl font-black text-foreground-heading" style={{ fontWeight: 900 }}>
                 ₪ 6,000-7,000
               </h3>
-              <p className="mb-6 text-white">
+              <p className="mb-6 text-foreground-secondary">
                 מי שבקצה הזה לא שואל כמה זה עולה. הוא שואל איך נכנסים.
               </p>
-              <ul className="mb-8 space-y-3 text-sm text-white">
+              <ul className="mb-8 space-y-3 text-sm text-foreground">
                 <li className="flex items-start gap-2">
                   <span className="text-[#03b28c]">✓</span>
                   <span>מנטורינג אישי 1:1</span>

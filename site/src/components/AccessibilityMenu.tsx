@@ -54,7 +54,7 @@ export function AccessibilityMenu() {
 
             {/* Font Size */}
             <div className="mb-4">
-              <label className="mb-2 block text-xs text-white/70">גודל טקסט</label>
+              <label className="mb-2 block text-xs text-white/85">גודל טקסט</label>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => adjustFontSize(-10)}

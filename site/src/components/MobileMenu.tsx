@@ -47,9 +47,34 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
     }),
   };
 
+  const menuCategories = [
+    {
+      title: "אירועים",
+      color: "from-[#059cc0] to-[#03b28c]",
+      items: [
+        { href: "/events", label: "כל האירועים", color: "bg-gradient-to-r from-[#059cc0] to-[#03b28c]" },
+        { href: "/events/weddings-dj", label: "DJ חתונות", color: "bg-gradient-to-r from-[#059cc0] to-[#03b28c]" },
+        { href: "/events/bar-mitzvah-dj", label: "DJ בר מצווה", color: "bg-gradient-to-r from-blue-500 to-cyan-500" },
+        { href: "/events/bat-mitzvah-dj", label: "DJ בת מצווה", color: "bg-gradient-to-r from-pink-500 to-rose-500" },
+        { href: "/events/henna-dj", label: "DJ חינה", color: "bg-gradient-to-r from-amber-500 to-orange-500" },
+        { href: "/events/corporate-events", label: "אירועים עסקיים", color: "bg-gradient-to-r from-indigo-500 to-blue-600" },
+        { href: "/events/chogeg-menagen", label: "חוגג מנגן", color: "bg-gradient-to-r from-[#03b28c] to-emerald-500" },
+        { href: "/events/live-on-dj", label: "LIVE ON DJ", color: "bg-gradient-to-r from-purple-500 to-violet-500" },
+      ],
+    },
+    {
+      title: "Academy",
+      color: "from-[#ffaa00] to-[#059cc0]",
+      items: [
+        { href: "/academy", label: "Compakt Academy", color: "bg-gradient-to-r from-[#059cc0] to-[#03b28c]" },
+        { href: "/academy/dj-course", label: "קורס DJ למתחילים", color: "bg-gradient-to-r from-[#059cc0] to-[#03b28c]" },
+        { href: "/academy/premium", label: "תכנית פרמיום", color: "bg-gradient-to-r from-[#ffaa00] to-orange-500" },
+        { href: "/academy/groom-dj", label: "חתן מתקלט", color: "bg-gradient-to-r from-pink-400 to-rose-400" },
+      ],
+    },
+  ];
+
   const menuItems = [
-    { href: "/courses", label: "קורסים" },
-    { href: "/services", label: "שירותים" },
     { href: "/chogeg-menagen", label: "חוגג מנגן" },
     { href: "/music", label: "מוזיקה" },
     { href: "/blog", label: "בלוג" },
@@ -61,21 +86,21 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
       {/* Burger Button */}
       <button
         onClick={toggleMenu}
-        className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-lg border border-white/20 bg-black/40 backdrop-blur-sm transition hover:border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-blue md:hidden"
+        className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-lg border border-border bg-background/40 backdrop-blur-sm transition hover:border-border/60 focus:outline-none focus:ring-2 focus:ring-brand-blue md:hidden"
         aria-label={isOpen ? "סגור תפריט" : "פתח תפריט"}
         aria-expanded={isOpen}
       >
         <motion.span
           animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-          className="h-0.5 w-5 bg-white transition-all"
+          className="h-0.5 w-5 bg-foreground transition-all"
         />
         <motion.span
           animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-          className="h-0.5 w-5 bg-white transition-all"
+          className="h-0.5 w-5 bg-foreground transition-all"
         />
         <motion.span
           animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-          className="h-0.5 w-5 bg-white transition-all"
+          className="h-0.5 w-5 bg-foreground transition-all"
         />
       </button>
 
@@ -87,7 +112,7 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm md:hidden"
+            className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden"
             onClick={closeMenu}
             aria-hidden="true"
           />
@@ -102,17 +127,17 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
             animate="open"
             exit="closed"
             variants={menuVariants}
-            className="fixed right-0 top-0 z-50 flex h-full w-[280px] flex-col bg-gray-800/95 backdrop-blur-md border-l border-gray-700/50 shadow-2xl md:hidden"
+            className="fixed right-0 top-0 z-50 flex h-full w-[280px] flex-col bg-background/95 backdrop-blur-md border-l border-border shadow-2xl p-6 md:hidden"
             role="dialog"
             aria-label="תפריט ניווט נייד"
           >
             {/* Close Button */}
             <button
               onClick={closeMenu}
-              className="mb-8 flex h-10 w-10 items-center justify-center self-start rounded-lg border border-white/30 bg-gray-700/80 transition hover:bg-gray-600/80 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+              className="mb-8 flex h-10 w-10 items-center justify-center self-start rounded-lg border border-border bg-background/50 transition hover:bg-background/70 focus:outline-none focus:ring-2 focus:ring-brand-blue"
               aria-label="סגור תפריט"
             >
-              <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-6 w-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -127,24 +152,73 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
             </Link>
 
             {/* Navigation Links */}
-            <nav className="flex flex-col gap-2" role="navigation" aria-label="תפריט ראשי נייד">
-              {menuItems.map((item, i) => (
-                <motion.div
-                  key={item.href}
-                  custom={i}
-                  variants={linkVariants}
-                  initial="closed"
-                  animate="open"
-                >
-                  <Link
-                    href={item.href}
-                    onClick={closeMenu}
-                    className="block rounded-lg border border-white/30 bg-gray-700/60 px-4 py-3 text-right text-base font-medium text-white transition hover:border-brand-blue hover:bg-brand-blue/20 hover:text-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue"
-                  >
-                    {item.label}
-                  </Link>
-                </motion.div>
+            <nav className="flex flex-col gap-4 overflow-y-auto" role="navigation" aria-label="תפריט ראשי נייד">
+              {/* Categories */}
+              {menuCategories.map((category, catIndex) => (
+                <div key={category.title}>
+                  <div className="mb-3 flex items-center gap-2 px-2">
+                    <div className={`h-0.5 w-8 rounded-full bg-gradient-to-r ${category.color}`} />
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground-secondary">
+                      {category.title}
+                    </h3>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {category.items.map((item, i) => (
+                      <motion.div
+                        key={item.href}
+                        custom={catIndex * 10 + i}
+                        variants={linkVariants}
+                        initial="closed"
+                        animate="open"
+                      >
+                        <Link
+                          href={item.href}
+                          onClick={closeMenu}
+                          className="group/mobile relative flex items-center gap-3 overflow-hidden rounded-xl border border-border bg-background/40 px-4 py-3.5 text-right text-sm font-medium text-foreground-secondary backdrop-blur-sm transition-all duration-300 hover:border-border/60 hover:text-foreground-heading focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                        >
+                          {/* Color Indicator */}
+                          <div className={`h-8 w-1 rounded-full ${item.color} transition-all duration-300 group-hover/mobile:h-10`} />
+                          
+                          <span className="flex-1 transition-transform duration-300 group-hover/mobile:translate-x-1">
+                            {item.label}
+                          </span>
+                          
+                          {/* Arrow */}
+                          <svg 
+                            className="h-4 w-4 text-foreground-secondary opacity-0 transition-all duration-300 group-hover/mobile:translate-x-1 group-hover/mobile:opacity-100"
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                          </svg>
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
               ))}
+
+              {/* Regular Items */}
+              <div className="mt-2 flex flex-col gap-2">
+                {menuItems.map((item, i) => (
+                  <motion.div
+                    key={item.href}
+                    custom={100 + i}
+                    variants={linkVariants}
+                    initial="closed"
+                    animate="open"
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={closeMenu}
+                      className="block rounded-lg border border-border bg-background/50 px-4 py-3 text-right text-base font-medium text-foreground transition hover:border-brand-blue hover:bg-brand-blue/10 hover:text-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
             </nav>
 
             {/* Contact Button */}
@@ -156,7 +230,7 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
               href={`https://wa.me/${waNumber}?text=${waText}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-brand-blue to-brand-green px-6 py-4 text-base font-bold text-black shadow-lg transition hover:scale-105 hover:shadow-brand-green/50 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+              className="mt-8 flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-brand-blue to-brand-green px-6 py-4 text-base font-bold text-white shadow-lg transition hover:scale-105 hover:shadow-brand-green/50 focus:outline-none focus:ring-2 focus:ring-brand-blue"
               onClick={closeMenu}
             >
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -166,7 +240,7 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
             </motion.a>
 
             {/* Footer Info */}
-            <div className="mt-auto border-t border-white/10 pt-4 text-center text-xs text-white/50">
+            <div className="mt-auto border-t border-border pt-4 text-center text-xs text-muted-foreground">
               <p>© {new Date().getFullYear()} DJ Almog Cohen</p>
               <p className="mt-1">מוזיקה • יצירה • מנטורינג</p>
             </div>

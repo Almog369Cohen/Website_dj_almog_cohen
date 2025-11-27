@@ -63,17 +63,23 @@ ${formData.message}`;
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className={`relative overflow-hidden rounded-3xl border border-white/10 bg-[#1f1f21] p-8 md:p-10 ${className}`}
+      whileHover={{ y: -4, scale: 1.01 }}
+      className={`group relative overflow-hidden rounded-3xl border border-border bg-background p-8 backdrop-blur-xl transition-all duration-500 hover:border-brand-green/40 hover:shadow-[0_20px_60px_rgba(3,178,140,0.2)] md:p-10 ${className}`}
     >
+      {/* Top Gradient Border - Always Visible */}
+      <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-brand-green via-emerald-400 to-brand-blue opacity-60 transition-opacity duration-300 group-hover:opacity-100" />
+      
+      {/* Side Color Indicator - Always Visible */}
+      <div className="absolute left-0 top-1/2 h-32 w-1.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-brand-green via-emerald-400 to-brand-blue shadow-lg shadow-brand-green/50 transition-all duration-500 group-hover:h-40" />
       {/* Noise Overlay */}
       <div className="brand-noise pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
 
       {/* Content */}
       <div className="relative z-10">
-        <h3 className="mb-2 text-2xl font-black text-white md:text-3xl" style={{ fontWeight: 900 }}>
+        <h3 className="mb-2 text-2xl font-black text-foreground-heading md:text-3xl" style={{ fontWeight: 900 }}>
           {titles[context]}
         </h3>
-        <p className="mb-6 text-sm text-white/60">
+        <p className="mb-6 text-sm text-foreground-secondary">
           {context === "wedding" && "לא שולחים הודעות כפייה. זו אמת התאמה הדדית."}
           {context === "course" && "המקומות מוגבלים. זה לא אקראי."}
           {context === "performer" && "הזמינות מוגבלת. ככה זה עובד ברמה הזו."}
@@ -88,7 +94,7 @@ ${formData.message}`;
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
-                className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-right text-white placeholder-white/40 backdrop-blur-sm transition focus:border-[#059cc0] focus:outline-none focus:ring-2 focus:ring-[#059cc0]/50"
+                className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-right text-foreground placeholder:text-muted-foreground backdrop-blur-sm transition focus:border-[#059cc0] focus:outline-none focus:ring-2 focus:ring-[#059cc0]/50"
               />
             </div>
 
@@ -99,7 +105,7 @@ ${formData.message}`;
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 required
-                className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-right text-white placeholder-white/40 backdrop-blur-sm transition focus:border-[#059cc0] focus:outline-none focus:ring-2 focus:ring-[#059cc0]/50"
+                className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-right text-foreground placeholder:text-muted-foreground backdrop-blur-sm transition focus:border-[#059cc0] focus:outline-none focus:ring-2 focus:ring-[#059cc0]/50"
               />
             </div>
 
@@ -109,7 +115,7 @@ ${formData.message}`;
                 placeholder="אימייל (אופציונלי)"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-right text-white placeholder-white/40 backdrop-blur-sm transition focus:border-[#059cc0] focus:outline-none focus:ring-2 focus:ring-[#059cc0]/50"
+                className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-right text-foreground placeholder:text-muted-foreground backdrop-blur-sm transition focus:border-[#059cc0] focus:outline-none focus:ring-2 focus:ring-[#059cc0]/50"
               />
             </div>
 
@@ -120,7 +126,7 @@ ${formData.message}`;
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 required
                 rows={4}
-                className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-right text-white placeholder-white/40 backdrop-blur-sm transition focus:border-[#059cc0] focus:outline-none focus:ring-2 focus:ring-[#059cc0]/50"
+                className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-right text-foreground placeholder:text-muted-foreground backdrop-blur-sm transition focus:border-[#059cc0] focus:outline-none focus:ring-2 focus:ring-[#059cc0]/50"
               />
             </div>
 
@@ -129,12 +135,12 @@ ${formData.message}`;
               disabled={isSubmitting}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-8 py-4 font-bold text-black shadow-[0_0_30px_rgba(5,156,192,0.5)] transition hover:shadow-[0_0_50px_rgba(5,156,192,0.8)] disabled:opacity-50"
+              className="w-full rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-8 py-4 font-bold text-white shadow-[0_0_30px_rgba(5,156,192,0.5)] transition hover:shadow-[0_0_50px_rgba(5,156,192,0.8)] disabled:opacity-50"
             >
               {isSubmitting ? "שולח..." : "שלח פנייה"}
             </motion.button>
 
-            <p className="text-center text-xs text-white/40">
+            <p className="text-center text-xs text-foreground-secondary">
               הפנייה תישלח ישירות ל-WhatsApp שלי
             </p>
           </form>
@@ -146,7 +152,7 @@ ${formData.message}`;
           >
             <div className="mb-4 text-5xl">✓</div>
             <p className="text-xl font-bold text-[#03b28c]">הפנייה נשלחה!</p>
-            <p className="mt-2 text-sm text-white/60">אחזור אליך בהקדם</p>
+            <p className="mt-2 text-sm text-foreground-secondary">אחזור אליך בהקדם</p>
           </motion.div>
         )}
       </div>

@@ -9,19 +9,19 @@ export default function RentalPage() {
         <div className="grid gap-6 md:grid-cols-3">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
             <h2 className="mb-2 text-xl font-semibold">קונטרולרים</h2>
-            <p className="mb-4 text-white/70">הגדירו את הצרכים ואכוון לציוד מתאים.</p>
+            <p className="mb-4 text-white/85">הגדירו את הצרכים ואכוון לציוד מתאים.</p>
             <a href={wa("שלום, אשמח להצעת מחיר להשכרת קונטרולר")}
                target="_blank" rel="noopener noreferrer"
                className="text-brand-blue hover:underline">בקשת הצעת מחיר</a>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
             <h2 className="mb-2 text-xl font-semibold">רמקולים</h2>
-            <p className="mb-4 text-white/70">PA לאירועים קטנים עד גדולים.</p>
+            <p className="mb-4 text-white/85">PA לאירועים קטנים עד גדולים.</p>
             <a href={wa("שלום, אשמח להצעת מחיר להשכרת רמקולים")} target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:underline">בקשת הצעת מחיר</a>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
             <h2 className="mb-2 text-xl font-semibold">תאורה ואוזניות</h2>
-            <p className="mb-4 text-white/70">ליצירת אווירה וקונטרול מדויק.</p>
+            <p className="mb-4 text-white/85">ליצירת אווירה וקונטרול מדויק.</p>
             <a href={wa("שלום, אשמח להצעת מחיר להשכרת תאורה/אוזניות")} target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:underline">בקשת הצעת מחיר</a>
           </div>
         </div>
