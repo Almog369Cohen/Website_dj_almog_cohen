@@ -1,10 +1,12 @@
 import { PLAYLISTS } from "@/content/playlists";
 import YoutubePlaylist from "@/components/YoutubePlaylist";
 import { ImageCarousel } from "@/components/ui/ImageCarousel";
+import { MusicVideosSection, FinalCTASection } from "@/components/sections";
 
 export default function MusicPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Hero */}
       <section className="mx-auto w-full max-w-6xl px-4 py-16">
         <div className="mb-4 text-right">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-brand-blue/80">
@@ -34,6 +36,18 @@ export default function MusicPage() {
           ))}
         </div>
       </section>
+
+      {/* Featured Videos */}
+      <MusicVideosSection 
+        title="סטים וקליפים נבחרים"
+        subtitle="הצצה לסגנון המוזיקלי שלי - מלייבים באירועים ועד רמיקסים מקוריים."
+      />
+
+      {/* CTA */}
+      <FinalCTASection 
+        title="רוצים לשמוע עוד?"
+        subtitle="בואו נדבר על המוזיקה שתתאים לאירוע שלכם."
+      />
     </div>
   );
 }

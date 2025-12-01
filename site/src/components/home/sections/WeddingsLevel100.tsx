@@ -139,7 +139,7 @@ export const WeddingsLevel100 = () => {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-10 py-5 text-lg font-bold text-white shadow-[0_0_40px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_60px_rgba(3,178,140,0.8)] hover:scale-105"
+              className="btn-neon touch-target inline-flex items-center gap-3 px-10 py-5 text-lg"
             >
               <span>לבדיקת זמינות ב-WhatsApp</span>
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -158,8 +158,8 @@ export const WeddingsLevel100 = () => {
               <div className="flex items-start gap-4">
                 <div className="text-4xl">💍</div>
                 <div className="flex-1">
-                  <h4 className="mb-2 text-lg font-bold text-white">רוצים אטרקציה בלתי נשכחת?</h4>
-                  <p className="mb-3 text-sm text-white/80">
+                  <h4 className="mb-2 text-lg font-bold text-gray-900">רוצים אטרקציה בלתי נשכחת?</h4>
+                  <p className="mb-3 text-sm text-gray-700">
                     <strong>חתן מתקלט</strong> - החתן (או הכלה) עולה לעמדה, מתקלט 15-20 דקות ומרעיד את הרחבה. האורחים לא יאמינו למראה עיניהם.
                   </p>
                   <Link

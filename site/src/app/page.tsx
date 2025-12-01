@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,7 +12,8 @@ const AnimatedBackground = dynamic(
   { ssr: false }
 );
 
-import { HomeSections } from "@/components/home/HomeSections";
+// import { HomeSections } from "@/components/home/HomeSections"; // Full version
+import { HomeSectionsLean } from "@/components/home/HomeSectionsLean"; // Conversion-focused
 import { RevealText } from "@/components/ui/RevealText";
 import { SmoothScrollLink } from "@/components/ui/SmoothScrollLink";
 
@@ -35,6 +36,18 @@ function HomeContent() {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [faqOpen, setFaqOpen] = useState(false);
   const isMobile = useIsMobile();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Force video playback on mount (helps with mobile)
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.play().catch(() => {
+        // Autoplay blocked - user interaction required
+        console.log("Video autoplay blocked - waiting for interaction");
+      });
+    }
+  }, []);
   
   // Reactive Styles for Energy System
   const reactiveStyles = {
@@ -378,7 +391,7 @@ function HomeContent() {
       </div>
 
       {/* --- HERO SECTION (LEVEL 1000) --- */}
-      <section className="relative flex h-dvh min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[700px] flex-col items-center justify-center overflow-hidden text-center">
+      <section className="snap-section relative flex h-dvh min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[700px] flex-col items-center justify-center overflow-hidden text-center bg-black">
         {/* Fade masks for smooth transitions */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-40 bg-gradient-to-b from-brand-dark via-brand-dark/60 to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-40 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-transparent" />
@@ -427,23 +440,22 @@ function HomeContent() {
 
         <div className="brand-noise opacity-30" aria-hidden="true" />
         
-        {/* YouTube Video Background */}
-        <div className="absolute inset-0 -z-20 overflow-hidden">
-          <iframe
-            className="absolute top-1/2 left-1/2 w-[100vw] h-[100vh] -translate-x-1/2 -translate-y-1/2"
-            style={{
-              minWidth: "100vw",
-              minHeight: "100vh",
-              width: isMobile ? "300%" : "177.77vh", // 16:9 aspect ratio
-              height: isMobile ? "56.25vw" : "100vh",
-              pointerEvents: "none",
-            }}
-            src="https://www.youtube.com/embed/yarUtbqD0BI?autoplay=1&mute=1&loop=1&playlist=yarUtbqD0BI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=https://www.compaktt.com"
-            title="DJ Almog Cohen - Hero Video"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+        {/* Video Background - z-index 0 to be above blobs but below content */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectFit: 'cover' }}
+          >
+            <source src="/assets/hero-main-optimized.mp4" type="video/mp4" />
+          </video>
+          {/* Light overlay on video - more transparent */}
+          <div className="absolute inset-0 bg-black/30" />
           {/* Scanline Effect - Desktop Only */}
           {!isMobile && (
             <motion.div
@@ -454,7 +466,6 @@ function HomeContent() {
           )}
         </div>
         
-        <div className="absolute inset-0 -z-10 bg-black/60" />
         <AnimatedBackground />
 
         {/* Main Content - Ultra */}
@@ -469,7 +480,7 @@ function HomeContent() {
             <div className="absolute -inset-2 -z-10 animate-pulse rounded-[40px] bg-gradient-to-r from-brand-blue/40 via-brand-green/40 to-brand-blue/40 opacity-40 blur-2xl" />
             <div className="absolute -inset-4 -z-10 rounded-[40px] bg-gradient-to-r from-brand-green/30 via-brand-blue/30 to-brand-green/30 opacity-20 blur-3xl" />
             
-            <div className="glass-card relative overflow-hidden px-5 py-6 md:px-10 md:py-12" style={{ borderRadius: '40px' }}>
+            <div className="relative overflow-hidden px-5 py-6 md:px-10 md:py-12 bg-black/30 backdrop-blur-sm border border-white/10" style={{ borderRadius: '40px' }}>
               {/* Title - Elegant Multi-line Design (Level 100) */}
               <div className="mb-8 space-y-4">
                 {/* Line 1 - Lighter, elegant intro */}
@@ -549,7 +560,7 @@ function HomeContent() {
                     href={wa("היי אלמוג, רוצה לבדוק התאמה לאירוע")}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-white shadow-[0_0_40px_rgba(3,178,140,0.7)] transition hover:scale-105 hover:shadow-[0_0_60px_rgba(3,178,140,1)]"
+                    className="btn-neon touch-target group relative inline-flex items-center gap-2 md:gap-3 overflow-hidden px-6 py-3 md:px-12 md:py-4 text-sm md:text-base"
                   >
                     <span className="relative z-20">בואו נבדוק התאמה ב-WhatsApp</span>
                     <Image 
@@ -572,7 +583,7 @@ function HomeContent() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/media"
-                    className="glass-button group relative inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-12 md:py-4 text-sm md:text-base font-bold text-white transition"
+                    className="btn-neon-outline touch-target group relative inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-12 md:py-4 text-sm md:text-base"
                   >
                     <span className="relative z-10">לשמוע סטים</span>
                     <svg 
@@ -591,61 +602,39 @@ function HomeContent() {
           </div>
         </motion.div>
 
-        <div className="z-10 mt-4 w-full max-w-4xl px-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/80 text-right">
+        {/* Client Logos - Static display, no animation */}
+        <div className="z-10 mt-6 w-full max-w-4xl px-4">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-white/50 text-center">
             בין לקוחותינו
           </p>
-          <div className="glass-panel relative overflow-hidden rounded-full py-4">
-            <div className="flex animate-[marquee_30s_linear_infinite] items-center gap-8 pr-8">
-              {/* First set of client logos */}
-              {[
-                "client-1.jpg",
-                "client-2.jpg",
-                "client-3.jpg",
-                "client-4.jpg",
-                "client-5.jpg",
-                "client-6.jpg",
-              ].map((logo, idx) => (
-                <div
-                  key={logo}
-                  className="relative h-12 w-24 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
-                >
-                  <Image
-                    src={`/assets/clients/${logo}`}
-                    alt={`לקוח ${idx + 1}`}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              ))}
-              {/* Duplicate set for seamless loop */}
-              {[
-                "client-1.jpg",
-                "client-2.jpg",
-                "client-3.jpg",
-                "client-4.jpg",
-                "client-5.jpg",
-                "client-6.jpg",
-              ].map((logo, idx) => (
-                <div
-                  key={`${logo}-dup`}
-                  className="relative h-12 w-24 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
-                >
-                  <Image
-                    src={`/assets/clients/${logo}`}
-                    alt={`לקוח ${idx + 1}`}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-wrap justify-center items-center gap-8 py-4">
+            {[
+              { file: "logoapril.jpeg", name: "April" },
+              { file: "logoעירייה.png", name: "עיריית ירושלים" },
+              { file: "iconnbana.svg", name: "בנא משקאות" },
+              { file: "אורט תעופה וחלל .png", name: "אורט תעופה וחלל" },
+              { file: "DHL.png", name: "DHL" },
+              { file: "קריית אונו .png", name: "עיריית קריית אונו" },
+              { file: "אריאל .jpeg", name: "אריאל" },
+            ].map((logo) => (
+              <div
+                key={logo.file}
+                className="relative h-10 w-20 flex-shrink-0 opacity-70 hover:opacity-100 transition-opacity duration-300"
+              >
+                <Image
+                  src={`/assets/clients/${logo.file}`}
+                  alt={logo.name}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* --- ALL BELOW-THE-FOLD SECTIONS (CODE SPLIT) --- */}
-      <HomeSections />
+      {/* --- LEAN CONVERSION FUNNEL --- */}
+      <HomeSectionsLean />
       </div>
     </>
   );

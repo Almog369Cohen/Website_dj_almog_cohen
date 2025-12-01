@@ -2,8 +2,9 @@
 
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
+// Images removed - using gradients instead
 import Link from "next/link";
+import { FinalCTASection } from "@/components/sections";
 
 // 3D Tilt Card Component
 const TiltCard = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
@@ -75,7 +76,7 @@ export default function ChogegMenagenPage() {
           style={{ opacity, scale }}
           className="absolute inset-0 -z-20"
         >
-          <Image src="/assets/almog/hero-poster.jpg" alt="חוגג מנגן" fill className="object-cover brightness-50" priority />
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-green/30 via-brand-dark to-brand-blue/30" />
         </motion.div>
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black via-black/70 to-transparent" />
         <div className="brand-noise opacity-30" aria-hidden="true" />
@@ -145,51 +146,39 @@ export default function ChogegMenagenPage() {
         </motion.div>
       </section>
 
-      {/* איך זה עובד - 3 שלבים */}
-      <section className="bg-brand-dark py-24">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-16 text-center">
-            <h2 className="text-4xl font-bold md:text-5xl">איך זה עובד?</h2>
+      {/* 3 שלבים פשוטים */}
+      <section className="bg-brand-dark py-16">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">3 שלבים פשוטים</h2>
+          
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="text-center p-6 rounded-2xl border border-white/10">
+              <div className="text-4xl font-black text-brand-green mb-3">1</div>
+              <h3 className="font-bold text-lg mb-2">שיחה קצרה</h3>
+              <p className="text-white/60 text-sm">מספרים לי על האירוע</p>
+            </div>
+            <div className="text-center p-6 rounded-2xl border border-white/10">
+              <div className="text-4xl font-black text-brand-blue mb-3">2</div>
+              <h3 className="font-bold text-lg mb-2">תכנון הרגע</h3>
+              <p className="text-white/60 text-sm">בוחרים שירים וטיימינג</p>
+            </div>
+            <div className="text-center p-6 rounded-2xl border border-white/10">
+              <div className="text-4xl font-black text-brand-green mb-3">3</div>
+              <h3 className="font-bold text-lg mb-2">עולים לעמדה</h3>
+              <p className="text-white/60 text-sm">ויוצרים זיכרון לכל החיים</p>
+            </div>
           </div>
 
-          <div className="space-y-16">
-            {/* שלב 1 - תמונה 2: פגישת תכנון */}
-            <div className="grid gap-8 md:grid-cols-2 md:items-center">
-              <div className="relative aspect-video overflow-hidden rounded-2xl">
-                <Image src="/assets/almog/hero-poster.jpg" alt="תכנון" fill className="object-cover" />
-              </div>
-              <div className="space-y-4 text-right">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-blue text-2xl font-bold text-white">1</div>
-                <h3 className="text-3xl font-bold text-brand-green">תכנון מותאם אישית</h3>
-                <p className="text-lg text-white/80">נפגשים מראש ומתכננים את הרגע המושלם. בוחרים יחד את השיר, הטיימינג, והסגנון.</p>
-              </div>
-            </div>
-
-            {/* שלב 2 - תמונה 3: בעל שמחה על העמדה */}
-            <div className="grid gap-8 md:grid-cols-2 md:items-center">
-              <div className="order-2 space-y-4 text-right md:order-1">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-blue to-brand-green text-2xl font-bold text-white">2</div>
-                <h3 className="text-3xl font-bold text-brand-blue">הרגע הגדול</h3>
-                <p className="text-lg text-white/80">ברגע הנכון, אתם עולים לעמדה. האורחים רואים, הקהל מתלהב, והאנרגיה עולה.</p>
-              </div>
-              <div className="order-1 md:order-2">
-                <div className="relative aspect-video overflow-hidden rounded-2xl">
-                  <Image src="/assets/almog/IMG_6561.jpg" alt="על העמדה" fill className="object-cover" />
-                </div>
-              </div>
-            </div>
-
-            {/* שלב 3 - תמונה 4: קהל מצלם */}
-            <div className="grid gap-8 md:grid-cols-2 md:items-center">
-              <div className="relative aspect-video overflow-hidden rounded-2xl">
-                <Image src="/assets/almog/hero-poster.jpg" alt="זיכרון" fill className="object-cover" />
-              </div>
-              <div className="space-y-4 text-right">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-blue text-2xl font-bold text-white">3</div>
-                <h3 className="text-3xl font-bold text-brand-green">זיכרון לכל החיים</h3>
-                <p className="text-lg text-white/80">הקטע מצולם, נשמר, ומשותף ברשתות. אתם נשארים עם הסיפור: "תיקלטנו בחתונה שלנו".</p>
-              </div>
-            </div>
+          <div className="text-center">
+            <a
+              href={wa("היי אלמוג, אשמח לשמוע עוד על חוגג מנגן")}
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-brand-green to-brand-blue rounded-full text-lg font-bold hover:scale-105 transition-transform"
+            >
+              רוצה לשמוע עוד פרטים
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </section>
@@ -275,40 +264,9 @@ export default function ChogegMenagenPage() {
         </div>
       </section>
 
-      {/* וידאו דמו - תמונה 5: וידאו thumbnail */}
-      <section className="bg-brand-dark py-24">
-        <div className="mx-auto max-w-4xl px-4">
-          <h2 className="mb-12 text-center text-4xl font-bold">חוגג מנגן בפעולה</h2>
-          <div className="group relative aspect-video overflow-hidden rounded-3xl border-2 border-brand-green/30">
-            <Image src="/assets/almog/hero-poster.jpg" alt="וידאו" fill className="object-cover" />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-              <motion.div whileHover={{ scale: 1.2 }} className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-brand-green to-brand-blue">
-                <svg className="h-12 w-12 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* גלריה - תמונות 6-11: רגעים מאירועים */}
-      <section className="relative bg-gradient-to-br from-black via-brand-dark to-black py-24">
-        <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-16 text-center text-4xl font-bold">רגעים מהאירועים</h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <motion.div key={i} whileHover={{ scale: 1.05 }} className="relative aspect-square overflow-hidden rounded-2xl">
-                <Image src="/assets/almog/hero-poster.jpg" alt={`רגע ${i}`} fill className="object-cover" />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA סופי - תמונה 12: רקע דרמטי */}
+      {/* CTA סופי */}
       <section className="relative overflow-hidden py-32">
-        <div className="absolute inset-0 -z-10">
-          <Image src="/assets/almog/hero-poster.jpg" alt="" fill className="object-cover brightness-50" />
-        </div>
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-brand-green/30 via-brand-dark to-brand-blue/30" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black via-black/80 to-black/50" />
         
         <div className="relative mx-auto max-w-4xl px-4 text-center">

@@ -148,7 +148,7 @@ export const ChogegMenagenLevel100 = () => {
                   href={`https://wa.me/${waNumber}?text=${encodeURIComponent("היי אלמוג, רציתי לשמוע על 'חוגג מנגן'")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative inline-block w-full overflow-hidden rounded-full bg-gradient-to-r from-[#03b28c] to-emerald-500 px-8 py-5 text-center text-lg font-bold text-white shadow-[0_0_50px_rgba(3,178,140,0.7)] transition hover:shadow-[0_0_80px_rgba(3,178,140,1)]"
+                  className="btn-neon touch-target group relative inline-block w-full overflow-hidden px-8 py-5 text-center text-lg"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     בואו נשמע איך זה עובד

@@ -68,7 +68,7 @@ export const HomeSections = () => {
   return (
     <>
       {/* --- 1. STORIES (MOVED UP) --- */}
-      <section id="stories" className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
+      <section id="stories" className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24 bg-depth-2">
         
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -178,13 +178,13 @@ export const HomeSections = () => {
         </div>
       </section>
 
-      {/* --- 2. VALUE PROPOSITION (NEW) --- */}
-      <section className="relative mx-auto w-full max-w-6xl px-4 py-12 md:py-24">
+      {/* --- 2. VALUE PROPOSITION (BENTO GRID) --- */}
+      <section className="relative mx-auto w-full max-w-6xl px-4 py-12 md:py-24 bg-depth-1">
         <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold text-white md:text-4xl">למה דווקא אלמוג?</h2>
+          <h2 className="text-fluid-h2 font-bold text-white">למה דווקא אלמוג?</h2>
           <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-gradient-to-r from-brand-blue to-brand-green" />
         </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="bento-grid">
           {[
             {
               title: "12 שנות ניסיון",
@@ -221,7 +221,7 @@ export const HomeSections = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-[0_16px_48px_rgba(255,255,255,0.1)]"
+              className="bento-item touch-target group relative overflow-hidden p-6 text-center"
             >
               {/* Top Gradient Border */}
               <div className={`absolute left-0 right-0 top-0 h-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
@@ -343,7 +343,7 @@ export const HomeSections = () => {
             <SmoothScrollLink
               href="#chogeg-menagen"
               ariaLabel="מעבר לסקשן חוגג מנגן"
-              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-8 py-4 text-lg font-bold text-white shadow-[0_0_40px_-10px_rgba(3,178,140,0.6)] transition-all hover:scale-105 hover:shadow-[0_0_60px_-15px_rgba(3,178,140,0.8)]"
+              className="btn-neon touch-target group relative inline-flex items-center gap-3 overflow-hidden px-8 py-4 text-lg"
             >
               <span className="relative z-10">בואו לראות איך זה נראה</span>
               <motion.svg 
@@ -370,7 +370,7 @@ export const HomeSections = () => {
       </section>
 
       {/* --- 3. THE SPLIT (WHO IS THIS FOR) --- */}
-      <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-32 bg-[#1f1f21]">
+      <section className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-32 bg-depth-1">
         {/* Animated brand element - Desktop Only */}
         {!isMobile && (
           <motion.div 
@@ -445,7 +445,7 @@ export const HomeSections = () => {
                 <motion.div whileHover={!isMobile ? { scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/weddings"
-                    className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-brand-green to-brand-blue px-6 py-3 text-sm font-bold text-white shadow-[0_0_30px_rgba(3,178,140,0.6)] transition hover:shadow-[0_0_50px_rgba(3,178,140,0.9)]"
+                    className="btn-neon touch-target group/btn relative inline-flex items-center gap-2 overflow-hidden px-6 py-3 text-sm"
                   >
                     <span className="relative z-10">DJ לחתונות ואירועים ←</span>
                     <svg className="relative z-10 h-4 w-4 transition group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -500,7 +500,7 @@ export const HomeSections = () => {
                 <motion.div whileHover={!isMobile ? { scale: 1.05 } : {}} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/academy"
-                    className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-brand-blue/30 bg-brand-blue/10 px-6 py-3 text-sm font-bold text-brand-blue backdrop-blur-sm transition hover:border-brand-blue hover:bg-brand-blue/20 hover:shadow-[0_0_30px_rgba(5,156,192,0.3)]"
+                    className="btn-neon-outline touch-target group/btn relative inline-flex items-center gap-2 overflow-hidden px-6 py-3 text-sm"
                   >
                     <span className="relative z-10">גלו את Compakt Academy ←</span>
                     <svg className="relative z-10 h-4 w-4 transition group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -518,7 +518,7 @@ export const HomeSections = () => {
 
 
       {/* --- 4. QUICK ACTIONS --- */}
-      <section className="relative mx-auto w-full max-w-6xl px-4 py-16">
+      <section className="relative mx-auto w-full max-w-6xl px-4 py-16 bg-depth-2">
         
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -556,7 +556,7 @@ export const HomeSections = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="פתיחת שיחה בוואטסאפ עם אלמוג"
-            className="group relative flex flex-col items-center gap-3"
+            className="touch-target group relative flex flex-col items-center gap-3"
           >
             <div className="relative">
               <motion.div 
@@ -583,7 +583,7 @@ export const HomeSections = () => {
             whileTap={{ scale: 0.95 }}
             href="tel:+972502427616"
             aria-label="התקשרות טלפונית לאלמוג"
-            className="group relative flex flex-col items-center gap-3"
+            className="touch-target group relative flex flex-col items-center gap-3"
           >
             <div className="relative">
               <motion.div 
@@ -612,7 +612,7 @@ export const HomeSections = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="מעבר לעמוד האינסטגרם של אלמוג"
-            className="group relative flex flex-col items-center gap-3"
+            className="touch-target group relative flex flex-col items-center gap-3"
           >
             <div className="relative">
               <motion.div 
@@ -639,7 +639,7 @@ export const HomeSections = () => {
             whileTap={{ scale: 0.95 }}
             href="mailto:almogmusiccohen@gmail.com"
             aria-label="שליחת מייל לאלמוג"
-            className="group relative flex flex-col items-center gap-3"
+            className="touch-target group relative flex flex-col items-center gap-3"
           >
             <div className="relative">
               <motion.div 
@@ -660,7 +660,7 @@ export const HomeSections = () => {
 
 
       {/* --- 5. MUSIC (MOVED UP) --- */}
-      <section id="music-section" className="relative py-16 md:py-24">
+      <section id="music-section" className="relative py-16 md:py-24 bg-depth-1">
         {!isMobile && (
           <>
             <motion.div
@@ -710,12 +710,13 @@ export const HomeSections = () => {
               ההבדל בין שיר טוב לרגע בלתי נשכח נמצא בגרסה המיוחדת שלא שמעתם בשום מקום אחר. קבלו הצצה לאדיטים ולחומרים בלעדיים.
             </motion.p>
           </motion.div>
-          <div className="grid gap-6 md:grid-cols-3">
+          {/* Horizontal scroll on mobile, grid on desktop */}
+          <div className="snap-x-container md:grid md:gap-6 md:grid-cols-3 md:overflow-visible">
             <a
               href="https://youtu.be/cLZaotSdbAg"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-black/80 via-black/60 to-brand-blue/20 shadow-xl shadow-black/40 backdrop-blur transition hover:scale-[1.02] hover:border-brand-blue/40"
+              className="snap-x-item md:w-auto touch-target group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-black/80 via-black/60 to-brand-blue/20 shadow-xl shadow-black/40 backdrop-blur transition hover:scale-[1.02] hover:border-brand-blue/40"
             >
               <div className="relative aspect-video w-full overflow-hidden bg-black/50">
                 <Image
@@ -743,7 +744,7 @@ export const HomeSections = () => {
               href="https://youtu.be/Y0j0n9UopIg"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-black/80 via-black/60 to-brand-blue/20 shadow-xl shadow-black/40 backdrop-blur transition hover:scale-[1.02] hover:border-brand-blue/40"
+              className="snap-x-item md:w-auto touch-target group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-black/80 via-black/60 to-brand-blue/20 shadow-xl shadow-black/40 backdrop-blur transition hover:scale-[1.02] hover:border-brand-blue/40"
             >
               <div className="relative aspect-video w-full overflow-hidden bg-black/50">
                 <Image
@@ -771,7 +772,7 @@ export const HomeSections = () => {
               href="https://youtu.be/IlXhyfptrX8"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-black/80 via-black/60 to-brand-blue/20 shadow-xl shadow-black/40 backdrop-blur transition hover:scale-[1.02] hover:border-brand-blue/40"
+              className="snap-x-item md:w-auto touch-target group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-black/80 via-black/60 to-brand-blue/20 shadow-xl shadow-black/40 backdrop-blur transition hover:scale-[1.02] hover:border-brand-blue/40"
             >
               <div className="relative aspect-video w-full overflow-hidden bg-black/50">
                 <Image
@@ -808,7 +809,7 @@ export const HomeSections = () => {
 
 
       {/* --- 8. SCHOOL (DEEP DIVE) --- */}
-      <section id="school-section" className="relative mx-auto w-full max-w-6xl px-4 py-12">
+      <section id="school-section" className="relative mx-auto w-full max-w-6xl px-4 py-12 bg-depth-2">
         <button
           onClick={() => setSchoolOpen(!schoolOpen)}
           className="group w-full glass-panel px-6 py-5 text-right hover:border-brand-blue/50"
@@ -985,7 +986,7 @@ export const HomeSections = () => {
           >
             <Link 
               href="/blog" 
-              className="inline-flex items-center gap-2 rounded-full border-2 border-brand-blue bg-brand-blue/10 px-6 py-3 text-sm font-bold text-brand-blue backdrop-blur-sm transition hover:bg-brand-blue/20 hover:shadow-[0_0_30px_rgba(5,156,192,0.4)]"
+              className="btn-neon-outline touch-target inline-flex items-center gap-2 px-6 py-3 text-sm"
             >
               לכל המאמרים
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
