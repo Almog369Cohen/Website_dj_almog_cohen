@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -29,6 +29,16 @@ export function ImageCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
+  const nextSlide = useCallback(() => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  }, [images.length]);
+
+  const prevSlide = useCallback(() => {
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  }, [images.length]);
+
   // AutoPlay
   useEffect(() => {
     if (!autoPlay || images.length <= 1) return;
@@ -38,17 +48,7 @@ export function ImageCarousel({
     }, interval);
 
     return () => clearInterval(timer);
-  }, [currentIndex, autoPlay, interval, images.length]);
-
-  const nextSlide = () => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  };
-
-  const prevSlide = () => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
+  }, [autoPlay, images.length, interval, nextSlide]);
 
   const goToSlide = (index: number) => {
     setDirection(index > currentIndex ? 1 : -1);

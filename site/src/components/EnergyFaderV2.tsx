@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { PanInfo } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { useEnergy } from "@/context/EnergyContext";
@@ -27,7 +28,7 @@ export const EnergyFaderV2 = () => {
     }
   }, [isMobile]);
 
-  const handleDrag = (event: any, info: any) => {
+  const handleDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (!containerRef.current) return;
     
     let newLevel = 0;

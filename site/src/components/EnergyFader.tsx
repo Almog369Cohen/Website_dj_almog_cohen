@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import type { PanInfo } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useEnergy } from "@/context/EnergyContext";
 import { useIsMobile } from "@/hooks/useMediaQuery";
@@ -125,7 +126,7 @@ export const EnergyFader = () => {
   // Note: We don't use useMotionValue for the source of truth because we want React state to control the vibe
   // But we use it for smooth animations
   
-  const handleDrag = (event: any, info: any) => {
+  const handleDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (!containerRef.current) return;
     
     let newLevel = 0;

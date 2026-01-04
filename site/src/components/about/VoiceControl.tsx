@@ -1,6 +1,31 @@
 "use client";
-import { useState, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from 'framer-motion';
+
+type SpeechRecognitionResultLike = {
+  0: { transcript: string };
+};
+
+type SpeechRecognitionEventLike = {
+  results: Array<SpeechRecognitionResultLike & { isFinal: boolean }>;
+};
+
+type SpeechRecognitionErrorEventLike = {
+  error: string;
+};
+
+type SpeechRecognitionLike = {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  onresult: ((event: SpeechRecognitionEventLike) => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEventLike) => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
+type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
 
 interface VoiceCommand {
   patterns: string[];
@@ -13,69 +38,109 @@ export default function VoiceControl() {
   const [transcript, setTranscript] = useState('');
   const [lastCommand, setLastCommand] = useState('');
   const [isSupported, setIsSupported] = useState(false);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
   // Voice commands
-  const commands: VoiceCommand[] = [
-    {
-      patterns: ['גלול למעלה', 'scroll up', 'למעלה'],
-      action: () => window.scrollBy({ top: -500, behavior: 'smooth' }),
-      description: 'גלילה למעלה'
-    },
-    {
-      patterns: ['גלול למטה', 'scroll down', 'למטה'],
-      action: () => window.scrollBy({ top: 500, behavior: 'smooth' }),
-      description: 'גלילה למטה'
-    },
-    {
-      patterns: ['הראה אירועים', 'אירועים', 'events'],
-      action: () => document.getElementById('events-section')?.scrollIntoView({ behavior: 'smooth' }),
-      description: 'מעבר לסקשן אירועים'
-    },
-    {
-      patterns: ['הראה קורסים', 'קורסים', 'courses', 'בית ספר'],
-      action: () => document.getElementById('school-section')?.scrollIntoView({ behavior: 'smooth' }),
-      description: 'מעבר לסקשן קורסים'
-    },
-    {
-      patterns: ['הראה מוזיקה', 'מוזיקה', 'music'],
-      action: () => document.getElementById('music-section')?.scrollIntoView({ behavior: 'smooth' }),
-      description: 'מעבר לסקשן מוזיקה'
-    },
-    {
-      patterns: ['התחל', 'למעלה עד הסוף', 'start', 'top'],
-      action: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-      description: 'חזרה לתחילת העמוד'
-    },
-    {
-      patterns: ['סיום', 'למטה עד הסוף', 'end', 'bottom'],
-      action: () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }),
-      description: 'מעבר לסוף העמוד'
-    },
-    {
-      patterns: ['whatsapp', 'וואטסאפ', 'צור קשר'],
-      action: () => {
-        const waNumber = '972502427616';
-        window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent('היי אלמוג, קראתי את העמוד ואני רוצה לדבר!')}`, '_blank');
+  const commands: VoiceCommand[] = useMemo(
+    () => [
+      {
+        patterns: ["גלול למעלה", "scroll up", "למעלה"],
+        action: () => window.scrollBy({ top: -500, behavior: "smooth" }),
+        description: "גלילה למעלה",
       },
-      description: 'פתיחת WhatsApp'
-    }
-  ];
+      {
+        patterns: ["גלול למטה", "scroll down", "למטה"],
+        action: () => window.scrollBy({ top: 500, behavior: "smooth" }),
+        description: "גלילה למטה",
+      },
+      {
+        patterns: ["הראה אירועים", "אירועים", "events"],
+        action: () =>
+          document
+            .getElementById("events-section")
+            ?.scrollIntoView({ behavior: "smooth" }),
+        description: "מעבר לסקשן אירועים",
+      },
+      {
+        patterns: ["הראה קורסים", "קורסים", "courses", "בית ספר"],
+        action: () =>
+          document
+            .getElementById("school-section")
+            ?.scrollIntoView({ behavior: "smooth" }),
+        description: "מעבר לסקשן קורסים",
+      },
+      {
+        patterns: ["הראה מוזיקה", "מוזיקה", "music"],
+        action: () =>
+          document
+            .getElementById("music-section")
+            ?.scrollIntoView({ behavior: "smooth" }),
+        description: "מעבר לסקשן מוזיקה",
+      },
+      {
+        patterns: ["התחל", "למעלה עד הסוף", "start", "top"],
+        action: () => window.scrollTo({ top: 0, behavior: "smooth" }),
+        description: "חזרה לתחילת העמוד",
+      },
+      {
+        patterns: ["סיום", "למטה עד הסוף", "end", "bottom"],
+        action: () =>
+          window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }),
+        description: "מעבר לסוף העמוד",
+      },
+      {
+        patterns: ["whatsapp", "וואטסאפ", "צור קשר"],
+        action: () => {
+          const waNumber = "972502427616";
+          window.open(
+            `https://wa.me/${waNumber}?text=${encodeURIComponent(
+              "היי אלמוג, קראתי את העמוד ואני רוצה לדבר!"
+            )}`,
+            "_blank"
+          );
+        },
+        description: "פתיחת WhatsApp",
+      },
+    ],
+    []
+  );
+
+  const processCommand = useCallback(
+    (text: string) => {
+      for (const command of commands) {
+        for (const pattern of command.patterns) {
+          if (text.includes(pattern.toLowerCase())) {
+            setLastCommand(command.description);
+            command.action();
+
+            // Clear after 2 seconds
+            setTimeout(() => setLastCommand(""), 2000);
+            return;
+          }
+        }
+      }
+    },
+    [commands]
+  );
 
   // Initialize speech recognition
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognitionCtor =
+      (window as unknown as { SpeechRecognition?: SpeechRecognitionConstructor })
+        .SpeechRecognition ||
+      (window as unknown as { webkitSpeechRecognition?: SpeechRecognitionConstructor })
+        .webkitSpeechRecognition;
     
-    if (SpeechRecognition) {
+    if (SpeechRecognitionCtor) {
       setIsSupported(true);
-      const recognition = new SpeechRecognition();
+      const recognition = new SpeechRecognitionCtor();
       recognition.lang = 'he-IL';
       recognition.continuous = true;
       recognition.interimResults = true;
 
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: SpeechRecognitionEventLike) => {
         const result = event.results[event.results.length - 1];
         const transcriptText = result[0].transcript.toLowerCase();
         setTranscript(transcriptText);
@@ -85,7 +150,7 @@ export default function VoiceControl() {
         }
       };
 
-      recognition.onerror = (event: any) => {
+      recognition.onerror = (event: SpeechRecognitionErrorEventLike) => {
         console.error('Speech recognition error:', event.error);
         if (event.error === 'no-speech') {
           setIsListening(false);
@@ -106,23 +171,7 @@ export default function VoiceControl() {
         recognitionRef.current.stop();
       }
     };
-  }, [isListening]);
-
-  // Process voice command
-  const processCommand = (text: string) => {
-    for (const command of commands) {
-      for (const pattern of command.patterns) {
-        if (text.includes(pattern.toLowerCase())) {
-          setLastCommand(command.description);
-          command.action();
-          
-          // Clear after 2 seconds
-          setTimeout(() => setLastCommand(''), 2000);
-          return;
-        }
-      }
-    }
-  };
+  }, [isListening, processCommand]);
 
   // Toggle listening
   const toggleListening = () => {

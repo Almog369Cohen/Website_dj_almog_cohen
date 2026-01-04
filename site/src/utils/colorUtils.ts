@@ -84,7 +84,7 @@ export function interpolateOKLCH(
   // Handle hue interpolation (shortest path around circle)
   let h1 = color1.h;
   let h2 = color2.h;
-  let hDiff = h2 - h1;
+  const hDiff = h2 - h1;
   
   if (hDiff > 180) {
     h1 += 360;

@@ -21,7 +21,6 @@ interface MagicLayerProps {
 
 export const MagicLayer = ({ children, showPreloader = true }: MagicLayerProps) => {
   const [loading, setLoading] = useState(showPreloader);
-  const [animationComplete, setAnimationComplete] = useState(false);
 
   useEffect(() => {
     if (showPreloader) {
@@ -40,7 +39,7 @@ export const MagicLayer = ({ children, showPreloader = true }: MagicLayerProps) 
       <FilmGrain />
 
       {/* CINEMATIC PRELOADER */}
-      <AnimatePresence mode="wait" onExitComplete={() => setAnimationComplete(true)}>
+      <AnimatePresence mode="wait">
         {loading && <CinematicPreloader />}
       </AnimatePresence>
 
@@ -198,13 +197,12 @@ export const MagneticButton = ({
   strength = 30,
 }: MagneticButtonProps) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth < 768;
+  });
 
   useEffect(() => {
-    // Detect if mobile
-    setIsMobile(window.innerWidth < 768);
-
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -232,14 +230,13 @@ export const MagneticButton = ({
 
   const handleMouseLeave = () => {
     setPosition({ x: 0, y: 0 });
-    setIsHovered(false);
   };
 
   const buttonContent = (
     <motion.div
       className={`relative inline-block ${className}`}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => {}}
       onMouseLeave={handleMouseLeave}
       animate={{
         x: position.x,

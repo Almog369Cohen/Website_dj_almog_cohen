@@ -76,7 +76,7 @@ export default function GamificationSystem({
   // Check achievements
   useEffect(() => {
     setAchievements(prev => prev.map(ach => {
-      let newAch = { ...ach };
+      const newAch = { ...ach };
 
       // First scroll
       if (ach.id === 'first_scroll' && scrollProgress > 0.01 && !ach.unlocked) {
