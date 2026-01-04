@@ -114,15 +114,15 @@ export default function RootLayout({
         <div className="min-h-dvh flex flex-col">
           <header className="glass-section sticky top-0 z-40" role="banner">
             <div className="mx-auto w-full max-w-6xl px-4 py-2.5 md:py-3">
-              <div className="relative flex items-center justify-between gap-4">
-                {/* Right Side (Start): Mobile Menu & Theme */}
+              <div className="flex items-center justify-between">
+                {/* Right Side: Mobile Menu & Theme */}
                 <div className="flex items-center gap-3">
                   <MobileMenu waNumber={waNumber} waText={waText} />
                   <ThemeToggle />
                 </div>
 
-                {/* Center: Logo */}
-                <div className="absolute left-1/2 -translate-x-1/2 flex items-center">
+                {/* Center: Logo - takes its own space */}
+                <div className="flex items-center justify-center px-4 md:px-8">
                   <Link href="/" aria-label="חזרה לדף הבית" className="flex items-center">
                     <Image 
                       src="/assets/logo/icon-white.png" 
@@ -135,8 +135,8 @@ export default function RootLayout({
                   </Link>
                 </div>
 
-                {/* Left Side (End): Desktop Nav */}
-                <nav className="hidden gap-6 text-sm md:flex items-center" role="navigation" aria-label="תפריט ראשי">
+                {/* Left Side: Desktop Nav */}
+                <nav className="hidden gap-4 lg:gap-5 text-sm md:flex items-center" role="navigation" aria-label="תפריט ראשי">
                   <DropdownMenu
                     title="אירועים"
                     mainHref="/events"

@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 
 import React from "react";
 import Link from "next/link";
@@ -41,7 +41,7 @@ export const HomeSectionsLean = () => {
                 <div className="text-3xl md:text-5xl font-black text-brand-blue glow-blue">
                   {stat.num}
                 </div>
-                <div className="text-xs md:text-sm text-white/80 font-medium mt-1">
+                <div className="text-xs md:text-sm text-foreground-secondary font-medium mt-1">
                   {stat.label}
                 </div>
               </motion.div>
@@ -62,7 +62,7 @@ export const HomeSectionsLean = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center text-3xl md:text-5xl font-black text-white mb-12"
+            className="text-center text-3xl md:text-5xl font-black text-foreground mb-12"
           >
             איך אני יכול <span className="text-brand-green">לעזור לך?</span>
           </motion.h2>
@@ -79,10 +79,10 @@ export const HomeSectionsLean = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-brand-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               
               <div className="relative z-10">
-                                <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
+                                <h3 className="text-2xl md:text-3xl font-black text-foreground mb-3">
                   יש לי אירוע
                 </h3>
-                <p className="text-white/80 mb-6 leading-relaxed">
+                <p className="text-foreground-secondary mb-6 leading-relaxed">
                   חתונה, בר/בת מצווה, אירוע עסקי או מסיבה פרטית. 
                   אני מתאים את המוזיקה בדיוק לקהל שלך.
                 </p>
@@ -113,10 +113,10 @@ export const HomeSectionsLean = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               
               <div className="relative z-10">
-                                <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
+                                <h3 className="text-2xl md:text-3xl font-black text-foreground mb-3">
                   רוצה ללמוד DJ
                 </h3>
-                <p className="text-white/80 mb-6 leading-relaxed">
+                <p className="text-foreground-secondary mb-6 leading-relaxed">
                   מאפס ועד רחבה מלאה. קורסים פרטיים, 
                   מנטורינג אישי וליווי מקצועי.
                 </p>
@@ -159,7 +159,7 @@ export const HomeSectionsLean = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-6xl font-black text-white mb-6"
+            className="text-4xl md:text-6xl font-black text-foreground mb-6"
           >
             מוכנים <span className="text-brand-green">להתחיל?</span>
           </motion.h2>
@@ -169,7 +169,7 @@ export const HomeSectionsLean = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-foreground-secondary mb-10 max-w-2xl mx-auto"
           >
             שיחה קצרה של 5 דקות יכולה לחסוך לכם שעות של חיפושים. 
             ספרו לי על האירוע ואגיד לכם אם אני הבחירה הנכונה.
@@ -205,7 +205,7 @@ export const HomeSectionsLean = () => {
           </div>
 
           {/* Trust Signals */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-white/50">
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <svg className="h-4 w-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

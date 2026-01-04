@@ -68,24 +68,24 @@ export default function PremiumPage() {
 
   const bonuses = [
     {
-      icon: "🎤",
       title: "ליווי אישי חודשי",
       description: "שיחות 1-on-1 עם אלמוג לבניית תכנית אישית ומעקב אחרי התקדמות",
+      gradient: "from-[#ffaa00] to-[#ff8800]",
     },
     {
-      icon: "📱",
       title: "קבוצת WhatsApp סגורה",
       description: "גישה לקהילה אקסקלוסיבית של דיג'ייז מתקדמים - רק בוגרי התכנית",
+      gradient: "from-[#03b28c] to-[#059cc0]",
     },
     {
-      icon: "🎯",
       title: "תכנית עבודה מותאמת",
       description: "roadmap מפורט ל-90 יום הראשונים - יעדים, משימות ומעקב",
+      gradient: "from-[#059cc0] to-[#03b28c]",
     },
     {
-      icon: "🔥",
       title: "צפייה בהופעות",
       description: "אפשרות להגיע להופעות אמיתיות ולראות איך זה עובד בשטח",
+      gradient: "from-[#ffaa00] to-[#03b28c]",
     },
   ];
 
@@ -253,6 +253,117 @@ export default function PremiumPage() {
         </div>
       </section>
 
+      {/* What's Included - Course Structure */}
+      <section className="px-4 py-16">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="mb-4 text-center text-3xl font-black text-white md:text-5xl">
+            מה כלול בתכנית
+          </h2>
+          <p className="mb-12 text-center text-white/85">8 שיעורים מקיפים + ליווי אישי + חוויות בשטח</p>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {/* 8 Lessons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="rounded-2xl border border-[#ffaa00]/30 bg-gradient-to-br from-[#ffaa00]/10 to-transparent p-6"
+            >
+              <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#ffaa00] to-[#ff8800]" />
+              <h3 className="mb-2 text-xl font-bold text-white">8 שיעורי תקלוט</h3>
+              <p className="mb-3 text-white/85">6 מעשי + 2 עיוני</p>
+              <p className="text-sm text-white/70">כל שיעור עם תרגילי בית מותאמים אישית</p>
+            </motion.div>
+
+            {/* Field Experience */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl border border-brand-green/30 bg-gradient-to-br from-brand-green/10 to-transparent p-6"
+            >
+              <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#03b28c] to-[#059cc0]" />
+              <h3 className="mb-2 text-xl font-bold text-white">יציאה לשטח</h3>
+              <p className="mb-3 text-white/85">2 אירועים מאחורי הקלעים</p>
+              <p className="text-sm text-white/70">לראות איך נראה אירוע אמיתי מהצד המקצועי</p>
+            </motion.div>
+
+            {/* Sound & Light Session */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl border border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 to-transparent p-6"
+            >
+              <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c]" />
+              <h3 className="mb-2 text-xl font-bold text-white">סשן הגברה ותאורה</h3>
+              <p className="mb-3 text-white/85">היכרות בסיסית עם הציוד</p>
+              <p className="text-sm text-white/70">להבין מה קורה מאחורי הקונסולה</p>
+            </motion.div>
+
+            {/* Photo Shoot */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="rounded-2xl border border-[#ffaa00]/30 bg-gradient-to-br from-[#ffaa00]/10 to-transparent p-6"
+            >
+              <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#ffaa00] to-[#03b28c]" />
+              <h3 className="mb-2 text-xl font-bold text-white">צילומי תדמית</h3>
+              <p className="mb-3 text-white/85">תמונות מקצועיות לפרופיל</p>
+              <p className="text-sm text-white/70">לבניית המותג האישי שלך</p>
+            </motion.div>
+
+            {/* Event Accompaniment */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="rounded-2xl border border-brand-green/30 bg-gradient-to-br from-brand-green/10 to-transparent p-6"
+            >
+              <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#03b28c] to-[#059cc0]" />
+              <h3 className="mb-2 text-xl font-bold text-white">ליווי לאירוע</h3>
+              <p className="mb-3 text-white/85">באירוע הראשון שלך</p>
+              <p className="text-sm text-white/70">
+                אופציה לתוספת: <span className="font-bold text-[#ffaa00]">450₪ + מע״מ</span>
+              </p>
+            </motion.div>
+
+            {/* Business Zoom Sessions */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="rounded-2xl border border-[#ffaa00]/30 bg-gradient-to-br from-[#ffaa00]/10 to-transparent p-6"
+            >
+              <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#ffaa00] to-[#ff8800]" />
+              <h3 className="mb-2 text-xl font-bold text-white">2 סשן זום עסקי-מנטלי</h3>
+              <p className="mb-3 text-white/85">שעה וחצי כל סשן</p>
+              <p className="text-sm text-white/70">כניסה לתחום האירועים – הכנה מנטלית ועסקית</p>
+            </motion.div>
+          </div>
+
+          {/* Zoom Support Sessions */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
+            className="mt-8 rounded-2xl border border-white/20 bg-white/5 p-6 text-center"
+          >
+            <div className="mx-auto mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c]" />
+            <h3 className="mb-2 text-xl font-bold text-white">3 סשני זום תמיכה</h3>
+            <p className="mb-2 text-white/85">45 דקות כל סשן</p>
+            <p className="text-sm text-white/70">שיקוף מסך, עדכונים, הסברים וסגירת פערים בתקלוט</p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Modules */}
       <section className="px-4 py-16">
         <div className="mx-auto max-w-5xl">
@@ -319,7 +430,7 @@ export default function PremiumPage() {
                 transition={{ delay: idx * 0.1 }}
                 className="rounded-2xl border border-[#ffaa00]/20 bg-gradient-to-br from-[#ffaa00]/5 to-transparent p-6 backdrop-blur-xl"
               >
-                <div className="mb-4 text-4xl">{bonus.icon}</div>
+                <div className={`mb-4 h-3 w-12 rounded-full bg-gradient-to-r ${bonus.gradient}`} />
                 <h3 className="mb-2 text-xl font-bold text-white">{bonus.title}</h3>
                 <p className="text-white/85">{bonus.description}</p>
               </motion.div>

@@ -1,59 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import Image from "next/image";
 
 /**
  * Testimonials Section - המלצות מלקוחות
- * Based on real WhatsApp conversations
+ * WhatsApp mockup screenshots
  */
 
-interface Testimonial {
-  id: number;
-  name: string;
-  event: string;
-  date: string;
-  quote: string;
-  highlight: string;
-  emoji: string;
-}
-
-const testimonials: Testimonial[] = [
+const testimonialMockups = [
   {
     id: 1,
-    name: "שיראל & אופק",
-    event: "חתונה",
-    date: "נובמבר 2023",
-    quote: "קיבלנו עשרות אם לא מאות מחמאות שהרחבה מפוצצת! צעירים שלא מפסיקים לרקוד שעות. ההפצצה אחרי הפצצה באמת לא נתנה לנו שנייה לנוח!",
-    highlight: "זכינו בך, באנרגיות, בטעם המוזיקלי המעולה ובקליעה בול לזוג שאנחנו",
-    emoji: "💍"
+    name: "אוריאל & יעל",
+    image: "/assets/testimonials/orielyaelmok.png",
+    rotation: -3, // נוטה שמאלה
   },
   {
     id: 2,
-    name: "אוריאל & יעל",
-    event: "חתונה",
-    date: "2023",
-    quote: "בחיים לא הייתי בחתונה שגם שהייתי עייפה המוזיקה פשוט החזיקה אותי ברחבה!",
-    highlight: "היתה חתונה פשוט וואו. נהננו בטירוף, והדיג׳יי שלכם היה פשוט מעולה",
-    emoji: "🎉"
+    name: "שיראל & אופק",
+    image: "/assets/testimonials/shirelofekmok.png",
+    rotation: -1, // כמעט ישר
   },
   {
     id: 3,
     name: "הראל & אביב",
-    event: "חתונה",
-    date: "אפריל 2025",
-    quote: "יאללה איזה אירוע עשית לנו! אני מקבל הודעות מאנשים שכואב להם הגוף ונשברו להם הרגליים מרוב ריקודים!",
-    highlight: "אהוב שלנו היה לנו מושלם ואתה בעצמך מושלם. אין עליך בעולם ונהנינו בטירוף",
-    emoji: "🔥"
+    image: "/assets/testimonials/Harelavivmok.png",
+    rotation: 5, // נוטה ימינה
   },
 ];
 
 export function TestimonialsSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
   return (
-    <section className="py-16 px-4 bg-gradient-to-b from-transparent via-brand-green/5 to-transparent">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-16 px-4 bg-gradient-to-b from-transparent via-brand-green/5 to-transparent overflow-hidden">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -64,55 +43,70 @@ export function TestimonialsSection() {
           <span className="text-brand-green text-sm font-medium tracking-wider uppercase mb-2 block">
             מה אומרים עליי
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
             הלקוחות מדברים
           </h2>
         </motion.div>
 
-        {/* Testimonials Cards */}
-        <div className="space-y-6">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={testimonial.id}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="relative"
-            >
-              {/* WhatsApp Style Card */}
-              <div className="bg-[#1f2c34] rounded-2xl p-6 border border-white/10 hover:border-brand-green/30 transition-colors">
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-green to-brand-blue flex items-center justify-center text-xl">
-                    {testimonial.emoji}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white">{testimonial.name}</h3>
-                    <p className="text-sm text-white/50">{testimonial.event} • {testimonial.date}</p>
-                  </div>
-                  {/* WhatsApp Icon */}
-                  <div className="mr-auto">
-                    <svg className="w-5 h-5 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                    </svg>
-                  </div>
-                </div>
+        {/* Mockup Images - Horizontal scroll on mobile, overlapping stack on desktop */}
+        <div className="relative">
+          {/* Mobile: Horizontal scroll */}
+          <div className="flex gap-4 overflow-x-auto pb-6 px-4 -mx-4 md:hidden snap-x snap-mandatory scrollbar-hide">
+            {testimonialMockups.map((mockup, index) => (
+              <motion.div
+                key={mockup.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex-shrink-0 w-[260px] snap-center"
+                style={{ transform: `rotate(${mockup.rotation}deg)` }}
+              >
+                <Image
+                  src={mockup.image}
+                  alt={`המלצה מ${mockup.name}`}
+                  width={400}
+                  height={800}
+                  className="w-full h-auto drop-shadow-2xl"
+                />
+                <p className="mt-3 text-center text-foreground-secondary text-sm font-medium">{mockup.name}</p>
+              </motion.div>
+            ))}
+          </div>
 
-                {/* Quote */}
-                <p className="text-white/80 leading-relaxed mb-4 text-right">
-                  "{testimonial.quote}"
-                </p>
-
-                {/* Highlight */}
-                <div className="bg-brand-green/10 border-r-4 border-brand-green rounded-lg p-4">
-                  <p className="text-brand-green font-medium text-right">
-                    💚 {testimonial.highlight}
-                  </p>
+          {/* Desktop: Overlapping stack */}
+          <div className="hidden md:flex justify-center items-center gap-0 py-8">
+            {testimonialMockups.map((mockup, index) => (
+              <motion.div
+                key={mockup.id}
+                initial={{ opacity: 0, y: 50, rotate: 0 }}
+                whileInView={{ opacity: 1, y: 0, rotate: mockup.rotation }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.15, type: "spring", stiffness: 100 }}
+                className="relative group"
+                style={{ 
+                  marginLeft: index === 0 ? 0 : "-60px",
+                  zIndex: index === 1 ? 10 : 5 - Math.abs(index - 1),
+                }}
+              >
+                {/* Glow on hover */}
+                <div className="absolute -inset-4 bg-gradient-to-r from-brand-green/30 to-brand-blue/30 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <Image
+                  src={mockup.image}
+                  alt={`המלצה מ${mockup.name}`}
+                  width={320}
+                  height={640}
+                  className="relative w-[280px] h-auto drop-shadow-2xl transition-transform duration-300 group-hover:scale-105 group-hover:z-20"
+                />
+                
+                {/* Name on hover */}
+                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="text-foreground text-sm font-medium whitespace-nowrap bg-background/80 px-3 py-1 rounded-full backdrop-blur-sm">{mockup.name}</p>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Trust Badge */}
@@ -120,11 +114,11 @@ export function TestimonialsSection() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="mt-10 text-center"
+          className="mt-12 text-center"
         >
-          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10">
+          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground/5 border border-foreground/10">
             <span className="text-yellow-400">⭐⭐⭐⭐⭐</span>
-            <span className="text-white/70 text-sm">500+ אירועים מוצלחים</span>
+            <span className="text-foreground-secondary text-sm">500+ אירועים מוצלחים</span>
           </div>
         </motion.div>
       </div>

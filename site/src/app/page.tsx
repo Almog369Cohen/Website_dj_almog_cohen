@@ -16,6 +16,8 @@ const AnimatedBackground = dynamic(
 import { HomeSectionsLean } from "@/components/home/HomeSectionsLean"; // Conversion-focused
 import { RevealText } from "@/components/ui/RevealText";
 import { SmoothScrollLink } from "@/components/ui/SmoothScrollLink";
+import { SplitText } from "@/components/ui/SplitText";
+import { GradientText } from "@/components/ui/GradientText";
 
 type Path = "none" | "school" | "events";
 
@@ -481,57 +483,55 @@ function HomeContent() {
             <div className="absolute -inset-4 -z-10 rounded-[40px] bg-gradient-to-r from-brand-green/30 via-brand-blue/30 to-brand-green/30 opacity-20 blur-3xl" />
             
             <div className="relative overflow-hidden px-5 py-6 md:px-10 md:py-12 bg-black/30 backdrop-blur-sm border border-white/10" style={{ borderRadius: '40px' }}>
-              {/* Title - Elegant Multi-line Design (Level 100) */}
+              {/* Title - Elegant Multi-line Design with SplitText Animation */}
               <div className="mb-8 space-y-4">
-                {/* Line 1 - Lighter, elegant intro */}
-                <RevealText delay={0}>
-                  <motion.div 
-                    className={`text-center ${isRaveMode ? "rave-glitch" : ""}`}
-                    style={{
-                      fontSize: "clamp(1.5rem, 5vw, 3rem)",
-                      fontWeight: 300,
-                      letterSpacing: "0.05em",
-                      color: "rgba(255, 255, 255, 0.6)",
-                    }}
-                  >
-                    לא מחפש למלא יומן.
-                  </motion.div>
-                </RevealText>
+                {/* Line 1 - Lighter, elegant intro with SplitText */}
+                <div 
+                  className={`text-center ${isRaveMode ? "rave-glitch" : ""}`}
+                  style={{
+                    fontSize: "clamp(1.5rem, 5vw, 3rem)",
+                    fontWeight: 300,
+                    letterSpacing: "0.05em",
+                    color: "rgba(255, 255, 255, 0.6)",
+                  }}
+                >
+                  <SplitText 
+                    text="לא מחפש למלא יומן." 
+                    animation="fadeUp"
+                    delay={0.2}
+                    staggerDelay={0.05}
+                    className="justify-center"
+                  />
+                </div>
 
                 {/* Decorative Divider */}
                 <motion.div
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
                   className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-brand-blue to-transparent"
                 />
 
-                {/* Line 2 - Bold, powerful statement */}
-                <RevealText delay={0.4}>
-                  <motion.h1
-                    whileHover={{ 
-                      scale: 1.03,
-                      textShadow: "0 0 30px rgba(5, 156, 192, 0.6), 0 0 60px rgba(3, 178, 140, 0.4)",
-                      transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
-                    }}
-                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ 
-                      fontSize: "var(--font-fluid-h1)",
-                      fontWeight: 900,
-                      letterSpacing: "-0.02em",
-                      lineHeight: 1.1,
-                      background: "linear-gradient(135deg, #059cc0 0%, #ffffff 50%, #03b28c 100%)",
-                      backgroundClip: "text",
-                      WebkitBackgroundClip: "text",
-                      color: "transparent",
-                      textAlign: "center",
-                      cursor: "default",
-                      transformOrigin: "center center",
-                    }}
-                  >
-                    מחפש ליצור רגעים.
-                  </motion.h1>
-                </RevealText>
+                {/* Line 2 - Bold, powerful statement with GradientText */}
+                <h1
+                  className="text-center cursor-default"
+                  style={{ 
+                    fontSize: "var(--font-fluid-h1)",
+                    fontWeight: 900,
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1.1,
+                  }}
+                >
+                  <GradientText 
+                    text="מחפש ליצור רגעים."
+                    from="#059cc0"
+                    via="#ffffff"
+                    to="#03b28c"
+                    animate={true}
+                    delay={0.8}
+                    className="text-center"
+                  />
+                </h1>
               </div>
 
               {/* Subtitle - Fluid Typography */}
@@ -542,7 +542,7 @@ function HomeContent() {
                     fontWeight: 400,
                     lineHeight: 1.6,
                   }}
-                  className="mx-auto max-w-3xl text-center text-white/90"
+                  className="mx-auto max-w-3xl text-center text-foreground/90"
                 >
                   12 שנים בתחום לימדו אותי דבר אחד: מוזיקה טובה זה הבסיס, אבל חיבור אנושי זה הקסם. אני בוחר את האירועים שלי בפינצטה, כדי לוודא שכל ערב הוא לא סתם "עבודה", אלא הצגה.
                 </h2>
@@ -602,33 +602,58 @@ function HomeContent() {
           </div>
         </motion.div>
 
-        {/* Client Logos - Static display, no animation */}
-        <div className="z-10 mt-6 w-full max-w-4xl px-4">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-white/50 text-center">
+        {/* Client Logos - Slow infinite scroll */}
+        <div className="z-10 mt-6 w-full overflow-hidden">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-foreground-secondary text-center">
             בין לקוחותינו
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-8 py-4">
-            {[
-              { file: "logoapril.jpeg", name: "April" },
-              { file: "logoעירייה.png", name: "עיריית ירושלים" },
-              { file: "iconnbana.svg", name: "בנא משקאות" },
-              { file: "אורט תעופה וחלל .png", name: "אורט תעופה וחלל" },
-              { file: "DHL.png", name: "DHL" },
-              { file: "קריית אונו .png", name: "עיריית קריית אונו" },
-              { file: "אריאל .jpeg", name: "אריאל" },
-            ].map((logo) => (
-              <div
-                key={logo.file}
-                className="relative h-10 w-20 flex-shrink-0 opacity-70 hover:opacity-100 transition-opacity duration-300"
-              >
-                <Image
-                  src={`/assets/clients/${logo.file}`}
-                  alt={logo.name}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            ))}
+          <div className="relative">
+            <div className="flex animate-scroll-slow">
+              {/* First set */}
+              {[
+                { file: "logoapril.jpeg", name: "April" },
+                { file: "logoעירייה.png", name: "עיריית ירושלים" },
+                { file: "iconnbana.svg", name: "בנא משקאות" },
+                { file: "אורט תעופה וחלל .png", name: "אורט תעופה וחלל" },
+                { file: "DHL.png", name: "DHL" },
+                { file: "קריית אונו .png", name: "עיריית קריית אונו" },
+                { file: "אריאל .jpeg", name: "אריאל" },
+              ].map((logo) => (
+                <div
+                  key={logo.file}
+                  className="relative h-8 w-16 mx-4 md:h-10 md:w-24 md:mx-8 flex-shrink-0 opacity-60 hover:opacity-100 transition-opacity duration-300"
+                >
+                  <Image
+                    src={`/assets/clients/${logo.file}`}
+                    alt={logo.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+              {/* Duplicate for seamless loop */}
+              {[
+                { file: "logoapril.jpeg", name: "April" },
+                { file: "logoעירייה.png", name: "עיריית ירושלים" },
+                { file: "iconnbana.svg", name: "בנא משקאות" },
+                { file: "אורט תעופה וחלל .png", name: "אורט תעופה וחלל" },
+                { file: "DHL.png", name: "DHL" },
+                { file: "קריית אונו .png", name: "עיריית קריית אונו" },
+                { file: "אריאל .jpeg", name: "אריאל" },
+              ].map((logo) => (
+                <div
+                  key={`dup-${logo.file}`}
+                  className="relative h-8 w-16 mx-4 md:h-10 md:w-24 md:mx-8 flex-shrink-0 opacity-60 hover:opacity-100 transition-opacity duration-300"
+                >
+                  <Image
+                    src={`/assets/clients/${logo.file}`}
+                    alt={logo.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
