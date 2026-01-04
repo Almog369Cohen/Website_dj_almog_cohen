@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import EventsLayoutShell from "@/components/events/EventsLayoutShell";
 
 export const metadata: Metadata = {
   title: "שירותי DJ לאירועים | אלמוג כהן – Energy Architect",
@@ -27,5 +28,5 @@ export default function EventsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <EventsLayoutShell>{children}</EventsLayoutShell>;
 }

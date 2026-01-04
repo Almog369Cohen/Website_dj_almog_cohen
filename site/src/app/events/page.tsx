@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ImageCarousel } from "@/components/ui/ImageCarousel";
+import { buildWhatsAppLink, getEventsWhatsAppMessage } from "@/utils/whatsapp";
 
 export default function EventsPage() {
-  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972502427616";
-  const wa = (txt: string) => `https://wa.me/${waNumber}?text=${encodeURIComponent(txt)}`;
+  const wa = (txt: string) => buildWhatsAppLink(txt);
 
   const eventTypes = [
     {
@@ -184,7 +184,7 @@ export default function EventsPage() {
             transition={{ delay: 0.3 }}
           >
             <a
-              href={wa("היי אלמוג, מעוניינים ב-DJ לאירוע")}
+              href={wa(getEventsWhatsAppMessage("events_general"))}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-blue to-brand-green px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:scale-105"
@@ -316,7 +316,7 @@ export default function EventsPage() {
             בואו נדבר על האירוע שלכם ונבנה את הפסקול המושלם.
           </p>
           <a
-            href={wa("היי אלמוג, רוצים לשמוע על שירותי ה-DJ")}
+            href={wa(getEventsWhatsAppMessage("events_general"))}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-brand-blue to-brand-green px-10 py-5 text-xl font-bold text-white shadow-lg transition hover:scale-105"

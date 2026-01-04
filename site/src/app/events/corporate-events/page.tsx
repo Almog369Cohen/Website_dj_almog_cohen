@@ -2,10 +2,10 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ImageCarousel } from "@/components/ui/ImageCarousel";
+import { buildWhatsAppLink, getEventsWhatsAppMessage } from "@/utils/whatsapp";
 
 export default function CorporateEventsPage() {
-  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972502427616";
-  const wa = (txt: string) => `https://wa.me/${waNumber}?text=${encodeURIComponent(txt)}`;
+  const wa = (txt: string) => buildWhatsAppLink(txt);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -66,7 +66,7 @@ export default function CorporateEventsPage() {
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-                <a href={wa("היי אלמוג, מעוניינים ב-DJ לאירוע עסקי")} target="_blank" rel="noopener noreferrer"
+                <a href={wa(getEventsWhatsAppMessage("corporate_events"))} target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-blue-600 px-8 py-4 text-lg font-bold text-white transition hover:scale-105 shadow-lg">
                   <span>בדיקת זמינות</span>
                   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@ export default function CorporateEventsPage() {
           <p className="mb-8 text-lg text-foreground-secondary">
             בואו נבנה את האווירה המושלמת לאירוע שלכם.
           </p>
-          <a href={wa("היי אלמוג, רוצים לשמוע על DJ לאירוע עסקי")} target="_blank" rel="noopener noreferrer"
+          <a href={wa(getEventsWhatsAppMessage("corporate_events"))} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-indigo-500 to-blue-600 px-10 py-5 text-xl font-bold text-white shadow-lg transition hover:scale-105">
             <span>בדיקת זמינות</span>
             <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
