@@ -13,18 +13,22 @@
   --brand-white: #ffffff;
 }
 
-/* Light Mode - Enhanced Readability & Contrast */
+/* Light Mode - Enhanced Readability & Contrast (COMPAKTT Design System) */
 .light {
-  --background: #ffffff; /* Pure white for better contrast */
-  --foreground: #1a1a1a; /* Darker for better readability (WCAG AAA) */
-  --foreground-heading: #0a2540; /* Deep navy blue for headings (High contrast) */
-  --foreground-secondary: #525252; /* Medium gray for secondary text (WCAG AA+) */
-  --muted-foreground: #737373; /* Lighter gray for muted text */
-  --border: rgba(0, 0, 0, 0.1); /* Subtle borders */
-  --brand-dark: #ffffff;
-  --brand-white: #1a1a1a;
-  --brand-blue: #0588a3; /* Darker blue for better contrast in light mode */
-  --brand-green: #028c6e; /* Darker green for better contrast in light mode */
+  --background: #f4f7f9; /* Light gray background per design system */
+  --foreground: #1f1f21; /* Dark gray for body text (WCAG AA) */
+  --foreground-heading: #1f1f21; /* Same dark for headings, weight 600-700 */
+  --foreground-secondary: rgba(31, 31, 33, 0.7); /* Secondary/microcopy */
+  --muted-foreground: rgba(31, 31, 33, 0.5); /* Placeholder text */
+  --border: rgba(0, 0, 0, 0.08); /* Glass stroke per design system */
+  --brand-dark: #f4f7f9;
+  --brand-white: #1f1f21;
+  --brand-blue: #059cc0; /* Keep original blue - use as accent only */
+  --brand-green: #03b28c; /* Keep original green - use as accent only */
+  
+  /* Glass backgrounds */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-hover: rgba(255, 255, 255, 0.85);
 }
 
 /* High Contrast Mode */
@@ -86,10 +90,25 @@ body {
 }
 
 .light body {
-  background:
-    radial-gradient(circle at top left, rgba(5, 156, 192, 0.08), transparent 60%),
-    radial-gradient(circle at bottom right, rgba(3, 178, 140, 0.06), transparent 55%),
-    var(--background);
+  background: var(--background);
+}
+
+/* Mobile-Safe Glassmorphism (COMPAKTT Design System) */
+.glass {
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.light .glass {
+  background: var(--glass-bg, rgba(255, 255, 255, 0.7));
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.light .glass:hover {
+  background: var(--glass-bg-hover, rgba(255, 255, 255, 0.85));
 }
 
 /* Modern Glassmorphism Effects */
@@ -125,6 +144,31 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* CTA Button - COMPAKTT Design System */
+.btn-cta {
+  background: #1f1f21;
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  border: none;
+  min-height: 48px;
+  width: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-cta:hover,
+.btn-cta:focus {
+  background: linear-gradient(135deg, #059cc0, #03b28c);
+  color: #ffffff;
+}
+
+@media (min-width: 640px) {
+  .btn-cta {
+    width: auto;
+  }
 }
 
 /* Modern Button Styles */
