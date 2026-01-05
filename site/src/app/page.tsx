@@ -646,7 +646,7 @@ function HomeContent() {
             בין לקוחותינו
           </p>
           <div className="relative">
-            <div className="flex animate-scroll-slow">
+            <div className="flex w-max animate-scroll-slow">
               {/* First set */}
               {[
                 { file: "logoapril.jpeg", name: "April" },

@@ -1275,35 +1275,20 @@ p, span, li, a {
 }
 
 .animate-scroll-slow {
-  animation: scroll-slow 120s linear infinite;
+  animation: scroll-slow 90s linear infinite;
+  will-change: transform;
 }
 
 /* Even slower on mobile for gentle movement */
 @media (max-width: 768px) {
   .animate-scroll-slow {
-    animation-duration: 180s;
+    animation-duration: 150s;
   }
 }
 
-/* --- Ultra slow client logos carousel (desktop + mobile) --- */
-@keyframes scroll-slow {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    /* פחות תזוזה = פחות תחושת מהירות */
-    transform: translateX(-25%);
-  }
-}
-
-/* ברירת מחדל – דסקטופ / טאבלט */
-.animate-scroll-slow {
-  animation: scroll-slow 240s linear infinite; /* 4 דקות למחזור */
-}
-
-/* מובייל – עוד יותר איטי ועדין */
-@media (max-width: 768px) {
+@media (prefers-reduced-motion: reduce) {
   .animate-scroll-slow {
-    animation-duration: 360s; /* 6 דקות למחזור */
+    animation: none;
+    transform: translateX(0);
   }
 }

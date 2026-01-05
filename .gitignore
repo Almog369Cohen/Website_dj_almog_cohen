@@ -53,3 +53,6 @@ key.json
 *.mkv
 *.psd
 *.PSD
+
+# Exceptions (tracked assets)
+!site/public/assets/hero-main-optimized.mp4
