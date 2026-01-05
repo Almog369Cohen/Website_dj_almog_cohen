@@ -30,7 +30,6 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
   const menuItems = [
     { href: "/", label: "בית" },
     { href: "/weddings", label: "חתונות" },
-    { href: "/events", label: "אירועים" },
     { href: "/chogeg-menagen", label: "חוגג מנגן" },
     { href: "/academy", label: "Academy" },
     { href: "/music", label: "מוזיקה" },

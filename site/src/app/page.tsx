@@ -34,6 +34,7 @@ function HomeContent() {
   const [path, setPath] = useState<Path>("none");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [heroVideoFailed, setHeroVideoFailed] = useState(false);
   const [schoolOpen, setSchoolOpen] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [faqOpen, setFaqOpen] = useState(false);
@@ -44,12 +45,32 @@ function HomeContent() {
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-      video.play().catch(() => {
+      video
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
         // Autoplay blocked - user interaction required
         console.log("Video autoplay blocked - waiting for interaction");
+        setIsPlaying(false);
       });
     }
   }, []);
+
+  const tryPlayHeroVideo = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch(() => {
+        setIsPlaying(false);
+      });
+  };
   
   // Reactive Styles for Energy System
   const reactiveStyles = {
@@ -444,18 +465,35 @@ function HomeContent() {
         
         {/* Video Background - z-index 0 to be above blobs but below content */}
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectFit: 'cover' }}
-          >
-            <source src="/assets/hero-main-optimized.mp4" type="video/mp4" />
-          </video>
+          {!heroVideoFailed ? (
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster="/assets/almog/IMG_6561.jpg"
+              onCanPlay={tryPlayHeroVideo}
+              onError={() => {
+                setHeroVideoFailed(true);
+                setIsPlaying(false);
+              }}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectFit: "cover", aspectRatio: "16 / 9" }}
+              aria-hidden="true"
+            >
+              <source src="/assets/hero-main-optimized.mp4" type="video/mp4" />
+            </video>
+          ) : (
+            <Image
+              src="/assets/almog/IMG_6561.jpg"
+              alt="DJ Almog Cohen"
+              fill
+              priority
+              className="object-cover"
+            />
+          )}
           {/* Light overlay on video - more transparent */}
           <div className="absolute inset-0 bg-black/30" />
           {/* Scanline Effect - Desktop Only */}

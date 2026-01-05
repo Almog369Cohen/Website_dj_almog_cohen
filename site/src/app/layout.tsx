@@ -138,16 +138,13 @@ export default function RootLayout({
                 {/* Left Side: Desktop Nav */}
                 <nav className="hidden gap-4 lg:gap-5 text-sm md:flex items-center" role="navigation" aria-label="תפריט ראשי">
                   <DropdownMenu
-                    title="אירועים"
-                    mainHref="/events"
+                    title="חתונות"
+                    mainHref="/weddings"
                     items={[
-                      { label: "DJ חתונות", href: "/events/weddings-dj", color: "from-[#059cc0] to-[#03b28c]" },
-                      { label: "DJ בר מצווה", href: "/events/bar-mitzvah-dj", color: "from-blue-500 to-cyan-500" },
-                      { label: "DJ בת מצווה", href: "/events/bat-mitzvah-dj", color: "from-pink-500 to-rose-500" },
-                      { label: "DJ חינה", href: "/events/henna-dj", color: "from-amber-500 to-orange-500" },
-                      { label: "אירועים עסקיים", href: "/events/corporate-events", color: "from-indigo-500 to-blue-600" },
-                      { label: "חוגג מנגן", href: "/events/chogeg-menagen", color: "from-[#03b28c] to-emerald-500" },
+                      { label: "בדיקת התאמה", href: "/weddings/fit-check", color: "from-[#059cc0] to-[#03b28c]" },
+                      { label: "אפטר פארטי", href: "/weddings/after-party", color: "from-purple-500 to-pink-500" },
                       { label: "LIVE ON DJ", href: "/events/live-on-dj", color: "from-purple-500 to-violet-500" },
+                      { label: "חתן מתקלט", href: "/academy/groom-dj", color: "from-pink-400 to-rose-400" },
                     ]}
                   />
                   <DropdownMenu
@@ -200,23 +197,17 @@ export default function RootLayout({
 
               {/* Events */}
               <div className="mb-4 text-center">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-brand-green mb-2">אירועים</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-brand-green mb-2">חתונות</h3>
                 <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-foreground-secondary">
-                  <Link href="/events" className="hover:text-brand-green transition">כל האירועים</Link>
+                  <Link href="/weddings" className="hover:text-brand-green transition">עמוד חתונות</Link>
                   <span className="text-white/20">•</span>
-                  <Link href="/events/weddings-dj" className="hover:text-brand-green transition">DJ חתונות</Link>
+                  <Link href="/weddings/fit-check" className="hover:text-brand-green transition">בדיקת התאמה</Link>
                   <span className="text-white/20">•</span>
-                  <Link href="/events/bar-mitzvah-dj" className="hover:text-brand-green transition">DJ בר מצווה</Link>
-                  <span className="text-white/20">•</span>
-                  <Link href="/events/bat-mitzvah-dj" className="hover:text-brand-green transition">DJ בת מצווה</Link>
-                  <span className="text-white/20">•</span>
-                  <Link href="/events/henna-dj" className="hover:text-brand-green transition">DJ חינה</Link>
-                  <span className="text-white/20">•</span>
-                  <Link href="/events/corporate-events" className="hover:text-brand-green transition">אירועים עסקיים</Link>
-                  <span className="text-white/20">•</span>
-                  <Link href="/events/chogeg-menagen" className="hover:text-brand-green transition">חוגג מנגן</Link>
+                  <Link href="/weddings/after-party" className="hover:text-brand-green transition">אפטר פארטי</Link>
                   <span className="text-white/20">•</span>
                   <Link href="/events/live-on-dj" className="hover:text-brand-green transition">LIVE ON DJ</Link>
+                  <span className="text-white/20">•</span>
+                  <Link href="/academy/groom-dj" className="hover:text-brand-green transition">חתן מתקלט</Link>
                 </div>
               </div>
 

@@ -115,7 +115,7 @@ const navItems: NavItem[] = [
     href: "/weddings",
     icon: Icons.events.outline,
     activeIcon: Icons.events.filled,
-    label: "אירועים",
+    label: "חתונות",
     color: "blue",
   },
   {
