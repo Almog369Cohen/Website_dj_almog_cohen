@@ -252,7 +252,7 @@ export const ModernHomeContent = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <div className="mb-4 inline-block rounded bg-gray-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-gray-500">
+            <div className="mb-4 inline-block rounded bg-gray-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-[#1f1f21]">
               סיפור אמיתי
             </div>
             <h2 className="mb-6 text-3xl font-bold leading-tight text-[#1f1f21] md:text-5xl">
@@ -332,22 +332,22 @@ export const ModernHomeContent = () => {
               viewport={{ once: true }}
               className="opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
             >
-               <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-gray-500">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-500">✕</span>
+               <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-[#1f1f21]/60">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-[#1f1f21]/60">✕</span>
                 פחות מתאים אם...
               </h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <span className="mt-1.5 h-2 w-2 rounded-full bg-gray-300" />
-                  <span className="font-medium text-gray-500 line-through decoration-red-500/50 decoration-2">אתם מחפשים את המחיר הכי זול בשוק.</span>
+                  <span className="font-medium text-[#1f1f21]/60 line-through decoration-red-500/50 decoration-2">אתם מחפשים את המחיר הכי זול בשוק.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-1.5 h-2 w-2 rounded-full bg-gray-300" />
-                  <span className="font-medium text-gray-500">אתם רוצים DJ שהוא רק "לחיצת כפתור".</span>
+                  <span className="font-medium text-[#1f1f21]/60">אתם רוצים DJ שהוא רק "לחיצת כפתור".</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-1.5 h-2 w-2 rounded-full bg-gray-300" />
-                  <span className="font-medium text-gray-500">
+                  <span className="font-medium text-[#1f1f21]/60">
                     האירוע הוא <span className="text-red-500/80 line-through decoration-2">עוד שורה באקסל</span> עבורכם.
                   </span>
                 </li>
@@ -371,7 +371,7 @@ export const ModernHomeContent = () => {
           <h2 className="mb-4 text-4xl font-black tracking-tight text-[#1f1f21] md:text-6xl">
             תפסיקו לגלול. <span className="text-[#059cc0]">מצאתם.</span>
           </h2>
-          <p className="mb-10 text-gray-500">
+          <p className="mb-10 text-[#1f1f21]/70">
             בלי התחייבות, ובלי לחץ. בואו נדבר ונראה אם יש קליק.
           </p>
           <Link

@@ -25,7 +25,7 @@ export default function ContactPage({ searchParams }: { searchParams?: { success
           <input name="phone" required placeholder="טלפון" className="rounded-lg border border-border bg-background/50 px-4 py-3 text-foreground outline-none placeholder:text-muted-foreground" />
           <input name="email" type="email" placeholder="אימייל" className="rounded-lg border border-border bg-background/50 px-4 py-3 text-foreground outline-none placeholder:text-muted-foreground" />
           <textarea name="message" placeholder="ספרו לי על האירוע או המטרה" className="col-span-3 rounded-lg border border-border bg-background/50 px-4 py-3 text-foreground outline-none placeholder:text-muted-foreground" />
-          <button className="rounded-lg bg-brand-green px-5 py-3 font-medium text-white hover:opacity-90">שלחו</button>
+          <button className="rounded-lg bg-brand-green px-5 py-3 min-h-[48px] font-medium text-white hover:opacity-90">שלחו</button>
         </form>
         <div className="mt-6 text-foreground-secondary text-sm">ווטסאפ: <a className="text-brand-blue hover:underline" href="https://wa.me/972502427616" target="_blank">+972-50-242-7616</a> · מייל: <a className="text-brand-blue hover:underline" href="mailto:almogmusiccohen@gmail.com">almogmusiccohen@gmail.com</a></div>
         <div className="mt-10 rounded-2xl border border-border bg-background/50 p-6">

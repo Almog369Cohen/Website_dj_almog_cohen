@@ -23,7 +23,7 @@ export function HomeMinimal() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-sm tracking-[0.3em] uppercase text-gray-500 dark:text-gray-400"
+            className="text-sm tracking-[0.3em] uppercase text-[#1f1f21]/70 dark:text-gray-400"
           >
             DJ & Music Producer
           </motion.p>
@@ -82,7 +82,7 @@ export function HomeMinimal() {
               transition={{ delay: i * 0.1 }}
             >
               <div className="text-4xl md:text-5xl font-light">{stat.num}</div>
-              <div className="text-sm text-gray-500 mt-2">{stat.label}</div>
+              <div className="text-sm text-[#1f1f21]/70 dark:text-gray-400 mt-2">{stat.label}</div>
             </motion.div>
           ))}
         </div>
@@ -97,7 +97,7 @@ export function HomeMinimal() {
             viewport={{ once: true }}
             className="space-y-4"
           >
-            <span className="text-xs tracking-[0.2em] text-gray-400">01</span>
+            <span className="text-xs tracking-[0.2em] text-[#1f1f21]/60 dark:text-gray-400">01</span>
             <h3 className="text-2xl font-light">אירועים</h3>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               חתונות, בר מצוות, אירועים עסקיים. 
@@ -113,7 +113,7 @@ export function HomeMinimal() {
             viewport={{ once: true }}
             className="space-y-4"
           >
-            <span className="text-xs tracking-[0.2em] text-gray-400">02</span>
+            <span className="text-xs tracking-[0.2em] text-[#1f1f21]/60 dark:text-gray-400">02</span>
             <h3 className="text-2xl font-light">לימוד DJ</h3>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               קורסים פרטיים ומנטורינג אישי. 
