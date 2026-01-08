@@ -31,7 +31,7 @@ export function AccessibilityMenu() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-brand-blue bg-black/80 backdrop-blur-sm shadow-lg transition hover:border-white focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-black"
+        className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border-2 border-brand-blue bg-black/80 backdrop-blur-sm shadow-lg transition hover:border-white focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-black"
         aria-label="Open accessibility menu"
         aria-expanded={isOpen}
       >
@@ -46,11 +46,11 @@ export function AccessibilityMenu() {
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="absolute bottom-16 left-0 w-64 rounded-xl border border-white/20 bg-black/90 p-4 backdrop-blur-xl shadow-2xl"
+            className="absolute bottom-14 md:bottom-16 left-0 w-[min(14rem,calc(100vw-2rem))] md:w-64 rounded-xl border border-white/20 bg-black/90 p-3 md:p-4 backdrop-blur-xl shadow-2xl"
             role="dialog"
             aria-label="Accessibility settings"
           >
-            <h3 className="mb-4 text-sm font-bold text-white">נגישות</h3>
+            <h3 className="mb-3 md:mb-4 text-sm font-bold text-white">נגישות</h3>
 
             {/* Font Size */}
             <div className="mb-4">
@@ -58,7 +58,7 @@ export function AccessibilityMenu() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => adjustFontSize(-10)}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                  className="flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-brand-blue"
                   aria-label="Decrease font size"
                 >
                   A-
@@ -66,7 +66,7 @@ export function AccessibilityMenu() {
                 <span className="flex-1 text-center text-sm text-white">{fontSize}%</span>
                 <button
                   onClick={() => adjustFontSize(10)}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                  className="flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-brand-blue"
                   aria-label="Increase font size"
                 >
                   A+
@@ -77,7 +77,7 @@ export function AccessibilityMenu() {
             {/* High Contrast */}
             <button
               onClick={toggleHighContrast}
-              className={`mb-3 w-full rounded-lg p-3 text-right text-sm transition focus:outline-none focus:ring-2 focus:ring-brand-blue ${
+              className={`mb-3 w-full rounded-lg p-2.5 md:p-3 text-right text-sm transition focus:outline-none focus:ring-2 focus:ring-brand-blue ${
                 highContrast ? "bg-brand-blue text-black" : "bg-white/10 text-white hover:bg-white/20"
               }`}
               aria-pressed={highContrast}
@@ -88,7 +88,7 @@ export function AccessibilityMenu() {
             {/* Reduced Motion */}
             <button
               onClick={toggleReducedMotion}
-              className={`w-full rounded-lg p-3 text-right text-sm transition focus:outline-none focus:ring-2 focus:ring-brand-blue ${
+              className={`w-full rounded-lg p-2.5 md:p-3 text-right text-sm transition focus:outline-none focus:ring-2 focus:ring-brand-blue ${
                 reducedMotion ? "bg-brand-blue text-black" : "bg-white/10 text-white hover:bg-white/20"
               }`}
               aria-pressed={reducedMotion}
