@@ -137,7 +137,7 @@ export default function WeddingFitCheckPage() {
                   <div className="text-sm font-bold text-white">התהליך הזה כן:</div>
                   <ul className="mt-3 space-y-2 text-white/85">
                     <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>בדיקה של כיוון, לא סגירת עסקה</span></li>
-                    <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>שיחה על חוויה, לא על רשימות</span></li>
+                    <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>שיחה על ערב, לא על רשימות</span></li>
                     <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>מקום להגיד גם “לא”</span></li>
                   </ul>
                 </div>
@@ -259,7 +259,7 @@ export default function WeddingFitCheckPage() {
                 {step === 4 && (
                   <div>
                     <label className="block text-sm font-bold text-white">איך אתם בדרך כלל מקבלים החלטות כספקים?</label>
-                    <p className="mt-2 text-sm text-white/70">כדי להבין מה מוביל אתכם, לא כדי לשפוט.</p>
+                    <p className="mt-2 text-sm text-white/70">כדי להבין מה מניע אתכם, לא כדי לשפוט.</p>
                     <select
                       value={form.decisionStyle}
                       onChange={(e) => update("decisionStyle", e.target.value as FormState["decisionStyle"])}

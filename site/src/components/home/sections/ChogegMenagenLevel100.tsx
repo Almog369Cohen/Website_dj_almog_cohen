@@ -61,7 +61,7 @@ export const ChogegMenagenLevel100 = () => {
             {[
               { title: "ציוד מקצועי", desc: "הכל מסופק" },
               { title: "מוזיקה מותאמת", desc: "לפי הטעם שלכם" },
-              { title: "רגע בלתי נשכח", desc: "משאיר חותם" },
+              { title: "רגע שנשאר", desc: "משאיר חותם" },
             ].map((feature, idx) => (
               <motion.div
                 key={idx}

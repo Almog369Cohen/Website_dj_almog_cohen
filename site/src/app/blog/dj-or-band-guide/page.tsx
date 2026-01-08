@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "DJ או להקה? המדריך המאוזן שיעזור לכם להחליט | DJ אלמוג כהן",
   description:
-    "מדריך לזוגות שמתלבטים בין DJ, להקה חיה או שילוב – כולל יתרונות, חסרונות וטיפים לבניית רחבת ריקודים מושלמת.",
+    "מדריך לזוגות שמתלבטים בין DJ, להקה חיה או שילוב – כולל יתרונות, חסרונות וטיפים לבניית רחבת ריקודים מדויקת.",
 };
 
 export default function DjOrBandGuidePage() {
@@ -79,7 +79,7 @@ export default function DjOrBandGuidePage() {
             <h2 className="text-lg font-semibold md:text-xl">2. להקה חיה: דרמה, נוכחות ובמה</h2>
             <p className="font-semibold text-brand-blue">יתרונות הלהקה:</p>
             <ul className="list-disc space-y-1 pr-5 text-white/90">
-              <li>אנרגיה חיה על הבמה – חוויה של הופעה לכל דבר.</li>
+              <li>אנרגיה חיה על הבמה – הופעה לכל דבר.</li>
               <li>קשר ויזואלי חזק עם האורחים – כולם רואים מי מנגן ושר.</li>
               <li>מתאים במיוחד לאירועים רשמיים, ג&apos;אז, סול, פאנק ועוד.</li>
             </ul>
@@ -105,7 +105,7 @@ export default function DjOrBandGuidePage() {
           </section>
 
           <section className="space-y-4 border-r-4 border-brand-blue pr-4 text-sm md:text-base">
-            <h2 className="text-lg font-semibold md:text-xl">מיני-מדריך: 5 טיפים לרחבת ריקודים מושלמת</h2>
+            <h2 className="text-lg font-semibold md:text-xl">מיני-מדריך: 5 טיפים לרחבת ריקודים מדויקת</h2>
             <ul className="list-decimal space-y-2 pr-5 text-white/90">
               <li>
                 <span className="font-semibold">המיקום קובע:</span> דאגו שעמדת ה-DJ תהיה עם קו ראייה
@@ -136,8 +136,8 @@ export default function DjOrBandGuidePage() {
             מתלבטים בין DJ, להקה או שילוב?
           </h2>
           <p className="mb-4 text-white/80">
-            בואו נדבר על הקונספט המוזיקלי המושלם לאירוע שלכם – נבין מי הקהל, מה הוייב, ומה התקציב,
-            ונבנה יחד חוויה שלא דומה לאף חתונה אחרת.
+            בואו נדבר על הקונספט המוזיקלי המדויק לאירוע שלכם – נבין מי הקהל, מה הוייב, ומה התקציב,
+            ונבנה יחד ערב שנשאר.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link

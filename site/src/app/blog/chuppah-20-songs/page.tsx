@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "20 שירי כניסה לחופה שישברו את הרשת | DJ אלמוג כהן",
   description:
-    "רשימת 20 שירי חופה מחולקים לקטגוריות – קלאסיים, ייחודיים ושירים לכניסת הורים וסבים – עם טיפים לבחירה חכמה.",
+    "רשימת 20 שירי חופה מחולקים לקטגוריות – קלאסיים, בחירות פחות צפויות ושירים לכניסת הורים וסבים – עם טיפים לבחירה חכמה.",
 };
 
 export default function Chuppah20SongsPage() {
@@ -54,7 +54,7 @@ export default function Chuppah20SongsPage() {
         <article className="space-y-10 leading-relaxed text-sm md:text-base">
           <section className="space-y-4">
             <p>
-              כדי לעזור לכם לבחור, ריכזתי 20 שירי חופה מחולקים לקטגוריות – קלאסיים, ייחודיים,
+              כדי לעזור לכם לבחור, ריכזתי 20 שירי חופה מחולקים לקטגוריות – קלאסיים, בחירות פחות צפויות,
               ושירים שמתאימים לכניסת הורים וסבים.
             </p>
           </section>
@@ -74,7 +74,7 @@ export default function Chuppah20SongsPage() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-lg font-semibold md:text-xl">ב. שירי חופה ייחודיים ואלטרנטיביים</h2>
+            <h2 className="text-lg font-semibold md:text-xl">ב. שירי חופה אלטרנטיביים</h2>
             <p>
               אם אתם מחפשים משהו קצת שונה ומפתיע, עם עיבודים מיוחדים או וייב פחות מיינסטרימי:
             </p>

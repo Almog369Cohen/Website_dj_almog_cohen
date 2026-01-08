@@ -27,7 +27,7 @@ export default function RentalPage() {
         </div>
         <div className="mt-12 rounded-2xl border border-white/10 bg-white/5 p-6">
           <h3 className="mb-2 text-2xl font-bold">מתנה להורדה</h3>
-          <p className="mb-4 text-white/80">איך לבנות סטאפ דיג&#39;יי מושלם (PDF)</p>
+          <p className="mb-4 text-white/80">איך לבנות סטאפ דיג&#39;יי מדויק (PDF)</p>
           <a href="#" className="rounded-full border border-brand-blue px-5 py-3 text-brand-blue hover:bg-brand-blue/10">הורדה</a>
         </div>
       </section>

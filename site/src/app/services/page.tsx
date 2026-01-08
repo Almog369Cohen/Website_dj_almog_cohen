@@ -143,7 +143,7 @@ export default function ServicesPage() {
               <h2 className="mb-3 text-2xl font-black text-foreground-heading md:text-3xl">חתונות</h2>
               
               <p className="mb-6 flex-1 leading-relaxed text-foreground-secondary">
-                שביל חופה מרגש, ריקוד ראשון מושלם, ורחבה שלא מפסיקה לרקוד. 
+                שביל חופה מרגש, ריקוד ראשון מדויק, ורחבה שלא מפסיקה לרקוד. 
                 כל רגע מתוכנן, כל שיר במקום הנכון.
               </p>
               

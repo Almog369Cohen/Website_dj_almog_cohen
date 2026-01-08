@@ -180,11 +180,11 @@ export function HomeBridalGlass() {
             {[
               {
                 title: "התאמה אישית מלאה",
-                desc: "כל חתונה מקבלת playlist מותאם אישית. פגישת ייעוץ, הכרת הסגנון שלכם, ויצירת מסע מוזיקלי ייחודי.",
+                desc: "כל חתונה מקבלת playlist מותאם אישית. פגישת ייעוץ, הכרת הסגנון שלכם, ויצירת מסע מוזיקלי מדויק.",
                 icon: "🎵"
               },
               {
-                title: "קריאת קהל מושלמת",
+                title: "קריאת קהל מדויקת",
                 desc: "מהרגע הראשון בחופה ועד השיר האחרון - אני יודע בדיוק מתי להרים ומתי לרגש.",
                 icon: "✨"
               },
@@ -229,7 +229,7 @@ export function HomeBridalGlass() {
             <span className="absolute top-6 right-8 text-7xl text-rose-200 font-serif leading-none">"</span>
             
             <blockquote className="relative z-10 text-xl md:text-2xl font-light text-[#2d2d2d] leading-relaxed text-center mb-8" style={{ fontFamily: 'serif' }}>
-              אלמוג הפך את החתונה שלנו לחוויה בלתי נשכחת. 
+              אלמוג הפך את החתונה שלנו לערב שנשאר. 
               כל האורחים לא ירדו מהרחבה עד 3 בלילה. 
               פשוט קסם!
             </blockquote>

@@ -103,7 +103,7 @@ export function HomeGlass() {
             {[
               { icon: "🎵", title: "12 שנות ניסיון", desc: "מאות אירועים מוצלחים" },
               { icon: "🎧", title: "ציוד מקצועי", desc: "Pioneer CDJ-3000 & DJM-900" },
-              { icon: "⚡", title: "אנרגיה ייחודית", desc: "קריאת קהל מושלמת" },
+              { icon: "⚡", title: "אנרגיה מדויקת", desc: "קריאת קהל מדויקת" },
             ].map((item, i) => (
               <motion.div
                 key={i}

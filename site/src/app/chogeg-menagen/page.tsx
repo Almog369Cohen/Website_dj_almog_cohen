@@ -216,7 +216,7 @@ export default function ChogegMenagenPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                 </svg>
               </motion.div>
-              <h3 className="mb-3 text-xl font-bold text-brand-green">חוויה אישית</h3>
+              <h3 className="mb-3 text-xl font-bold text-brand-green">נוכחות אישית</h3>
               <p className="text-white/85">האורחים רואים אתכם במרכז ומרגישים שזה באמת הערב שלכם</p>
             </motion.div>
             </TiltCard>
@@ -256,7 +256,7 @@ export default function ChogegMenagenPage() {
                   <path d="M12 0l3.708 8.292L24 12l-8.292 3.708L12 24l-3.708-8.292L0 12l8.292-3.708z" />
                 </svg>
               </motion.div>
-              <h3 className="mb-3 text-xl font-bold text-brand-green">סיפור ייחודי</h3>
+              <h3 className="mb-3 text-xl font-bold text-brand-green">סיפור שנשאר</h3>
               <p className="text-white/85">זה האירוע שכולם יזכרו ויספרו עליו</p>
             </motion.div>
             </TiltCard>

@@ -40,7 +40,7 @@ interface MusicVideosSectionProps {
 export const MusicVideosSection = ({ 
   videos = defaultVideos,
   title = "לא משמיע להיטים. יוצר אותם מחדש.",
-  subtitle = "ההבדל בין שיר טוב לרגע בלתי נשכח נמצא בגרסה המיוחדת שלא שמעתם בשום מקום אחר."
+  subtitle = "ההבדל בין שיר טוב לרגע שנשאר נמצא בגרסה המיוחדת שלא שמעתם בשום מקום אחר."
 }: MusicVideosSectionProps) => {
   return (
     <section className="relative py-16 md:py-24 bg-depth-1">

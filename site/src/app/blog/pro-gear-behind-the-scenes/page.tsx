@@ -42,7 +42,7 @@ export default function ProGearBehindTheScenesPage() {
             מאחורי הקלעים: הציוד המקצועי שמשדרג כל אירוע
           </h1>
           <p className="text-sm text-foreground-secondary md:text-base">
-            DJ מוביל הוא לא רק טעם מוזיקלי. הוא גם מהנדס סאונד קטן. הציוד הנכון משפיע ישירות
+            DJ שמחזיק ערב הוא לא רק טעם מוזיקלי. הוא גם מהנדס סאונד קטן. הציוד הנכון משפיע ישירות
             על איכות הסאונד, האווירה והביטחון שלכם באירוע.
           </p>
           <div className="flex flex-wrap items-center gap-3 text-xs text-foreground-secondary">

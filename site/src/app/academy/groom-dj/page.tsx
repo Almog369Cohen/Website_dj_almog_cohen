@@ -22,7 +22,7 @@ export default function GroomDJPage() {
     {
       number: "03",
       title: "ריפרוף לפני האירוע",
-      description: "מפגש אחרון לוודא שהכל מושלם ושאתם מרגישים בטוחים",
+      description: "מפגש אחרון לוודא שהכול מדויק ושאתם מרגישים בטוחים",
     },
     {
       number: "04",
@@ -34,7 +34,7 @@ export default function GroomDJPage() {
   const whySpecial = [
     {
       icon: "💝",
-      title: "הפתעה בלתי נשכחת",
+      title: "הפתעה שנשארת",
       description: "הרגע שבו החתן עולה לעמדה והאורחים לא מאמינים למראה עיניהם",
     },
     {
@@ -105,7 +105,7 @@ export default function GroomDJPage() {
                 className="mb-4"
               >
                 <span className="inline-flex items-center gap-2 rounded-full bg-pink-500/20 px-4 py-1 text-sm font-bold text-pink-400">
-                  💝 מתנה מושלמת
+                  💝 מתנה מדויקת
                 </span>
               </motion.div>
 

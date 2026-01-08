@@ -713,7 +713,7 @@ export const HomeSections = () => {
               transition={{ delay: 0.2 }}
               className="mt-4 max-w-2xl text-lg text-white/95 font-medium drop-shadow-sm"
             >
-              ההבדל בין שיר טוב לרגע בלתי נשכח נמצא בגרסה המיוחדת שלא שמעתם בשום מקום אחר. קבלו הצצה לאדיטים ולחומרים בלעדיים.
+              ההבדל בין שיר טוב לרגע שנשאר נמצא בגרסה המיוחדת שלא שמעתם בשום מקום אחר. קבלו הצצה לאדיטים ולחומרים בלעדיים.
             </motion.p>
           </motion.div>
           {/* Horizontal scroll on mobile, grid on desktop */}
@@ -1030,7 +1030,7 @@ export const HomeSections = () => {
             <div className="space-y-3">
               <p className="text-xs text-brand-blue/80">חופה</p>
               <h3 className="text-lg font-semibold">20 שירי כניסה לחופה שישברו את הרשת</h3>
-              <p className="text-sm text-white/75">פלייליסט חופה מחולק לקטגוריות – קלאסיים, ייחודיים ושירים לכניסת הורים וסבים.</p>
+              <p className="text-sm text-white/75">פלייליסט חופה מחולק לקטגוריות – קלאסיים, בחירות פחות צפויות ושירים לכניסת הורים וסבים.</p>
             </div>
             <div className="mt-4">
               <Link href="/blog/chuppah-20-songs" className="text-sm font-semibold text-brand-blue hover:underline">
@@ -1420,7 +1420,7 @@ export const HomeSections = () => {
           {[
             {
               q: "איך אנחנו בוחרים את המוזיקה לאירוע?",
-              a: "אנחנו בונים יחד את ה-DNA המוזיקלי שלכם. בפגישת האפיון נצלול לטעמים שלכם, נגדיר 'שחורים' (מה לא לנגן) ו'לבנים' (שירי חובה), ואני אדאג לחבר את הכל לזרימה מושלמת בזמן אמת.",
+              a: "אנחנו בונים יחד את ה-DNA המוזיקלי שלכם. בפגישת האפיון נצלול לטעמים שלכם, נגדיר 'שחורים' (מה לא לנגן) ו'לבנים' (שירי חובה), ואני אדאג לחבר את הכל לזרימה מדויקת בזמן אמת.",
             },
             {
               q: "מה קורה אם חלילה אתה חולה ביום האירוע?",

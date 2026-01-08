@@ -34,7 +34,7 @@ export const WeddingsLevel100 = () => {
             <span className="drop-shadow-xl" style={{ color: '#059cc0' }}>וזה בסדר.</span>
           </h2>
           <p className="mx-auto max-w-3xl text-base sm:text-lg leading-relaxed text-gray-800 font-medium drop-shadow-sm md:text-xl">
-            אם אתם רוצים חוויה שמייצגת מי שאתם באמת — אז בואו נבדוק אם זה הדדי. 
+            אם אתם רוצים ערב שמייצג מי שאתם באמת — אז בואו נבדוק אם זה הדדי. 
             <br className="hidden md:inline" />
             אני לא מנגן כדי לעשות בלגן. אני מנגן כדי לעשות רושם שנשאר גם כשהשמפניה נגמרת.
           </p>
@@ -127,7 +127,7 @@ export const WeddingsLevel100 = () => {
             
             <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-gray-700 font-medium drop-shadow-sm md:text-xl">
               האירוע שלכם הוא לא "עוד תאריך" ביומן. אני יודע כמה השקעתם בערב הזה. 
-              האחריות שלי היא לוודא שהכול יעבוד מושלם – מהשיר הראשון ועד אחרון הרוקדים. 
+              האחריות שלי היא לוודא שהכול יעבוד מדויק – מהשיר הראשון ועד אחרון הרוקדים. 
               <br />
               <br />
               <strong className="text-gray-900 drop-shadow-md">בואו נכיר, נתאם ציפיות, ונבנה לכם ראש שקט ומסיבה מנצחת.</strong>
@@ -158,7 +158,7 @@ export const WeddingsLevel100 = () => {
               <div className="flex items-start gap-4">
                 <div className="text-4xl">💍</div>
                 <div className="flex-1">
-                  <h4 className="mb-2 text-lg font-bold text-gray-900">רוצים אטרקציה בלתי נשכחת?</h4>
+                  <h4 className="mb-2 text-lg font-bold text-gray-900">רוצים אטרקציה שנשארת?</h4>
                   <p className="mb-3 text-sm text-gray-700">
                     <strong>חתן מתקלט</strong> - החתן (או הכלה) עולה לעמדה, מתקלט 15-20 דקות ומרעיד את הרחבה. האורחים לא יאמינו למראה עיניהם.
                   </p>
@@ -166,7 +166,7 @@ export const WeddingsLevel100 = () => {
                     href="/academy/groom-dj"
                     className="inline-flex items-center gap-2 text-sm font-bold text-pink-400 transition hover:text-pink-300"
                   >
-                    <span>גלו את האטרקציה המיוחדת</span>
+                    <span>לפרטים על הקונספט</span>
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>

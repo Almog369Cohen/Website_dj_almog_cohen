@@ -30,7 +30,7 @@ export default function ContactPage({ searchParams }: { searchParams?: { success
         <div className="mt-6 text-foreground-secondary text-sm">ווטסאפ: <a className="text-brand-blue hover:underline" href="https://wa.me/972502427616" target="_blank">+972-50-242-7616</a> · מייל: <a className="text-brand-blue hover:underline" href="mailto:almogmusiccohen@gmail.com">almogmusiccohen@gmail.com</a></div>
         <div className="mt-10 rounded-2xl border border-border bg-background/50 p-6">
           <h2 className="mb-2 text-xl font-semibold text-foreground-heading">מתנה</h2>
-          <p className="text-foreground-secondary">5 טיפים לרחבה מושלמת — להורדה בקרוב.</p>
+          <p className="text-foreground-secondary">5 טיפים לרחבה מדויקת — להורדה בקרוב.</p>
         </div>
       </section>
     </div>

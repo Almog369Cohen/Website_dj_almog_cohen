@@ -116,7 +116,7 @@ export default function BarMitzvahDJPage() {
 
       <section className="px-4 py-24">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="mb-6 text-3xl font-black text-foreground-heading md:text-5xl">בואו ניצור בר מצווה בלתי נשכח</h2>
+          <h2 className="mb-6 text-3xl font-black text-foreground-heading md:text-5xl">בואו ניצור בר מצווה שנשאר</h2>
           <a href={wa(getEventsWhatsAppMessage("bar_mitzvah"))} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-10 py-5 text-xl font-bold text-white shadow-lg transition hover:scale-105">
             <span>בדיקת זמינות</span>

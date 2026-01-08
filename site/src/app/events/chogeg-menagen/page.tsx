@@ -46,7 +46,7 @@ export default function ChogegMenagenPage() {
               </motion.h1>
 
               <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-8 text-lg text-foreground-secondary">
-                <strong className="text-foreground">חוגג מנגן</strong> זה קונספט ייחודי שמשלב DJ עם מוזיקאים חיים ומנחה אירועים. 
+                <strong className="text-foreground">חוגג מנגן</strong> זה קונספט שמשלב DJ עם מוזיקאים חיים ומנחה אירועים. 
                 מרגע שהאורחים מגיעים, המוזיקה והאווירה כבר מחכות. 
                 <strong className="text-foreground"> ליווי מלא מקבלת פנים ועד הסיום</strong> – כל רגע מלווה במוזיקה מותאמת.
               </motion.p>
@@ -56,7 +56,7 @@ export default function ChogegMenagenPage() {
                   "DJ + מוזיקאים חיים + הנחיית אירועים",
                   "ליווי מוזיקלי מקבלת הפנים ועד הסיום",
                   "התאמה מלאה לסגנון האירוע",
-                  "חוויה מוזיקלית 360 מעלות",
+                  "מעטפת מוזיקלית 360 מעלות",
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <div className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-green/20 text-brand-green">✓</div>
@@ -113,7 +113,7 @@ export default function ChogegMenagenPage() {
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="mb-6 text-3xl font-black text-foreground-heading md:text-5xl">מוכנים לחגוג?</h2>
           <p className="mb-8 text-lg text-foreground-secondary">
-            בואו ניצור חוויה מוזיקלית מלאה מרגע שהאורחים מגיעים.
+            בואו נבנה מעטפת מוזיקלית מרגע שהאורחים מגיעים.
           </p>
           <a href={wa(getEventsWhatsAppMessage("chogeg_menagen"))} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-brand-green to-emerald-500 px-10 py-5 text-xl font-bold text-white shadow-lg transition hover:scale-105">

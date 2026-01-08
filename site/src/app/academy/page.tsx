@@ -53,7 +53,7 @@ export default function AcademyPage() {
       link: "/academy/groom-dj",
       cta: "רוצים להפתיע?",
       level: "אטרקציה",
-      badge: "מתנה מושלמת",
+      badge: "מתנה מדויקת",
     },
   ];
 

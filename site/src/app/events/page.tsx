@@ -81,7 +81,7 @@ export default function EventsPage() {
         "DJ + מוזיקאים חיים",
         "ליווי מלא מקבלת הפנים",
         "התאמה לכל סגנון",
-        "חוויה מלאה 360°",
+        "מעטפת מלאה 360°",
       ],
       link: "/events/chogeg-menagen",
       cta: "לפרטים על חוגג מנגן",
@@ -93,7 +93,7 @@ export default function EventsPage() {
       highlights: [
         "שילוב תקליטנות עם נגנים/זמרים חיים",
         "הופעות מרהיבות ואינטראקטיביות",
-        "חוויה מוזיקלית בלתי נשכחת",
+        "מוזיקה שנשארת",
         "אפשרות לשילוב עם אמנים אורחים",
       ],
       link: "/events/live-on-dj",
@@ -164,7 +164,7 @@ export default function EventsPage() {
             כל אירוע הוא
             <br />
             <span className="bg-gradient-to-r from-brand-blue to-brand-green bg-clip-text text-transparent">
-              פסקול ייחודי
+              פסקול מדויק
             </span>
           </motion.h1>
 
@@ -175,7 +175,7 @@ export default function EventsPage() {
             className="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-foreground-secondary md:text-xl"
           >
             מחתונות יוקרה ועד בני/בנות מצווה, מחינה מסורתית ועד הופעות LIVE ON DJ – 
-            <strong className="text-foreground-heading"> כל רגע מקבל את הפסקול המושלם</strong> שלו.
+            <strong className="text-foreground-heading"> כל רגע מקבל את הפסקול המדויק</strong> שלו.
           </motion.p>
 
           <motion.div
@@ -294,12 +294,12 @@ export default function EventsPage() {
               <div>
                 <div className="mb-3 h-1 w-12 rounded-full bg-gradient-to-r from-[#ffaa00] to-orange-500" />
                 <h3 className="mb-2 font-bold text-foreground-heading">התאמה אישית</h3>
-                <p className="text-sm text-foreground-secondary">כל אירוע מקבל פסקול ייחודי</p>
+                <p className="text-sm text-foreground-secondary">כל אירוע מקבל פסקול מדויק</p>
               </div>
               <div>
                 <div className="mb-3 h-1 w-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
                 <h3 className="mb-2 font-bold text-foreground-heading">Energy Architect</h3>
-                <p className="text-sm text-foreground-secondary">יוצר חוויות מוזיקליות בלתי נשכחות</p>
+                <p className="text-sm text-foreground-secondary">מוזיקה שמחזיקה קהל</p>
               </div>
             </div>
           </div>
@@ -310,10 +310,10 @@ export default function EventsPage() {
       <section className="px-4 py-24">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="mb-6 text-3xl font-black text-foreground-heading md:text-5xl">
-            מוכנים ליצור את האירוע המושלם?
+            מוכנים לבנות את האירוע המדויק?
           </h2>
           <p className="mb-8 text-lg text-foreground-secondary">
-            בואו נדבר על האירוע שלכם ונבנה את הפסקול המושלם.
+            בואו נדבר על האירוע ונבנה את הפסקול המדויק.
           </p>
           <a
             href={wa(getEventsWhatsAppMessage("events_general"))}

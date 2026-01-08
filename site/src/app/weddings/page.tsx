@@ -228,7 +228,7 @@ export default function WeddingsPage() {
                 },
                 {
                   title: "הובלה בלי אגו",
-                  desc: "בלי מיקרופון דומיננטי. המוזיקה מובילה, אתם במרכז.",
+                  desc: "בלי מיקרופון דומיננטי. המוזיקה מכוונת, אתם במרכז.",
                 },
               ].map((c) => (
                 <div key={c.title} className="rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-xl">

@@ -201,7 +201,7 @@ export default function Home() {
             {/* Testimonial 1 */}
             <div className="card-mobile">
               <p className="mobile-body text-white/85 mb-4">
-                "אלמוג הפך את החתונה שלנו לחוויה בלתי נשכחת. הוא קרא את הקהל בצורה מדויקת ודאג שכולם יהיו על הרגליים כל הערב."
+                "אלמוג הפך את החתונה שלנו לערב שנשאר. הוא קרא את הקהל בצורה מדויקת ודאג שכולם יהיו על הרגליים כל הערב."
               </p>
               <p className="mobile-caption">
                 <strong className="text-white">שרה ויונתן</strong> • חתונה 2024
@@ -221,7 +221,7 @@ export default function Home() {
             {/* Testimonial 3 */}
             <div className="card-mobile">
               <p className="mobile-body text-white/85 mb-4">
-                "חוגג מנגן זה הדבר הכי טוב שעשינו. אלמוג היה גם DJ מעולה וגם מנחה מקצועי. חסכנו כסף וקיבלנו שירות מושלם."
+                "חוגג מנגן זה הדבר הכי טוב שעשינו. אלמוג היה גם DJ מעולה וגם מנחה מקצועי. חסכנו כסף וקיבלנו שירות מדויק."
               </p>
               <p className="mobile-caption">
                 <strong className="text-white">מיכל ואורי</strong> • בר מצווה 2024

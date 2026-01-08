@@ -72,7 +72,7 @@ export function HomeNeon() {
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-400 font-mono mb-12 max-w-xl mx-auto"
           >
-            {'// יוצר חוויות מוזיקליות ברמה אחרת'}
+            {'// מוזיקה שמחזיקה קהל. בלי אוטומט.'}
           </motion.p>
           
           <motion.div

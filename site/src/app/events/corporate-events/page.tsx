@@ -111,9 +111,9 @@ export default function CorporateEventsPage() {
       {/* CTA Section */}
       <section className="px-4 py-24">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="mb-6 text-3xl font-black text-foreground-heading md:text-5xl">מוכנים להרים אירוע עסקי בלתי נשכח?</h2>
+          <h2 className="mb-6 text-3xl font-black text-foreground-heading md:text-5xl">מוכנים להרים אירוע עסקי שנשאר?</h2>
           <p className="mb-8 text-lg text-foreground-secondary">
-            בואו נבנה את האווירה המושלמת לאירוע שלכם.
+            בואו נבנה את האווירה המדויקת לאירוע שלכם.
           </p>
           <a href={wa(getEventsWhatsAppMessage("corporate_events"))} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-indigo-500 to-blue-600 px-10 py-5 text-xl font-bold text-white shadow-lg transition hover:scale-105">
