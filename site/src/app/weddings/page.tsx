@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { FAQSection, FinalCTASection } from "@/components/sections";
 import { buildWhatsAppLink, getEventsWhatsAppMessage } from "@/utils/whatsapp";
+import { trackEvent } from "@/utils/analytics";
 
 export default function WeddingsPage() {
   const [heroVideoFailed, setHeroVideoFailed] = useState(false);
@@ -134,6 +135,7 @@ export default function WeddingsPage() {
               href={waLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent("cta_whatsapp_click", { source: "weddings_hero" })}
               className="inline-flex w-full max-w-sm items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:scale-[1.02]"
             >
               <span>בדיקת זמינות בוואטסאפ</span>
@@ -143,6 +145,7 @@ export default function WeddingsPage() {
             </a>
             <Link
               href="/weddings/fit-check"
+              onClick={() => trackEvent("fitcheck_open", { source: "weddings_hero" })}
               className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-white/10 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
             >
               בדיקת התאמה (5 דקות)
@@ -198,6 +201,7 @@ export default function WeddingsPage() {
               href={waLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent("cta_whatsapp_click", { source: "weddings_fit_block" })}
               className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-white/10 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
             >
               בדיקת זמינות בוואטסאפ
@@ -337,12 +341,14 @@ export default function WeddingsPage() {
               href={waLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent("cta_whatsapp_click", { source: "weddings_benefits" })}
               className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-8 py-4 text-base font-bold text-white shadow-lg transition hover:scale-[1.02]"
             >
               בדיקת זמינות בוואטסאפ
             </a>
             <Link
               href="/weddings/fit-check"
+              onClick={() => trackEvent("fitcheck_open", { source: "weddings_benefits" })}
               className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-white/10 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
             >
               בדיקת התאמה (5 דקות)

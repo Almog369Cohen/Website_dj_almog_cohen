@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Heebo, Rubik } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AccessibilityMenu } from "@/components/AccessibilityMenu";
@@ -100,6 +101,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972502427616";
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const waText = encodeURIComponent(
     "היי אלמוג, חתונה בתאריך ____. אולם/אזור: ____. כמות אורחים: ____. אפשר לבדוק זמינות?"
   );
@@ -247,6 +249,22 @@ export default function RootLayout({
         >
           WhatsApp
         </a>
+
+        {gaMeasurementId ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy="afterInteractive"
+            />
+            <Script
+              id="ga4-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${gaMeasurementId}');`,
+              }}
+            />
+          </>
+        ) : null}
       </body>
     </html>
   );

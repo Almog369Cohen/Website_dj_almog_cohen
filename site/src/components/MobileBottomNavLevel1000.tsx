@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { trackEvent } from "@/utils/analytics";
 
 /**
  * MobileBottomNav Level 1000
@@ -254,11 +255,24 @@ export function MobileBottomNavLevel1000() {
             ? { href: item.href, target: "_blank", rel: "noopener noreferrer" }
             : { href: item.href };
 
+          const onNavClick = () => {
+            handleClick();
+            if (item.isExternal && item.href.startsWith("https://wa.me/")) {
+              trackEvent("cta_whatsapp_click", { source: "mobile_bottom_bar", page: pathname });
+            }
+            if (item.isExternal && item.href.startsWith("tel:")) {
+              trackEvent("cta_call_click", { source: "mobile_bottom_bar", page: pathname });
+            }
+            if (!item.isExternal && item.href === "/weddings/fit-check") {
+              trackEvent("fitcheck_open", { source: "mobile_bottom_bar", page: pathname });
+            }
+          };
+
           return (
             <NavComponent
               key={item.href}
               {...navProps}
-              onClick={handleClick}
+              onClick={onNavClick}
               className={`
                 relative flex flex-col items-center justify-center gap-1 px-3 py-2 min-w-[60px]
                 transition-all duration-300 ease-out

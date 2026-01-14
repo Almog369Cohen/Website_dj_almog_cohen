@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { trackEvent } from "@/utils/analytics";
 
 type FormState = {
   coupleNames: string;
@@ -21,6 +22,10 @@ export default function WeddingFitCheckPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  useEffect(() => {
+    trackEvent("fitcheck_open", { source: "weddings_fit_check" });
+  }, []);
 
   const [form, setForm] = useState<FormState>({
     coupleNames: "",
@@ -107,6 +112,7 @@ export default function WeddingFitCheckPage() {
       }
 
       setSubmitted(true);
+      trackEvent("fitcheck_submit", { source: "weddings_fit_check" });
     } catch {
       setSubmitError("לא הצלחתי לשלוח כרגע. נסו שוב בעוד רגע.");
     } finally {
