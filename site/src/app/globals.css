@@ -1282,7 +1282,7 @@ p, span, li, a {
 /* Even slower on mobile for gentle movement */
 @media (max-width: 768px) {
   .animate-scroll-slow {
-    animation-duration: 150s;
+    animation-duration: 210s;
   }
 }
 

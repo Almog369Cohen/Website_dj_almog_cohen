@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -30,6 +31,21 @@ const testimonialMockups = [
 ];
 
 export function TestimonialsSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    if (prefersReducedMotion) return;
+
+    const tick = () => setActiveIndex((i) => (i + 1) % testimonialMockups.length);
+    const interval = setInterval(() => {
+      if (document.visibilityState !== "hidden") tick();
+    }, 4500);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-transparent via-brand-green/5 to-transparent overflow-hidden">
       <div className="max-w-6xl mx-auto">
@@ -51,27 +67,60 @@ export function TestimonialsSection() {
         {/* Mockup Images - Horizontal scroll on mobile, overlapping stack on desktop */}
         <div className="relative">
           {/* Mobile: Horizontal scroll */}
-          <div className="flex gap-4 overflow-x-auto pb-6 px-4 -mx-4 md:hidden snap-x snap-mandatory scrollbar-hide">
-            {testimonialMockups.map((mockup, index) => (
+          <div className="md:hidden -mx-4 px-4">
+            <div className="relative w-full h-[80svh]">
               <motion.div
-                key={mockup.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="flex-shrink-0 w-[260px] snap-center"
-                style={{ transform: `rotate(${mockup.rotation}deg)` }}
+                key={testimonialMockups[activeIndex]?.id}
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -24 }}
+                transition={{ type: "spring", stiffness: 220, damping: 28 }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.35}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x > 60) {
+                    setActiveIndex((i) => (i - 1 + testimonialMockups.length) % testimonialMockups.length);
+                  }
+                  if (info.offset.x < -60) {
+                    setActiveIndex((i) => (i + 1) % testimonialMockups.length);
+                  }
+                }}
+                className="absolute inset-0"
+                style={{ transform: `rotate(${testimonialMockups[activeIndex]?.rotation ?? 0}deg)` }}
               >
-                <Image
-                  src={mockup.image}
-                  alt={`המלצה מ${mockup.name}`}
-                  width={400}
-                  height={800}
-                  className="w-full h-auto drop-shadow-2xl"
-                />
-                <p className="mt-3 text-center text-foreground-secondary text-sm font-medium">{mockup.name}</p>
+                <div className="relative h-full w-full flex items-center justify-center">
+                  <Image
+                    src={testimonialMockups[activeIndex]?.image}
+                    alt={`המלצה מ${testimonialMockups[activeIndex]?.name}`}
+                    fill
+                    sizes="100vw"
+                    className="object-contain drop-shadow-2xl"
+                    priority
+                  />
+                </div>
               </motion.div>
-            ))}
+            </div>
+
+            <div className="mt-4 text-center">
+              <p className="text-foreground-secondary text-sm font-medium">
+                {testimonialMockups[activeIndex]?.name}
+              </p>
+
+              <div className="mt-3 flex items-center justify-center gap-2">
+                {testimonialMockups.map((m, i) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    aria-label={`המלצה ${i + 1}`}
+                    onClick={() => setActiveIndex(i)}
+                    className={`h-2.5 w-2.5 rounded-full transition-all ${
+                      i === activeIndex ? "bg-brand-green scale-110" : "bg-foreground/20"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Desktop: Overlapping stack */}
