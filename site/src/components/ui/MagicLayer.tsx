@@ -197,12 +197,10 @@ export const MagneticButton = ({
   strength = 30,
 }: MagneticButtonProps) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.innerWidth < 768;
-  });
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };

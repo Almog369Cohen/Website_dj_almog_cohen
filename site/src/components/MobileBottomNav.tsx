@@ -39,7 +39,7 @@ interface NavItem {
 }
 
 const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972502427616";
-const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent("היי אלמוג, רציתי לשאול...")}`;
+const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent("היי אלמוג, חתונה בתאריך ____. אולם/אזור: ____. כמות אורחים: ____. אפשר לבדוק זמינות?")}`;
 
 const navItems: NavItem[] = [
   {

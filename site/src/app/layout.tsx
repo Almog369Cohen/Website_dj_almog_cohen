@@ -101,7 +101,7 @@ export default function RootLayout({
 }>) {
   const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972502427616";
   const waText = encodeURIComponent(
-    "היי אלמוג, הייתי באתר שלך ואני רוצה לדבר על אירוע/קורס."
+    "היי אלמוג, חתונה בתאריך ____. אולם/אזור: ____. כמות אורחים: ____. אפשר לבדוק זמינות?"
   );
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning className="dark">

@@ -19,7 +19,7 @@ export function buildWhatsAppLink(text: string, waNumber: string = getWhatsAppNu
 export function getEventsWhatsAppMessage(key: WhatsAppTemplateKey) {
   switch (key) {
     case "weddings_dj":
-      return "היי אלמוג, אני מעוניין/ת ב-DJ לחתונה. אפשר לבדוק זמינות לתאריך ולדבר על הוייב?";
+      return "היי אלמוג, חתונה בתאריך ____. אולם/אזור: ____. כמות אורחים: ____. אפשר לבדוק זמינות?";
     case "corporate_events":
       return "היי אלמוג, אני מעוניין/ת ב-DJ לאירוע עסקי. אפשר לבדוק זמינות ולקבל הצעת מחיר?";
     case "bar_mitzvah":

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { buildWhatsAppLink, getEventsWhatsAppMessage } from "@/utils/whatsapp";
 
 interface FinalCTASectionProps {
   title?: string;
@@ -23,7 +24,7 @@ export const FinalCTASection = ({
   subtitle = "שיחה קצרה של 5 דקות יכולה לחסוך לכם שעות של חיפושים.",
   primaryCTA = {
     text: "שלחו הודעה בוואטסאפ",
-    href: `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972502427616"}?text=${encodeURIComponent("היי אלמוג! אשמח לשיחה")}`,
+    href: buildWhatsAppLink(getEventsWhatsAppMessage("weddings_dj")),
     isWhatsApp: true
   },
   secondaryCTA = {

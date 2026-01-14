@@ -39,7 +39,9 @@ interface NavItem {
 }
 
 const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972502427616";
-const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent("היי אלמוג, רציתי לשאול...")}`;
+const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent("היי אלמוג, חתונה בתאריך ____. אולם/אזור: ____. כמות אורחים: ____. אפשר לבדוק זמינות?")}`;
+const phoneNumber = "0502427616";
+const phoneLink = `tel:${phoneNumber}`;
 
 // Icons with filled/outline variants
 const Icons = {
@@ -107,46 +109,59 @@ const Icons = {
       </svg>
     ),
   },
+  phone: {
+    outline: (
+      <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a2.25 2.25 0 002.25-2.25v-1.372a1.125 1.125 0 00-.852-1.091l-4.423-1.106a1.125 1.125 0 00-1.173.417l-.97 1.293a1.125 1.125 0 01-1.21.38 12.035 12.035 0 01-7.143-7.143 1.125 1.125 0 01.38-1.21l1.293-.97a1.125 1.125 0 00.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+      </svg>
+    ),
+    filled: (
+      <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M1.5 6A4.5 4.5 0 006 10.5h.75a.75.75 0 01.75.75v2.25A4.5 4.5 0 0012 18h1.5a.75.75 0 01.75.75V21a1.5 1.5 0 01-1.5 1.5H12C5.787 22.5.75 17.463.75 11.25V10.5A4.5 4.5 0 011.5 6z" />
+        <path d="M8.25 3.75A1.5 1.5 0 019.75 2.25h1.5a1.5 1.5 0 011.5 1.5v1.5a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v-1.5z" />
+      </svg>
+    ),
+  },
+  check: {
+    outline: (
+      <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" />
+      </svg>
+    ),
+    filled: (
+      <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+        <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75S6.615 21.75 12 21.75 21.75 17.385 21.75 12 17.385 2.25 12 2.25zm3.61 7.185a.75.75 0 10-1.22-.87l-3.67 5.14-1.41-1.41a.75.75 0 10-1.06 1.06l2.05 2.05a.75.75 0 001.14-.09l4.17-5.88z" clipRule="evenodd" />
+      </svg>
+    ),
+  },
 };
 
-// Navigation items - בית במרכז, חוגג מנגן עם גרדיאנט
+// Lead-first mobile bar
 const navItems: NavItem[] = [
-  {
-    href: "/weddings",
-    icon: Icons.events.outline,
-    activeIcon: Icons.events.filled,
-    label: "חתונות",
-    color: "blue",
-  },
-  {
-    href: "/chogeg-menagen",
-    icon: Icons.party.outline,
-    activeIcon: Icons.party.filled,
-    label: "חוגג מנגן",
-    color: "gradient",
-  },
-  {
-    href: "/",
-    icon: Icons.home.outline,
-    activeIcon: Icons.home.filled,
-    label: "בית",
-    color: "gradient",
-    isCTA: true,
-  },
-  {
-    href: "/academy",
-    icon: Icons.academy.outline,
-    activeIcon: Icons.academy.filled,
-    label: "Academy",
-    color: "green",
-  },
   {
     href: waLink,
     icon: Icons.whatsapp.outline,
     activeIcon: Icons.whatsapp.filled,
-    label: "צור קשר",
+    label: "וואטסאפ",
     color: "green",
     isExternal: true,
+  },
+  {
+    href: phoneLink,
+    icon: Icons.phone.outline,
+    activeIcon: Icons.phone.filled,
+    label: "שיחה",
+    color: "blue",
+    isExternal: true,
+  },
+  {
+    href: "/weddings/fit-check",
+    icon: Icons.check.outline,
+    activeIcon: Icons.check.filled,
+    label: "בדיקת התאמה",
+    color: "gradient",
+    isCTA: true,
   },
 ];
 
@@ -204,7 +219,7 @@ export function MobileBottomNavLevel1000() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="fixed bottom-0 left-0 right-0 z-[9999] md:hidden pb-safe"
-      aria-label="תפריט ניווט ראשי"
+      aria-label="קיצור דרך לפנייה"
     >
       {/* Glassmorphism Background */}
       <div 
@@ -223,7 +238,7 @@ export function MobileBottomNavLevel1000() {
         }}
       />
 
-      {/* Navigation Items */}
+      {/* Lead Items */}
       <div 
         className="relative flex items-stretch justify-around"
         style={{ 
@@ -232,8 +247,7 @@ export function MobileBottomNavLevel1000() {
         }}
       >
         {navItems.map((item) => {
-          const isActive = pathname === item.href || 
-            (item.href !== "/" && pathname.startsWith(item.href.split("?")[0]));
+          const isActive = !item.isExternal && (pathname === item.href || pathname.startsWith(item.href));
           
           const NavComponent = item.isExternal ? "a" : Link;
           const navProps = item.isExternal 
@@ -296,17 +310,12 @@ export function MobileBottomNavLevel1000() {
                 )}
               </AnimatePresence>
 
-              {/* Icon - חוגג מנגן always has gradient glow */}
+              {/* Icon */}
               <motion.span
                 className={`transition-colors duration-300 ${
-                  item.label === "חוגג מנגן" 
-                    ? "text-transparent bg-clip-text bg-gradient-to-r from-[#03b28c] to-[#059cc0]" 
-                    : getColorClass(item.color, isActive)
+                  getColorClass(item.color, isActive, item.isCTA)
                 }`}
-                style={item.label === "חוגג מנגן" 
-                  ? { filter: "drop-shadow(0 0 8px rgba(3, 178, 140, 0.6))" }
-                  : getGlowStyle(item.color, isActive)
-                }
+                style={getGlowStyle(item.color, isActive)}
                 whileTap={{ scale: 0.9 }}
               >
                 {isActive ? item.activeIcon : item.icon}
@@ -316,15 +325,13 @@ export function MobileBottomNavLevel1000() {
               <span 
                 className={`
                   text-[10px] font-medium transition-colors duration-300
-                  ${item.label === "חוגג מנגן"
-                    ? "text-transparent bg-clip-text bg-gradient-to-r from-[#03b28c] to-[#059cc0] font-bold"
-                    : isActive 
-                      ? item.isCTA 
-                        ? "text-white font-bold" 
-                        : item.color === "blue" 
-                          ? "text-[#059cc0]" 
-                          : "text-[#03b28c]"
-                      : "text-white/50"
+                  ${isActive 
+                    ? item.isCTA 
+                      ? "text-white font-bold" 
+                      : item.color === "blue" 
+                        ? "text-[#059cc0]" 
+                        : "text-[#03b28c]"
+                    : "text-white/50"
                   }
                 `}
               >

@@ -178,7 +178,7 @@ export const HomeSectionsLean = () => {
           {/* Big CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <motion.a
-              href={wa("היי אלמוג! אשמח לשיחה קצרה על האירוע שלי")}
+              href={wa("היי אלמוג, חתונה בתאריך ____. אולם/אזור: ____. כמות אורחים: ____. אפשר לבדוק זמינות?")}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}

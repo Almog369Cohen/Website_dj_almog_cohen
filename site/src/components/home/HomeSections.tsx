@@ -1668,7 +1668,7 @@ export const HomeSections = () => {
       <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-black/90 py-3 shadow-[0_-4px_25px_rgba(0,0,0,0.8)] md:hidden">
         <div className="mx-auto flex w-full max-w-6xl gap-3 px-4">
           <a
-            href={wa("שלום אלמוג, אשמח לשיחה בוואטסאפ")}
+            href={wa("היי אלמוג, חתונה בתאריך ____. אולם/אזור: ____. כמות אורחים: ____. אפשר לבדוק זמינות?")}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="פתיחת שיחה בוואטסאפ עם אלמוג"
@@ -1680,7 +1680,7 @@ export const HomeSections = () => {
             <span>וואטסאפ ישיר</span>
           </a>
           <a
-            href={wa("היי אלמוג, אנחנו רוצים לבדוק תאריך פנוי לאירוע")}
+            href={wa("היי אלמוג, חתונה בתאריך ____. אולם/אזור: ____. כמות אורחים: ____. אפשר לבדוק זמינות?")}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="בדיקת תאריך פנוי בוואטסאפ"

@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -94,6 +94,14 @@ function ParticleUniverse({ scrollProgress = 0 }: { scrollProgress: number }) {
 
 // Main WebGL Universe Component
 export default function WebGLUniverse({ scrollProgress = 0 }: { scrollProgress: number }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="fixed inset-0 -z-30 opacity-40">
       <Canvas
