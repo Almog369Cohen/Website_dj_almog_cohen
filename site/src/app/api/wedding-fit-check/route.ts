@@ -7,6 +7,9 @@ export async function POST(request: Request) {
     const coupleNames = String(form.get("coupleNames") || "");
     const weddingDate = String(form.get("weddingDate") || "");
     const weddingLocation = String(form.get("weddingLocation") || "");
+    const guestCount = String(form.get("guestCount") || "");
+    const groomPhone = String(form.get("groomPhone") || "");
+    const bridePhone = String(form.get("bridePhone") || "");
     const eventSize = String(form.get("eventSize") || "");
     const mostImportant = String(form.get("mostImportant") || "");
     const biggestFear = String(form.get("biggestFear") || "");
@@ -23,6 +26,9 @@ export async function POST(request: Request) {
       `Couple: ${coupleNames}`,
       `Date: ${weddingDate}`,
       `Location: ${weddingLocation}`,
+      `Guest count: ${guestCount}`,
+      `Groom phone: ${groomPhone}`,
+      `Bride phone: ${bridePhone}`,
       `Event size: ${eventSize}`,
       "",
       "Most important:",
@@ -57,6 +63,9 @@ export async function POST(request: Request) {
           coupleNames,
           weddingDate,
           weddingLocation,
+          guestCount,
+          groomPhone,
+          bridePhone,
           eventSize,
           decisionStyle,
           budgetComfort,

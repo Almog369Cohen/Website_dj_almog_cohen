@@ -7,6 +7,9 @@ type FormState = {
   coupleNames: string;
   weddingDate: string;
   weddingLocation: string;
+  guestCount: string;
+  groomPhone: string;
+  bridePhone: string;
   eventSize: "intimate" | "medium" | "large" | "unknown";
   mostImportant: string;
   biggestFear: string;
@@ -31,6 +34,9 @@ export default function WeddingFitCheckPage() {
     coupleNames: "",
     weddingDate: "",
     weddingLocation: "",
+    guestCount: "",
+    groomPhone: "",
+    bridePhone: "",
     eventSize: "unknown",
     mostImportant: "",
     biggestFear: "",
@@ -59,6 +65,10 @@ export default function WeddingFitCheckPage() {
     if (!form.weddingDate) e.weddingDate = "זה שדה חובה.";
     if (!form.weddingLocation.trim()) e.weddingLocation = "זה שדה חובה.";
 
+    if (!form.guestCount.trim()) e.guestCount = "זה שדה חובה.";
+    if (!form.groomPhone.trim()) e.groomPhone = "זה שדה חובה.";
+    if (!form.bridePhone.trim()) e.bridePhone = "זה שדה חובה.";
+
     if (!form.mostImportant.trim()) e.mostImportant = "זה שדה חובה.";
     if (!form.biggestFear.trim()) e.biggestFear = "זה שדה חובה.";
 
@@ -69,7 +79,7 @@ export default function WeddingFitCheckPage() {
 
   const canContinue = useMemo(() => {
     if (step === 1) return !errors.coupleNames;
-    if (step === 2) return !errors.weddingDate && !errors.weddingLocation;
+    if (step === 2) return !errors.weddingDate && !errors.weddingLocation && !errors.guestCount && !errors.groomPhone && !errors.bridePhone;
     if (step === 3) return !errors.mostImportant && !errors.biggestFear;
     if (step === 4) return !errors.commitment;
     return false;
@@ -95,6 +105,9 @@ export default function WeddingFitCheckPage() {
       fd.set("coupleNames", form.coupleNames);
       fd.set("weddingDate", form.weddingDate);
       fd.set("weddingLocation", form.weddingLocation);
+      fd.set("guestCount", form.guestCount);
+      fd.set("groomPhone", form.groomPhone);
+      fd.set("bridePhone", form.bridePhone);
       fd.set("eventSize", form.eventSize);
       fd.set("mostImportant", form.mostImportant);
       fd.set("biggestFear", form.biggestFear);
@@ -215,6 +228,44 @@ export default function WeddingFitCheckPage() {
                         className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
                       />
                       {errors.weddingLocation && <p className="text-sm text-red-300">{errors.weddingLocation}</p>}
+                    </div>
+
+                    <div className="mt-6">
+                      <label className="block text-sm font-bold text-white">כמות אורחים</label>
+                      <p className="mt-2 text-sm text-white/70">מספר משוער מספיק.</p>
+                      <input
+                        inputMode="numeric"
+                        value={form.guestCount}
+                        onChange={(e) => update("guestCount", e.target.value)}
+                        placeholder="לדוגמה: 350"
+                        className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                      />
+                      {errors.guestCount && <p className="mt-2 text-sm text-red-300">{errors.guestCount}</p>}
+                    </div>
+
+                    <div className="mt-6 grid gap-3 md:grid-cols-2">
+                      <div>
+                        <label className="block text-sm font-bold text-white">נייד חתן</label>
+                        <input
+                          inputMode="tel"
+                          value={form.groomPhone}
+                          onChange={(e) => update("groomPhone", e.target.value)}
+                          placeholder="05X-XXXXXXX"
+                          className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                        />
+                        {errors.groomPhone && <p className="mt-2 text-sm text-red-300">{errors.groomPhone}</p>}
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-white">נייד כלה</label>
+                        <input
+                          inputMode="tel"
+                          value={form.bridePhone}
+                          onChange={(e) => update("bridePhone", e.target.value)}
+                          placeholder="05X-XXXXXXX"
+                          className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                        />
+                        {errors.bridePhone && <p className="mt-2 text-sm text-red-300">{errors.bridePhone}</p>}
+                      </div>
                     </div>
 
                     <div className="mt-6">
