@@ -150,9 +150,9 @@ export default function WeddingFitCheckPage() {
             <section className="mb-10">
               <h1 className="text-3xl font-black leading-tight">לפני שקובעים שיחה – בודקים התאמה.</h1>
               <p className="mt-4 text-base leading-relaxed text-white/85">
-                לא כל זוג מתאים לעבוד איתי, ולא כל ערב נכון לי להחזיק.
+                כדי להתחיל נכון — בודקים התאמה בצורה קצרה ומדויקת.
                 <br />
-                העמוד הזה נועד לבדוק אם יש התאמה אמיתית – לשני הצדדים.
+                זה עוזר להבין אם יש חיבור, ואם אפשר להחזיק את הערב כמו שצריך.
               </p>
               <p className="mt-4 text-sm font-medium text-white/70">זה חוסך זמן. מייצר בהירות. ושומר על היום שלכם נקי מרעש.</p>
             </section>
@@ -166,7 +166,7 @@ export default function WeddingFitCheckPage() {
                   <ul className="mt-3 space-y-2 text-white/85">
                     <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>בדיקה של כיוון, לא סגירת עסקה</span></li>
                     <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>שיחה על ערב, לא על רשימות</span></li>
-                    <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>מקום להגיד גם “לא”</span></li>
+                    <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>מקום לדייק ציפיות, בלי לחץ</span></li>
                   </ul>
                 </div>
 
@@ -186,12 +186,12 @@ export default function WeddingFitCheckPage() {
               <p className="mt-4 text-base leading-relaxed text-white/85">
                 מילוי הטופס לוקח דקה.
                 <br />
-                לא כל פנייה מתקבלת.
+                המטרה היא לחסוך לכם התלבטות ולהגיע לשיחה כשזה באמת מדויק.
               </p>
               <p className="mt-4 text-sm leading-relaxed text-white/70">
-                אם יש התאמה — תקבלו תגובה אישית ומדויקת.
+                אם יש התאמה — חוזרת תגובה אישית ומדויקת.
                 <br />
-                אם אין — זה עדיין סיום מכבד: בלי משיכה של זמן ובלי חוסר בהירות.
+                אם לא — תקבלו תשובה ברורה, בלי למשוך זמן.
               </p>
             </section>
 
@@ -365,11 +365,11 @@ export default function WeddingFitCheckPage() {
 
                       <div className="mt-6">
                         <p className="text-sm text-white/85">
-                          אם זה מרגיש מדויק — שלחו.
+                          אם זה מרגיש נכון — שלחו.
                           <br />
-                          אם משהו מרגיש לכם לא נכון — עצרו.
+                          חוזרת תשובה קצרה עם השלב הבא.
                           <br />
-                          החלטות טובות מתחילות בכנות.
+                          אפשר גם לעצור אם משהו לא יושב טוב.
                         </p>
 
                         {submitError && <p className="mt-4 text-sm text-red-300">{submitError}</p>}

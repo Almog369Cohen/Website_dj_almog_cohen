@@ -17,7 +17,6 @@ export function MobileMenu({ waNumber, waText }: MobileMenuProps) {
     { href: "/chogeg-menagen", label: "חוגג מנגן" },
     { href: "/academy", label: "Academy" },
     { href: "/music", label: "מוזיקה" },
-    { href: "/playlists", label: "פלייליסטים" },
     { href: "/blog", label: "בלוג" },
     { href: "/about", label: "אודות" },
   ];

@@ -161,7 +161,6 @@ export default function RootLayout({
                   />
                   <Link href="/chogeg-menagen" className="hover:text-brand-green">חוגג מנגן</Link>
                   <Link href="/music" className="hover:text-brand-blue">מוזיקה</Link>
-                  <Link href="/playlists" className="hover:text-brand-green">פלייליסטים</Link>
                   <Link href="/blog" className="hover:text-brand-blue">בלוג</Link>
                   <Link href="/about" className="hover:text-brand-blue">אודות</Link>
                   <a
