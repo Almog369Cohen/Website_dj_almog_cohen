@@ -18,7 +18,7 @@ type FormState = {
   commitment: boolean;
 };
 
-type StepId = 1 | 2 | 3 | 4;
+type StepId = 1 | 2;
 
 export default function WeddingFitCheckPage() {
   const [step, setStep] = useState<StepId>(1);
@@ -48,8 +48,8 @@ export default function WeddingFitCheckPage() {
   const progress = useMemo(() => {
     return {
       current: step,
-      total: 4,
-      pct: (step / 4) * 100,
+      total: 2,
+      pct: (step / 2) * 100,
     };
   }, [step]);
 
@@ -79,15 +79,24 @@ export default function WeddingFitCheckPage() {
 
   const canContinue = useMemo(() => {
     if (step === 1) return !errors.coupleNames;
-    if (step === 2) return !errors.weddingDate && !errors.weddingLocation && !errors.guestCount && !errors.groomPhone && !errors.bridePhone;
-    if (step === 3) return !errors.mostImportant && !errors.biggestFear;
-    if (step === 4) return !errors.commitment;
+    if (step === 2) {
+      return (
+        !errors.weddingDate &&
+        !errors.weddingLocation &&
+        !errors.guestCount &&
+        !errors.groomPhone &&
+        !errors.bridePhone &&
+        !errors.mostImportant &&
+        !errors.biggestFear &&
+        !errors.commitment
+      );
+    }
     return false;
   }, [errors, step]);
 
   const nextStep = () => {
     if (!canContinue) return;
-    setStep((s) => (s < 4 ? ((s + 1) as StepId) : s));
+    setStep((s) => (s < 2 ? ((s + 1) as StepId) : s));
   };
 
   const prevStep = () => {
@@ -175,7 +184,7 @@ export default function WeddingFitCheckPage() {
             <section className="mb-10">
               <h2 className="text-xl font-bold">תיאום ציפיות</h2>
               <p className="mt-4 text-base leading-relaxed text-white/85">
-                מילוי הטופס לוקח כמה דקות.
+                מילוי הטופס לוקח דקה.
                 <br />
                 לא כל פנייה מתקבלת.
               </p>
@@ -211,8 +220,8 @@ export default function WeddingFitCheckPage() {
 
                 {step === 2 && (
                   <div>
-                    <label className="block text-sm font-bold text-white">תאריך החתונה ומיקום</label>
-                    <p className="mt-2 text-sm text-white/70">יש ערבים שדורשים נוכחות אחרת.</p>
+                    <label className="block text-sm font-bold text-white">פרטי האירוע</label>
+                    <p className="mt-2 text-sm text-white/70">תאריך, אולם וכמות אורחים — ואז כמה שאלות קצרות.</p>
                     <div className="mt-3 grid gap-3">
                       <input
                         type="date"
@@ -282,103 +291,99 @@ export default function WeddingFitCheckPage() {
                         <option value="unknown">אחר / לא בטוחים</option>
                       </select>
                     </div>
-                  </div>
-                )}
 
-                {step === 3 && (
-                  <div>
-                    <label className="block text-sm font-bold text-white">מה הכי חשוב לכם במוזיקה של הערב?</label>
-                    <p className="mt-2 text-sm text-white/70">לא תשובה נכונה – רק כנה.</p>
-                    <textarea
-                      value={form.mostImportant}
-                      onChange={(e) => update("mostImportant", e.target.value)}
-                      rows={4}
-                      placeholder="מינימום שתי שורות מומלץ"
-                      className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
-                    />
-                    {errors.mostImportant && <p className="mt-2 text-sm text-red-300">{errors.mostImportant}</p>}
-
-                    <div className="mt-6">
-                      <label className="block text-sm font-bold text-white">מה אתם הכי לא רוצים שיקרה בערב?</label>
-                      <p className="mt-2 text-sm text-white/70">לפעמים הגבולות חשובים יותר מהחזון.</p>
+                    <div className="mt-8">
+                      <label className="block text-sm font-bold text-white">מה הכי חשוב לכם במוזיקה של הערב?</label>
+                      <p className="mt-2 text-sm text-white/70">לא תשובה נכונה – רק כנה.</p>
                       <textarea
-                        value={form.biggestFear}
-                        onChange={(e) => update("biggestFear", e.target.value)}
+                        value={form.mostImportant}
+                        onChange={(e) => update("mostImportant", e.target.value)}
                         rows={4}
-                        placeholder="מה אתם רוצים למנוע?"
+                        placeholder="מינימום שתי שורות מומלץ"
                         className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
                       />
-                      {errors.biggestFear && <p className="mt-2 text-sm text-red-300">{errors.biggestFear}</p>}
+                      {errors.mostImportant && <p className="mt-2 text-sm text-red-300">{errors.mostImportant}</p>}
+
+                      <div className="mt-6">
+                        <label className="block text-sm font-bold text-white">מה אתם הכי לא רוצים שיקרה בערב?</label>
+                        <p className="mt-2 text-sm text-white/70">לפעמים הגבולות חשובים יותר מהחזון.</p>
+                        <textarea
+                          value={form.biggestFear}
+                          onChange={(e) => update("biggestFear", e.target.value)}
+                          rows={4}
+                          placeholder="מה אתם רוצים למנוע?"
+                          className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                        />
+                        {errors.biggestFear && <p className="mt-2 text-sm text-red-300">{errors.biggestFear}</p>}
+                      </div>
                     </div>
-                  </div>
-                )}
 
-                {step === 4 && (
-                  <div>
-                    <label className="block text-sm font-bold text-white">איך אתם בדרך כלל מקבלים החלטות כספקים?</label>
-                    <p className="mt-2 text-sm text-white/70">כדי להבין מה מניע אתכם, לא כדי לשפוט.</p>
-                    <select
-                      value={form.decisionStyle}
-                      onChange={(e) => update("decisionStyle", e.target.value as FormState["decisionStyle"])}
-                      className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white"
-                    >
-                      <option value="connection">לפי חיבור ותחושה</option>
-                      <option value="experience">לפי ניסיון ומקצועיות</option>
-                      <option value="price">לפי מחיר</option>
-                      <option value="mix">שילוב</option>
-                    </select>
-
-                    <div className="mt-6">
-                      <label className="block text-sm font-bold text-white">טווח השקעה שאתם מרגישים איתו בנוח</label>
-                      <p className="mt-2 text-sm text-white/70">לא התחייבות – רק בדיקת התאמה בסיסית.</p>
+                    <div className="mt-8">
+                      <label className="block text-sm font-bold text-white">איך אתם בדרך כלל מקבלים החלטות כספקים?</label>
+                      <p className="mt-2 text-sm text-white/70">כדי להבין מה מניע אתכם, לא כדי לשפוט.</p>
                       <select
-                        value={form.budgetComfort}
-                        onChange={(e) => update("budgetComfort", e.target.value as FormState["budgetComfort"])}
+                        value={form.decisionStyle}
+                        onChange={(e) => update("decisionStyle", e.target.value as FormState["decisionStyle"])}
                         className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white"
                       >
-                        <option value="basic">בסיסי</option>
-                        <option value="mid">ביניים</option>
-                        <option value="premium">פרימיום</option>
-                        <option value="unknown">לא בטוחים עדיין</option>
+                        <option value="connection">לפי חיבור ותחושה</option>
+                        <option value="experience">לפי ניסיון ומקצועיות</option>
+                        <option value="price">לפי מחיר</option>
+                        <option value="mix">שילוב</option>
                       </select>
-                    </div>
 
-                    <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
-                      <label className="flex items-start gap-3 text-white/90">
-                        <input
-                          type="checkbox"
-                          checked={form.commitment}
-                          onChange={(e) => update("commitment", e.target.checked)}
-                          className="mt-1 h-4 w-4 rounded border-white/20 bg-black"
-                        />
-                        <span>
-                          אני מבין/ה שלא כל פנייה מתקבלת,
-                          ושזו בדיקת התאמה – לא סגירת מחיר.
-                        </span>
-                      </label>
-                      {errors.commitment && <p className="mt-3 text-sm text-red-300">{errors.commitment}</p>}
-                    </div>
+                      <div className="mt-6">
+                        <label className="block text-sm font-bold text-white">טווח השקעה שאתם מרגישים איתו בנוח</label>
+                        <p className="mt-2 text-sm text-white/70">לא התחייבות – רק בדיקת התאמה בסיסית.</p>
+                        <select
+                          value={form.budgetComfort}
+                          onChange={(e) => update("budgetComfort", e.target.value as FormState["budgetComfort"])}
+                          className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white"
+                        >
+                          <option value="basic">בסיסי</option>
+                          <option value="mid">ביניים</option>
+                          <option value="premium">פרימיום</option>
+                          <option value="unknown">לא בטוחים עדיין</option>
+                        </select>
+                      </div>
 
-                    <div className="mt-6">
-                      <p className="text-sm text-white/85">
-                        אם זה מרגיש מדויק — שלחו.
-                        <br />
-                        אם משהו מרגיש לכם לא נכון — עצרו.
-                        <br />
-                        החלטות טובות מתחילות בכנות.
-                      </p>
+                      <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
+                        <label className="flex items-start gap-3 text-white/90">
+                          <input
+                            type="checkbox"
+                            checked={form.commitment}
+                            onChange={(e) => update("commitment", e.target.checked)}
+                            className="mt-1 h-4 w-4 rounded border-white/20 bg-black"
+                          />
+                          <span>
+                            אני מבין/ה שלא כל פנייה מתקבלת,
+                            ושזו בדיקת התאמה – לא סגירת מחיר.
+                          </span>
+                        </label>
+                        {errors.commitment && <p className="mt-3 text-sm text-red-300">{errors.commitment}</p>}
+                      </div>
 
-                      {submitError && <p className="mt-4 text-sm text-red-300">{submitError}</p>}
+                      <div className="mt-6">
+                        <p className="text-sm text-white/85">
+                          אם זה מרגיש מדויק — שלחו.
+                          <br />
+                          אם משהו מרגיש לכם לא נכון — עצרו.
+                          <br />
+                          החלטות טובות מתחילות בכנות.
+                        </p>
 
-                      <button
-                        type="button"
-                        onClick={onSubmit}
-                        disabled={!canContinue || submitting}
-                        className="mt-5 w-full rounded-full bg-white px-6 py-4 text-base font-bold text-black transition disabled:opacity-60"
-                      >
-                        {submitting ? "שולח…" : "שליחת בדיקת התאמה"}
-                      </button>
-                      <p className="mt-3 text-center text-xs text-white/60">תגובה אישית תישלח רק אם יש התאמה.</p>
+                        {submitError && <p className="mt-4 text-sm text-red-300">{submitError}</p>}
+
+                        <button
+                          type="button"
+                          onClick={onSubmit}
+                          disabled={!canContinue || submitting}
+                          className="mt-5 w-full rounded-full bg-white px-6 py-4 text-base font-bold text-black transition disabled:opacity-60"
+                        >
+                          {submitting ? "שולח…" : "שליחת בדיקת התאמה"}
+                        </button>
+                        <p className="mt-3 text-center text-xs text-white/60">תגובה אישית תישלח רק אם יש התאמה.</p>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -394,7 +399,7 @@ export default function WeddingFitCheckPage() {
                   חזרה
                 </button>
 
-                {step < 4 && (
+                {step < 2 && (
                   <button
                     type="button"
                     onClick={nextStep}
@@ -406,7 +411,7 @@ export default function WeddingFitCheckPage() {
                 )}
               </div>
 
-              {step < 4 && <p className="mt-4 text-center text-xs text-white/60">לא מתאים לכל זוג – וזה בסדר.</p>}
+              {step < 2 && <p className="mt-4 text-center text-xs text-white/60">לא מתאים לכל זוג – וזה בסדר.</p>}
             </section>
           </>
         ) : (

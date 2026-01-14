@@ -148,10 +148,94 @@ export default function WeddingsPage() {
               onClick={() => trackEvent("fitcheck_open", { source: "weddings_hero" })}
               className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-white/10 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
             >
-              בדיקת התאמה (5 דקות)
+              בדיקת התאמה (דקה)
             </Link>
             <p className="text-sm font-medium text-white/80">לא מתאים לכל זוג – וזה בכוונה.</p>
           </motion.div>
+        </div>
+      </section>
+
+      <section className="px-4 py-12 md:py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-black text-white md:text-5xl">טעימה מהערב</h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/80 md:text-base">
+              זה המקום לראות 60 שניות שמראות קהל, רצף ותזמון. לא סיכום, לא פרסומת.
+            </p>
+          </div>
+
+          <div className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
+            <div className="aspect-video w-full">
+              <iframe
+                className="h-full w-full"
+                src="https://www.youtube-nocookie.com/embed/yarUtbqD0BI"
+                title="טעימה מהערב"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+            <div className="p-5 text-white/85">
+              <div className="text-sm font-bold text-white">מה כדאי להקשיב לו</div>
+              <p className="mt-2 text-sm text-white/80">
+                איך המעברים נשמרים טבעיים, ואיך החדר מתקדם בלי ״דחיפות״.
+              </p>
+              <div className="mt-4 flex flex-col items-center gap-3">
+                <a
+                  href={waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent("cta_whatsapp_click", { source: "weddings_video" })}
+                  className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-8 py-4 text-base font-bold text-white shadow-lg transition hover:scale-[1.01]"
+                >
+                  בדיקת זמינות בוואטסאפ
+                </a>
+                <Link
+                  href="/weddings/fit-check"
+                  onClick={() => trackEvent("fitcheck_open", { source: "weddings_video" })}
+                  className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-white/10 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
+                >
+                  בדיקת התאמה (דקה)
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-12 md:py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-black text-white md:text-5xl">סימני אמון</h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/80 md:text-base">
+              לוגואים, צילומי מסך והמלצות — כאן יישבו נכסים אמיתיים מהספרייה.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-xl">
+              <h3 className="text-xl font-bold text-white">חברות / מותגים</h3>
+              <p className="mt-2 text-sm text-white/70">Placeholder — יוחלף בקרוסלת הלוגואים הקיימת.</p>
+              <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {["Logo 1", "Logo 2", "Logo 3", "Logo 4", "Logo 5", "Logo 6"].map((t) => (
+                  <div key={t} className="flex items-center justify-center rounded-2xl border border-white/10 bg-black/20 px-3 py-4 text-xs font-semibold text-white/75">
+                    {t}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur-xl">
+              <h3 className="text-xl font-bold text-white">מה זוגות כותבים</h3>
+              <p className="mt-2 text-sm text-white/70">Placeholder — יוחלף בצילומי מסך מטושטשים / המלצות קצרות.</p>
+              <div className="mt-5 space-y-3">
+                {["הרגיש שיש יד על ההגה לאורך כל הערב.", "הקהל היה מגוון והמעברים נשארו טבעיים.", "היה סדר, בלי להרגיש שמנהלים אותנו."].map((q) => (
+                  <div key={q} className="rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/85">
+                    {q}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -167,7 +251,6 @@ export default function WeddingsPage() {
                   "רוצים מישהו שמחזיק את הערב רגוע, ולא דוחף אותו בכוח",
                   "מחפשים חיבור אנושי לפני בחירות מוזיקליות",
                   "רוצים שהאורחים ירגישו בידיים טובות — גם בלי להבין למה",
-                  "מבינים שלרגעים יש תזמון, ולא הכל צריך לקרות מהר",
                   "רוצים מסגרת ברורה: מה כן, מה לא, ומה קורה כשדברים משתנים",
                 ].map((t) => (
                   <li key={t} className="flex gap-3">
@@ -185,7 +268,6 @@ export default function WeddingsPage() {
                   "רוצים נוסחה קבועה של חתונה: אותו פתיח, אותו שיא, אותה סגירה",
                   "רוצים מישהו על המיקרופון שינהל את הקהל במקום שהמוזיקה תוביל",
                   "רוצים רשימת שירים שתפתור את כל הבעיות",
-                  "בוחרים ספקים לפי מי נותן יותר, ולא לפי מי באמת מתאים לכם",
                 ].map((t) => (
                   <li key={t} className="flex gap-3">
                     <span className="mt-0.5 text-red-400">✕</span>
@@ -351,7 +433,7 @@ export default function WeddingsPage() {
               onClick={() => trackEvent("fitcheck_open", { source: "weddings_benefits" })}
               className="inline-flex w-full max-w-sm items-center justify-center rounded-full bg-white/10 px-8 py-4 text-base font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
             >
-              בדיקת התאמה (5 דקות)
+              בדיקת התאמה (דקה)
             </Link>
             <p className="text-sm font-medium text-white/70">לא מתאים לכל זוג – וזה בסדר.</p>
           </div>
@@ -371,7 +453,7 @@ export default function WeddingsPage() {
           isWhatsApp: true
         }}
         secondaryCTA={{
-          text: "בדיקת התאמה (5 דקות)",
+          text: "בדיקת התאמה (דקה)",
           href: "/weddings/fit-check"
         }}
       />

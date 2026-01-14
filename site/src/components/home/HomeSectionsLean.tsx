@@ -171,7 +171,7 @@ export const HomeSectionsLean = () => {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-foreground-secondary mb-10 max-w-2xl mx-auto"
           >
-            שיחה קצרה של 5 דקות יכולה לחסוך לכם שעות של חיפושים. 
+            שיחה קצרה של דקה יכולה לחסוך לכם שעות של חיפושים. 
             ספרו לי על האירוע ואגיד לכם אם אני הבחירה הנכונה.
           </motion.p>
 

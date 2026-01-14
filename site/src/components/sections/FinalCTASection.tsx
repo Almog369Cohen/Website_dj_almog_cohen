@@ -21,7 +21,7 @@ interface FinalCTASectionProps {
 
 export const FinalCTASection = ({ 
   title = "מוכנים להתחיל?",
-  subtitle = "שיחה קצרה של 5 דקות יכולה לחסוך לכם שעות של חיפושים.",
+  subtitle = "שיחה קצרה של דקה יכולה לחסוך לכם שעות של חיפושים.",
   primaryCTA = {
     text: "שלחו הודעה בוואטסאפ",
     href: buildWhatsAppLink(getEventsWhatsAppMessage("weddings_dj")),
