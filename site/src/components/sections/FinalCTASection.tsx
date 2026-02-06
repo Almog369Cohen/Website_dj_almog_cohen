@@ -55,7 +55,7 @@ export const FinalCTASection = ({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-4xl md:text-6xl font-black text-white mb-6"
+          className="text-4xl md:text-6xl font-black text-foreground mb-6"
         >
           {title.split(" ").map((word, i, arr) => 
             i === arr.length - 1 
@@ -69,7 +69,7 @@ export const FinalCTASection = ({
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto"
+          className="text-lg md:text-xl text-foreground-secondary mb-10 max-w-2xl mx-auto"
         >
           {subtitle}
         </motion.p>
@@ -110,7 +110,7 @@ export const FinalCTASection = ({
         </div>
 
         {/* Trust Signals */}
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-white/50">
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
           {["ללא התחייבות", "תשובה תוך שעות", "ייעוץ חינם"].map((text, i) => (
             <div key={i} className="flex items-center gap-2">
               <svg className="h-4 w-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20">

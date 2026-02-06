@@ -7,11 +7,11 @@ export default function CorporatePage() {
     <div className="bg-brand-dark text-brand-white">
       <section className="mx-auto w-full max-w-6xl px-4 py-16">
         <h1 className="mb-6 text-3xl md:text-4xl font-bold">אירועים עסקיים</h1>
-        <p className="mb-4 text-white/80">
+        <p className="mb-4 text-foreground-secondary">
           מוזיקה שמרימה ומייצרת אווירה מקצועית ונעימה: כנסים, האקתונים, קוקטיילים,
           ערבי חברה ונטוורקינג. מיתוג מוזיקלי שמחזק את המסר של האירוע.
         </p>
-        <ul className="mb-6 list-disc pr-6 text-white/85">
+        <ul className="mb-6 list-disc pr-6 text-foreground-secondary">
           <li>פלייליסט אלגנטי שמאפשר שיחה</li>
           <li>סטים קצביים לרגעי שיא והכרזות</li>
           <li>הגשה מדויקת ועבודה מתואמת עם ההפקה</li>

@@ -144,7 +144,7 @@ export default function DjCourseFiveMistakesPage() {
           <h2 className="mb-2 text-lg font-semibold md:text-xl">
             רוצים לשמוע על מסלולי הקורסים והליווי?
           </h2>
-          <p className="mb-4 text-white/80">
+          <p className="mb-4 text-white">
             השאירו פרטים בטופס או שלחו לי הודעת WhatsApp, ואעזור לכם להבין איזה מסלול מתאים
             לרמת הידע והשאיפות שלכם.
           </p>

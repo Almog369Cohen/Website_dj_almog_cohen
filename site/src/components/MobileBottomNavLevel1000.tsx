@@ -138,7 +138,6 @@ const Icons = {
   },
 };
 
-// Lead-first mobile bar
 const navItems: NavItem[] = [
   {
     href: waLink,
@@ -147,22 +146,21 @@ const navItems: NavItem[] = [
     label: "וואטסאפ",
     color: "green",
     isExternal: true,
-  },
-  {
-    href: phoneLink,
-    icon: Icons.phone.outline,
-    activeIcon: Icons.phone.filled,
-    label: "שיחה",
-    color: "blue",
-    isExternal: true,
-  },
-  {
-    href: "/weddings/fit-check",
-    icon: Icons.check.outline,
-    activeIcon: Icons.check.filled,
-    label: "בדיקת התאמה",
-    color: "gradient",
     isCTA: true,
+  },
+  {
+    href: "/academy",
+    icon: Icons.academy.outline,
+    activeIcon: Icons.academy.filled,
+    label: "אקדמיה",
+    color: "blue",
+  },
+  {
+    href: "/weddings",
+    icon: Icons.events.outline,
+    activeIcon: Icons.events.filled,
+    label: "חתונות",
+    color: "green",
   },
 ];
 
@@ -185,7 +183,6 @@ export function MobileBottomNavLevel1000() {
   };
 
   const getColorClass = (color: NavItem["color"], isActive: boolean, isGradientItem: boolean = false) => {
-    // חוגג מנגן always shows gradient colors
     if (isGradientItem && color === "gradient") return "text-[#03b28c]";
     if (!isActive) return "text-white/60";
     switch (color) {

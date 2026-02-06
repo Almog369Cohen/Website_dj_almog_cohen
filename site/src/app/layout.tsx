@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Heebo, Rubik } from "next/font/google";
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
@@ -9,6 +10,7 @@ import { AccessibilityMenu } from "@/components/AccessibilityMenu";
 import { MobileMenu } from "@/components/MobileMenu";
 import { DropdownMenu } from "@/components/DropdownMenu";
 import { MobileBottomNavLevel1000 } from "@/components/MobileBottomNavLevel1000";
+import { ElementInspectorMode } from "@/components/ElementInspectorMode";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -159,9 +161,7 @@ export default function RootLayout({
                       { label: "חתן מתקלט", href: "/academy/groom-dj", color: "from-pink-400 to-rose-400" },
                     ]}
                   />
-                  <Link href="/chogeg-menagen" className="hover:text-brand-green">חוגג מנגן</Link>
                   <Link href="/music" className="hover:text-brand-blue">מוזיקה</Link>
-                  <Link href="/home-v2" className="hover:text-brand-blue">Home V2</Link>
                   <Link href="/blog" className="hover:text-brand-blue">בלוג</Link>
                   <Link href="/about" className="hover:text-brand-blue">אודות</Link>
                   <a
@@ -182,11 +182,11 @@ export default function RootLayout({
           <main id="main-content" className="flex-1" role="main">{children}</main>
           <AccessibilityMenu />
           <footer className="glass-panel border-t" role="contentinfo">
-            <div className="mx-auto w-full max-w-6xl px-4 py-6">
+            <div className="mx-auto w-full max-w-6xl px-4 py-3">
               {/* Academy */}
-              <div className="mb-4 text-center">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-brand-blue mb-2">Compakt Academy</h3>
-                <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-foreground-secondary">
+              <div className="mb-2 text-center">
+                <h3 className="text-[10px] font-bold uppercase tracking-wider text-brand-blue mb-1">Compakt Academy</h3>
+                <div className="flex flex-wrap justify-center gap-x-3 gap-y-0.5 text-xs text-foreground-secondary">
                   <Link href="/academy" className="hover:text-brand-blue transition">קורסים ומנטורינג</Link>
                   <span className="text-white/20">•</span>
                   <Link href="/academy/dj-course" className="hover:text-brand-blue transition">קורס DJ</Link>
@@ -198,9 +198,9 @@ export default function RootLayout({
               </div>
 
               {/* Events */}
-              <div className="mb-4 text-center">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-brand-green mb-2">חתונות</h3>
-                <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-foreground-secondary">
+              <div className="mb-2 text-center">
+                <h3 className="text-[10px] font-bold uppercase tracking-wider text-brand-green mb-1">חתונות</h3>
+                <div className="flex flex-wrap justify-center gap-x-3 gap-y-0.5 text-xs text-foreground-secondary">
                   <Link href="/weddings" className="hover:text-brand-green transition">עמוד חתונות</Link>
                   <span className="text-white/20">•</span>
                   <Link href="/weddings/fit-check" className="hover:text-brand-green transition">בדיקת התאמה</Link>
@@ -214,9 +214,9 @@ export default function RootLayout({
               </div>
 
               {/* About */}
-              <div className="mb-4 text-center">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-foreground-heading mb-2">אודות</h3>
-                <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-foreground-secondary">
+              <div className="mb-2 text-center">
+                <h3 className="text-[10px] font-bold uppercase tracking-wider text-foreground-heading mb-1">אודות</h3>
+                <div className="flex flex-wrap justify-center gap-x-3 gap-y-0.5 text-xs text-foreground-secondary">
                   <Link href="/about" className="hover:text-foreground-heading transition">על אלמוג כהן</Link>
                   <span className="text-white/20">•</span>
                   <Link href="/blog" className="hover:text-foreground-heading transition">בלוג</Link>
@@ -227,14 +227,18 @@ export default function RootLayout({
                 </div>
               </div>
 
-              <div className="border-t border-border pt-4 text-center text-xs text-foreground-secondary">
+              <div className="border-t border-border pt-2 text-center text-[10px] text-foreground-secondary">
                 <p>© {new Date().getFullYear()} DJ Almog Cohen – Energy Architect</p>
-                <p className="text-muted-foreground mt-1">מוזיקה • יצירה • מנטורינג</p>
+                <p className="text-muted-foreground mt-0.5">מוזיקה • יצירה • מנטורינג</p>
               </div>
             </div>
           </footer>
         </div>
         </ThemeProvider>
+
+        <Suspense>
+          <ElementInspectorMode />
+        </Suspense>
         
         {/* Mobile Bottom Navigation - Level 1000 */}
         <MobileBottomNavLevel1000 />

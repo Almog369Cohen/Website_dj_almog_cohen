@@ -15,6 +15,22 @@ export default function HowToChooseWeddingDJPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: "איך לבחור DJ לחתונה: 5 שאלות חובה לפני שסוגרים",
+            description: "מדריך חובה לזוגות לפני סגירת DJ לחתונה: 5 שאלות מפתח שיעזרו לכם לבחור תקליטן מקצועי שמתאים לאירוע שלכם.",
+            author: { "@type": "Person", name: "DJ אלמוג כהן" },
+            publisher: { "@type": "Organization", name: "Compaktt", url: "https://www.compaktt.com" },
+            url: "https://www.compaktt.com/blog/how-to-choose-wedding-dj",
+            inLanguage: "he",
+            mainEntityOfPage: "https://www.compaktt.com/blog/how-to-choose-wedding-dj",
+          }),
+        }}
+      />
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 md:py-16">
         {/* Breadcrumb */}
         <nav className="text-sm text-foreground-secondary" aria-label="breadcrumb">
@@ -227,11 +243,11 @@ export default function HowToChooseWeddingDJPage() {
         </article>
 
         {/* CTA */}
-        <section className="mt-4 rounded-2xl border border-white/10 bg-gradient-to-br from-black/85 via-black/70 to-brand-blue/25 p-6 text-sm text-white/85 shadow-xl shadow-black/40 md:text-base">
+        <section className="mt-4 rounded-2xl border border-white/10 bg-gradient-to-br from-black/85 via-black/70 to-brand-blue/25 p-6 text-sm text-white shadow-xl shadow-black/40 md:text-base">
           <h2 className="mb-2 text-lg font-semibold md:text-xl">
             רוצים לבדוק אם אני פנוי לתאריך שלכם?
           </h2>
-          <p className="mb-4 text-white/80">
+          <p className="mb-4 text-white">
             השאירו פרטים בטופס באתר או שלחו לי הודעת WhatsApp, ואחזור אליכם עם זמינות, רעיונות
             מוזיקליים והתאמה אישית לאירוע שלכם.
           </p>

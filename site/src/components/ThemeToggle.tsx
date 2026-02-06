@@ -11,7 +11,7 @@ export function ThemeToggle() {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-sm transition hover:border-white/40 hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-black"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/70 text-foreground backdrop-blur-sm transition hover:bg-background/85 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-background"
       aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
       title={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
     >

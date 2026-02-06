@@ -122,12 +122,12 @@ export default function ChogegMenagenPage() {
 
           <p 
             style={{ fontSize: "var(--font-fluid-h3)" }}
-            className="mb-8 font-bold text-white/90"
+            className="mb-8 font-bold text-white"
           >
             הקונספט שהופך את <span className="text-brand-green">בעלי השמחה</span> ל<span className="text-brand-blue">כוכבי הערב</span>
           </p>
 
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-white/85">
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-white">
             זה לא עוד אירוע שבו אתם רק צופים. זה הרגע שבו אתם עולים לעמדה, שולטים במוזיקה, ויוצרים זיכרון שהאורחים לא ישכחו.
           </p>
 
@@ -155,17 +155,17 @@ export default function ChogegMenagenPage() {
             <div className="text-center p-6 rounded-2xl border border-white/10">
               <div className="text-4xl font-black text-brand-green mb-3">1</div>
               <h3 className="font-bold text-lg mb-2">שיחה קצרה</h3>
-              <p className="text-white/60 text-sm">מספרים לי על האירוע</p>
+              <p className="text-white text-sm">מספרים לי על האירוע</p>
             </div>
             <div className="text-center p-6 rounded-2xl border border-white/10">
               <div className="text-4xl font-black text-brand-blue mb-3">2</div>
               <h3 className="font-bold text-lg mb-2">תכנון הרגע</h3>
-              <p className="text-white/60 text-sm">בוחרים שירים וטיימינג</p>
+              <p className="text-white text-sm">בוחרים שירים וטיימינג</p>
             </div>
             <div className="text-center p-6 rounded-2xl border border-white/10">
               <div className="text-4xl font-black text-brand-green mb-3">3</div>
               <h3 className="font-bold text-lg mb-2">עולים לעמדה</h3>
-              <p className="text-white/60 text-sm">ויוצרים זיכרון לכל החיים</p>
+              <p className="text-white text-sm">ויוצרים זיכרון לכל החיים</p>
             </div>
           </div>
 
@@ -217,7 +217,7 @@ export default function ChogegMenagenPage() {
                 </svg>
               </motion.div>
               <h3 className="mb-3 text-xl font-bold text-brand-green">נוכחות אישית</h3>
-              <p className="text-white/85">האורחים רואים אתכם במרכז ומרגישים שזה באמת הערב שלכם</p>
+              <p className="text-white">האורחים רואים אתכם במרכז ומרגישים שזה באמת הערב שלכם</p>
             </motion.div>
             </TiltCard>
 
@@ -237,7 +237,7 @@ export default function ChogegMenagenPage() {
                 </svg>
               </motion.div>
               <h3 className="mb-3 text-xl font-bold text-brand-blue">רגע וירלי</h3>
-              <p className="text-white/85">תיעוד שמעלה את האווירה ברשתות ומייצר זיכרון דיגיטלי</p>
+              <p className="text-white">תיעוד שמעלה את האווירה ברשתות ומייצר זיכרון דיגיטלי</p>
             </motion.div>
             </TiltCard>
 
@@ -257,7 +257,7 @@ export default function ChogegMenagenPage() {
                 </svg>
               </motion.div>
               <h3 className="mb-3 text-xl font-bold text-brand-green">סיפור שנשאר</h3>
-              <p className="text-white/85">זה האירוע שכולם יזכרו ויספרו עליו</p>
+              <p className="text-white">זה האירוע שכולם יזכרו ויספרו עליו</p>
             </motion.div>
             </TiltCard>
           </div>
@@ -277,7 +277,7 @@ export default function ChogegMenagenPage() {
             className="space-y-8"
           >
             <h2 className="text-5xl font-bold md:text-6xl">מוכנים להיות הכוכבים?</h2>
-            <p className="mx-auto max-w-2xl text-xl text-white/80">
+            <p className="mx-auto max-w-2xl text-xl text-white">
               בואו ניצור יחד את הרגע שהאורחים לא ישכחו
             </p>
             <motion.a

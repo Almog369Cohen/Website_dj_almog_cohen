@@ -15,6 +15,22 @@ export default function Chuppah20SongsPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: "20 שירי כניסה לחופה שישברו את הרשת",
+            description: "רשימת 20 שירי חופה מחולקים לקטגוריות – קלאסיים, בחירות פחות צפויות ושירים לכניסת הורים וסבים – עם טיפים לבחירה חכמה.",
+            author: { "@type": "Person", name: "DJ אלמוג כהן" },
+            publisher: { "@type": "Organization", name: "Compaktt", url: "https://www.compaktt.com" },
+            url: "https://www.compaktt.com/blog/chuppah-20-songs",
+            inLanguage: "he",
+            mainEntityOfPage: "https://www.compaktt.com/blog/chuppah-20-songs",
+          }),
+        }}
+      />
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 md:py-16">
         <nav className="text-sm text-foreground-secondary" aria-label="breadcrumb">
           <ol className="flex flex-wrap gap-1">
@@ -64,7 +80,7 @@ export default function Chuppah20SongsPage() {
             <p>
               שירים שמבטיחים צמרמורת ומתאימים כמעט לכל זוג. הם חזקים מוזיקלית ומעבירים רגש טהור:
             </p>
-            <ul className="list-disc space-y-1 pr-5 text-white/90">
+            <ul className="list-disc space-y-1 pr-5 text-white">
               <li>שלמה ארצי – אהבה</li>
               <li>עידן רייכל – מכל האהבות</li>
               <li>יונתן רזאל – קטונתי</li>
@@ -78,7 +94,7 @@ export default function Chuppah20SongsPage() {
             <p>
               אם אתם מחפשים משהו קצת שונה ומפתיע, עם עיבודים מיוחדים או וייב פחות מיינסטרימי:
             </p>
-            <ul className="list-disc space-y-1 pr-5 text-white/90">
+            <ul className="list-disc space-y-1 pr-5 text-white">
               <li>Coldplay – Sky Full of Stars (עיבוד אינסטרומנטלי)</li>
               <li>אליעד – מתוק כשמרלי</li>
               <li>קובי אפללו – שיר געגועים</li>
@@ -93,7 +109,7 @@ export default function Chuppah20SongsPage() {
               המוזיקה של כניסת המשפחה היא חלק מהדרמה של החופה. מומלץ לבחור שירים שאינם איטיים מדי,
               אבל עדיין מלאי רגש.
             </p>
-            <ul className="list-disc space-y-1 pr-5 text-white/90">
+            <ul className="list-disc space-y-1 pr-5 text-white">
               <li>Queen – Love of My Life (ביצוע אקוסטי)</li>
               <li>מאיר בנאי – אהבה קצרה</li>
               <li>בניה ברבי – מישהו איתי כאן</li>
@@ -120,7 +136,7 @@ export default function Chuppah20SongsPage() {
           <h2 className="mb-2 text-lg font-semibold md:text-xl">
             רוצים לבנות פלייליסט חופה מותאם אישית?
           </h2>
-          <p className="mb-4 text-white/80">
+          <p className="mb-4 text-white">
             השאירו פרטים או שלחו לי הודעת WhatsApp, ונבנה יחד את הפס הקולי המדויק לרגע החופה
             שלכם – מהכניסה של ההורים ועד הנשיקה.
           </p>

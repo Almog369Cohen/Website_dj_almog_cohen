@@ -13,12 +13,12 @@ export default function PrivateEventsPage() {
           </p>
           <h1 className="mt-2 text-3xl md:text-4xl font-bold">אירועים פרטיים</h1>
         </div>
-        <p className="mb-4 text-sm text-white/80 md:text-base">
+        <p className="mb-4 text-sm text-foreground-secondary md:text-base">
           בר/בת מצווה, מסיבות גג, ימי הולדת ואפטרים – מוזיקה שמרגישה אישית אבל מנגנת כמו במה
           גדולה. ביחד נתאים את הסטייל, השירים והסגנונות לקהל שמגיע, כדי שכל אחד ירגיש חלק
           מהאירוע – מהצעירים ועד המבוגרים.
         </p>
-        <ul className="mb-6 list-disc pr-6 text-sm text-white/75 md:text-base">
+        <ul className="mb-6 list-disc pr-6 text-sm text-foreground-secondary md:text-base">
           <li className="marker:text-brand-green">סטים מותאמים במיוחד לאירועי משפחה וחברים</li>
           <li className="marker:text-brand-green">פתיחת ערב רגועה ואטמוספרית ורחבה שממריאה בהמשך</li>
           <li className="marker:text-brand-green">שילוב סגנונות לפי בקשה – מיינסטרים, מזרחית, היפ הופ, טכנו, לועזי ועוד</li>
@@ -27,7 +27,7 @@ export default function PrivateEventsPage() {
         <div className="mb-8 overflow-hidden rounded-2xl border border-white/10 bg-white/5/80 shadow-lg shadow-black/40 backdrop-blur-md transition-transform hover:-translate-y-1 hover:scale-[1.01]">
           <Image src="/assets/almog/private-1.jpg" alt="אירועים פרטיים" width={1600} height={1066} className="h-full w-full object-cover" />
         </div>
-        <p className="mb-4 text-sm text-white/80 md:text-base">
+        <p className="mb-4 text-sm text-foreground-secondary md:text-base">
           יש לכם תאריך ורעיון בראש? שלחו לי הודעה קצרה ונתכנן יחד את המסיבה שלכם עד הפרט האחרון.
         </p>
         <a

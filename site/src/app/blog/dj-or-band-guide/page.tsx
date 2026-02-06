@@ -62,14 +62,14 @@ export default function DjOrBandGuidePage() {
           <section className="space-y-4">
             <h2 className="text-lg font-semibold md:text-xl">1. ה-DJ: גמישות אינסופית וזרימה חלקה</h2>
             <p className="font-semibold text-brand-blue">יתרונות ה-DJ:</p>
-            <ul className="list-disc space-y-1 pr-5 text-white/90">
+            <ul className="list-disc space-y-1 pr-5 text-white">
               <li>גישה לספריית מוזיקה עצומה – מכל ז&apos;אנר, שפה וסגנון.</li>
               <li>יכולת להגיב לקהל בזמן אמת ולהחליף כיוון מיד כשהרחבה מרגישה אחרת.</li>
               <li>עלות-תועלת מעולה ביחס להיקף המוזיקה והזמן.</li>
               <li>מוזיקה רציפה בלי הפסקות בין סטים.</li>
             </ul>
             <p className="font-semibold text-brand-blue">חסרונות אפשריים:</p>
-            <ul className="list-disc space-y-1 pr-5 text-white/90">
+            <ul className="list-disc space-y-1 pr-5 text-white">
               <li>חלק מהאורחים מחפשים &quot;show&quot; ויזואלי של הופעה חיה.</li>
               <li>אם ה-DJ פחות מנוסה, האירוע עלול להרגיש גנרי ומיינסטרימי מדי.</li>
             </ul>
@@ -78,13 +78,13 @@ export default function DjOrBandGuidePage() {
           <section className="space-y-4">
             <h2 className="text-lg font-semibold md:text-xl">2. להקה חיה: דרמה, נוכחות ובמה</h2>
             <p className="font-semibold text-brand-blue">יתרונות הלהקה:</p>
-            <ul className="list-disc space-y-1 pr-5 text-white/90">
+            <ul className="list-disc space-y-1 pr-5 text-white">
               <li>אנרגיה חיה על הבמה – הופעה לכל דבר.</li>
               <li>קשר ויזואלי חזק עם האורחים – כולם רואים מי מנגן ושר.</li>
               <li>מתאים במיוחד לאירועים רשמיים, ג&apos;אז, סול, פאנק ועוד.</li>
             </ul>
             <p className="font-semibold text-brand-blue">חסרונות אפשריים:</p>
-            <ul className="list-disc space-y-1 pr-5 text-white/90">
+            <ul className="list-disc space-y-1 pr-5 text-white">
               <li>עלות גבוהה יותר – כמה נגנים, סאונדמן, ציוד.</li>
               <li>גמישות מוזיקלית מוגבלת – מנגנים רק מה שהם ערוכים אליו.</li>
               <li>הפסקות חובה בין סטים, מה שעלול לשבור רצף ברחבה.</li>
@@ -106,7 +106,7 @@ export default function DjOrBandGuidePage() {
 
           <section className="space-y-4 border-r-4 border-brand-blue pr-4 text-sm md:text-base">
             <h2 className="text-lg font-semibold md:text-xl">מיני-מדריך: 5 טיפים לרחבת ריקודים מדויקת</h2>
-            <ul className="list-decimal space-y-2 pr-5 text-white/90">
+            <ul className="list-decimal space-y-2 pr-5 text-white">
               <li>
                 <span className="font-semibold">המיקום קובע:</span> דאגו שעמדת ה-DJ תהיה עם קו ראייה
                 לרחבה וסאונד מאוזן בכל האולם.
@@ -135,7 +135,7 @@ export default function DjOrBandGuidePage() {
           <h2 className="mb-2 text-lg font-semibold md:text-xl">
             מתלבטים בין DJ, להקה או שילוב?
           </h2>
-          <p className="mb-4 text-white/80">
+          <p className="mb-4 text-white">
             בואו נדבר על הקונספט המוזיקלי המדויק לאירוע שלכם – נבין מי הקהל, מה הוייב, ומה התקציב,
             ונבנה יחד ערב שנשאר.
           </p>

@@ -143,27 +143,27 @@ export default function WeddingFitCheckPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto w-full max-w-[680px] px-6 py-10">
         {!submitted ? (
           <>
             <section className="mb-10">
               <h1 className="text-3xl font-black leading-tight">לפני שקובעים שיחה – בודקים התאמה.</h1>
-              <p className="mt-4 text-base leading-relaxed text-white/85">
+              <p className="mt-4 text-base leading-relaxed text-foreground-secondary">
                 כדי להתחיל נכון — בודקים התאמה בצורה קצרה ומדויקת.
                 <br />
                 זה עוזר להבין אם יש חיבור, ואם אפשר להחזיק את הערב כמו שצריך.
               </p>
-              <p className="mt-4 text-sm font-medium text-white/70">זה חוסך זמן. מייצר בהירות. ושומר על היום שלכם נקי מרעש.</p>
+              <p className="mt-4 text-sm font-medium text-muted-foreground">זה חוסך זמן. מייצר בהירות. ושומר על היום שלכם נקי מרעש.</p>
             </section>
 
-            <section className="mb-10 rounded-3xl border border-white/10 bg-white/5 p-6">
+            <section className="mb-10 rounded-3xl border border-border bg-background/60 p-6">
               <h2 className="text-xl font-bold">מה התהליך הזה כן / לא</h2>
 
               <div className="mt-6 grid gap-6 md:grid-cols-2">
                 <div>
-                  <div className="text-sm font-bold text-white">התהליך הזה כן:</div>
-                  <ul className="mt-3 space-y-2 text-white/85">
+                  <div className="text-sm font-bold text-foreground">התהליך הזה כן:</div>
+                  <ul className="mt-3 space-y-2 text-foreground-secondary">
                     <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>בדיקה של כיוון, לא סגירת עסקה</span></li>
                     <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>שיחה על ערב, לא על רשימות</span></li>
                     <li className="flex gap-3"><span className="text-[#03b28c]">✓</span><span>מקום לדייק ציפיות, בלי לחץ</span></li>
@@ -171,8 +171,8 @@ export default function WeddingFitCheckPage() {
                 </div>
 
                 <div>
-                  <div className="text-sm font-bold text-white">התהליך הזה לא:</div>
-                  <ul className="mt-3 space-y-2 text-white/85">
+                  <div className="text-sm font-bold text-foreground">התהליך הזה לא:</div>
+                  <ul className="mt-3 space-y-2 text-foreground-secondary">
                     <li className="flex gap-3"><span className="text-red-400">✕</span><span>בקשת מחיר</span></li>
                     <li className="flex gap-3"><span className="text-red-400">✕</span><span>השוואה בין ספקים</span></li>
                     <li className="flex gap-3"><span className="text-red-400">✕</span><span>התחייבות מכל סוג</span></li>
@@ -183,22 +183,22 @@ export default function WeddingFitCheckPage() {
 
             <section className="mb-10">
               <h2 className="text-xl font-bold">תיאום ציפיות</h2>
-              <p className="mt-4 text-base leading-relaxed text-white/85">
+              <p className="mt-4 text-base leading-relaxed text-foreground-secondary">
                 מילוי הטופס לוקח דקה.
                 <br />
                 המטרה היא לחסוך לכם התלבטות ולהגיע לשיחה כשזה באמת מדויק.
               </p>
-              <p className="mt-4 text-sm leading-relaxed text-white/70">
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                 אם יש התאמה — חוזרת תגובה אישית ומדויקת.
                 <br />
                 אם לא — תקבלו תשובה ברורה, בלי למשוך זמן.
               </p>
             </section>
 
-            <section className="rounded-3xl border border-white/10 bg-white/5 p-6">
+            <section className="rounded-3xl border border-border bg-background/60 p-6">
               <div className="flex items-center justify-between gap-4">
-                <div className="text-sm font-bold text-white">שלב {progress.current} מתוך {progress.total}</div>
-                <div className="h-2 w-28 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
+                <div className="text-sm font-bold text-foreground">שלב {progress.current} מתוך {progress.total}</div>
+                <div className="h-2 w-28 overflow-hidden rounded-full bg-foreground/10" aria-hidden="true">
                   <div className="h-full bg-gradient-to-r from-[#059cc0] to-[#03b28c]" style={{ width: `${progress.pct}%` }} />
                 </div>
               </div>
@@ -206,13 +206,13 @@ export default function WeddingFitCheckPage() {
               <div className="mt-6">
                 {step === 1 && (
                   <div>
-                    <label className="block text-sm font-bold text-white">שם מלא של שני בני הזוג</label>
-                    <p className="mt-2 text-sm text-white/70">כדי שנדע עם מי אנחנו מדברים, לא רק על איזה אירוע.</p>
+                    <label className="block text-sm font-bold text-foreground">שם מלא של שני בני הזוג</label>
+                    <p className="mt-2 text-sm text-muted-foreground">כדי שנדע עם מי אנחנו מדברים, לא רק על איזה אירוע.</p>
                     <input
                       value={form.coupleNames}
                       onChange={(e) => update("coupleNames", e.target.value)}
                       placeholder="לדוגמה: נועה ואלון"
-                      className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                      className="mt-3 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground placeholder:text-muted-foreground"
                     />
                     {errors.coupleNames && <p className="mt-2 text-sm text-red-300">{errors.coupleNames}</p>}
                   </div>
@@ -220,111 +220,111 @@ export default function WeddingFitCheckPage() {
 
                 {step === 2 && (
                   <div>
-                    <label className="block text-sm font-bold text-white">פרטי האירוע</label>
-                    <p className="mt-2 text-sm text-white/70">תאריך, אולם וכמות אורחים — ואז כמה שאלות קצרות.</p>
+                    <label className="block text-sm font-bold text-foreground">פרטי האירוע</label>
+                    <p className="mt-2 text-sm text-muted-foreground">תאריך, אולם וכמות אורחים — ואז כמה שאלות קצרות.</p>
                     <div className="mt-3 grid gap-3">
                       <input
                         type="date"
                         value={form.weddingDate}
                         onChange={(e) => update("weddingDate", e.target.value)}
-                        className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white"
+                        className="w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground"
                       />
                       {errors.weddingDate && <p className="text-sm text-red-300">{errors.weddingDate}</p>}
                       <input
                         value={form.weddingLocation}
                         onChange={(e) => update("weddingLocation", e.target.value)}
                         placeholder="אולם / גן / עיר"
-                        className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                        className="w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground placeholder:text-muted-foreground"
                       />
                       {errors.weddingLocation && <p className="text-sm text-red-300">{errors.weddingLocation}</p>}
                     </div>
 
                     <div className="mt-6">
-                      <label className="block text-sm font-bold text-white">כמות אורחים</label>
-                      <p className="mt-2 text-sm text-white/70">מספר משוער מספיק.</p>
+                      <label className="block text-sm font-bold text-foreground">כמות אורחים</label>
+                      <p className="mt-2 text-sm text-muted-foreground">מספר משוער מספיק.</p>
                       <input
                         inputMode="numeric"
                         value={form.guestCount}
                         onChange={(e) => update("guestCount", e.target.value)}
                         placeholder="לדוגמה: 350"
-                        className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                        className="mt-3 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground placeholder:text-muted-foreground"
                       />
                       {errors.guestCount && <p className="mt-2 text-sm text-red-300">{errors.guestCount}</p>}
                     </div>
 
                     <div className="mt-6 grid gap-3 md:grid-cols-2">
                       <div>
-                        <label className="block text-sm font-bold text-white">נייד חתן</label>
+                        <label className="block text-sm font-bold text-foreground">נייד חתן</label>
                         <input
                           inputMode="tel"
                           value={form.groomPhone}
                           onChange={(e) => update("groomPhone", e.target.value)}
                           placeholder="05X-XXXXXXX"
-                          className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                          className="mt-3 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground placeholder:text-muted-foreground"
                         />
                         {errors.groomPhone && <p className="mt-2 text-sm text-red-300">{errors.groomPhone}</p>}
                       </div>
                       <div>
-                        <label className="block text-sm font-bold text-white">נייד כלה</label>
+                        <label className="block text-sm font-bold text-foreground">נייד כלה</label>
                         <input
                           inputMode="tel"
                           value={form.bridePhone}
                           onChange={(e) => update("bridePhone", e.target.value)}
                           placeholder="05X-XXXXXXX"
-                          className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                          className="mt-3 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground placeholder:text-muted-foreground"
                         />
                         {errors.bridePhone && <p className="mt-2 text-sm text-red-300">{errors.bridePhone}</p>}
                       </div>
                     </div>
 
                     <div className="mt-6">
-                      <label className="block text-sm font-bold text-white">סוג האירוע</label>
-                      <p className="mt-2 text-sm text-white/70">כדי להבין את גודל החדר, לא כדי להכניס אתכם לתבנית.</p>
+                      <label className="block text-sm font-bold text-foreground">סוג האירוע</label>
+                      <p className="mt-2 text-sm text-muted-foreground">כדי להבין את גודל החדר, לא כדי להכניס אתכם לתבנית.</p>
                       <select
                         value={form.eventSize}
                         onChange={(e) => update("eventSize", e.target.value as FormState["eventSize"])}
-                        className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white"
+                        className="mt-3 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground"
                       >
                         <option value="intimate">חתונה קטנה ואינטימית</option>
                         <option value="medium">חתונה בינונית</option>
                         <option value="large">חתונה גדולה</option>
-                        <option value="unknown">אחר / לא בטוחים</option>
+                        <option value="unknown">לא בטוחים עדיין</option>
                       </select>
                     </div>
 
                     <div className="mt-8">
-                      <label className="block text-sm font-bold text-white">מה הכי חשוב לכם במוזיקה של הערב?</label>
-                      <p className="mt-2 text-sm text-white/70">לא תשובה נכונה – רק כנה.</p>
+                      <label className="block text-sm font-bold text-foreground">מה הכי חשוב לכם במוזיקה של הערב?</label>
+                      <p className="mt-2 text-sm text-muted-foreground">לא תשובה נכונה – רק כנה.</p>
                       <textarea
                         value={form.mostImportant}
                         onChange={(e) => update("mostImportant", e.target.value)}
                         rows={4}
                         placeholder="מינימום שתי שורות מומלץ"
-                        className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                        className="mt-3 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground placeholder:text-muted-foreground"
                       />
                       {errors.mostImportant && <p className="mt-2 text-sm text-red-300">{errors.mostImportant}</p>}
 
                       <div className="mt-6">
-                        <label className="block text-sm font-bold text-white">מה אתם הכי לא רוצים שיקרה בערב?</label>
-                        <p className="mt-2 text-sm text-white/70">לפעמים הגבולות חשובים יותר מהחזון.</p>
+                        <label className="block text-sm font-bold text-foreground">מה אתם הכי לא רוצים שיקרה בערב?</label>
+                        <p className="mt-2 text-sm text-muted-foreground">לפעמים הגבולות חשובים יותר מהחזון.</p>
                         <textarea
                           value={form.biggestFear}
                           onChange={(e) => update("biggestFear", e.target.value)}
                           rows={4}
                           placeholder="מה אתם רוצים למנוע?"
-                          className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40"
+                          className="mt-3 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground placeholder:text-muted-foreground"
                         />
                         {errors.biggestFear && <p className="mt-2 text-sm text-red-300">{errors.biggestFear}</p>}
                       </div>
                     </div>
 
                     <div className="mt-8">
-                      <label className="block text-sm font-bold text-white">איך אתם בדרך כלל מקבלים החלטות כספקים?</label>
-                      <p className="mt-2 text-sm text-white/70">כדי להבין מה מניע אתכם, לא כדי לשפוט.</p>
+                      <label className="block text-sm font-bold text-foreground">איך אתם בדרך כלל מקבלים החלטות כספקים?</label>
+                      <p className="mt-2 text-sm text-muted-foreground">כדי להבין מה מניע אתכם, לא כדי לשפוט.</p>
                       <select
                         value={form.decisionStyle}
                         onChange={(e) => update("decisionStyle", e.target.value as FormState["decisionStyle"])}
-                        className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white"
+                        className="mt-3 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground"
                       >
                         <option value="connection">לפי חיבור ותחושה</option>
                         <option value="experience">לפי ניסיון ומקצועיות</option>
@@ -333,27 +333,27 @@ export default function WeddingFitCheckPage() {
                       </select>
 
                       <div className="mt-6">
-                        <label className="block text-sm font-bold text-white">טווח השקעה שאתם מרגישים איתו בנוח</label>
-                        <p className="mt-2 text-sm text-white/70">לא התחייבות – רק בדיקת התאמה בסיסית.</p>
+                        <label className="block text-sm font-bold text-foreground">טווח השקעה שאתם מרגישים איתו בנוח</label>
+                        <p className="mt-2 text-sm text-muted-foreground">לא התחייבות – רק בדיקת התאמה בסיסית.</p>
                         <select
                           value={form.budgetComfort}
                           onChange={(e) => update("budgetComfort", e.target.value as FormState["budgetComfort"])}
-                          className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white"
+                          className="mt-3 w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground"
                         >
-                          <option value="basic">בסיסי</option>
-                          <option value="mid">ביניים</option>
-                          <option value="premium">פרימיום</option>
-                          <option value="unknown">לא בטוחים עדיין</option>
+                          <option value="basic">עד 7,000</option>
+                          <option value="mid">7,000–10,000</option>
+                          <option value="premium">10,000+</option>
+                          <option value="unknown">לא יודעים עדיין</option>
                         </select>
                       </div>
 
-                      <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
-                        <label className="flex items-start gap-3 text-white/90">
+                      <div className="mt-6 rounded-2xl border border-foreground/10 bg-background/20 p-4">
+                        <label className="flex items-start gap-3 text-foreground/90">
                           <input
                             type="checkbox"
                             checked={form.commitment}
                             onChange={(e) => update("commitment", e.target.checked)}
-                            className="mt-1 h-4 w-4 rounded border-white/20 bg-black"
+                            className="mt-1 h-4 w-4 rounded border border-border bg-background"
                           />
                           <span>
                             אני מבין/ה שלא כל פנייה מתקבלת,
@@ -364,7 +364,7 @@ export default function WeddingFitCheckPage() {
                       </div>
 
                       <div className="mt-6">
-                        <p className="text-sm text-white/85">
+                        <p className="text-sm text-foreground-secondary">
                           אם זה מרגיש נכון — שלחו.
                           <br />
                           חוזרת תשובה קצרה עם השלב הבא.
@@ -378,11 +378,11 @@ export default function WeddingFitCheckPage() {
                           type="button"
                           onClick={onSubmit}
                           disabled={!canContinue || submitting}
-                          className="mt-5 w-full rounded-full bg-white px-6 py-4 text-base font-bold text-black transition disabled:opacity-60"
+                          className="mt-5 w-full rounded-full bg-foreground px-6 py-4 text-base font-bold text-background transition disabled:opacity-60"
                         >
                           {submitting ? "שולח…" : "שליחת בדיקת התאמה"}
                         </button>
-                        <p className="mt-3 text-center text-xs text-white/60">תגובה אישית תישלח רק אם יש התאמה.</p>
+                        <p className="mt-3 text-center text-xs text-muted-foreground">תגובה אישית תישלח רק אם יש התאמה.</p>
                       </div>
                     </div>
                   </div>
@@ -394,7 +394,7 @@ export default function WeddingFitCheckPage() {
                   type="button"
                   onClick={prevStep}
                   disabled={step === 1 || submitting}
-                  className="rounded-full border border-white/15 bg-white/0 px-5 py-3 text-sm font-bold text-white/85 transition hover:bg-white/5 disabled:opacity-40"
+                  className="rounded-full border border-border bg-background/40 px-5 py-3 text-sm font-bold text-foreground transition hover:bg-background/60 disabled:opacity-40"
                 >
                   חזרה
                 </button>
@@ -411,21 +411,21 @@ export default function WeddingFitCheckPage() {
                 )}
               </div>
 
-              {step < 2 && <p className="mt-4 text-center text-xs text-white/60">לא מתאים לכל זוג – וזה בסדר.</p>}
+              {step < 2 && <p className="mt-4 text-center text-xs text-muted-foreground">לא מתאים לכל זוג – וזה בסדר.</p>}
             </section>
           </>
         ) : (
-          <section className="rounded-3xl border border-white/10 bg-white/5 p-7">
+          <section className="rounded-3xl border border-border bg-background/60 p-7">
             <h1 className="text-3xl font-black">קיבלתי. עכשיו בודקים.</h1>
-            <p className="mt-4 text-base leading-relaxed text-white/85">
+            <p className="mt-4 text-base leading-relaxed text-foreground-secondary">
               בדיקת התאמה לוקחת זמן — בכוונה.
             </p>
-            <p className="mt-4 text-base leading-relaxed text-white/85">
+            <p className="mt-4 text-base leading-relaxed text-foreground-secondary">
               אם יש התאמה, אחזור אליכם אישית עם השלב הבא.
               <br />
               אין כאן קביעת שיחה אוטומטית, ואין מערכת שמחזירה תשובה.
             </p>
-            <p className="mt-4 text-base leading-relaxed text-white/85">תודה שבאתם בגישה רצינית. זה בדיוק סוג ההתחלה שמייצר ערב נכון.</p>
+            <p className="mt-4 text-base leading-relaxed text-foreground-secondary">תודה שבאתם בגישה רצינית. זה בדיוק סוג ההתחלה שמייצר ערב נכון.</p>
           </section>
         )}
       </div>

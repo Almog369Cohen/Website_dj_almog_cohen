@@ -56,3 +56,6 @@ key.json
 
 # Exceptions (tracked assets)
 !site/public/assets/hero-main-optimized.mp4
+
+# Local Netlify folder
+.netlify

@@ -326,7 +326,7 @@ export default function ServicesPage() {
             <div className="p-6 text-right">
               <h3 className="mb-2 text-xl font-black text-white">Live Set</h3>
               <p className="mb-2 text-sm font-semibold text-brand-green">מיקס לייב מהרחבה</p>
-              <p className="text-sm leading-relaxed text-white/85">
+              <p className="text-sm leading-relaxed text-white">
                 סט חתונה מלא - מקבלת פנים ועד אפטר מטורף.
               </p>
             </div>
@@ -360,7 +360,7 @@ export default function ServicesPage() {
             <div className="p-6 text-right">
               <h3 className="mb-2 text-xl font-black text-white">Behind the Decks</h3>
               <p className="mb-2 text-sm font-semibold text-brand-blue">מאחורי הבמה</p>
-              <p className="text-sm leading-relaxed text-white/85">
+              <p className="text-sm leading-relaxed text-white">
                 צילומים מהקונסול בזמן אירוע – האנרגיה בזמן אמת.
               </p>
             </div>
@@ -392,8 +392,8 @@ export default function ServicesPage() {
             {/* Content */}
             <div className="p-6 text-right">
               <h3 className="mb-2 text-xl font-black text-white">Event Highlights</h3>
-              <p className="mb-2 text-sm font-semibold text-white/90">רגעים מהאירועים</p>
-              <p className="text-sm leading-relaxed text-white/85">
+              <p className="mb-2 text-sm font-semibold text-white">רגעים מהאירועים</p>
+              <p className="text-sm leading-relaxed text-white">
                 תקציר קצר מאירועים שונים – מוזיקה, אנשים, אנרגיה.
               </p>
             </div>
@@ -445,7 +445,7 @@ export default function ServicesPage() {
             </div>
             <div className="p-6 text-center">
               <p className="text-lg font-semibold text-brand-green">המלצה מזוג מרוצה</p>
-              <p className="mt-2 text-sm text-white/85">צפו בעדות של זוג שחגג איתנו את היום הכי חשוב</p>
+              <p className="mt-2 text-sm text-white">צפו בעדות של זוג שחגג איתנו את היום הכי חשוב</p>
             </div>
           </div>
         </motion.div>
@@ -466,12 +466,12 @@ export default function ServicesPage() {
                 </svg>
               ))}
             </div>
-            <p className="mb-4 text-right leading-relaxed text-white/80">
+            <p className="mb-4 text-right leading-relaxed text-white">
               "אלמוג היה מעבר למושלם. החתונה שלנו הייתה כל כך מדויקת מבחינה מוזיקלית שאנשים דיברו על זה שבועות אחרי. הוא באמת יודע לקרוא קהל."
             </p>
             <div className="text-right">
               <p className="font-semibold text-white">שרה ויונתן</p>
-              <p className="text-sm text-white/75">חתונה • יוני 2024</p>
+              <p className="text-sm text-foreground-secondary">חתונה • יוני 2024</p>
             </div>
           </motion.div>
 
@@ -490,12 +490,12 @@ export default function ServicesPage() {
                 </svg>
               ))}
             </div>
-            <p className="mb-4 text-right leading-relaxed text-white/80">
+            <p className="mb-4 text-right leading-relaxed text-white">
               "הזמנו את אלמוג לאירוע השקה של החברה. הוא הבין בדיוק מה אנחנו צריכים - מוזיקה שמרימה אבל לא דומיננטית. מקצוען אמיתי."
             </p>
             <div className="text-right">
               <p className="font-semibold text-white">רועי כהן</p>
-              <p className="text-sm text-white/75">אירוע עסקי • מרץ 2024</p>
+              <p className="text-sm text-foreground-secondary">אירוע עסקי • מרץ 2024</p>
             </div>
           </motion.div>
         </div>
@@ -550,7 +550,7 @@ export default function ServicesPage() {
               className="rounded-xl border border-white/10 bg-white/5 p-6 text-right backdrop-blur-xl"
             >
               <h3 className="mb-3 text-lg font-bold text-white">{item.q}</h3>
-              <p className="leading-relaxed text-white/85">{item.a}</p>
+              <p className="leading-relaxed text-white">{item.a}</p>
             </motion.div>
           ))}
         </div>
@@ -569,7 +569,7 @@ export default function ServicesPage() {
           
           <div className="relative z-10">
             <h2 className="mb-4 text-3xl font-black text-white md:text-4xl">רוצים לדבר על האירוע שלכם?</h2>
-            <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">
+            <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-white md:text-lg">
               שתפו אותי בתאריך, סוג האירוע והסגנון שחלמתם עליו – ונבין יחד איך הופכים את זה לערב שאנשים יזכרו.
             </p>
             <motion.a

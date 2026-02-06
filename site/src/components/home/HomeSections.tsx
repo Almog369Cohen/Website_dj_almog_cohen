@@ -111,10 +111,10 @@ export const HomeSections = () => {
             <div className="relative space-y-4 text-right">
               <h3 className="text-2xl font-black text-white drop-shadow-md transition-transform duration-300 group-hover:scale-105">כשהמרצים שלי הפכו לקהל שלי.</h3>
               <div className="mt-6 space-y-4">
-                <p className="text-base font-medium leading-relaxed text-white/90">
+                <p className="text-base font-medium leading-relaxed text-white/95 drop-shadow-md">
                   בקורונה נרשמתי ללמוד שיווק אצל גל ודימה. כשהם ביקשו שאנגן בחתונה שלהם, התהפכו היוצרות. זה כבר לא היה מבחן על הנייר, אלא מבחן על הרחבה.
                 </p>
-                <p className="text-base font-medium leading-relaxed text-white/90">
+                <p className="text-base font-medium leading-relaxed text-white/95 drop-shadow-md">
                   כשהם לא הפסיקו לרקוד, ידעתי שקיבלתי את הציון הסופי.
                 </p>
               </div>
@@ -251,7 +251,7 @@ export const HomeSections = () => {
                 {item.icon}
               </div>
               <h3 className="mb-2 text-xl font-black text-white drop-shadow-sm transition-transform duration-300 group-hover:scale-105">{item.title}</h3>
-              <p className="text-white/80 font-medium leading-relaxed">{item.desc}</p>
+              <p className="text-white/85 font-medium leading-relaxed drop-shadow-sm">{item.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -576,7 +576,7 @@ export const HomeSections = () => {
                 </svg>
               </div>
             </div>
-            <span className="text-sm font-semibold text-white/90 transition group-hover:text-brand-green">וואטסאפ</span>
+            <span className="text-sm font-semibold text-white/95 drop-shadow-sm transition group-hover:text-brand-green">וואטסאפ</span>
           </motion.a>
 
           {/* Phone */}
@@ -598,12 +598,12 @@ export const HomeSections = () => {
                 className="absolute -inset-2 rounded-full bg-white/10 blur-xl"
               />
               <div className="glass-panel relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-white/20 transition group-hover:border-white group-hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]">
-                <svg className="h-8 w-8 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-8 w-8 text-white/95 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
               </div>
             </div>
-            <span className="text-sm font-semibold text-white/90 transition group-hover:text-white">טלפון</span>
+            <span className="text-sm font-semibold text-white/95 drop-shadow-sm transition group-hover:text-white">טלפון</span>
           </motion.a>
 
           {/* Instagram */}
@@ -632,7 +632,7 @@ export const HomeSections = () => {
                 </svg>
               </div>
             </div>
-            <span className="text-sm font-semibold text-white/90 transition group-hover:text-brand-blue">אינסטגרם</span>
+            <span className="text-sm font-semibold text-white/95 drop-shadow-sm transition group-hover:text-brand-blue">אינסטגרם</span>
           </motion.a>
 
           {/* Email */}
@@ -654,12 +654,12 @@ export const HomeSections = () => {
                 className="absolute -inset-2 rounded-full bg-white/10 blur-xl"
               />
               <div className="glass-panel relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-white/20 transition group-hover:border-white group-hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]">
-                <svg className="h-8 w-8 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-8 w-8 text-white/95 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
             </div>
-            <span className="text-sm font-semibold text-white/90 transition group-hover:text-white">מייל</span>
+            <span className="text-sm font-semibold text-white/95 drop-shadow-sm transition group-hover:text-white">מייל</span>
           </motion.a>
         </div>
       </section>
@@ -742,7 +742,7 @@ export const HomeSections = () => {
               <div className="p-4">
                 <p className="text-xs text-brand-blue font-bold drop-shadow-sm">לייב</p>
                 <h3 className="mt-1 text-base font-semibold">Live Set - ים המלח</h3>
-                <p className="mt-2 text-xs text-white/90 font-medium">סט מהרחבה - אנרגיה חיה מתחילה עד סוף.</p>
+                <p className="mt-2 text-xs text-white/95 font-medium drop-shadow-sm">סט מהרחבה - אנרגיה חיה מתחילה עד סוף.</p>
               </div>
             </a>
 
@@ -861,7 +861,7 @@ export const HomeSections = () => {
                 </span>
               </div>
               <h2 className="text-2xl font-bold md:text-3xl text-white drop-shadow-md">בית הספר של אלמוג – מאפס ועד רחבה מלאה</h2>
-              <p className="mt-2 text-sm text-white/90 font-medium drop-shadow-sm">10+ שנים מלמד • עשרות תלמידים מופיעים היום • מתחילים ועד מתקדמים</p>
+              <p className="mt-2 text-sm text-white/95 font-medium drop-shadow-sm">10+ שנים מלמד • עשרות תלמידים מופיעים היום • מתחילים ועד מתקדמים</p>
             </div>
             <motion.div
               animate={{ rotate: schoolOpen ? 180 : 0 }}
@@ -909,7 +909,7 @@ export const HomeSections = () => {
                 className="glass-card glass-card-glow glass-card-corner p-6 text-center"
               >
                 <h3 className="mb-2 text-xl font-semibold">קורס מתחילים</h3>
-                <p className="mb-4 text-sm text-white/85">מאפס מוחלט ועד המיקס הראשון שלך. כל מה שצריך כדי להתחיל נכון.</p>
+                <p className="mb-4 text-sm text-white/90 drop-shadow-sm">מאפס מוחלט ועד המיקס הראשון שלך. כל מה שצריך כדי להתחיל נכון.</p>
                 <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
                 <TagsPills 
                   tags={['קורס DJ', 'לימודי תקלוט', 'ציוד DJ', 'מתחילים', 'איך להיות DJ', 'Pioneer DJ', 'Serato DJ', 'בית ספר DJ', 'קורס בתל אביב', 'DJ מאפס']}
@@ -923,7 +923,7 @@ export const HomeSections = () => {
                 className="glass-card glass-card-glow glass-card-corner p-6 text-center"
               >
                 <h3 className="mb-2 text-xl font-semibold">קורס מתקדמים</h3>
-                <p className="mb-4 text-sm text-white/85">טכניקות מתקדמות, בניית סט מקצועי והבנת דינמיקת רחבה.</p>
+                <p className="mb-4 text-sm text-white/90 drop-shadow-sm">טכניקות מתקדמות, בניית סט מקצועי והבנת דינמיקת רחבה.</p>
                 <Link className="font-medium text-brand-blue hover:underline" href="/courses">פרטים נוספים →</Link>
                 <TagsPills 
                   tags={['טכניקות מיקס', 'בניית קריירה', 'מנטורינג DJ', 'הפקה', 'Harmonic mixing', 'קריאת קהל', 'שיווק לאמנים', 'מיתוג אישי', 'DJ מקצועי']}
@@ -937,7 +937,7 @@ export const HomeSections = () => {
                 className="glass-card glass-card-glow glass-card-corner p-6 text-center"
               >
                 <h3 className="mb-2 text-xl font-semibold">ליווי אישי</h3>
-                <p className="mb-4 text-sm text-white/85">Artist Development מלא - מיתוג, שיווק, הפקה ובניית קריירה.</p>
+                <p className="mb-4 text-sm text-white/90 drop-shadow-sm">Artist Development מלא - מיתוג, שיווק, הפקה ובניית קריירה.</p>
                 <a href={wa("היי, אשמח לפרטים על ליווי אישי")} target="_blank" rel="noopener noreferrer" className="font-medium text-brand-blue hover:underline">קבע פגישת ייעוץ →</a>
               </motion.div>
             </div>
@@ -979,7 +979,7 @@ export const HomeSections = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="mt-3 max-w-2xl text-lg text-white/80"
+              className="mt-3 max-w-2xl text-lg text-white/85 drop-shadow-sm"
             >
               תוכן מקצועי לזוגות, מפיקים ו-DJ&apos;ים – בחירת DJ, פלייליסט לחופה, קורסים ועוד.
             </motion.p>

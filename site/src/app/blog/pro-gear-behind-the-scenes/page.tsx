@@ -116,7 +116,7 @@ export default function ProGearBehindTheScenesPage() {
           <h2 className="mb-2 text-lg font-semibold md:text-xl">
             צריכים ציוד לאירוע או רוצים להבין מה מתאים לכם?
           </h2>
-          <p className="mb-4 text-white/80">
+          <p className="mb-4 text-white">
             דברו איתנו על האירוע או על הצרכים שלכם בתור DJ, ונבנה לכם פתרון ציוד מותאם אישית – עם
             אפשרות לייעוץ, התקנה ותפעול מלא.
           </p>

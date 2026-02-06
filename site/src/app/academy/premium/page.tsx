@@ -243,8 +243,8 @@ export default function PremiumPage() {
                   "מי שרוצה תוצאות מהירות בלי סבלנות",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <span className="mt-1 text-white/80">✕</span>
-                    <span className="text-white/80 line-through">{item}</span>
+                    <span className="mt-1 text-white">✕</span>
+                    <span className="text-white line-through">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -259,7 +259,7 @@ export default function PremiumPage() {
           <h2 className="mb-4 text-center text-3xl font-black text-white md:text-5xl">
             מה כלול בתכנית
           </h2>
-          <p className="mb-12 text-center text-white/85">8 שיעורים מקיפים + ליווי אישי + חוויות בשטח</p>
+          <p className="mb-12 text-center text-white">8 שיעורים מקיפים + ליווי אישי + חוויות בשטח</p>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* 8 Lessons */}
@@ -271,8 +271,8 @@ export default function PremiumPage() {
             >
               <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#ffaa00] to-[#ff8800]" />
               <h3 className="mb-2 text-xl font-bold text-white">8 שיעורי תקלוט</h3>
-              <p className="mb-3 text-white/85">6 מעשי + 2 עיוני</p>
-              <p className="text-sm text-white/70">כל שיעור עם תרגילי בית מותאמים אישית</p>
+              <p className="mb-3 text-white">6 מעשי + 2 עיוני</p>
+              <p className="text-sm text-white">כל שיעור עם תרגילי בית מותאמים אישית</p>
             </motion.div>
 
             {/* Field Experience */}
@@ -285,8 +285,8 @@ export default function PremiumPage() {
             >
               <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#03b28c] to-[#059cc0]" />
               <h3 className="mb-2 text-xl font-bold text-white">יציאה לשטח</h3>
-              <p className="mb-3 text-white/85">2 אירועים מאחורי הקלעים</p>
-              <p className="text-sm text-white/70">לראות איך נראה אירוע אמיתי מהצד המקצועי</p>
+              <p className="mb-3 text-white">2 אירועים מאחורי הקלעים</p>
+              <p className="text-sm text-white">לראות איך נראה אירוע אמיתי מהצד המקצועי</p>
             </motion.div>
 
             {/* Sound & Light Session */}
@@ -299,8 +299,8 @@ export default function PremiumPage() {
             >
               <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c]" />
               <h3 className="mb-2 text-xl font-bold text-white">סשן הגברה ותאורה</h3>
-              <p className="mb-3 text-white/85">היכרות בסיסית עם הציוד</p>
-              <p className="text-sm text-white/70">להבין מה קורה מאחורי הקונסולה</p>
+              <p className="mb-3 text-white">היכרות בסיסית עם הציוד</p>
+              <p className="text-sm text-white">להבין מה קורה מאחורי הקונסולה</p>
             </motion.div>
 
             {/* Photo Shoot */}
@@ -313,8 +313,8 @@ export default function PremiumPage() {
             >
               <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#ffaa00] to-[#03b28c]" />
               <h3 className="mb-2 text-xl font-bold text-white">צילומי תדמית</h3>
-              <p className="mb-3 text-white/85">תמונות מקצועיות לפרופיל</p>
-              <p className="text-sm text-white/70">לבניית המותג האישי שלך</p>
+              <p className="mb-3 text-white">תמונות מקצועיות לפרופיל</p>
+              <p className="text-sm text-white">לבניית המותג האישי שלך</p>
             </motion.div>
 
             {/* Event Accompaniment */}
@@ -327,8 +327,8 @@ export default function PremiumPage() {
             >
               <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#03b28c] to-[#059cc0]" />
               <h3 className="mb-2 text-xl font-bold text-white">ליווי לאירוע</h3>
-              <p className="mb-3 text-white/85">באירוע הראשון שלך</p>
-              <p className="text-sm text-white/70">
+              <p className="mb-3 text-white">באירוע הראשון שלך</p>
+              <p className="text-sm text-white">
                 אופציה לתוספת: <span className="font-bold text-[#ffaa00]">450₪ + מע״מ</span>
               </p>
             </motion.div>
@@ -343,8 +343,8 @@ export default function PremiumPage() {
             >
               <div className="mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#ffaa00] to-[#ff8800]" />
               <h3 className="mb-2 text-xl font-bold text-white">2 סשן זום עסקי-מנטלי</h3>
-              <p className="mb-3 text-white/85">שעה וחצי כל סשן</p>
-              <p className="text-sm text-white/70">כניסה לתחום האירועים – הכנה מנטלית ועסקית</p>
+              <p className="mb-3 text-white">שעה וחצי כל סשן</p>
+              <p className="text-sm text-white">כניסה לתחום האירועים – הכנה מנטלית ועסקית</p>
             </motion.div>
           </div>
 
@@ -358,8 +358,8 @@ export default function PremiumPage() {
           >
             <div className="mx-auto mb-4 h-3 w-12 rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c]" />
             <h3 className="mb-2 text-xl font-bold text-white">3 סשני זום תמיכה</h3>
-            <p className="mb-2 text-white/85">45 דקות כל סשן</p>
-            <p className="text-sm text-white/70">שיקוף מסך, עדכונים, הסברים וסגירת פערים בתקלוט</p>
+            <p className="mb-2 text-white">45 דקות כל סשן</p>
+            <p className="text-sm text-white">שיקוף מסך, עדכונים, הסברים וסגירת פערים בתקלוט</p>
           </motion.div>
         </div>
       </section>
@@ -390,7 +390,7 @@ export default function PremiumPage() {
                   <div className="mb-4 flex items-start justify-between">
                     <div>
                       <h3 className="mb-2 text-2xl font-black text-white">{module.title}</h3>
-                      <p className="text-white/85">{module.description}</p>
+                      <p className="text-white">{module.description}</p>
                     </div>
                     <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#ffaa00]/20 text-xl font-bold text-[#ffaa00]">
                       {module.number}
@@ -399,7 +399,7 @@ export default function PremiumPage() {
 
                   <ul className="mt-6 space-y-2">
                     {module.topics.map((topic, i) => (
-                      <li key={i} className="flex items-start gap-3 text-white/80">
+                      <li key={i} className="flex items-start gap-3 text-white">
                         <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#03b28c]" />
                         <span>{topic}</span>
                       </li>
@@ -418,7 +418,7 @@ export default function PremiumPage() {
           <h2 className="mb-4 text-center text-3xl font-black text-white md:text-5xl">
             בונוסים לתכנית
           </h2>
-          <p className="mb-12 text-center text-white/85">מה שבאמת עושה את ההבדל</p>
+          <p className="mb-12 text-center text-white">מה שבאמת עושה את ההבדל</p>
 
           <div className="grid gap-6 md:grid-cols-2">
             {bonuses.map((bonus, idx) => (
@@ -432,7 +432,7 @@ export default function PremiumPage() {
               >
                 <div className={`mb-4 h-3 w-12 rounded-full bg-gradient-to-r ${bonus.gradient}`} />
                 <h3 className="mb-2 text-xl font-bold text-white">{bonus.title}</h3>
-                <p className="text-white/85">{bonus.description}</p>
+                <p className="text-white">{bonus.description}</p>
               </motion.div>
             ))}
           </div>
@@ -443,9 +443,9 @@ export default function PremiumPage() {
       <section className="px-4 py-16">
         <div className="mx-auto max-w-4xl">
           <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center backdrop-blur-xl">
-            <p className="mb-4 text-sm text-white/80">עדיין לא יודעים לתקלט?</p>
+            <p className="mb-4 text-sm text-white">עדיין לא יודעים לתקלט?</p>
             <h3 className="mb-4 text-2xl font-black text-white">התחילו מהבסיס</h3>
-            <p className="mb-6 text-white/85">
+            <p className="mb-6 text-white">
               לפני שמתחילים בניית קריירה, צריך לדעת לתקלט. <strong className="text-white">קורס DJ למתחילים</strong> ילמד אתכם את היסודות – ביט-מיקס, ציוד, מבנה מוזיקלי ותרגול מעשי.
             </p>
             <Link
@@ -468,10 +468,10 @@ export default function PremiumPage() {
             <h2 className="mb-6 text-3xl font-black text-white md:text-5xl">
               מוכנים לעשות את הקפיצה?
             </h2>
-            <p className="mb-8 text-lg text-white/85">
+            <p className="mb-8 text-lg text-white">
               זה לא קורס. זה <strong className="text-white">השקעה בעצמכם</strong> ובעתיד המקצועי שלכם.
             </p>
-            <div className="mb-8 text-white/80">
+            <div className="mb-8 text-white">
               <p className="mb-2">משך: 3-6 חודשים</p>
               <p className="mb-2">ליווי: שיחות חודשיות + קבוצה סגורה</p>
               <p>מחיר: בשיחת ההתאמה</p>

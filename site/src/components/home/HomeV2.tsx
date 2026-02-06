@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import LogoCarousel from "@/components/LogoCarousel";
+import GallerySection from "@/components/home/GallerySection";
 import { useState, useEffect } from "react";
 
 function FAQItem({ faq }: { faq: { q: string; a: string; icon: React.ReactNode; defaultOpen: boolean } }) {
@@ -64,14 +66,7 @@ export default function HomeV2() {
     return () => clearInterval(interval);
   }, []);
 
-  const logos = [
-    { src: "/assets/logos/april.svg", alt: "April" },
-    { src: "/assets/clients/logoעירייה.png", alt: "עיריית ירושלים" },
-    { src: "/assets/clients/DHL.png", alt: "DHL" },
-    { src: "/assets/logos/ort.png", alt: "ORT" },
-    { src: "/assets/clients/קריית אונו .png", alt: "קריית אונו" },
-    { src: "/assets/clients/אריאל .jpeg", alt: "אריאל" },
-  ];
+
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
@@ -121,8 +116,8 @@ export default function HomeV2() {
                 transition={{ delay: 0.5 }}
                 className="absolute -bottom-6 -right-6 bg-gradient-to-br from-[#059cc0] to-[#03b28c] rounded-2xl p-6 backdrop-blur-xl border border-white/20"
               >
-                <div className="text-4xl font-black">300+</div>
-                <div className="text-sm text-white/90">חתונות מוצלחות</div>
+                <div className="text-4xl font-black">1000+</div>
+                <div className="text-sm text-white/90">אירועים</div>
               </motion.div>
             </motion.div>
 
@@ -203,72 +198,11 @@ export default function HomeV2() {
         <div className="mb-6 text-center">
           <p className="text-white/60 text-sm md:text-base font-bold">עבדתי עם המותגים הגדולים בארץ</p>
         </div>
-        <div className="relative">
-          <div className="flex animate-scroll-infinite">
-            {[...logos, ...logos, ...logos].map((logo, i) => (
-              <div key={i} className="flex-shrink-0 mx-8 md:mx-12">
-                <div className="relative w-24 h-12 md:w-32 md:h-16 grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-300">
-                  <Image
-                    src={logo.src}
-                    alt={logo.alt}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <LogoCarousel />
       </section>
 
       {/* Photo Gallery */}
-      <section className="relative py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4">
-              רגעים מהאירועים שלי
-            </h2>
-            <p className="text-white/60 text-lg md:text-xl">כל תמונה מספרת סיפור של ערב בלתי נשכח</p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {[
-              { src: "/photo almog cohen website/1-150.jpg", alt: "חתונה - רגעי שיא" },
-              { src: "/photo almog cohen website/1-152.jpg", alt: "אירוע מיוחד" },
-              { src: "/photo almog cohen website/IMG_5462.JPG", alt: "רחבה מלאה" },
-              { src: "/photo almog cohen website/IMG_5469.JPG", alt: "אנרגיה מטורפת" },
-              { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.04 (4).jpeg", alt: "DJ בפעולה" },
-              { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.09 (2).jpeg", alt: "הערב שלכם" }
-            ].map((photo, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="group relative aspect-square rounded-2xl overflow-hidden border border-white/10 hover:border-[#03b28c] transition-all"
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="text-white font-bold text-sm md:text-base">{photo.alt}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <GallerySection />
 
       {/* Stats Section */}
       <section className="relative py-20 px-4 bg-gradient-to-b from-transparent via-white/5 to-transparent">
@@ -276,8 +210,8 @@ export default function HomeV2() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { 
-                num: "300+", 
-                label: "חתונות מוצלחות", 
+                num: "1000+", 
+                label: "אירועים", 
                 desc: "כל אחד ייחודי, כל אחד מושלם", 
                 icon: <svg className="w-8 h-8 text-[#03b28c]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg>
               },
@@ -289,8 +223,8 @@ export default function HomeV2() {
               },
               { 
                 num: "100%", 
-                label: "שביעות רצון", 
-                desc: "אף אירוע לא בוטל. אף זוג לא התאכזב.", 
+                label: "אווירה", 
+                desc: "אווירה מהרגע הראשון", 
                 icon: <svg className="w-8 h-8 text-[#03b28c]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
               }
             ].map((stat, i) => (
@@ -385,7 +319,7 @@ export default function HomeV2() {
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4">
               מה הזוגות אומרים
             </h2>
-            <p className="text-white/60 text-lg md:text-xl">300+ המלצות אמיתיות מלקוחות מרוצים</p>
+            <p className="text-white/60 text-lg md:text-xl">1000+ המלצות אמיתיות מלקוחות מרוצים</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -548,28 +482,6 @@ export default function HomeV2() {
       </section>
 
       <style jsx global>{`
-        @keyframes scroll-infinite {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-33.333%);
-          }
-        }
-        .animate-scroll-infinite {
-          animation: scroll-infinite 30s linear infinite;
-        }
-        @media (max-width: 768px) {
-          .animate-scroll-infinite {
-            animation-duration: 75s;
-          }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .animate-scroll-infinite {
-            animation: none;
-            transform: translateX(0);
-          }
-        }
         @keyframes gradient {
           0%, 100% {
             background-position: 0% 50%;

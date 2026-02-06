@@ -54,7 +54,7 @@ export const StoriesSection = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.2 }}
-            className={`group relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition-all duration-500 hover:bg-white/10 md:grid-cols-2 md:p-8 ${
+            className={`group relative grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/5 p-6 backdrop-blur-xl transition-all duration-500 hover:bg-foreground/10 md:grid-cols-2 md:p-8 ${
               story.color === "green" 
                 ? "hover:border-brand-green/30 hover:shadow-[0_20px_60px_rgba(3,178,140,0.2)]"
                 : "hover:border-brand-blue/30 hover:shadow-[0_20px_60px_rgba(5,156,192,0.2)]"
@@ -67,19 +67,19 @@ export const StoriesSection = ({
             }`} />
             
             <div className="relative space-y-4 text-right">
-              <h3 className="text-2xl font-black text-white drop-shadow-md">
+              <h3 className="text-2xl font-black text-foreground">
                 {story.title}
               </h3>
               <div className="space-y-4">
                 {story.content.map((p, i) => (
-                  <p key={i} className="text-base font-medium leading-relaxed text-white/90">
+                  <p key={i} className="text-base font-medium leading-relaxed text-foreground-secondary">
                     {p}
                   </p>
                 ))}
               </div>
             </div>
             
-            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-black/50 shadow-lg">
+            <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-foreground/10 bg-black/50 shadow-lg">
               <Image 
                 src={story.image} 
                 alt={story.title} 

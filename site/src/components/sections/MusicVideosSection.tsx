@@ -54,7 +54,7 @@ export const MusicVideosSection = ({
           <h2 className="bg-gradient-to-l from-brand-blue via-white to-brand-green bg-clip-text text-2xl font-bold text-transparent md:text-4xl">
             {title}
           </h2>
-          <p className="mt-4 max-w-2xl text-lg text-white/90 font-medium">
+          <p className="mt-4 max-w-2xl text-lg text-foreground-secondary font-medium">
             {subtitle}
           </p>
         </motion.div>
@@ -71,7 +71,7 @@ export const MusicVideosSection = ({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="snap-x-item md:w-auto touch-target group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-black/80 via-black/60 to-brand-blue/20 shadow-xl backdrop-blur transition hover:scale-[1.02] hover:border-brand-blue/40"
+              className="snap-x-item md:w-auto touch-target group flex flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-gradient-to-br from-black/80 via-black/60 to-brand-blue/20 shadow-xl backdrop-blur transition hover:scale-[1.02] hover:border-brand-blue/40"
             >
               <div className="relative aspect-video w-full overflow-hidden bg-black/50">
                 <Image
@@ -91,7 +91,7 @@ export const MusicVideosSection = ({
               <div className="p-4">
                 <p className="text-xs text-brand-blue font-bold">{video.label}</p>
                 <h3 className="mt-1 text-base font-semibold text-white">{video.title}</h3>
-                <p className="mt-2 text-xs text-white/80">{video.description}</p>
+                <p className="mt-2 text-xs text-foreground-secondary">{video.description}</p>
               </div>
             </motion.a>
           ))}

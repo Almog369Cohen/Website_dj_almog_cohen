@@ -42,7 +42,7 @@ export function TestimonialsSection() {
     const tick = () => setActiveIndex((i) => (i + 1) % testimonialMockups.length);
     const interval = setInterval(() => {
       if (document.visibilityState !== "hidden") tick();
-    }, 4500);
+    }, 7000);
     return () => clearInterval(interval);
   }, []);
 
@@ -151,7 +151,7 @@ export function TestimonialsSection() {
                 
                 {/* Name on hover */}
                 <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <p className="text-foreground text-sm font-medium whitespace-nowrap bg-background/80 px-3 py-1 rounded-full backdrop-blur-sm">{mockup.name}</p>
+                  <p className="text-white text-sm font-medium whitespace-nowrap bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm">{mockup.name}</p>
                 </div>
               </motion.div>
             ))}

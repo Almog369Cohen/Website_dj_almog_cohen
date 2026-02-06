@@ -62,9 +62,9 @@ export const HomeSectionsLean = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center text-3xl md:text-5xl font-black text-foreground mb-12"
+            className="text-center text-4xl md:text-6xl lg:text-7xl font-black text-foreground mb-16 leading-[1.1] tracking-tight"
           >
-            איך אני יכול <span className="text-brand-green">לעזור לך?</span>
+            איך אני יכול לעזור לך?
           </motion.h2>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -79,10 +79,10 @@ export const HomeSectionsLean = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-brand-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               
               <div className="relative z-10">
-                                <h3 className="text-2xl md:text-3xl font-black text-foreground mb-3">
+                                <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-foreground mb-5 leading-tight">
                   יש לי אירוע
                 </h3>
-                <p className="text-foreground-secondary mb-6 leading-relaxed">
+                <p className="text-foreground-secondary mb-8 leading-relaxed text-lg md:text-xl">
                   חתונה, בר/בת מצווה, אירוע עסקי או מסיבה פרטית. 
                   אני מתאים את המוזיקה בדיוק לקהל שלך.
                 </p>
@@ -113,10 +113,10 @@ export const HomeSectionsLean = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               
               <div className="relative z-10">
-                                <h3 className="text-2xl md:text-3xl font-black text-foreground mb-3">
+                                <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-foreground mb-5 leading-tight">
                   רוצה ללמוד DJ
                 </h3>
-                <p className="text-foreground-secondary mb-6 leading-relaxed">
+                <p className="text-foreground-secondary mb-8 leading-relaxed text-lg md:text-xl">
                   מאפס ועד רחבה מלאה. קורסים פרטיים, 
                   מנטורינג אישי וליווי מקצועי.
                 </p>

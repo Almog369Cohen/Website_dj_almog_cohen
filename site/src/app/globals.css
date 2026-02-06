@@ -1,34 +1,36 @@
 @import "tailwindcss";
 
 :root {
+  --background: #ffffff;
+  --foreground: #1f1f21;
+  --foreground-heading: #0f1115;
+  --foreground-secondary: rgba(31, 31, 33, 0.72);
+  --muted-foreground: rgba(31, 31, 33, 0.52);
+  --border: rgba(0, 0, 0, 0.1);
+  --brand-blue: #059cc0;
+  --brand-green: #03b28c;
+  --brand-dark: #ffffff;
+  --brand-white: #1f1f21;
+
+  /* Glass backgrounds (light default) */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-hover: rgba(255, 255, 255, 0.86);
+}
+
+/* Dark Mode */
+.dark {
   --background: #1f1f21;
   --foreground: #ffffff;
   --foreground-heading: #ffffff;
   --foreground-secondary: #a3a3a3;
   --muted-foreground: #737373;
   --border: rgba(255, 255, 255, 0.1);
-  --brand-blue: #059cc0;
-  --brand-green: #03b28c;
   --brand-dark: #1f1f21;
   --brand-white: #ffffff;
-}
 
-/* Light Mode - Enhanced Readability & Contrast (COMPAKTT Design System) */
-.light {
-  --background: #f4f7f9; /* Light gray background per design system */
-  --foreground: #1f1f21; /* Dark gray for body text (WCAG AA) */
-  --foreground-heading: #1f1f21; /* Same dark for headings, weight 600-700 */
-  --foreground-secondary: rgba(31, 31, 33, 0.7); /* Secondary/microcopy */
-  --muted-foreground: rgba(31, 31, 33, 0.5); /* Placeholder text */
-  --border: rgba(0, 0, 0, 0.08); /* Glass stroke per design system */
-  --brand-dark: #f4f7f9;
-  --brand-white: #1f1f21;
-  --brand-blue: #059cc0; /* Keep original blue - use as accent only */
-  --brand-green: #03b28c; /* Keep original green - use as accent only */
-  
   /* Glass backgrounds */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-bg-hover: rgba(255, 255, 255, 0.85);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.06);
 }
 
 /* High Contrast Mode */
@@ -81,16 +83,19 @@
 
 body {
   background:
-    radial-gradient(circle at top left, rgba(5, 156, 192, 0.22), transparent 60%),
-    radial-gradient(circle at bottom right, rgba(3, 178, 140, 0.18), transparent 55%),
+    radial-gradient(circle at top left, rgba(5, 156, 192, 0.12), transparent 62%),
+    radial-gradient(circle at bottom right, rgba(3, 178, 140, 0.1), transparent 58%),
     var(--background);
   color: var(--foreground);
   font-family: var(--font-hebrew-sans), system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", "Apple Color Emoji", "Segoe UI Emoji";
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.light body {
-  background: var(--background);
+.dark body {
+  background:
+    radial-gradient(circle at top left, rgba(5, 156, 192, 0.22), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(3, 178, 140, 0.18), transparent 55%),
+    var(--background);
 }
 
 /* Mobile-Safe Glassmorphism (COMPAKTT Design System) */
@@ -98,17 +103,31 @@ body {
   backdrop-filter: blur(14px) saturate(130%);
   -webkit-backdrop-filter: blur(14px) saturate(130%);
   border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(5, 156, 192, 0.06) 0%,
+    var(--glass-bg, rgba(255, 255, 255, 0.7)) 50%,
+    rgba(3, 178, 140, 0.06) 100%
+  );
+  border: 1px solid var(--border);
+}
+
+.dark .glass {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.light .glass {
-  background: var(--glass-bg, rgba(255, 255, 255, 0.7));
-  border: 1px solid rgba(0, 0, 0, 0.08);
+.glass:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(5, 156, 192, 0.08) 0%,
+    var(--glass-bg-hover, rgba(255, 255, 255, 0.86)) 50%,
+    rgba(3, 178, 140, 0.08) 100%
+  );
 }
 
-.light .glass:hover {
-  background: var(--glass-bg-hover, rgba(255, 255, 255, 0.85));
+.dark .glass:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* Modern Glassmorphism Effects */
@@ -460,41 +479,6 @@ p, span, li, a {
   text-rendering: optimizeLegibility;
 }
 
-/* Light Mode - Enhanced Typography */
-.light h1,
-.light h2,
-.light h3,
-.light h4,
-.light h5,
-.light h6 {
-  color: var(--foreground-heading);
-  font-weight: 800;
-}
-
-.light p,
-.light li,
-.light span {
-  color: var(--foreground);
-}
-
-/* Light Mode - Link Colors */
-.light a:not(.rounded-full):not([class*="bg-"]) {
-  color: #047a97; /* Darker blue for links */
-  font-weight: 600;
-}
-
-.light a:not(.rounded-full):not([class*="bg-"]):hover {
-  color: var(--brand-blue);
-}
-
-/* Light Mode - Secondary Text */
-.light .text-white\/60,
-.light .text-white\/70,
-.light .text-white\/80,
-.light .text-white\/90 {
-  color: var(--foreground-secondary) !important;
-  opacity: 0.8;
-}
 
 .bg-section-school {
   background-image: linear-gradient(rgba(25, 28, 32, 0.9), rgba(25, 28, 32, 0.9)), url('/assets/almog/corporate-1.jpg');
@@ -938,7 +922,15 @@ p, span, li, a {
   --neon-glow-green: 0 0 20px rgba(0, 255, 159, 0.5);
   --neon-glow-blue: 0 0 20px rgba(0, 212, 255, 0.5);
   
-  /* Depth System - OLED Optimized */
+  /* Depth System - Light Mode Default */
+  --depth-0: #ffffff;
+  --depth-1: #f8f8f8;
+  --depth-2: #f0f0f0;
+  --depth-3: #e8e8e8;
+}
+
+/* Depth System - OLED Optimized (Dark Mode) */
+.dark {
   --depth-0: #1f1f21;
   --depth-1: #1a1a1c;
   --depth-2: #151517;

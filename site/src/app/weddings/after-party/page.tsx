@@ -64,7 +64,7 @@ export default function AfterPartyPage() {
       {/* Breadcrumbs */}
       <div className="border-b border-white/10 bg-white/5 px-4 py-3">
         <div className="mx-auto max-w-6xl">
-          <nav className="flex items-center gap-2 text-sm text-white/80">
+          <nav className="flex items-center gap-2 text-sm text-white">
             <Link href="/" className="hover:text-white">בית</Link>
             <span>›</span>
             <Link href="/weddings" className="hover:text-white">חתונות</Link>
@@ -112,7 +112,7 @@ export default function AfterPartyPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="mb-8 text-lg text-white/80"
+                className="mb-8 text-lg text-white"
               >
                 סטים של <strong className="text-white">Melodic Techno, Afro House ו-Progressive</strong> 
                 שיחזיקו את הרחבה עד אור הבוקר. זה לא סתם "מוזיקה חזקה" – 
@@ -177,8 +177,8 @@ export default function AfterPartyPage() {
                 className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur-xl"
               >
                 <h3 className="mb-2 text-xl font-bold text-white">{genre.name}</h3>
-                <p className="mb-3 text-white/85">{genre.description}</p>
-                <p className="text-sm text-white/75">
+                <p className="mb-3 text-white">{genre.description}</p>
+                <p className="text-sm text-foreground-secondary">
                   <strong>Artists:</strong> {genre.artists}
                 </p>
               </motion.div>
@@ -200,7 +200,7 @@ export default function AfterPartyPage() {
                   <div className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-500/20 text-purple-400">
                     ✓
                   </div>
-                  <span className="text-lg text-white/90">{item}</span>
+                  <span className="text-lg text-white">{item}</span>
                 </li>
               ))}
             </ul>
@@ -212,9 +212,9 @@ export default function AfterPartyPage() {
       <section className="px-4 py-16">
         <div className="mx-auto max-w-4xl">
           <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-8 text-center backdrop-blur-xl">
-            <p className="mb-4 text-sm uppercase tracking-wider text-white/80">אולי יעניין אתכם גם</p>
+            <p className="mb-4 text-sm uppercase tracking-wider text-white">אולי יעניין אתכם גם</p>
             <h3 className="mb-4 text-2xl font-black text-white">צריכים DJ גם לחתונה עצמה?</h3>
-            <p className="mb-6 text-white/85">
+            <p className="mb-6 text-white">
               בנוסף לאפטר פארטי, אני מספק ליווי מוזיקלי מלא – מהחופה ועד סיום האירוע הרשמי. 
               בואו נבנה מסע מוזיקלי שלם לכל הערב.
             </p>
@@ -237,7 +237,7 @@ export default function AfterPartyPage() {
           <h2 className="mb-6 text-3xl font-black text-white md:text-5xl">
             מוכנים להרים את הרחבה?
           </h2>
-          <p className="mb-8 text-lg text-white/85">
+          <p className="mb-8 text-lg text-white">
             בואו נבדוק זמינות ונדבר על הסגנון המוזיקלי שמתאים לכם.
           </p>
           <a
