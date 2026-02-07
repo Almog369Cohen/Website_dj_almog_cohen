@@ -290,8 +290,7 @@ export default function HomeV2() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <TestimonialsCarousel />
+      {/* Testimonials — removed by request */}
 
       {/* FAQ */}
       <section className="relative py-20 px-4">
