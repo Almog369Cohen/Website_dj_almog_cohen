@@ -133,7 +133,7 @@ export default function HomeV2() {
                 </span>
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-4">
+              <div className="flex flex-row gap-3 mb-4">
                 <a
                   href={getWhatsAppLink("היי אלמוג! אני רוצה לשמור תאריך לחתונה שלי 🎉")}
                   target="_blank"
