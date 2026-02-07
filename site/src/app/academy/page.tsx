@@ -264,49 +264,6 @@ export default function AcademyPage() {
         </div>
       </section>
 
-      {/* Why Compakt Academy */}
-      <section className="relative px-4 py-16 md:py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl border border-border bg-background/50 p-8 backdrop-blur-xl md:p-12">
-            <h2 className="mb-8 text-center text-3xl font-black text-foreground-heading md:text-4xl">
-              למה Compakt Academy?
-            </h2>
-            <div className="grid gap-8 md:grid-cols-2">
-              {[
-                {
-                  title: "12 שנות ניסיון בשטח",
-                  desc: "אלמוג כהן הוא לא רק מורה - הוא DJ פעיל שמנגן בחתונות ואירועי יוקרה כל שבוע.",
-                },
-                {
-                  title: "הכשרה מעשית",
-                  desc: "80% מהזמן זה תרגול על ציוד אמיתי. לא רק תיאוריה - אתם תוצאים מכאן יודעים לתקלט.",
-                },
-                {
-                  title: "ציוד מקצועי",
-                  desc: "Pioneer CDJ-3000, DJM-900NXS2 ועוד. אותו ציוד שתמצאו באירועים אמיתיים.",
-                },
-                {
-                  title: "תמיכה אחרי הקורס",
-                  desc: "קבוצת WhatsApp סגורה, ייעוץ והמלצות על הופעות ראשונות.",
-                },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-4">
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-brand-blue/20 text-brand-blue">
-                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="mb-2 text-xl font-bold text-foreground-heading">{item.title}</h3>
-                    <p className="text-foreground-secondary">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ */}
       <FAQSection type="academy" />
 

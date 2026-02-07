@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FAQSection } from "@/components/sections";
 import WeddingsHero from "@/components/weddings/WeddingsHero";
 import WeddingsGallery from "@/components/weddings/WeddingsGallery";
+import WhatsAppTestimonials from "@/components/weddings/WhatsAppTestimonials";
 import { buildWhatsAppLink, getEventsWhatsAppMessage } from "@/utils/whatsapp";
 import { trackEvent } from "@/utils/analytics";
 
@@ -15,8 +16,8 @@ const timelineSteps = [
   { icon: "💍", title: "כניסה לחופה", desc: "הרגע שכולם מחכים לו — השיר שמלווה אתכם לחופה", image: "/assets/gallery/djavira/entrance.jpg" },
   { icon: "🎊", title: "שבירת כוס", desc: "הפיצוץ. האנרגיה עולה. הרחבה מתחילה", image: "/assets/gallery/djavira/crowd.jpg" },
   { icon: "💕", title: "ריקוד ראשון", desc: "הרגע האינטימי שלכם — השיר שבחרתם ביחד", image: "/assets/gallery/djavira/hupa.jpg" },
-  { icon: "🔥", title: "רחבה מטורפת", desc: "על הכתפיים, ידיים באוויר, כולם רוקדים", image: "/assets/gallery/djavira/shoulders.jpg" },
-  { icon: "🎉", title: "אפטר פארטי", desc: "הסט שלא רוצים שייגמר", image: "/assets/gallery/djavira/dj-booth.jpg" },
+  { icon: "🔥", title: "רחבה מטורפת", desc: "על הכתפיים, ידיים באוויר, כולם רוקדים", image: "/assets/gallery/djavira/shoulders-party.jpeg" },
+  { icon: "🎉", title: "אפטר פארטי", desc: "הסט שלא רוצים שייגמר", image: "/assets/gallery/djavira/smoke-vibes.jpg" },
 ];
 
 const playlists = [
@@ -118,69 +119,6 @@ export default function WeddingsPage() {
 
       {/* 1. Hero */}
       <WeddingsHero ctaSource="weddings_hero" />
-
-      {/* 2. Why Me — Trust Building */}
-      <section className="px-4 py-16 md:py-20">
-        <div className="mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-black text-foreground md:text-5xl mb-4">למה זוגות בוחרים בי</h2>
-            <p className="text-foreground-secondary text-lg">לא רק DJ. שותף לערב הכי חשוב שלכם.</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: (
-                  <svg className="w-10 h-10 text-[#03b28c]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ),
-                title: "תזמון מדויק",
-                desc: "אני יודע בדיוק מתי להעלות אנרגיה, מתי להוריד, ומתי לתת לרגע לנשום. 10+ שנות ניסיון לימדו אותי לקרוא חדר."
-              },
-              {
-                icon: (
-                  <svg className="w-10 h-10 text-[#059cc0]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                  </svg>
-                ),
-                title: "קריאת קהל",
-                desc: "כל חתונה היא שונה. אני מתאים את עצמי לקהל שלכם — גיל, סגנון, אנרגיה. לא פלייליסט גנרי."
-              },
-              {
-                icon: (
-                  <svg className="w-10 h-10 text-[#03b28c]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
-                  </svg>
-                ),
-                title: "ליווי אישי",
-                desc: "משיחת ההיכרות ועד הרגע האחרון ברחבה — אני איתכם. תכנון מוזיקלי, התאמות, ושקט נפשי."
-              }
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative group"
-              >
-                <div className="absolute -inset-1 bg-gradient-to-r from-[#059cc0] to-[#03b28c] rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition duration-500" />
-                <div className="relative bg-foreground/5 backdrop-blur-xl border border-foreground/10 rounded-2xl p-8 hover:border-[#03b28c]/50 transition-all h-full">
-                  <div className="mb-5">{card.icon}</div>
-                  <h3 className="text-xl font-black text-foreground mb-3">{card.title}</h3>
-                  <p className="text-foreground-secondary leading-relaxed">{card.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 3. Timeline — Wedding Journey */}
       <section className="px-4 py-16 md:py-20 bg-gradient-to-b from-transparent via-foreground/5 to-transparent">
@@ -295,7 +233,7 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* 6. Testimonials */}
+      {/* 6. Testimonials — Real WhatsApp Screenshots */}
       <section className="px-4 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">
           <motion.div
@@ -305,67 +243,10 @@ export default function WeddingsPage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl font-black text-foreground md:text-5xl mb-4">מה הזוגות אומרים</h2>
-            <p className="text-foreground-secondary text-lg">מילים אמיתיות מזוגות אמיתיים</p>
+            <p className="text-foreground-secondary text-lg">הודעות אמיתיות מזוגות אמיתיים</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                quote: "אלמוג הפך את החתונה שלנו לערב שכל האורחים עדיין מדברים עליו. הרחבה הייתה מלאה כל הזמן והאנרגיה הייתה מטורפת!",
-                author: "שירה ויונתן",
-                event: "חתונה באפריל 2025",
-                image: "/assets/gallery/djavira/entrance.jpg"
-              },
-              {
-                quote: "חיפשנו DJ שיבין את הסגנון שלנו — לא רק מוזיקה מסחרית. אלמוג הקשיב, הבין, והביא בדיוק את מה שרצינו.",
-                author: "דנה ועומר",
-                event: "חתונה ביוני 2024",
-                image: "/assets/gallery/djavira/traditional.jpg"
-              },
-              {
-                quote: "מהשיחה הראשונה הרגשנו שאנחנו בידיים טובות. אלמוג תכנן את הערב לפרטי פרטים ושום דבר לא נפל.",
-                author: "אופק ושיראל",
-                event: "חתונה בנובמבר 2023",
-                image: "/assets/gallery/djavira/hupa-wide.jpeg"
-              },
-              {
-                quote: "ההורים שלנו עדיין מדברים על המוזיקה. אלמוג ידע לשלב בין הדורות בצורה מושלמת — כולם רקדו!",
-                author: "נועם ומיכל",
-                event: "חתונה בספטמבר 2024",
-                image: "/assets/gallery/djavira/crowd.jpg"
-              }
-            ].map((testimonial, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative group"
-              >
-                <div className="absolute -inset-1 bg-gradient-to-r from-[#059cc0]/20 to-[#03b28c]/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                <div className="relative bg-foreground/5 backdrop-blur-xl border border-foreground/10 rounded-3xl p-7 hover:border-[#03b28c]/50 transition-all h-full">
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(5)].map((_, j) => (
-                      <svg key={j} className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <p className="text-foreground text-base leading-relaxed mb-5 italic">"{testimonial.quote}"</p>
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-[#03b28c]/30">
-                      <Image src={testimonial.image} alt={testimonial.author} fill className="object-cover" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-foreground">{testimonial.author}</div>
-                      <div className="text-foreground-secondary text-sm">{testimonial.event}</div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <WhatsAppTestimonials />
         </div>
       </section>
 

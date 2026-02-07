@@ -6,16 +6,12 @@ import Image from "next/image";
 
 const photos = [
   { src: "/assets/gallery/djavira/entrance.jpg", alt: "כניסה לחופה עם זיקוקים" },
-  { src: "/assets/gallery/djavira/dj-booth.jpg", alt: "עמדת DJ באווירה" },
   { src: "/assets/gallery/djavira/dj-almog.jpg", alt: "DJ אלמוג כהן" },
   { src: "/assets/gallery/djavira/traditional.jpg", alt: "מסיבה מסורתית" },
   { src: "/assets/gallery/djavira/crowd.jpg", alt: "קהל ברחבה" },
   { src: "/assets/gallery/djavira/shoulders.jpg", alt: "על הכתפיים" },
-  { src: "/assets/gallery/djavira/dj-friends.jpg", alt: "אלמוג עם חברים" },
   { src: "/assets/gallery/djavira/hupa-wide.jpeg", alt: "חופה - מבט רחב" },
   { src: "/assets/gallery/djavira/dance.jpg", alt: "ריקודים ברחבה" },
-  { src: "/assets/gallery/djavira/vibes.jpg", alt: "אנרגיה מטורפת" },
-  { src: "/assets/gallery/djavira/energy.jpg", alt: "רגעי שיא" },
   { src: "/assets/gallery/djavira/party.jpg", alt: "מסיבה בלתי נשכחת" },
 ];
 

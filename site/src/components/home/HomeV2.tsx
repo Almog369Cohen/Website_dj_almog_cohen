@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import LogoCarousel from "@/components/LogoCarousel";
 import GallerySection from "@/components/home/GallerySection";
+import TestimonialsCarousel from "@/components/home/TestimonialsCarousel";
 import { useState, useEffect } from "react";
 
 function FAQItem({ faq }: { faq: { q: string; a: string; icon: React.ReactNode; defaultOpen: boolean } }) {
@@ -102,13 +103,12 @@ export default function HomeV2() {
             >
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-4 border-[#03b28c]/30">
                 <Image
-                  src="/photo almog cohen website/D81CEFD1-F9B9-4D69-BD3A-C0C646DBD322.JPG"
+                  src="/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.09 (2).jpeg"
                   alt="DJ אלמוג כהן"
                   fill
-                  className="object-cover"
+                  className="object-cover opacity-60"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               </div>
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -308,75 +308,7 @@ export default function HomeV2() {
       </section>
 
       {/* Testimonials */}
-      <section className="relative py-20 px-4 bg-gradient-to-b from-transparent via-white/5 to-transparent">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4">
-              מה הזוגות אומרים
-            </h2>
-            <p className="text-white/60 text-lg md:text-xl">1000+ המלצות אמיתיות מלקוחות מרוצים</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              {
-                quote: "אלמוג הפך את החתונה שלנו לערב שכל האורחים עדיין מדברים עליו. הרחבה הייתה מלאה כל הזמן והאנרגיה הייתה מטורפת!",
-                author: "שירה ויונתן",
-                event: "חתונה באפריל 2025",
-                image: "/photo almog cohen website/1-150.jpg"
-              },
-              {
-                quote: "חיפשנו DJ שיבין את הסגנון שלנו - לא רק מוזיקה מסחרית. אלמוג הקשיב, הבין, והביא בדיוק את מה שרצינו. האנרגיה הייתה מושלמת!",
-                author: "דנה ועומר",
-                event: "חתונה ביוני 2024",
-                image: "/photo almog cohen website/1-152.jpg"
-              }
-            ].map((testimonial, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative group"
-              >
-                <div className="absolute -inset-1 bg-gradient-to-r from-[#059cc0]/20 to-[#03b28c]/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 hover:border-[#03b28c]/50 transition-all">
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(5)].map((_, j) => (
-                      <svg key={j} className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <p className="text-white/90 text-lg leading-relaxed mb-6 italic">
-                    "{testimonial.quote}"
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#03b28c]/30">
-                      <Image
-                        src={testimonial.image}
-                        alt={testimonial.author}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div>
-                      <div className="font-bold text-white text-lg">{testimonial.author}</div>
-                      <div className="text-white/60 text-sm">{testimonial.event}</div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TestimonialsCarousel />
 
       {/* FAQ */}
       <section className="relative py-20 px-4">
