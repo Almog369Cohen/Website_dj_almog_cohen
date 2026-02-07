@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import LogoCarousel from "@/components/LogoCarousel";
@@ -55,6 +55,7 @@ export default function HomeV2() {
   const [availableSlots, setAvailableSlots] = useState(3);
   const [viewersCount, setViewersCount] = useState(47);
   const [bookedThisWeek, setBookedThisWeek] = useState(2);
+  const [showUrgencyBar, setShowUrgencyBar] = useState(false);
   
   const getWhatsAppLink = (message: string) => {
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
@@ -62,23 +63,35 @@ export default function HomeV2() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setViewersCount(prev => Math.floor(Math.random() * 20) + 40);
+      setViewersCount(Math.floor(Math.random() * 20) + 40);
     }, 5000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const showTimer = setTimeout(() => setShowUrgencyBar(true), 3000);
+    const hideTimer = setTimeout(() => setShowUrgencyBar(false), 10000);
+    return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
   }, []);
 
 
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Urgency Bar */}
-      <motion.div 
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#059cc0] to-[#03b28c] text-white py-3 px-4 text-center font-bold text-sm md:text-base"
-      >
-        🔥 {bookedThisWeek} זוגות הזמינו השבוע | נשארו {availableSlots} תאריכים זמינים | {viewersCount} אנשים צופים עכשיו
-      </motion.div>
+      {/* Urgency Bar — slides in after 3s, auto-hides after 10s */}
+      <AnimatePresence>
+        {showUrgencyBar && (
+          <motion.div 
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            exit={{ y: -100 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#059cc0] to-[#03b28c] text-white py-3 px-4 text-center font-bold text-sm md:text-base"
+          >
+            🔥 {bookedThisWeek} זוגות הזמינו השבוע | נשארו {availableSlots} תאריכים זמינים | {viewersCount} אנשים צופים עכשיו
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-16">
