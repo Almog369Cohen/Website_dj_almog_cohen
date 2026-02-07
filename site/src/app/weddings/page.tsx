@@ -191,63 +191,19 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* 7. Playlists — Small Section */}
-      <section className="px-4 py-16 md:py-20 bg-gradient-to-b from-transparent via-foreground/5 to-transparent">
-        <div className="mx-auto max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10"
+      {/* 7. Music Link — Compact */}
+      <section className="px-4 py-8 md:py-10">
+        <div className="mx-auto max-w-md text-center">
+          <p className="text-foreground-secondary text-sm mb-3">רוצים לשמוע את הסגנון שלי?</p>
+          <Link
+            href="/music"
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-6 py-3 font-bold text-foreground hover:border-[#03b28c]/50 transition-all text-sm"
           >
-            <h2 className="text-2xl font-black text-foreground md:text-4xl mb-3">טעימה מהמוזיקה שלי</h2>
-            <p className="text-foreground-secondary">פלייליסטים לכל חלק בחתונה</p>
-          </motion.div>
-
-          <div className="space-y-3">
-            {playlists.map((pl, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-              >
-                <button
-                  onClick={() => setOpenPlaylist(openPlaylist === i ? null : i)}
-                  className="w-full flex items-center justify-between gap-4 bg-foreground/5 border border-foreground/10 rounded-2xl px-6 py-4 hover:border-[#03b28c]/50 transition-all text-right"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{pl.icon}</span>
-                    <span className="font-bold text-foreground">{pl.title}</span>
-                  </div>
-                  <svg
-                    className={`w-5 h-5 text-foreground-secondary transition-transform ${openPlaylist === i ? "rotate-180" : ""}`}
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <AnimatePresence>
-                  {openPlaylist === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pt-3 pb-1">
-                        <div className="aspect-video w-full rounded-xl overflow-hidden border border-foreground/10 bg-black flex items-center justify-center">
-                          <p className="text-white text-sm">הפלייליסט יתווסף בקרוב</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </div>
+            <span>לעמוד המוזיקה</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </Link>
         </div>
       </section>
 
