@@ -194,7 +194,7 @@ export default function WeddingsPage() {
       {/* 7. Music Link — Compact */}
       <section className="px-4 py-8 md:py-10">
         <div className="mx-auto max-w-md text-center">
-          <p className="text-foreground-secondary text-sm mb-3">רוצים לשמוע את הסגנון שלי?</p>
+          <p className="text-foreground-secondary text-sm mb-3">רוצים המלצות ורעיונות לשירים לרגעים החשובים?</p>
           <Link
             href="/music"
             className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-6 py-3 font-bold text-foreground hover:border-[#03b28c]/50 transition-all text-sm"
