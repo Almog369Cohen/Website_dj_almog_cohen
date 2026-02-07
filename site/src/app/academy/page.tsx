@@ -233,18 +233,12 @@ export default function AcademyPage() {
       {/* ═══════════════════════════════════════════ */}
       {/* EQUIPMENT */}
       {/* ═══════════════════════════════════════════ */}
-      <section className="border-y border-white/10 bg-white/5 px-4 py-12">
-        <div className="mx-auto max-w-5xl">
-          <p className="mb-6 text-center text-sm font-bold uppercase tracking-widest text-white/60">
-            ציוד הלימוד בכל המסלולים
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
-            {equipment.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
-                <span className="text-sm font-bold text-white">{item.name}</span>
-              </div>
-            ))}
-          </div>
+      <section className="border-y border-white/10 bg-white/[0.02] px-4 py-4">
+        <div className="mx-auto max-w-5xl flex flex-wrap items-center justify-center gap-2">
+          <span className="text-[11px] font-bold uppercase tracking-widest text-white/40 mr-2">ציוד:</span>
+          {equipment.map((item, idx) => (
+            <span key={idx} className="text-[11px] text-white/50">{item.name}{idx < equipment.length - 1 ? ' •' : ''}</span>
+          ))}
         </div>
       </section>
 
