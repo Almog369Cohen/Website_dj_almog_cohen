@@ -76,7 +76,7 @@ export default function HomeV2() {
 
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-black text-white relative overflow-x-hidden">
+    <div ref={pageRef} className="min-h-screen !bg-black !text-white relative overflow-x-hidden" data-theme="dark">
       {/* Urgency Bar — slides in after 3s, auto-hides after 10s */}
       <AnimatePresence>
         {showUrgencyBar && (
