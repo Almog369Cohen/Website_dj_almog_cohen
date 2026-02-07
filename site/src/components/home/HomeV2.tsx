@@ -182,7 +182,7 @@ export default function HomeV2() {
 
       {/* Logo Carousel */}
       <section className="relative py-4 md:py-6 bg-white/5 backdrop-blur-xl border-y border-white/10 overflow-hidden">
-        <div className="mb-2 text-center">
+        <div className="mb-4 text-center">
           <p className="text-white/60 text-xs font-bold">עבדתי עם המותגים הגדולים בארץ</p>
         </div>
         <LogoCarousel />
