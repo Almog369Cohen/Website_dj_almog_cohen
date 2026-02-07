@@ -23,53 +23,48 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 export default function LogoCarousel() {
-  const [visible, setVisible] = useState(() => shuffleArray(logos).slice(0, 3));
-  const [tick, setTick] = useState(0);
-
-  const pickNext = useCallback(() => {
-    setVisible((prev) => {
-      const prevAlts = new Set(prev.map((l) => l.alt));
-      const pool = logos.filter((l) => !prevAlts.has(l.alt));
-      const shuffled = shuffleArray(pool);
-      return shuffled.slice(0, 3);
-    });
-    setTick((t) => t + 1);
-  }, []);
+  const [slots, setSlots] = useState(() => shuffleArray(logos).slice(0, 3));
 
   useEffect(() => {
-    const interval = setInterval(pickNext, 4000);
+    const interval = setInterval(() => {
+      setSlots((prev) => {
+        const currentAlts = new Set(prev.map((l) => l.alt));
+        const pool = logos.filter((l) => !currentAlts.has(l.alt));
+        if (pool.length === 0) return prev;
+        const replacement = pool[Math.floor(Math.random() * pool.length)];
+        const slotIdx = Math.floor(Math.random() * prev.length);
+        const next = [...prev];
+        next[slotIdx] = replacement;
+        return next;
+      });
+    }, 2000);
     return () => clearInterval(interval);
-  }, [pickNext]);
+  }, []);
 
   return (
-    <div className="flex items-center justify-center h-14 w-full">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={tick}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="flex items-center justify-center gap-8 md:gap-14"
-        >
-          {visible.map((logo, i) => (
+    <div className="flex items-center justify-center h-14 w-full gap-8 md:gap-14">
+      {slots.map((logo, i) => (
+        <div key={i} className="relative w-20 h-8">
+          <AnimatePresence mode="wait">
             <motion.div
               key={logo.alt}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.12, duration: 0.4 }}
+              initial={{ opacity: 0, scale: 0.3 }}
+              animate={{ opacity: 0.6, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.3 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              className="absolute inset-0 flex items-center justify-center"
             >
               <Image
                 src={logo.src}
                 alt={logo.alt}
                 width={80}
                 height={32}
-                className="object-contain opacity-50 hover:opacity-90 transition-opacity duration-300"
+                className="object-contain"
               />
             </motion.div>
-          ))}
-        </motion.div>
-      </AnimatePresence>
+          </AnimatePresence>
+        </div>
+      ))}
     </div>
   );
 }
