@@ -32,9 +32,8 @@ export default function GallerySection() {
     <section ref={sectionRef} className="relative py-10 md:py-14 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="reveal text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4">
-            <span className="bg-gradient-to-r from-white via-[#059cc0] to-white bg-clip-text text-transparent">רגעים מהאירועים שלי</span>
-          </h2>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 text-white">רגעים מהאירועים שלי</h2>
+          <div className="h-1 w-24 mx-auto mt-1 mb-3 bg-gradient-to-r from-[#059cc0] to-[#03b28c] rounded-full" />
           <p className="text-white text-base md:text-lg">כל תמונה מספרת סיפור של ערב בלתי נשכח</p>
         </div>
 

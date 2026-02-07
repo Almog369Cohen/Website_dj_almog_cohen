@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { AccessibilityMenu } from "@/components/AccessibilityMenu";
 import { MobileMenu } from "@/components/MobileMenu";
 import { DropdownMenu } from "@/components/DropdownMenu";
@@ -214,7 +213,6 @@ export default function RootLayout({
                 {/* Right Side: Mobile Menu & Theme */}
                 <div className="flex items-center gap-3">
                   <MobileMenu waNumber={waNumber} waText={waText} />
-                  <ThemeToggle />
                 </div>
 
                 {/* Center: Logo - takes its own space */}

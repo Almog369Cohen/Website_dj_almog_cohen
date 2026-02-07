@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FAQSection, FinalCTASection } from "@/components/sections";
 import dynamic from "next/dynamic";
 
@@ -92,8 +93,11 @@ export default function AcademyPage() {
     { name: "רמקולים", type: "שמע" },
   ];
 
+  const [openPkg, setOpenPkg] = useState<number | null>(null);
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen overflow-x-hidden" style={{ backgroundColor: '#000', color: '#fff' }}>
+      <style dangerouslySetInnerHTML={{ __html: `body{background-color:#000!important;color:#fff!important}` }} />
       {/* JSON-LD Schema */}
       <script
         type="application/ld+json"
@@ -177,7 +181,7 @@ export default function AcademyPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mb-6 text-3xl font-black leading-tight text-foreground-heading md:text-5xl lg:text-6xl"
+            className="mb-6 text-3xl font-black leading-tight text-white md:text-5xl lg:text-6xl"
             style={{ fontWeight: 900, letterSpacing: "-0.02em" }}
           >
             מ-0 ל
@@ -192,9 +196,9 @@ export default function AcademyPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mx-auto mb-8 max-w-3xl text-lg leading-relaxed text-foreground-secondary md:text-xl"
+            className="mx-auto mb-8 max-w-3xl text-lg leading-relaxed text-white/70 md:text-xl"
           >
-            לא קורס DJ. <strong className="text-foreground-heading">מסלול כניסה לעולם האירועים.</strong>
+            לא קורס DJ. <strong className="text-white">מסלול כניסה לעולם האירועים.</strong>
             <br />
             לא מלמדים רק ללחוץ פליי – מלמדים לחשוב כמו DJ מקצועי, לעבוד נכון מול קהל, ולהפוך ידע לכסף.
           </motion.p>
@@ -207,7 +211,7 @@ export default function AcademyPage() {
           >
             <Link
               href="#packages"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-blue to-brand-green px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#03b28c] to-[#059cc0] px-8 py-4 text-lg font-bold text-white shadow-lg transition hover:scale-105"
             >
               <span>בחרו מסלול</span>
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -218,7 +222,7 @@ export default function AcademyPage() {
               href={wa("היי אלמוג, מעוניין לשמוע על לימודי DJ ב-Compaktt School")}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border-2 border-border bg-background/50 px-8 py-4 text-lg font-medium text-foreground backdrop-blur-sm transition hover:bg-background/70"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-white/20 bg-white/5 px-8 py-4 text-lg font-medium text-white backdrop-blur-sm transition hover:bg-white/10"
             >
               <span>שיחה עם אלמוג</span>
             </a>
@@ -229,15 +233,15 @@ export default function AcademyPage() {
       {/* ═══════════════════════════════════════════ */}
       {/* EQUIPMENT */}
       {/* ═══════════════════════════════════════════ */}
-      <section className="border-y border-border bg-background/50 px-4 py-12">
+      <section className="border-y border-white/10 bg-white/5 px-4 py-12">
         <div className="mx-auto max-w-5xl">
-          <p className="mb-6 text-center text-sm font-bold uppercase tracking-widest text-foreground-secondary">
+          <p className="mb-6 text-center text-sm font-bold uppercase tracking-widest text-white/60">
             ציוד הלימוד בכל המסלולים
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
             {equipment.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-2 rounded-full border border-border bg-background/80 px-4 py-2">
-                <span className="text-sm font-bold text-foreground-heading">{item.name}</span>
+              <div key={idx} className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
+                <span className="text-sm font-bold text-white">{item.name}</span>
               </div>
             ))}
           </div>
@@ -250,86 +254,98 @@ export default function AcademyPage() {
       <section id="packages" className="relative px-4 py-16 md:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-black text-foreground-heading md:text-5xl">
+            <h2 className="mb-4 text-3xl font-black text-white md:text-5xl">
               בחרו את המסלול שלכם
             </h2>
-            <p className="mx-auto max-w-2xl text-lg text-foreground-secondary">
+            <p className="mx-auto max-w-2xl text-lg text-white/70">
               כל המסלולים כוללים ציוד מקצועי, סשנים של 90 דקות, ותרגילי בית.
             </p>
           </div>
 
-          {/* Package Cards */}
-          <div className="grid gap-6 md:grid-cols-3">
+          {/* Package Accordion */}
+          <div className="space-y-3">
             {packages.map((pkg, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.15 }}
-                className={`relative flex flex-col overflow-hidden rounded-3xl border-2 ${pkg.borderClass} bg-gradient-to-br ${pkg.bgClass} p-6 backdrop-blur-xl transition-all hover:shadow-xl md:p-8`}
+                transition={{ delay: idx * 0.1 }}
               >
-                {/* Badge */}
-                {pkg.badge && (
-                  <div className={`absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-bold ${
-                    pkg.badge === "הכי שווה"
-                      ? "bg-[#ffaa00]/20 text-[#ffaa00]"
-                      : "bg-brand-green/20 text-brand-green"
-                  }`}>
-                    {pkg.badge}
-                  </div>
-                )}
-
-                {/* Header */}
-                <div className="mb-6 mt-4">
-                  <h3 className="mb-1 text-2xl font-black text-foreground-heading">{pkg.name}</h3>
-                  <p className="text-sm text-foreground-secondary">{pkg.subtitle}</p>
-                </div>
-
-                {/* Price */}
-                <div className="mb-6">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-black text-foreground-heading">{pkg.price}</span>
-                    <span className="text-lg font-bold text-foreground-heading">₪</span>
-                  </div>
-                  <p className="text-sm text-foreground-secondary">{pkg.priceNote}</p>
-                </div>
-
-                {/* Features */}
-                <ul className="mb-8 flex-1 space-y-3">
-                  {pkg.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm">
-                      {feature.included ? (
-                        <>
-                          <span className="mt-0.5 flex-shrink-0 text-brand-green">✓</span>
-                          <span className="text-foreground-secondary">{feature.text}</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="mt-0.5 flex-shrink-0 text-foreground-secondary/30">—</span>
-                          <span className="text-foreground-secondary/40">{feature.text}</span>
-                        </>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* CTA */}
-                <a
-                  href={wa(pkg.whatsappText)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-4 text-base font-bold text-white transition hover:scale-105 ${
-                    pkg.badge === "הכי שווה"
-                      ? "bg-gradient-to-r from-[#ffaa00] to-[#ff8800] shadow-lg"
-                      : "bg-gradient-to-r from-brand-blue to-brand-green"
-                  }`}
+                <button
+                  onClick={() => setOpenPkg(openPkg === idx ? null : idx)}
+                  className={`w-full flex items-center justify-between gap-4 rounded-2xl border ${
+                    openPkg === idx ? 'border-[#03b28c]/50' : 'border-white/10'
+                  } bg-white/5 px-5 py-4 text-right transition-all hover:border-[#03b28c]/40`}
                 >
-                  <span>אני רוצה להתחיל</span>
-                </a>
-                <p className="mt-3 text-center text-xs text-foreground-secondary">
-                  {pkg.cta}
-                </p>
+                  <div className="flex items-center gap-4 flex-1 min-w-0">
+                    {pkg.badge && (
+                      <span className={`flex-shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                        pkg.badge === "הכי שווה"
+                          ? "bg-[#ffaa00]/20 text-[#ffaa00]"
+                          : "bg-[#03b28c]/20 text-[#03b28c]"
+                      }`}>{pkg.badge}</span>
+                    )}
+                    <div className="min-w-0">
+                      <h3 className="text-base font-black text-white">{pkg.name}</h3>
+                      <p className="text-xs text-white/60">{pkg.subtitle}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    <span className="text-xl font-black text-white">{pkg.price} ₪</span>
+                    <svg
+                      className={`w-5 h-5 text-white/50 transition-transform ${openPkg === idx ? "rotate-180" : ""}`}
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </button>
+                <AnimatePresence>
+                  {openPkg === idx && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 py-4 border border-t-0 border-white/10 rounded-b-2xl bg-white/[0.02]">
+                        <p className="text-xs text-white/50 mb-3">{pkg.priceNote}</p>
+                        <ul className="space-y-2 mb-5">
+                          {pkg.features.map((feature, i) => (
+                            <li key={i} className="flex items-start gap-2 text-sm">
+                              {feature.included ? (
+                                <>
+                                  <span className="mt-0.5 flex-shrink-0 text-[#03b28c]">✓</span>
+                                  <span className="text-white/80">{feature.text}</span>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="mt-0.5 flex-shrink-0 text-white/20">—</span>
+                                  <span className="text-white/30">{feature.text}</span>
+                                </>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                        <a
+                          href={wa(pkg.whatsappText)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-white transition hover:scale-[1.02] ${
+                            pkg.badge === "הכי שווה"
+                              ? "bg-gradient-to-r from-[#ffaa00] to-[#ff8800]"
+                              : "bg-gradient-to-r from-[#059cc0] to-[#03b28c]"
+                          }`}
+                        >
+                          אני רוצה להתחיל
+                        </a>
+                        <p className="mt-2 text-center text-[11px] text-white/40">{pkg.cta}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             ))}
           </div>
@@ -341,8 +357,8 @@ export default function AcademyPage() {
             viewport={{ once: true }}
             className="mt-8 text-center"
           >
-            <p className="text-foreground-secondary">
-              שיעור בודד (90 דק׳): <strong className="text-foreground-heading">330 ₪ + מע״מ</strong>
+            <p className="text-white/70">
+              שיעור בודד (90 דק׳): <strong className="text-white">330 ₪ + מע״מ</strong>
             </p>
           </motion.div>
         </div>
@@ -360,17 +376,17 @@ export default function AcademyPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="rounded-2xl border-2 border-border bg-background/50 p-6 backdrop-blur-xl md:p-8"
+              className="rounded-2xl border-2 border-white/10 bg-white/5 p-6 backdrop-blur-xl md:p-8"
             >
-              <div className="mb-4 inline-block rounded-full bg-brand-green/20 px-3 py-1 text-xs font-bold text-brand-green">
+              <div className="mb-4 inline-block rounded-full bg-[#03b28c]/20 px-3 py-1 text-xs font-bold text-[#03b28c]">
                 שדרוגים
               </div>
-              <h3 className="mb-2 text-2xl font-black text-foreground-heading">תוספות ושדרוגים</h3>
-              <p className="mb-4 text-sm text-foreground-secondary">ניתן להוסיף לכל מסלול:</p>
+              <h3 className="mb-2 text-2xl font-black text-white">תוספות ושדרוגים</h3>
+              <p className="mb-4 text-sm text-white/60">ניתן להוסיף לכל מסלול:</p>
               <ul className="space-y-3">
-                <li className="flex items-center justify-between rounded-xl border border-border bg-background/30 px-4 py-3">
-                  <span className="text-sm font-medium text-foreground-secondary">חבילת תדמית ושיווק</span>
-                  <span className="text-sm font-bold text-foreground-heading">1,000 ₪ + מע״מ</span>
+                <li className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                  <span className="text-sm font-medium text-white/70">חבילת תדמית ושיווק</span>
+                  <span className="text-sm font-bold text-white">1,000 ₪ + מע״מ</span>
                 </li>
               </ul>
             </motion.div>
@@ -388,9 +404,9 @@ export default function AcademyPage() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="rounded-2xl border-2 border-brand-green/30 bg-brand-green/5 p-6 md:p-8"
+              className="rounded-2xl border-2 border-[#03b28c]/30 bg-[#03b28c]/5 p-6 md:p-8"
             >
-              <h3 className="mb-6 text-2xl font-black text-foreground-heading">מתאים למי ש...</h3>
+              <h3 className="mb-6 text-2xl font-black text-white">מתאים למי ש...</h3>
               <ul className="space-y-4">
                 {[
                   "רוצה להיכנס לתחום האירועים",
@@ -399,8 +415,8 @@ export default function AcademyPage() {
                   "מוכן להשקיע בעצמו ולתרגל",
                   "רוצה לנגן מול אנשים – לא רק בבית",
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-foreground-secondary">
-                    <span className="mt-0.5 text-brand-green">✓</span>
+                  <li key={i} className="flex items-start gap-3 text-white/80">
+                    <span className="mt-0.5 text-[#03b28c]">✓</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -411,9 +427,9 @@ export default function AcademyPage() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="rounded-2xl border border-border bg-background/30 p-6 md:p-8"
+              className="rounded-2xl border border-white/10 bg-white/5 p-6 md:p-8"
             >
-              <h3 className="mb-6 text-2xl font-black text-foreground-heading">פחות מתאים למי ש...</h3>
+              <h3 className="mb-6 text-2xl font-black text-white">פחות מתאים למי ש...</h3>
               <ul className="space-y-4">
                 {[
                   "מחפש תחביב בלי כוונה להתפתח",
@@ -421,7 +437,7 @@ export default function AcademyPage() {
                   "לא מוכן להשקיע זמן בתרגול",
                   "רוצה תוצאות בלי סבלנות",
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-foreground-secondary/60">
+                  <li key={i} className="flex items-start gap-3 text-white/40">
                     <span className="mt-0.5">✕</span>
                     <span>{item}</span>
                   </li>
@@ -444,11 +460,11 @@ export default function AcademyPage() {
         <div className="mx-auto max-w-5xl">
           <Link
             href="/academy/groom-dj"
-            className="group block rounded-2xl border border-border bg-background/50 p-6 text-center backdrop-blur-xl transition hover:border-brand-blue/50 md:p-8"
+            className="group block rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-xl transition hover:border-[#059cc0]/50 md:p-8"
           >
-            <p className="mb-2 text-sm font-bold uppercase tracking-wider text-foreground-secondary">אטרקציה לחתונה</p>
-            <h3 className="mb-2 text-2xl font-black text-foreground-heading">חתן מתקלט</h3>
-            <p className="mb-4 text-foreground-secondary">
+            <p className="mb-2 text-sm font-bold uppercase tracking-wider text-white/60">אטרקציה לחתונה</p>
+            <h3 className="mb-2 text-2xl font-black text-white">חתן מתקלט</h3>
+            <p className="mb-4 text-white/70">
               האטרקציה המרגשת ביותר לחתונה – החתן עולה לעמדה ומרעיד את הרחבה.
             </p>
             <span className="inline-flex items-center gap-2 text-sm font-bold text-brand-blue transition group-hover:gap-3">
