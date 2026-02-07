@@ -100,8 +100,8 @@ export default function HowToChooseWeddingDJPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold md:text-xl">1. "מהי פילוסופיית האירוע שלך?"</h2>
             <p>
-              רוב התקליטנים יגידו "אני קורא את הקהל". וזה נכון – זו נקודת בסיס חשובה. אבל
-              מאחורי כל DJ מקצועי צריכה לעמוד גישה ברורה לאיך הוא רואה ערב שלם.
+              "אני קורא את הקהל" — זו תשובה מצוינת ונקודת בסיס חשובה. אבל שווה לשאול עוד: 
+              מאחורי כל DJ מקצועי עומדת גישה ברורה לאיך הוא רואה ערב שלם.
             </p>
             <p className="font-semibold text-brand-blue">
               מה לבדוק:

@@ -93,6 +93,14 @@ export default function Chuppah20SongsPage() {
             </p>
           </section>
 
+          <section className="rounded-2xl border border-brand-blue/20 bg-brand-blue/5 p-5">
+            <h3 className="text-sm font-bold text-foreground mb-1">טיפ מקצועי</h3>
+            <p className="text-sm text-foreground-secondary leading-relaxed">
+              הרשימה הזו היא נקודת התחלה — לא פלייליסט סופי. DJ מקצועי יתאים את הגרסה, העיבוד והתזמון 
+              לרגע עצמו, כולל <strong className="text-foreground">עריכות ועיבודים בלעדיים</strong> שלא קיימים בפלטפורמות הסטרימינג.
+            </p>
+          </section>
+
           <section className="space-y-3">
             <h2 className="text-lg font-semibold md:text-xl">א. שירי חופה מרגשים וקלאסיים (נצחיים)</h2>
             <p>

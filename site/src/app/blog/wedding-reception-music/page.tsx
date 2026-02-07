@@ -151,6 +151,15 @@ export default function WeddingReceptionMusicPage() {
             הרשימה מחולקת ל-4 קטגוריות. אפשר לשלב ביניהן או לבחור קטגוריה אחת שמתאימה לסגנון שלכם.
           </p>
 
+          <div className="rounded-2xl border border-brand-blue/20 bg-brand-blue/5 p-5">
+            <h3 className="text-sm font-bold text-foreground mb-1">שיר ברשימה ≠ שיר באירוע</h3>
+            <p className="text-sm text-foreground-secondary leading-relaxed">
+              השירים כאן הם דוגמאות לסגנון ולאווירה. באירוע, DJ מקצועי משתמש 
+              ב<strong className="text-foreground">גרסאות, עריכות ורמיקסים בלעדיים</strong> שמותאמים בדיוק לרגע ולקהל — 
+              דברים שלא קיימים בפלטפורמות הסטרימינג.
+            </p>
+          </div>
+
           {receptionSongs.map((cat, catIdx) => (
             <div key={catIdx} className="space-y-3">
               <h3 className="text-xl font-black text-foreground">{cat.category}</h3>

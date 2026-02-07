@@ -155,7 +155,7 @@ export default function WeddingDanceFloorSongsPage() {
             50 שירים לרחבה בחתונה שיבטיחו רחבה מלאה
           </h1>
           <p className="text-lg text-foreground-secondary leading-relaxed">
-            אחרי 1000+ חתונות, אני יודע בדיוק אילו שירים מזיזים רחבה ואילו לא.
+            אחרי ניסיון של 1000+ חתונות, ריכזתי את השירים שהכי עובדים ברחבה ישראלית.
             הנה הרשימה המלאה — מחולקת לקטגוריות כדי שתוכלו לבנות את הפלייליסט המושלם לחתונה שלכם.
           </p>
           <div className="flex items-center gap-4 text-sm text-foreground-secondary">
@@ -168,9 +168,19 @@ export default function WeddingDanceFloorSongsPage() {
         <div className="rounded-2xl border border-foreground/10 bg-foreground/5 p-6">
           <h2 className="text-lg font-bold text-foreground mb-3">למה הרשימה הזו שונה?</h2>
           <p className="text-foreground-secondary leading-relaxed">
-            ברשת מלא רשימות גנריות. הרשימה הזו מבוססת על <strong className="text-foreground">ניסיון אמיתי מ-1000+ חתונות</strong> — 
-            אני יודע אילו שירים באמת עובדים ברחבה ישראלית, מתי לשים כל שיר, ואיך לבנות סט שלם שלא מוריד את האנרגיה.
+            הרשימה הזו מבוססת על <strong className="text-foreground">ניסיון מעשי מ-1000+ חתונות</strong> — 
+            אילו שירים עובדים ברחבה ישראלית, מתי לשים כל שיר, ואיך לבנות סט שלם שלא מוריד את האנרגיה.
             הרשימה מעודכנת ל-2025 וכוללת גם קלאסיקות נצחיות וגם להיטים חדשים.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-brand-blue/20 bg-brand-blue/5 p-6">
+          <h3 className="text-base font-bold text-foreground mb-2">שיר ברשימה ≠ שיר באירוע</h3>
+          <p className="text-sm text-foreground-secondary leading-relaxed">
+            הרשימה הזו היא נקודת התחלה מצוינת לשיחה עם ה-DJ שלכם. באירוע עצמו, DJ מקצועי מנגן 
+            <strong className="text-foreground"> רמיקסים, עריכות ומשאפים בלעדיים</strong> שלא תמצאו ביוטיוב או בספוטיפיי — 
+            גרסאות מותאמות לרחבה, מעברים חלקים בין שירים, ואנרגיה שלא קיימת בהקלטה המקורית. 
+            זה בדיוק ההבדל בין פלייליסט לבין DJ.
           </p>
         </div>
 
