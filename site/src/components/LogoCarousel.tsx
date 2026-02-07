@@ -50,7 +50,7 @@ export default function LogoCarousel() {
               alt={logo.alt}
               width={80}
               height={32}
-              className="object-contain grayscale"
+              className="object-contain brightness-0 invert opacity-70"
             />
           ))}
         </motion.div>
