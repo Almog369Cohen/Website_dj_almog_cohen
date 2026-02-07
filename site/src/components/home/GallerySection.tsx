@@ -33,7 +33,7 @@ export default function GallerySection() {
       <div className="max-w-7xl mx-auto">
         <div className="reveal text-center mb-8">
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4">
-            רגעים מהאירועים שלי
+            <span className="bg-gradient-to-r from-white via-[#059cc0] to-white bg-clip-text text-transparent">רגעים מהאירועים שלי</span>
           </h2>
           <p className="text-white text-base md:text-lg">כל תמונה מספרת סיפור של ערב בלתי נשכח</p>
         </div>

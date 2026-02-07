@@ -76,7 +76,7 @@ export default function HomeV2() {
 
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div ref={pageRef} className="min-h-screen bg-black text-white relative overflow-x-hidden">
       {/* Urgency Bar — slides in after 3s, auto-hides after 10s */}
       <AnimatePresence>
         {showUrgencyBar && (
@@ -94,7 +94,7 @@ export default function HomeV2() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-end justify-center pb-12 md:pb-16">
-        <div className="absolute inset-0 overflow-hidden bg-black">
+        <div className="absolute inset-0 overflow-hidden bg-black" style={{ touchAction: 'pan-y' }}>
           <iframe
             className="absolute pointer-events-none"
             src="https://www.youtube.com/embed/Sxfrs5Pzy8A?autoplay=1&mute=1&loop=1&playlist=Sxfrs5Pzy8A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
@@ -228,7 +228,7 @@ export default function HomeV2() {
                   >
                     {stat.num}
                   </span>
-                  <span className="text-[10px] sm:text-xs md:text-sm font-bold text-white/50 mt-1 tracking-wider uppercase">
+                  <span className="text-[10px] sm:text-xs md:text-sm font-bold text-white/70 mt-1 tracking-wider uppercase">
                     {stat.label}
                   </span>
                   {i < 2 && (
@@ -254,7 +254,7 @@ export default function HomeV2() {
         <div className="max-w-6xl mx-auto">
           <div className="reveal text-center mb-8">
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-3">
-              תראו בעצמכם
+              <span className="bg-gradient-to-r from-white via-[#059cc0] to-white bg-clip-text text-transparent">תראו בעצמכם</span>
             </h2>
             <p className="text-white text-base md:text-lg">לא צריך להאמין לי. תראו מה קורה באירועים שלי.</p>
           </div>
@@ -270,7 +270,7 @@ export default function HomeV2() {
                 href={video.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="reveal-stagger group relative aspect-video rounded-2xl overflow-hidden border border-white/10 hover:border-[#03b28c] transition-all"
+                className="reveal-stagger group relative aspect-video rounded-2xl overflow-hidden border border-white/10 hover:border-[#03b28c] hover:shadow-[0_0_30px_rgba(3,178,140,0.25)] transition-all duration-300"
                 style={{ '--delay': `${i * 120}ms` } as React.CSSProperties}
               >
                 <Image
@@ -289,7 +289,7 @@ export default function HomeV2() {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <h3 className="text-white font-black text-xl mb-1">{video.title}</h3>
-                  <p className="text-white/70 text-sm">{video.desc}</p>
+                  <p className="text-white text-sm">{video.desc}</p>
                 </div>
               </a>
             ))}
@@ -304,7 +304,7 @@ export default function HomeV2() {
         <div className="max-w-4xl mx-auto">
           <div className="reveal text-center mb-8">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3">
-              שאלות נפוצות
+              <span className="bg-gradient-to-r from-white via-[#03b28c] to-white bg-clip-text text-transparent">שאלות נפוצות</span>
             </h2>
             <p className="text-white text-base md:text-lg">כל מה שצריך לדעת לפני שמתחילים</p>
           </div>
@@ -381,8 +381,8 @@ export default function HomeV2() {
             </a>
           </div>
 
-          <p className="reveal text-white/40 text-sm mt-8">
-            ⚡ תגובה תוך 5 דקות • 📱 זמין גם בווטסאפ • 🤝 ללא התחייבות
+          <p className="reveal text-white/70 text-sm mt-8">
+            ⚡ תגובה מיידית • � וואטסאפ פתוח • 🎉 בואו נעשה מסיבה
           </p>
         </div>
       </section>
