@@ -198,11 +198,17 @@ export default function HomeV2() {
         <LogoCarousel />
       </section>
 
+      {/* Neon divider */}
+      <div className="relative h-px">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#059cc0]/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#059cc0]/30 to-transparent blur-md" />
+      </div>
+
       {/* Photo Gallery */}
       <GallerySection />
 
       {/* Stats Section — Elegant Counter Strip */}
-      <section className="relative py-10 md:py-14 px-4">
+      <section className="relative py-6 md:py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-2xl">
             <div className="absolute inset-0 bg-gradient-to-r from-[#059cc0]/10 via-transparent to-[#03b28c]/10" />
@@ -244,19 +250,25 @@ export default function HomeV2() {
         </div>
       </section>
 
+      {/* Neon divider */}
+      <div className="relative h-px">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#03b28c]/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#03b28c]/30 to-transparent blur-md" />
+      </div>
+
       {/* Video Gallery */}
-      <section className="relative py-20 px-4">
+      <section className="relative py-10 md:py-14 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-8"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-3">
               תראו בעצמכם
             </h2>
-            <p className="text-white/60 text-lg md:text-xl">לא צריך להאמין לי. תראו מה קורה באירועים שלי.</p>
+            <p className="text-white text-base md:text-lg">לא צריך להאמין לי. תראו מה קורה באירועים שלי.</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

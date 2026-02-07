@@ -27,18 +27,18 @@ export default function GallerySection() {
   }, []);
 
   return (
-    <section className="relative py-20 px-4">
+    <section className="relative py-10 md:py-14 px-4">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4">
             רגעים מהאירועים שלי
           </h2>
-          <p className="text-white/60 text-lg md:text-xl">כל תמונה מספרת סיפור של ערב בלתי נשכח</p>
+          <p className="text-white text-base md:text-lg">כל תמונה מספרת סיפור של ערב בלתי נשכח</p>
         </motion.div>
 
         {/* Mobile: Auto-slideshow */}
