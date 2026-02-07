@@ -23,9 +23,12 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 export default function LogoCarousel() {
-  const [slots, setSlots] = useState(() => shuffleArray(logos).slice(0, 3));
+  // Start with deterministic first 3 to avoid hydration mismatch
+  const [slots, setSlots] = useState(logos.slice(0, 3));
 
   useEffect(() => {
+    // Shuffle once on mount
+    setSlots(shuffleArray(logos).slice(0, 3));
     const interval = setInterval(() => {
       setSlots((prev) => {
         const currentAlts = new Set(prev.map((l) => l.alt));
