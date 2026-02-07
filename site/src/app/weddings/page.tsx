@@ -120,65 +120,6 @@ export default function WeddingsPage() {
       {/* 1. Hero */}
       <WeddingsHero ctaSource="weddings_hero" />
 
-      {/* 3. Timeline — Wedding Journey */}
-      <section className="px-4 py-16 md:py-20 bg-gradient-to-b from-transparent via-foreground/5 to-transparent">
-        <div className="mx-auto max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl font-black text-foreground md:text-5xl mb-4">מסע הערב</h2>
-            <p className="text-foreground-secondary text-lg">כל רגע מתוזמן, כל שלב מותאם אישית</p>
-          </motion.div>
-
-          <div className="relative">
-            {/* Vertical line - desktop only */}
-            <div className="hidden md:block absolute right-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#059cc0] via-[#03b28c] to-[#059cc0]" />
-
-            {timelineSteps.map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className={`relative flex flex-col md:flex-row items-center gap-6 mb-12 ${
-                  i % 2 === 0 ? "md:flex-row-reverse" : ""
-                }`}
-              >
-                {/* Dot on timeline */}
-                <div className="hidden md:flex absolute right-1/2 translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-[#059cc0] to-[#03b28c] items-center justify-center text-xl z-10">
-                  {step.icon}
-                </div>
-
-                {/* Content */}
-                <div className={`md:w-5/12 ${i % 2 === 0 ? "md:text-left" : "md:text-right"}`}>
-                  <div className="flex items-center gap-3 mb-2 md:hidden">
-                    <span className="text-2xl">{step.icon}</span>
-                    <h3 className="text-xl font-black text-foreground">{step.title}</h3>
-                  </div>
-                  <h3 className="hidden md:block text-xl font-black text-foreground mb-2">{step.title}</h3>
-                  <p className="text-foreground-secondary leading-relaxed">{step.desc}</p>
-                </div>
-
-                {/* Spacer for alignment */}
-                <div className="hidden md:block md:w-2/12" />
-
-                {/* Image */}
-                <div className="w-full md:w-5/12">
-                  <div className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-foreground/10">
-                    <Image src={step.image} alt={step.title} fill className="object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 4. Gallery — Auto-slideshow on mobile */}
       <section className="px-4 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">
