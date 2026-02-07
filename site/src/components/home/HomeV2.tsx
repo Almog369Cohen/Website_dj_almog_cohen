@@ -21,7 +21,7 @@ function FAQItem({ faq }: { faq: { q: string; a: string; icon: React.ReactNode; 
       >
         <div className="flex items-center gap-4 flex-1">
           <div className="flex-shrink-0">{faq.icon}</div>
-          <h3 className="text-lg md:text-xl font-bold text-white">{faq.q}</h3>
+          <h3 className="text-sm md:text-base font-bold text-white whitespace-nowrap">{faq.q}</h3>
         </div>
         <svg
           className={`w-6 h-6 text-[#03b28c] transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}
