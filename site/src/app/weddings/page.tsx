@@ -32,7 +32,8 @@ export default function WeddingsPage() {
   const [openPlaylist, setOpenPlaylist] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen text-foreground" style={{ backgroundColor: '#fff', color: '#1f1f21' }}>
+      <style dangerouslySetInnerHTML={{ __html: `body{background-color:#fff!important;color:#1f1f21!important}` }} />
       {/* JSON-LD: Service */}
       <script
         type="application/ld+json"
