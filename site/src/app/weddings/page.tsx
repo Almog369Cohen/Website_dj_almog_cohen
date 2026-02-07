@@ -289,7 +289,7 @@ export default function WeddingsPage() {
       </section>
 
       {/* 9. FAQ */}
-      <FAQSection type="wedding" />
+      <FAQSection type="wedding" variant="light" />
 
       {/* 10. Final CTA */}
       <section className="relative py-24 px-4">

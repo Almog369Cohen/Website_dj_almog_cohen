@@ -54,13 +54,16 @@ interface FAQSectionProps {
   faqs?: FAQItem[];
   type?: "wedding" | "academy" | "general";
   title?: string;
+  variant?: "light" | "dark";
 }
 
 export const FAQSection = ({ 
   faqs,
   type = "general",
-  title = "שאלות נפוצות"
+  title = "שאלות נפוצות",
+  variant = "dark"
 }: FAQSectionProps) => {
+  const isLight = variant === "light";
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   
   const items = faqs || (type === "wedding" ? weddingFAQs : type === "academy" ? academyFAQs : weddingFAQs);
@@ -71,7 +74,7 @@ export const FAQSection = ({
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-center text-3xl md:text-4xl font-bold text-foreground mb-12"
+        className={`text-center text-3xl md:text-4xl font-bold mb-12 ${isLight ? 'text-black' : 'text-white'}`}
       >
         {title}
       </motion.h2>
@@ -84,14 +87,14 @@ export const FAQSection = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1 }}
-            className="overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/5 backdrop-blur-xl"
+            className={`overflow-hidden rounded-2xl border backdrop-blur-xl ${isLight ? 'border-black/10 bg-gray-50' : 'border-white/10 bg-white/5'}`}
           >
             <button
               onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-              className="flex w-full items-center justify-between gap-4 p-5 text-right transition hover:bg-foreground/5"
+              className={`flex w-full items-center justify-between gap-4 p-5 text-right transition ${isLight ? 'hover:bg-gray-100' : 'hover:bg-white/5'}`}
               aria-expanded={openIndex === idx}
             >
-              <span className="flex-1 text-base md:text-lg font-bold text-foreground">
+              <span className={`flex-1 text-base md:text-lg font-bold ${isLight ? 'text-black' : 'text-white'}`}>
                 {item.question}
               </span>
               <motion.div
@@ -114,8 +117,8 @@ export const FAQSection = ({
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <div className="border-t border-foreground/10 px-5 py-4">
-                    <p className="text-foreground-secondary leading-relaxed">
+                  <div className={`border-t px-5 py-4 ${isLight ? 'border-black/10' : 'border-white/10'}`}>
+                    <p className={`leading-relaxed ${isLight ? 'text-gray-600' : 'text-white/70'}`}>
                       {item.answer}
                     </p>
                   </div>
