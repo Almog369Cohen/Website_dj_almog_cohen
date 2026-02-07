@@ -49,15 +49,11 @@ export default function WeddingsGallery() {
               className="object-cover"
               priority={currentSlide < 2}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-4">
-              <p className="text-white font-bold text-sm">{photos[currentSlide].alt}</p>
-            </div>
           </motion.div>
         </AnimatePresence>
 
         {/* Dots indicator */}
-        <div className="absolute bottom-14 left-0 right-0 flex justify-center gap-1.5 z-10">
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 z-10">
           {photos.map((_, i) => (
             <button
               key={i}
@@ -89,11 +85,6 @@ export default function WeddingsGallery() {
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-500"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <p className="text-white font-bold text-sm md:text-base">{photo.alt}</p>
-              </div>
-            </div>
           </motion.div>
         ))}
       </div>
