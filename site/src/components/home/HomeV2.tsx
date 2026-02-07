@@ -191,49 +191,45 @@ export default function HomeV2() {
       {/* Photo Gallery */}
       <GallerySection />
 
-      {/* Stats Section */}
-      <section className="relative py-20 px-4 bg-gradient-to-b from-transparent via-white/5 to-transparent">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { 
-                num: "1000+", 
-                label: "אירועים", 
-                desc: "כל אחד ייחודי, כל אחד מושלם", 
-                icon: <svg className="w-8 h-8 text-[#03b28c]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg>
-              },
-              { 
-                num: "10+", 
-                label: "שנות ניסיון", 
-                desc: "יודע לקרוא קהל ולהתאים את עצמי", 
-                icon: <svg className="w-8 h-8 text-[#059cc0]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              },
-              { 
-                num: "100%", 
-                label: "אווירה", 
-                desc: "אווירה מהרגע הראשון", 
-                icon: <svg className="w-8 h-8 text-[#03b28c]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-              }
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative group"
-              >
-                <div className="absolute -inset-1 bg-gradient-to-r from-[#059cc0] to-[#03b28c] rounded-2xl blur-xl opacity-25 group-hover:opacity-75 transition duration-300" />
-                <div className="relative bg-black/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 text-center">
-                  <div className="flex items-center justify-center mb-4">{stat.icon}</div>
-                  <div className="text-5xl md:text-6xl font-black mb-3 bg-gradient-to-r from-[#059cc0] to-[#03b28c] bg-clip-text text-transparent">
+      {/* Stats Section — Elegant Counter Strip */}
+      <section className="relative py-10 md:py-14 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-2xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#059cc0]/10 via-transparent to-[#03b28c]/10" />
+            <div className="relative flex items-center justify-around py-8 md:py-10">
+              {[
+                { num: "1000+", label: "אירועים" },
+                { num: "10+", label: "שנות ניסיון" },
+                { num: "100%", label: "אנרגיה" },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15, type: "spring", stiffness: 200 }}
+                  className="flex flex-col items-center text-center relative"
+                >
+                  <motion.span
+                    initial={{ scale: 0.5 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.15 + 0.1, type: "spring", stiffness: 300 }}
+                    className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent"
+                  >
                     {stat.num}
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-2">{stat.label}</h3>
-                  <p className="text-white/60 text-sm">{stat.desc}</p>
-                </div>
-              </motion.div>
-            ))}
+                  </motion.span>
+                  <span className="text-[10px] sm:text-xs md:text-sm font-bold text-white/50 mt-1 tracking-wider uppercase">
+                    {stat.label}
+                  </span>
+                  {i < 2 && (
+                    <div className="absolute left-[-50%] top-1/2 -translate-y-1/2 w-px h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent hidden md:block" />
+                  )}
+                </motion.div>
+              ))}
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#059cc0]/40 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#03b28c]/40 to-transparent" />
           </div>
         </div>
       </section>
