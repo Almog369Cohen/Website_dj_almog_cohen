@@ -73,12 +73,6 @@ export default function HomeV2() {
     return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
   }, []);
 
-  // Force dark background on entire page (prevents light theme bleed-through)
-  useEffect(() => {
-    const html = document.documentElement;
-    html.classList.add('homepage-dark');
-    return () => { html.classList.remove('homepage-dark'); };
-  }, []);
 
 
 
