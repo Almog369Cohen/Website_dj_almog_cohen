@@ -315,18 +315,18 @@ export default function HomeV2() {
       {/* Testimonials — removed by request */}
 
       {/* FAQ */}
-      <section className="relative py-20 px-4">
+      <section className="relative py-10 md:py-14 px-4">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-8"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3">
               שאלות נפוצות
             </h2>
-            <p className="text-white/60 text-lg">כל מה שצריך לדעת לפני שמתחילים</p>
+            <p className="text-white text-base md:text-lg">כל מה שצריך לדעת לפני שמתחילים</p>
           </motion.div>
 
           <div className="space-y-4">
@@ -357,7 +357,7 @@ export default function HomeV2() {
       </section>
 
       {/* Final CTA */}
-      <section className="relative py-32 px-4">
+      <section className="relative py-16 md:py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
