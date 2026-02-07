@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -13,42 +13,60 @@ const logos = [
   { src: "/assets/logos/ariel.jpeg", alt: "אריאל" },
 ];
 
-export default function LogoCarousel() {
-  const [startIdx, setStartIdx] = useState(0);
+function shuffleArray<T>(arr: T[]): T[] {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setStartIdx((prev) => (prev + 3) % logos.length);
-    }, 3000);
-    return () => clearInterval(interval);
+export default function LogoCarousel() {
+  const [visible, setVisible] = useState(() => shuffleArray(logos).slice(0, 3));
+  const [tick, setTick] = useState(0);
+
+  const pickNext = useCallback(() => {
+    setVisible((prev) => {
+      const prevAlts = new Set(prev.map((l) => l.alt));
+      const pool = logos.filter((l) => !prevAlts.has(l.alt));
+      const shuffled = shuffleArray(pool);
+      return shuffled.slice(0, 3);
+    });
+    setTick((t) => t + 1);
   }, []);
 
-  const visible = [
-    logos[startIdx % logos.length],
-    logos[(startIdx + 1) % logos.length],
-    logos[(startIdx + 2) % logos.length],
-  ];
+  useEffect(() => {
+    const interval = setInterval(pickNext, 4000);
+    return () => clearInterval(interval);
+  }, [pickNext]);
 
   return (
-    <div className="flex items-center justify-center h-12 w-full">
+    <div className="flex items-center justify-center h-14 w-full">
       <AnimatePresence mode="wait">
         <motion.div
-          key={startIdx}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex items-center justify-center gap-10"
+          key={tick}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="flex items-center justify-center gap-8 md:gap-14"
         >
-          {visible.map((logo) => (
-            <Image
+          {visible.map((logo, i) => (
+            <motion.div
               key={logo.alt}
-              src={logo.src}
-              alt={logo.alt}
-              width={80}
-              height={32}
-              className="object-contain opacity-60"
-            />
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.12, duration: 0.4 }}
+            >
+              <Image
+                src={logo.src}
+                alt={logo.alt}
+                width={80}
+                height={32}
+                className="object-contain opacity-50 hover:opacity-90 transition-opacity duration-300"
+              />
+            </motion.div>
           ))}
         </motion.div>
       </AnimatePresence>
