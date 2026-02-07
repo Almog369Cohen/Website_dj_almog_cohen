@@ -121,15 +121,18 @@ export default function WeddingsPage() {
       <WeddingsHero ctaSource="weddings_hero" />
 
       {/* 4. Gallery — Auto-slideshow on mobile */}
-      <section className="px-4 py-16 md:py-20">
-        <div className="mx-auto max-w-6xl">
+      <section className="relative px-4 py-16 md:py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#059cc0]/5 to-transparent" />
+        <div className="relative mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-black text-foreground md:text-5xl mb-4">רגעים מהחתונות שלי</h2>
+            <h2 className="text-3xl font-black md:text-5xl mb-4">
+              <span className="bg-gradient-to-r from-[#059cc0] to-[#03b28c] bg-clip-text text-transparent">רגעים מהחתונות שלי</span>
+            </h2>
             <p className="text-foreground-secondary text-lg">כל תמונה מספרת סיפור של ערב בלתי נשכח</p>
           </motion.div>
           <WeddingsGallery />
@@ -208,37 +211,42 @@ export default function WeddingsPage() {
       </section>
 
       {/* 8. Process — How We Work */}
-      <section className="px-4 py-16 md:py-20">
-        <div className="mx-auto max-w-5xl">
+      <section className="relative px-4 py-16 md:py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#059cc0]/8 via-transparent to-[#03b28c]/8" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#059cc0]/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#03b28c]/30 to-transparent" />
+        <div className="relative mx-auto max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl font-black text-foreground md:text-5xl mb-4">איך עובדים איתי</h2>
+            <h2 className="text-3xl font-black md:text-5xl mb-4">
+              <span className="bg-gradient-to-r from-[#059cc0] to-[#03b28c] bg-clip-text text-transparent">איך עובדים איתי</span>
+            </h2>
             <p className="text-foreground-secondary text-lg">תהליך פשוט, שקוף, ובלי הפתעות</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
                 step: "01",
                 title: "שיחת היכרות",
                 desc: "שיחה קצרה בוואטסאפ או בטלפון. מספרים לי על הסגנון שלכם, התאריך, והאולם. אני מבין מה אתם צריכים.",
-                color: "#059cc0"
+                gradient: "from-[#059cc0] to-[#059cc0]/70"
               },
               {
                 step: "02",
                 title: "תכנון מוזיקלי",
                 desc: "ביחד בונים את מפת הערב — מקבלת פנים ועד הסוף. שירים שחשובים לכם, אווירה, וכל הפרטים.",
-                color: "#03b28c"
+                gradient: "from-[#03b28c] to-[#03b28c]/70"
               },
               {
                 step: "03",
                 title: "הערב שלכם",
                 desc: "אני מגיע מוכן, עם ציוד מקצועי ותכנית מדויקת. אתם רק נהנים. הרחבה מלאה — מובטח.",
-                color: "#059cc0"
+                gradient: "from-[#059cc0] to-[#03b28c]"
               }
             ].map((item, i) => (
               <motion.div
@@ -247,16 +255,13 @@ export default function WeddingsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15 }}
-                className="text-center"
+                className="relative text-center p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm"
               >
-                <div
-                  className="inline-flex items-center justify-center w-16 h-16 rounded-full text-2xl font-black text-white mb-6"
-                  style={{ background: `linear-gradient(135deg, ${item.color}, ${item.color}cc)` }}
-                >
+                <div className={`inline-flex items-center justify-center w-14 h-14 rounded-full text-xl font-black text-white mb-5 bg-gradient-to-br ${item.gradient} shadow-lg`}>
                   {item.step}
                 </div>
-                <h3 className="text-xl font-black text-foreground mb-3">{item.title}</h3>
-                <p className="text-foreground-secondary leading-relaxed">{item.desc}</p>
+                <h3 className="text-lg font-black text-foreground mb-2">{item.title}</h3>
+                <p className="text-foreground-secondary text-sm leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -265,16 +270,18 @@ export default function WeddingsPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mt-12"
+            className="text-center mt-10"
           >
             <a
               href={waLink}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent("cta_whatsapp_click", { source: "weddings_process" })}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#059cc0] to-[#03b28c] px-8 py-4 text-base font-bold text-white shadow-lg transition hover:scale-[1.02]"
+              className="group relative inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-base font-bold text-white transition hover:scale-[1.02]"
             >
-              בואו נתחיל בשיחה קצרה
+              <div className="absolute inset-0 bg-gradient-to-r from-[#059cc0] to-[#03b28c] rounded-full" />
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#059cc0] to-[#03b28c] rounded-full blur-md opacity-50 group-hover:opacity-80 transition" />
+              <span className="relative">בואו נתחיל בשיחה קצרה</span>
             </a>
           </motion.div>
         </div>
