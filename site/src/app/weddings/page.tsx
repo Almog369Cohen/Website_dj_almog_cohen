@@ -121,16 +121,16 @@ export default function WeddingsPage() {
       <WeddingsHero ctaSource="weddings_hero" />
 
       {/* 4. Gallery — Auto-slideshow on mobile */}
-      <section className="relative px-4 py-16 md:py-20 overflow-hidden">
+      <section className="relative px-4 py-8 md:py-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#059cc0]/5 to-transparent" />
         <div className="relative mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-6"
           >
-            <h2 className="text-3xl font-black md:text-5xl mb-4">
+            <h2 className="text-2xl font-black md:text-4xl mb-2">
               <span className="bg-gradient-to-r from-[#059cc0] to-[#03b28c] bg-clip-text text-transparent">רגעים מהחתונות שלי</span>
             </h2>
             <p className="text-foreground-secondary text-lg">כל תמונה מספרת סיפור של ערב בלתי נשכח</p>
@@ -140,19 +140,19 @@ export default function WeddingsPage() {
       </section>
 
       {/* 5. Video Showcase */}
-      <section className="px-4 py-16 md:py-20 bg-gradient-to-b from-transparent via-foreground/5 to-transparent">
+      <section className="px-4 py-8 md:py-12 bg-gradient-to-b from-transparent via-foreground/5 to-transparent">
         <div className="mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-10"
+            className="text-center mb-6"
           >
-            <h2 className="text-3xl font-black text-foreground md:text-5xl mb-4">תראו בעצמכם</h2>
-            <p className="text-foreground-secondary text-lg">60 שניות שמראות קהל, רצף ותזמון</p>
+            <h2 className="text-2xl font-black text-foreground md:text-4xl mb-2">תראו בעצמכם</h2>
+            <p className="text-foreground-secondary text-sm md:text-base">60 שניות שמראות קהל, רצף ותזמון</p>
           </motion.div>
 
-          <div className="overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/5 backdrop-blur-xl">
+          <div className="overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/5 backdrop-blur-xl">
             <div className="aspect-video w-full">
               <iframe
                 className="h-full w-full"
@@ -162,7 +162,7 @@ export default function WeddingsPage() {
                 allowFullScreen
               />
             </div>
-            <div className="p-6 text-center">
+            <div className="p-4 text-center">
               <a
                 href={waLink}
                 target="_blank"
@@ -178,16 +178,16 @@ export default function WeddingsPage() {
       </section>
 
       {/* 6. Testimonials — Real WhatsApp Screenshots */}
-      <section className="px-4 py-16 md:py-20">
+      <section className="px-4 py-8 md:py-12">
         <div className="mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-6"
           >
-            <h2 className="text-3xl font-black text-foreground md:text-5xl mb-4">מה הזוגות אומרים</h2>
-            <p className="text-foreground-secondary text-lg">הודעות אמיתיות מזוגות אמיתיים</p>
+            <h2 className="text-2xl font-black text-foreground md:text-4xl mb-2">מה הזוגות אומרים</h2>
+            <p className="text-foreground-secondary text-sm md:text-base">הודעות אמיתיות מזוגות אמיתיים</p>
           </motion.div>
 
           <WhatsAppTestimonials />
@@ -211,7 +211,7 @@ export default function WeddingsPage() {
       </section>
 
       {/* 8. Process — How We Work */}
-      <section className="relative px-4 py-16 md:py-20 overflow-hidden">
+      <section className="relative px-4 py-8 md:py-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#059cc0]/8 via-transparent to-[#03b28c]/8" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#059cc0]/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#03b28c]/30 to-transparent" />
@@ -220,12 +220,12 @@ export default function WeddingsPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-14"
+            className="text-center mb-8"
           >
-            <h2 className="text-3xl font-black md:text-5xl mb-4">
+            <h2 className="text-2xl font-black md:text-4xl mb-2">
               <span className="bg-gradient-to-r from-[#059cc0] to-[#03b28c] bg-clip-text text-transparent">איך עובדים איתי</span>
             </h2>
-            <p className="text-foreground-secondary text-lg">תהליך פשוט, שקוף, ובלי הפתעות</p>
+            <p className="text-foreground-secondary text-sm md:text-base">תהליך פשוט, שקוף, ובלי הפתעות</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -255,7 +255,7 @@ export default function WeddingsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15 }}
-                className="relative text-center p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm"
+                className="relative text-center p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm"
               >
                 <div className={`inline-flex items-center justify-center w-14 h-14 rounded-full text-xl font-black text-white mb-5 bg-gradient-to-br ${item.gradient} shadow-lg`}>
                   {item.step}
