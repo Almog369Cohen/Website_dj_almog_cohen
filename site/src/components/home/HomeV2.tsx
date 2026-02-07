@@ -7,15 +7,13 @@ import LogoCarousel from "@/components/LogoCarousel";
 import GallerySection from "@/components/home/GallerySection";
 import TestimonialsCarousel from "@/components/home/TestimonialsCarousel";
 import { useState, useEffect } from "react";
+import { useReveal } from "@/hooks/useReveal";
 
 function FAQItem({ faq }: { faq: { q: string; a: string; icon: React.ReactNode; defaultOpen: boolean } }) {
   const [isOpen, setIsOpen] = useState(faq.defaultOpen);
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:border-[#03b28c]/50 transition-all"
+    <div
+      className="reveal bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:border-[#03b28c]/50 transition-all"
     >
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -45,7 +43,7 @@ function FAQItem({ faq }: { faq: { q: string; a: string; icon: React.ReactNode; 
           <p className="text-white/70 leading-relaxed pl-10">{faq.a}</p>
         </motion.div>
       )}
-    </motion.div>
+    </div>
   );
 }
 
@@ -56,6 +54,7 @@ export default function HomeV2() {
   const [viewersCount, setViewersCount] = useState(47);
   const [bookedThisWeek, setBookedThisWeek] = useState(2);
   const [showUrgencyBar, setShowUrgencyBar] = useState(false);
+  const pageRef = useReveal();
   
   const getWhatsAppLink = (message: string) => {
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
@@ -77,7 +76,7 @@ export default function HomeV2() {
 
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div ref={pageRef} className="min-h-screen bg-black text-white relative overflow-hidden">
       {/* Urgency Bar — slides in after 3s, auto-hides after 10s */}
       <AnimatePresence>
         {showUrgencyBar && (
@@ -218,30 +217,24 @@ export default function HomeV2() {
                 { num: "10+", label: "שנות ניסיון" },
                 { num: "100%", label: "אנרגיה" },
               ].map((stat, i) => (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.15, type: "spring", stiffness: 200 }}
-                  className="flex flex-col items-center text-center relative"
+                  className="flex flex-col items-center text-center relative reveal-stagger"
+                  style={{ '--delay': `${i * 150}ms` } as React.CSSProperties}
                 >
-                  <motion.span
-                    initial={{ scale: 0.5 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.15 + 0.1, type: "spring", stiffness: 300 }}
-                    className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent"
+                  <span
+                    className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent reveal-pop"
+                    style={{ '--delay': `${i * 150 + 100}ms` } as React.CSSProperties}
                   >
                     {stat.num}
-                  </motion.span>
+                  </span>
                   <span className="text-[10px] sm:text-xs md:text-sm font-bold text-white/50 mt-1 tracking-wider uppercase">
                     {stat.label}
                   </span>
                   {i < 2 && (
                     <div className="absolute left-[-50%] top-1/2 -translate-y-1/2 w-px h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent hidden md:block" />
                   )}
-                </motion.div>
+                </div>
               ))}
             </div>
             <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#059cc0]/40 to-transparent" />
@@ -259,17 +252,12 @@ export default function HomeV2() {
       {/* Video Gallery */}
       <section className="relative py-10 md:py-14 px-4">
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
+          <div className="reveal text-center mb-8">
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-3">
               תראו בעצמכם
             </h2>
             <p className="text-white text-base md:text-lg">לא צריך להאמין לי. תראו מה קורה באירועים שלי.</p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
@@ -277,16 +265,13 @@ export default function HomeV2() {
               { url: "https://youtu.be/cLZaotSdbAg", thumb: "https://img.youtube.com/vi/cLZaotSdbAg/maxresdefault.jpg", title: "Set Live Dead Sea", desc: "אנרגיה מטורפת" },
               { url: "https://youtu.be/ivoBO3wWCbI", thumb: "https://img.youtube.com/vi/ivoBO3wWCbI/maxresdefault.jpg", title: "סטודנטים באריאל", desc: "כיף שלא נגמר" }
             ].map((video, i) => (
-              <motion.a
+              <a
                 key={i}
                 href={video.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group relative aspect-video rounded-2xl overflow-hidden border border-white/10 hover:border-[#03b28c] transition-all"
+                className="reveal-stagger group relative aspect-video rounded-2xl overflow-hidden border border-white/10 hover:border-[#03b28c] transition-all"
+                style={{ '--delay': `${i * 120}ms` } as React.CSSProperties}
               >
                 <Image
                   src={video.thumb}
@@ -306,7 +291,7 @@ export default function HomeV2() {
                   <h3 className="text-white font-black text-xl mb-1">{video.title}</h3>
                   <p className="text-white/70 text-sm">{video.desc}</p>
                 </div>
-              </motion.a>
+              </a>
             ))}
           </div>
         </div>
@@ -317,17 +302,12 @@ export default function HomeV2() {
       {/* FAQ */}
       <section className="relative py-10 md:py-14 px-4">
         <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
+          <div className="reveal text-center mb-8">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3">
               שאלות נפוצות
             </h2>
             <p className="text-white text-base md:text-lg">כל מה שצריך לדעת לפני שמתחילים</p>
-          </motion.div>
+          </div>
 
           <div className="space-y-4">
             {[
@@ -359,12 +339,7 @@ export default function HomeV2() {
       {/* Final CTA */}
       <section className="relative py-16 md:py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
+          <div className="reveal-scale mb-12">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#059cc0]/20 to-[#03b28c]/20 border border-[#03b28c]/50 rounded-full px-6 py-3 mb-8">
               <div className="w-3 h-3 bg-[#03b28c] rounded-full animate-pulse" />
               <span className="text-[#03b28c] font-bold">⚡ התאריכים נגמרים מהר</span>
@@ -378,14 +353,9 @@ export default function HomeV2() {
             <p className="text-xl md:text-2xl text-white/70 mb-10">
               שלחו הודעה עכשיו ותקבלו תגובה תוך 5 דקות
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
+          <div className="reveal flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href={getWhatsAppLink("היי אלמוג! אני רוצה לשמור תאריך לחתונה שלי 🎉")}
               target="_blank"
@@ -409,9 +379,9 @@ export default function HomeV2() {
               </svg>
               <span>או התקשרו: {phoneNumber}</span>
             </a>
-          </motion.div>
+          </div>
 
-          <p className="text-white/40 text-sm mt-8">
+          <p className="reveal text-white/40 text-sm mt-8">
             ⚡ תגובה תוך 5 דקות • 📱 זמין גם בווטסאפ • 🤝 ללא התחייבות
           </p>
         </div>

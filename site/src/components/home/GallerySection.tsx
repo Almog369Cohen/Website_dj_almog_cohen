@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useReveal } from "@/hooks/useReveal";
 
 const photos = [
   { src: "/assets/gallery/djavira/entrance.jpg", alt: "כניסה לחופה עם זיקוקים" },
@@ -17,6 +18,7 @@ const photos = [
 
 export default function GallerySection() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const sectionRef = useReveal();
 
   // Auto-slideshow for mobile
   useEffect(() => {
@@ -27,19 +29,14 @@ export default function GallerySection() {
   }, []);
 
   return (
-    <section className="relative py-10 md:py-14 px-4">
+    <section ref={sectionRef} className="relative py-10 md:py-14 px-4">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-8"
-        >
+        <div className="reveal text-center mb-8">
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4">
             רגעים מהאירועים שלי
           </h2>
           <p className="text-white text-base md:text-lg">כל תמונה מספרת סיפור של ערב בלתי נשכח</p>
-        </motion.div>
+        </div>
 
         {/* Mobile: Auto-slideshow */}
         <div className="md:hidden relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
@@ -79,15 +76,12 @@ export default function GallerySection() {
         {/* Desktop: Grid */}
         <div className="hidden md:grid grid-cols-3 lg:grid-cols-4 gap-4">
           {photos.map((photo, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.04 }}
-              className={`group relative rounded-2xl overflow-hidden border border-white/10 hover:border-[#03b28c] transition-all ${
+              className={`reveal-stagger group relative rounded-2xl overflow-hidden border border-white/10 hover:border-[#03b28c] transition-all ${
                 i === 0 || i === 3 ? "aspect-[4/3] md:col-span-2 md:row-span-2" : "aspect-square"
               }`}
+              style={{ '--delay': `${i * 60}ms` } as React.CSSProperties}
             >
               <Image
                 src={photo.src}
@@ -95,7 +89,7 @@ export default function GallerySection() {
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
               />
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
