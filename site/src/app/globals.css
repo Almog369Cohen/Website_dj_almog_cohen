@@ -33,6 +33,17 @@
   --glass-bg-hover: rgba(255, 255, 255, 0.06);
 }
 
+/* Homepage forced dark — overrides theme on body level */
+.homepage-dark body,
+.homepage-dark {
+  --background: #000000 !important;
+  --foreground: #ffffff !important;
+}
+.homepage-dark body {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
 /* High Contrast Mode */
 .high-contrast {
   --brand-blue: #00d4ff;

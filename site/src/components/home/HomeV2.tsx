@@ -73,18 +73,17 @@ export default function HomeV2() {
     return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
   }, []);
 
-  // Force body background to black on homepage (prevents light theme bleed-through)
+  // Force dark background on entire page (prevents light theme bleed-through)
   useEffect(() => {
-    const body = document.body;
-    const prev = body.style.backgroundColor;
-    body.style.backgroundColor = '#000';
-    return () => { body.style.backgroundColor = prev; };
+    const html = document.documentElement;
+    html.classList.add('homepage-dark');
+    return () => { html.classList.remove('homepage-dark'); };
   }, []);
 
 
 
   return (
-    <div ref={pageRef} className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: '#000', color: '#fff' }}>
+    <div ref={pageRef} className="min-h-screen bg-black text-white relative overflow-x-hidden">
       {/* Urgency Bar — slides in after 3s, auto-hides after 10s */}
       <AnimatePresence>
         {showUrgencyBar && (
