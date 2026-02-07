@@ -42,9 +42,9 @@ export default function LogoCarousel() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-8 w-full gap-6 md:gap-10">
+    <div className="flex items-center justify-center h-10 w-full gap-3 md:gap-6 px-4">
       {slots.map((logo, i) => (
-        <div key={i} className="relative w-20 h-10">
+        <div key={i} className="relative w-[72px] h-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={logo.alt}
@@ -54,13 +54,13 @@ export default function LogoCarousel() {
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className="absolute inset-0 flex items-center justify-center"
             >
-              <div className="bg-white/90 rounded-lg px-2 py-1.5 flex items-center justify-center">
+              <div className="bg-white/90 rounded-md w-[72px] h-8 flex items-center justify-center overflow-hidden p-1">
                 <Image
                   src={logo.src}
                   alt={logo.alt}
-                  width={64}
-                  height={24}
-                  className="object-contain"
+                  width={60}
+                  height={22}
+                  className="object-contain max-w-[60px] max-h-[22px]"
                 />
               </div>
             </motion.div>
