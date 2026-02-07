@@ -95,15 +95,25 @@ export default function HomeV2() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-end justify-center pb-12 md:pb-16">
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden bg-black">
           <iframe
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+            className="absolute pointer-events-none"
             src="https://www.youtube.com/embed/Sxfrs5Pzy8A?autoplay=1&mute=1&loop=1&playlist=Sxfrs5Pzy8A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
             title="DJ אלמוג כהן - תדמית"
             allow="autoplay; encrypted-media"
-            style={{ border: 'none' }}
+            style={{
+              border: 'none',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '177.78vh', // 16:9 ratio based on height
+              height: '56.25vw', // 16:9 ratio based on width
+              minWidth: '100%',
+              minHeight: '100%',
+              transform: 'translate(-50%, -50%)',
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-4">
