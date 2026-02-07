@@ -10,36 +10,22 @@ const articleMap: Record<string, RelatedArticle[]> = {
   "how-to-choose-wedding-dj": [
     { slug: "wedding-dj-cost", title: "כמה עולה DJ לחתונה? מחירון 2025", category: "חתונות" },
     { slug: "dj-or-band-guide", title: "DJ או להקה? המדריך המאוזן", category: "החלטות" },
-    { slug: "chuppah-20-songs", title: "20 שירי כניסה לחופה", category: "חופה" },
+    { slug: "pro-gear-behind-the-scenes", title: "הציוד המקצועי שמשדרג כל אירוע", category: "ציוד" },
   ],
   "wedding-dj-cost": [
     { slug: "how-to-choose-wedding-dj", title: "איך לבחור DJ לחתונה: 5 שאלות חובה", category: "חתונות" },
     { slug: "dj-or-band-guide", title: "DJ או להקה? המדריך המאוזן", category: "החלטות" },
-    { slug: "wedding-dance-floor-songs", title: "50 שירים לרחבה בחתונה", category: "רחבה" },
+    { slug: "pro-gear-behind-the-scenes", title: "הציוד המקצועי שמשדרג כל אירוע", category: "ציוד" },
   ],
   "dj-or-band-guide": [
     { slug: "how-to-choose-wedding-dj", title: "איך לבחור DJ לחתונה: 5 שאלות חובה", category: "חתונות" },
     { slug: "wedding-dj-cost", title: "כמה עולה DJ לחתונה? מחירון 2025", category: "חתונות" },
     { slug: "pro-gear-behind-the-scenes", title: "הציוד המקצועי שמשדרג כל אירוע", category: "ציוד" },
   ],
-  "chuppah-20-songs": [
-    { slug: "wedding-reception-music", title: "מוזיקה לקבלת פנים בחתונה", category: "קבלת פנים" },
-    { slug: "wedding-dance-floor-songs", title: "50 שירים לרחבה בחתונה", category: "רחבה" },
-    { slug: "how-to-choose-wedding-dj", title: "איך לבחור DJ לחתונה", category: "חתונות" },
-  ],
-  "wedding-reception-music": [
-    { slug: "chuppah-20-songs", title: "20 שירי כניסה לחופה", category: "חופה" },
-    { slug: "wedding-dance-floor-songs", title: "50 שירים לרחבה בחתונה", category: "רחבה" },
-    { slug: "how-to-choose-wedding-dj", title: "איך לבחור DJ לחתונה", category: "חתונות" },
-  ],
-  "wedding-dance-floor-songs": [
-    { slug: "chuppah-20-songs", title: "20 שירי כניסה לחופה", category: "חופה" },
-    { slug: "wedding-reception-music", title: "מוזיקה לקבלת פנים בחתונה", category: "קבלת פנים" },
-    { slug: "wedding-dj-cost", title: "כמה עולה DJ לחתונה? מחירון 2025", category: "חתונות" },
-  ],
   "dj-course-5-mistakes": [
     { slug: "pro-gear-behind-the-scenes", title: "הציוד המקצועי שמשדרג כל אירוע", category: "ציוד" },
     { slug: "how-to-choose-wedding-dj", title: "איך לבחור DJ לחתונה", category: "חתונות" },
+    { slug: "dj-or-band-guide", title: "DJ או להקה? המדריך המאוזן", category: "החלטות" },
   ],
   "pro-gear-behind-the-scenes": [
     { slug: "dj-course-5-mistakes", title: "קורס DJ: 5 טעויות קריטיות", category: "קורס DJ" },

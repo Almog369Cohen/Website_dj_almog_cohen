@@ -33,13 +33,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Blog
     { path: "/blog", priority: 0.8, changeFrequency: "weekly" as const },
     { path: "/blog/how-to-choose-wedding-dj", priority: 0.85, changeFrequency: "monthly" as const },
-    { path: "/blog/chuppah-20-songs", priority: 0.85, changeFrequency: "monthly" as const },
     { path: "/blog/dj-or-band-guide", priority: 0.8, changeFrequency: "monthly" as const },
     { path: "/blog/dj-course-5-mistakes", priority: 0.75, changeFrequency: "monthly" as const },
     { path: "/blog/pro-gear-behind-the-scenes", priority: 0.7, changeFrequency: "monthly" as const },
-    { path: "/blog/wedding-dance-floor-songs", priority: 0.9, changeFrequency: "monthly" as const },
     { path: "/blog/wedding-dj-cost", priority: 0.9, changeFrequency: "monthly" as const },
-    { path: "/blog/wedding-reception-music", priority: 0.85, changeFrequency: "monthly" as const },
   ];
   
   return routes.map((route) => ({

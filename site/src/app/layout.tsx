@@ -109,7 +109,8 @@ export default function RootLayout({
   );
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning className="dark">
-      <head>
+      <head />
+      <body suppressHydrationWarning className={`${rubik.variable} ${heebo.variable} antialiased bg-background text-foreground`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -202,8 +203,6 @@ export default function RootLayout({
             }),
           }}
         />
-      </head>
-      <body suppressHydrationWarning className={`${rubik.variable} ${heebo.variable} antialiased bg-background text-foreground`}>
         <a href="#main-content" className="skip-to-content">
           דלג לתוכן הראשי
         </a>
