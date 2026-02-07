@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import RelatedArticles from "@/components/blog/RelatedArticles";
 
 export const metadata: Metadata = {
   title: "מוזיקה לקבלת פנים בחתונה — הפלייליסט המושלם | DJ אלמוג כהן",
@@ -229,6 +230,8 @@ export default function WeddingReceptionMusicPage() {
             שלחו הודעה בוואטסאפ
           </a>
         </section>
+
+        <RelatedArticles currentSlug="wedding-reception-music" />
       </main>
     </div>
   );

@@ -100,15 +100,53 @@ export default function AcademyPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "EducationalOrganization",
-            name: "Compaktt School",
-            description: "לימודי DJ מקצועיים – מסלולי תקלוט, שטח, וכניסה לעולם האירועים",
-            url: "https://www.compaktt.com/academy",
-            address: {
-              "@type": "PostalAddress",
-              addressLocality: "ישראל",
-              addressCountry: "IL",
-            },
+            "@graph": [
+              {
+                "@type": "EducationalOrganization",
+                name: "Compaktt School",
+                description: "לימודי DJ מקצועיים – מסלולי תקלוט, שטח, וכניסה לעולם האירועים",
+                url: "https://www.compaktt.com/academy",
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: "ישראל",
+                  addressCountry: "IL",
+                },
+              },
+              {
+                "@type": "FAQPage",
+                mainEntity: [
+                  { "@type": "Question", name: "צריך ניסיון קודם?", acceptedAnswer: { "@type": "Answer", text: "בכלל לא. היה לי תלמיד שהגיע עם אפס ניסיון על פלטה, ובשיעור השלישי כבר סגר אירוע ב-1,000 ₪. המסלולים בנויים מאפס מוחלט." } },
+                  { "@type": "Question", name: "מה הציוד הנדרש?", acceptedAnswer: { "@type": "Answer", text: "כלום. בשיעורים אתם עובדים על XDJ-RX3, DDJ-1000, מחשבי Apple, מיקסר ורמקולים – הכל מסופק. לתרגול בבית מספיק תוכנת DJ חינמית ואוזניות." } },
+                  { "@type": "Question", name: "כמה זמן עד שאוכל לנגן באירועים?", acceptedAnswer: { "@type": "Answer", text: "תלוי בך. יש תלמידים שכבר אחרי 3 שיעורים מתחילים לקבל הזדמנויות. במסלול PRO, אתה יוצא לאירועים אמיתיים כחלק מהתכנית." } },
+                  { "@type": "Question", name: "מה ההבדל בין החבילות?", acceptedAnswer: { "@type": "Answer", text: "חבילת בסיס (1,500 ₪) – 3 מפגשים, היכרות עם תקלוט. התמחות שטח (3,800 ₪) – 6 מפגשים + יציאה לאירוע. מסלול PRO (7,000 ₪) – 8 מפגשים + שטח + ליווי + זומים עסקיים." } },
+                  { "@type": "Question", name: "יש ליווי אחרי הלימודים?", acceptedAnswer: { "@type": "Answer", text: "במסלול PRO יש ליווי מלא כולל זומים עסקיים-מנטליים, יציאות לשטח, וליווי באירוע הראשון שלך. אפשר גם להוסיף ליוויים נוספים." } },
+                ],
+              },
+              {
+                "@type": "Course",
+                name: "חבילת בסיס – היכרות עם עולם התקלוט",
+                description: "3 מפגשי תקלוט של 90 דקות, עבודה על ציוד מקצועי, תרגילי בית, ליווי טלפוני ווואטסאפ ל-3 חודשים",
+                provider: { "@type": "Organization", name: "Compaktt School", url: "https://www.compaktt.com/academy" },
+                offers: { "@type": "Offer", price: "1500", priceCurrency: "ILS", availability: "https://schema.org/InStock" },
+                hasCourseInstance: { "@type": "CourseInstance", courseMode: "onsite", duration: "P3W", instructor: { "@type": "Person", name: "אלמוג כהן" } },
+              },
+              {
+                "@type": "Course",
+                name: "התמחות שטח – ליווי אישי ויציאה לשטח",
+                description: "6 מפגשי תקלוט של 90 דקות, יציאה לאירוע בשטח, ליווי טלפוני ווואטסאפ לחצי שנה",
+                provider: { "@type": "Organization", name: "Compaktt School", url: "https://www.compaktt.com/academy" },
+                offers: { "@type": "Offer", price: "3800", priceCurrency: "ILS", availability: "https://schema.org/InStock" },
+                hasCourseInstance: { "@type": "CourseInstance", courseMode: "onsite", duration: "P6W", instructor: { "@type": "Person", name: "אלמוג כהן" } },
+              },
+              {
+                "@type": "Course",
+                name: "מסלול PRO – כניסה מלאה לעולם האירועים",
+                description: "8 מפגשי תקלוט, 2 יציאות לשטח, ליווי לאירוע, 3 זומי תקלוט, 2 זומי עסקי-מנטלי, הגברה ותאורה, ליווי שנה",
+                provider: { "@type": "Organization", name: "Compaktt School", url: "https://www.compaktt.com/academy" },
+                offers: { "@type": "Offer", price: "7000", priceCurrency: "ILS", availability: "https://schema.org/InStock" },
+                hasCourseInstance: { "@type": "CourseInstance", courseMode: "onsite", duration: "P8W", instructor: { "@type": "Person", name: "אלמוג כהן" } },
+              },
+            ],
           }),
         }}
       />

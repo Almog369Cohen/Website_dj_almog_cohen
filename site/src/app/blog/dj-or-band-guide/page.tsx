@@ -1,10 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import RelatedArticles from "@/components/blog/RelatedArticles";
 
 export const metadata: Metadata = {
   title: "DJ או להקה? המדריך המאוזן שיעזור לכם להחליט | DJ אלמוג כהן",
   description:
-    "מדריך לזוגות שמתלבטים בין DJ, להקה חיה או שילוב – כולל יתרונות, חסרונות וטיפים לבניית רחבת ריקודים מדויקת.",
+    "סקירה אמיתית של היתרונות והחסרונות של DJ מול להקה בחתונה – והפתרון המנצח: DJ עם נגנים חיים.",
+  keywords: [
+    "DJ או להקה לחתונה",
+    "להקה או תקליטן",
+    "מוזיקה לחתונה DJ או להקה",
+    "DJ עם נגנים חיים",
+    "החלטות מוזיקליות לחתונה",
+  ],
+  alternates: {
+    canonical: "https://www.compaktt.com/blog/dj-or-band-guide",
+  },
+  openGraph: {
+    title: "DJ או להקה? המדריך המאוזן",
+    description: "סקירה אמיתית של היתרונות והחסרונות + הפתרון המנצח: DJ עם נגנים חיים.",
+    type: "article",
+    url: "https://www.compaktt.com/blog/dj-or-band-guide",
+  },
 };
 
 export default function DjOrBandGuidePage() {
@@ -156,6 +173,8 @@ export default function DjOrBandGuidePage() {
             </a>
           </div>
         </section>
+
+        <RelatedArticles currentSlug="dj-or-band-guide" />
       </main>
     </div>
   );

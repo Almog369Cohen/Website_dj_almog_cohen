@@ -1,10 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import RelatedArticles from "@/components/blog/RelatedArticles";
 
 export const metadata: Metadata = {
   title: "קורס DJ: 5 טעויות קריטיות שכל מתחיל חייב להימנע מהן | DJ אלמוג כהן",
   description:
     "הטעויות הנפוצות של DJ מתחילים – ציוד, אימון אוזניים, תורת המוזיקה, מיינדסט ורשתות חברתיות – ואיך להימנע מהן.",
+  keywords: [
+    "קורס DJ",
+    "לימודי DJ",
+    "קורס תקליטנות",
+    "טעויות DJ מתחילים",
+    "לימודי תקליטנות מחירים",
+    "קורס DJ למתחילים",
+  ],
+  alternates: {
+    canonical: "https://www.compaktt.com/blog/dj-course-5-mistakes",
+  },
+  openGraph: {
+    title: "קורס DJ: 5 טעויות קריטיות שכל מתחיל חייב להימנע מהן",
+    description: "המלכודות הגדולות של DJ מתחילים – ואיך להפוך את הלימוד למסלול צמיחה.",
+    type: "article",
+    url: "https://www.compaktt.com/blog/dj-course-5-mistakes",
+  },
 };
 
 export default function DjCourseFiveMistakesPage() {
@@ -165,6 +183,8 @@ export default function DjCourseFiveMistakesPage() {
             </a>
           </div>
         </section>
+
+        <RelatedArticles currentSlug="dj-course-5-mistakes" />
       </main>
     </div>
   );

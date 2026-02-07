@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import RelatedArticles from "@/components/blog/RelatedArticles";
 
 export const metadata: Metadata = {
   title: "כמה עולה DJ לחתונה? מחירון DJ לחתונות 2025 | DJ אלמוג כהן",
@@ -236,6 +237,8 @@ export default function WeddingDJCostPage() {
             שלחו הודעה בוואטסאפ
           </a>
         </section>
+
+        <RelatedArticles currentSlug="wedding-dj-cost" />
       </main>
     </div>
   );

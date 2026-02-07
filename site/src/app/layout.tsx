@@ -109,7 +109,100 @@ export default function RootLayout({
   );
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning className="dark">
-      <head />
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.compaktt.com/#organization",
+                  name: "Compaktt",
+                  alternateName: "DJ Almog Cohen",
+                  url: "https://www.compaktt.com",
+                  logo: {
+                    "@type": "ImageObject",
+                    url: "https://www.compaktt.com/assets/logo/icon-white.png",
+                  },
+                  telephone: "+972-50-242-7616",
+                  email: "info@compaktt.com",
+                  sameAs: [
+                    "https://www.instagram.com/djalmogcohen",
+                    "https://www.facebook.com/djalmogcohen",
+                    "https://www.youtube.com/@djalmogcohen",
+                    "https://www.tiktok.com/@djalmogcohen",
+                    "https://www.mit4mit.co.il/biz/97749",
+                  ],
+                  areaServed: {
+                    "@type": "Country",
+                    name: "Israel",
+                  },
+                },
+                {
+                  "@type": "EntertainmentBusiness",
+                  "@id": "https://www.compaktt.com/#business",
+                  name: "DJ Almog Cohen – Energy Architect",
+                  url: "https://www.compaktt.com",
+                  telephone: "+972-50-242-7616",
+                  priceRange: "₪₪₪",
+                  address: {
+                    "@type": "PostalAddress",
+                    addressLocality: "Jerusalem",
+                    addressRegion: "Jerusalem District",
+                    addressCountry: "IL",
+                  },
+                  geo: {
+                    "@type": "GeoCoordinates",
+                    latitude: 31.7683,
+                    longitude: 35.2137,
+                  },
+                  areaServed: {
+                    "@type": "Country",
+                    name: "Israel",
+                  },
+                  knowsAbout: [
+                    "DJ לחתונות",
+                    "DJ לאירועים",
+                    "לימודי DJ",
+                    "קורס תקליטנות",
+                    "חתן מתקלט",
+                  ],
+                },
+                {
+                  "@type": "Person",
+                  "@id": "https://www.compaktt.com/#person",
+                  name: "אלמוג כהן",
+                  alternateName: "DJ Almog Cohen",
+                  jobTitle: "DJ מקצועי ומנטור",
+                  url: "https://www.compaktt.com/about",
+                  worksFor: { "@id": "https://www.compaktt.com/#organization" },
+                  knowsAbout: [
+                    "DJ",
+                    "חתונות",
+                    "לימודי תקליטנות",
+                    "הפקה מוזיקלית",
+                    "אירועים",
+                  ],
+                  sameAs: [
+                    "https://www.instagram.com/djalmogcohen",
+                    "https://www.youtube.com/@djalmogcohen",
+                  ],
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://www.compaktt.com/#website",
+                  url: "https://www.compaktt.com",
+                  name: "DJ Almog Cohen – Energy Architect",
+                  publisher: { "@id": "https://www.compaktt.com/#organization" },
+                  inLanguage: "he",
+                },
+              ],
+            }),
+          }}
+        />
+      </head>
       <body suppressHydrationWarning className={`${rubik.variable} ${heebo.variable} antialiased bg-background text-foreground`}>
         <a href="#main-content" className="skip-to-content">
           דלג לתוכן הראשי

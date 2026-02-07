@@ -1,10 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import RelatedArticles from "@/components/blog/RelatedArticles";
 
 export const metadata: Metadata = {
   title: "איך לבחור DJ לחתונה: 5 שאלות חובה לפני שסוגרים | DJ אלמוג כהן",
   description:
     "מדריך חובה לזוגות לפני סגירת DJ לחתונה: 5 שאלות מפתח שיעזרו לכם לבחור תקליטן מקצועי שמתאים לאירוע שלכם.",
+  keywords: [
+    "איך לבחור DJ לחתונה",
+    "בחירת תקליטן לחתונה",
+    "שאלות ל-DJ לפני חתונה",
+    "DJ מומלץ לחתונה",
+    "DJ לחתונה טיפים",
+    "תקליטן לחתונה מומלץ 2025",
+  ],
+  alternates: {
+    canonical: "https://www.compaktt.com/blog/how-to-choose-wedding-dj",
+  },
+  openGraph: {
+    title: "איך לבחור DJ לחתונה: 5 שאלות חובה",
+    description: "מדריך חובה לזוגות – 5 שאלות מפתח לפני שסוגרים DJ לחתונה.",
+    type: "article",
+    url: "https://www.compaktt.com/blog/how-to-choose-wedding-dj",
+  },
 };
 
 export default function HowToChooseWeddingDJPage() {
@@ -268,6 +286,8 @@ export default function HowToChooseWeddingDJPage() {
             </a>
           </div>
         </section>
+
+        <RelatedArticles currentSlug="how-to-choose-wedding-dj" />
       </main>
     </div>
   );

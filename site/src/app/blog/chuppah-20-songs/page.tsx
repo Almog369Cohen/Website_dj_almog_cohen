@@ -1,10 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import RelatedArticles from "@/components/blog/RelatedArticles";
 
 export const metadata: Metadata = {
   title: "20 שירי כניסה לחופה שישברו את הרשת | DJ אלמוג כהן",
   description:
     "רשימת 20 שירי חופה מחולקים לקטגוריות – קלאסיים, בחירות פחות צפויות ושירים לכניסת הורים וסבים – עם טיפים לבחירה חכמה.",
+  keywords: [
+    "שירי חופה",
+    "שירי כניסה לחופה",
+    "מוזיקה לחופה",
+    "שירים לחופה 2025",
+    "פלייליסט חופה",
+    "שירי כניסה לחתונה",
+  ],
+  alternates: {
+    canonical: "https://www.compaktt.com/blog/chuppah-20-songs",
+  },
+  openGraph: {
+    title: "20 שירי כניסה לחופה שישברו את הרשת",
+    description: "רשימת 20 שירים מחולקים לקטגוריות – קלאסיים ובחירות מפתיעות.",
+    type: "article",
+    url: "https://www.compaktt.com/blog/chuppah-20-songs",
+  },
 };
 
 export default function Chuppah20SongsPage() {
@@ -157,6 +175,8 @@ export default function Chuppah20SongsPage() {
             </a>
           </div>
         </section>
+
+        <RelatedArticles currentSlug="chuppah-20-songs" />
       </main>
     </div>
   );

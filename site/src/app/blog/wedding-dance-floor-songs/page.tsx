@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import RelatedArticles from "@/components/blog/RelatedArticles";
 
 export const metadata: Metadata = {
   title: "50 שירים לרחבה בחתונה שיבטיחו רחבה מלאה | DJ אלמוג כהן",
@@ -262,6 +263,8 @@ export default function WeddingDanceFloorSongsPage() {
             שלחו הודעה בוואטסאפ
           </a>
         </section>
+
+        <RelatedArticles currentSlug="wedding-dance-floor-songs" />
       </main>
     </div>
   );

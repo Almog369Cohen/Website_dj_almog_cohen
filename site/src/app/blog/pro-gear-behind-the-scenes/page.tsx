@@ -1,10 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import RelatedArticles from "@/components/blog/RelatedArticles";
 
 export const metadata: Metadata = {
   title: "מאחורי הקלעים: הציוד המקצועי שמשדרג כל אירוע | DJ אלמוג כהן",
   description:
     "סקירה של הציוד הקריטי לאירוע ברמה גבוהה – קונטרולר, מערכת הגברה, תאורה ואפקטים – ואיך הם משפיעים על חוויית האורחים.",
+  keywords: [
+    "ציוד DJ מקצועי",
+    "ציוד לאירועים",
+    "מערכת הגברה לחתונה",
+    "תאורה לאירועים",
+    "Pioneer CDJ",
+    "XDJ-RX3",
+    "DDJ-1000",
+  ],
+  alternates: {
+    canonical: "https://www.compaktt.com/blog/pro-gear-behind-the-scenes",
+  },
+  openGraph: {
+    title: "מאחורי הקלעים: הציוד המקצועי שמשדרג כל אירוע",
+    description: "סקירה של הציוד הקריטי לאירוע ברמה גבוהה – קונטרולר, הגברה, תאורה ואפקטים.",
+    type: "article",
+    url: "https://www.compaktt.com/blog/pro-gear-behind-the-scenes",
+  },
 };
 
 export default function ProGearBehindTheScenesPage() {
@@ -137,6 +156,8 @@ export default function ProGearBehindTheScenesPage() {
             </a>
           </div>
         </section>
+
+        <RelatedArticles currentSlug="pro-gear-behind-the-scenes" />
       </main>
     </div>
   );

@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "", priority: 1.0, changeFrequency: "daily" as const },
     { path: "/weddings", priority: 0.95, changeFrequency: "weekly" as const },
     { path: "/academy", priority: 0.9, changeFrequency: "weekly" as const },
-    { path: "/about", priority: 0.7, changeFrequency: "monthly" as const },
+    { path: "/about", priority: 0.75, changeFrequency: "monthly" as const },
     { path: "/music", priority: 0.7, changeFrequency: "weekly" as const },
     { path: "/contact", priority: 0.6, changeFrequency: "monthly" as const },
 
@@ -19,8 +19,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/weddings/fit-check", priority: 0.7, changeFrequency: "monthly" as const },
 
     // Academy sub-pages
-    { path: "/academy/dj-course", priority: 0.85, changeFrequency: "weekly" as const },
-    { path: "/academy/premium", priority: 0.8, changeFrequency: "weekly" as const },
     { path: "/academy/groom-dj", priority: 0.8, changeFrequency: "weekly" as const },
 
     // Events
