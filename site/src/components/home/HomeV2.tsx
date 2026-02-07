@@ -94,7 +94,7 @@ export default function HomeV2() {
       </AnimatePresence>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center pt-16">
+      <section className="relative min-h-screen flex items-end justify-center pb-12 md:pb-16">
         <div className="absolute inset-0 overflow-hidden">
           <iframe
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
