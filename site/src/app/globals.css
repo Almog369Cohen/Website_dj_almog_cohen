@@ -1271,6 +1271,11 @@ p, span, li, a {
   will-change: transform;
 }
 
+.animate-scroll-logos {
+  animation: scroll-slow 60s linear infinite;
+  will-change: transform;
+}
+
 /* Even slower on mobile for gentle movement */
 @media (max-width: 768px) {
   .animate-scroll-slow {
