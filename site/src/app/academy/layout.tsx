@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Compakt Academy – בית ספר לדיג'ייז | DJ Almog Cohen",
+  title: "Compaktt School – לימודי DJ מקצועיים | אלמוג כהן",
   description:
-    "Compakt Academy: קורס DJ למתחילים, תכנית מנטורינג פרמיום לבניית קריירה בתחום הלילה, וחתן מתקלט. הכשרה מעשית על ציוד Pioneer מקצועי עם אלמוג כהן.",
+    "Compaktt School: מסלולי לימוד DJ מקצועיים – מחבילת בסיס ועד מסלול PRO עם יציאה לאירועים אמיתיים. ציוד XDJ-RX3, DDJ-1000, ליווי אישי עם אלמוג כהן.",
   keywords: [
+    "לימודי DJ",
     "קורס DJ",
-    "בית ספר DJ",
+    "Compaktt School",
     "לימודי תקליטנות",
-    "Compakt Academy",
-    "מנטורינג לדיג'ייז",
+    "DJ מקצועי",
     "חתן מתקלט",
-    "אטרקציה לחתונה",
+    "XDJ-RX3",
+    "DDJ-1000",
   ],
   openGraph: {
-    title: "Compakt Academy – בית ספר לדיג'ייז",
-    description: "קורס DJ למתחילים, תכנית מנטורינג פרמיום, וחתן מתקלט. הכשרה מעשית עם אלמוג כהן.",
+    title: "Compaktt School – לימודי DJ מקצועיים",
+    description: "מסלולי לימוד DJ מקצועיים – מ-0 לעמדה מקצועית עם ציוד, ליווי ואירוע אמיתי.",
     type: "website",
     url: "https://www.compaktt.com/academy",
   },
