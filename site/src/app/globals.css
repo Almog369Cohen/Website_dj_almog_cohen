@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Global mobile scroll safety */
+html, body {
+  overflow-x: hidden;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #1f1f21;

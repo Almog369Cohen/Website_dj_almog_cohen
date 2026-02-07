@@ -207,7 +207,7 @@ export default function RootLayout({
         </a>
         <ThemeProvider>
         <div className="min-h-dvh flex flex-col">
-          <header className="glass-section sticky top-0 z-40" role="banner">
+          <header className="glass-section sticky top-0 z-40" role="banner" style={{ backgroundColor: 'rgba(31,31,33,0.95)' }}>
             <div className="mx-auto w-full max-w-6xl px-4 py-2.5 md:py-3">
               <div className="flex items-center justify-between">
                 {/* Right Side: Mobile Menu & Theme */}
@@ -271,7 +271,7 @@ export default function RootLayout({
           </header>
           <main id="main-content" className="flex-1" role="main">{children}</main>
           <AccessibilityMenu />
-          <footer className="glass-panel border-t" role="contentinfo">
+          <footer className="border-t border-white/10" role="contentinfo" style={{ backgroundColor: '#1f1f21', color: '#fff' }}>
             <div className="mx-auto w-full max-w-6xl px-4 py-3">
               {/* Academy */}
               <div className="mb-2 text-center">

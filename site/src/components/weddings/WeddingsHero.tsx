@@ -53,8 +53,8 @@ export default function WeddingsHero({ ctaSource = "weddings_hero" }: WeddingsHe
     <section className="relative overflow-hidden px-4 py-14 sm:py-16 md:py-24">
       <div className="pointer-events-none absolute inset-0">
         <div className="brand-noise absolute inset-0 opacity-10" aria-hidden="true" />
-        <div className="absolute left-0 top-0 h-96 w-96 bg-[#059cc0]/10 blur-[120px]" />
-        <div className="absolute right-0 bottom-0 h-96 w-96 bg-[#03b28c]/10 blur-[120px]" />
+        <div className="absolute left-0 top-0 h-64 w-64 md:h-96 md:w-96 bg-[#059cc0]/10 blur-[120px]" />
+        <div className="absolute right-0 bottom-0 h-64 w-64 md:h-96 md:w-96 bg-[#03b28c]/10 blur-[120px]" />
       </div>
 
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -131,11 +131,11 @@ export default function WeddingsHero({ ctaSource = "weddings_hero" }: WeddingsHe
               <span className="text-xs font-bold text-white sm:text-sm">10+ שנות ניסיון | דירוג 5★</span>
             </div>
 
-            <h1 className="mb-8 text-5xl font-black leading-[1.1] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+            <h1 className="mb-6 text-3xl font-black leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
               החתונה שלכם מגיעה רק פעם אחת
             </h1>
 
-            <p className="mx-auto mb-10 max-w-2xl text-xl leading-relaxed text-white sm:text-2xl md:mx-0 md:text-3xl">
+            <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-white sm:text-xl md:mx-0 md:text-2xl">
               רחבה מלאה מהרגע הראשון. מובטח.
             </p>
 
