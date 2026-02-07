@@ -109,32 +109,6 @@ export default function HomeV2() {
         <div className="relative z-10 max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-              className="relative"
-            >
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-4 border-[#03b28c]/30">
-                <Image
-                  src="/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.09 (2).jpeg"
-                  alt="DJ אלמוג כהן"
-                  fill
-                  className="object-cover opacity-60"
-                  priority
-                />
-              </div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5 }}
-                className="absolute -bottom-6 -right-6 bg-gradient-to-br from-[#059cc0] to-[#03b28c] rounded-2xl p-6 backdrop-blur-xl border border-white/20"
-              >
-                <div className="text-4xl font-black">1000+</div>
-                <div className="text-sm text-white/90">אירועים</div>
-              </motion.div>
-            </motion.div>
-
-            <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
