@@ -8,12 +8,9 @@ const logos = [
   { src: "/assets/logos/april.jpeg", alt: "April" },
   { src: "/assets/logos/jerusalem.png", alt: "עיריית ירושלים" },
   { src: "/assets/logos/dhl.png", alt: "DHL" },
-  { src: "/assets/logos/ort.png", alt: "ORT" },
   { src: "/assets/logos/bana.svg", alt: "Bana" },
   { src: "/assets/logos/kiryat-ono.png", alt: "קריית אונו" },
   { src: "/assets/logos/ariel.jpeg", alt: "אריאל" },
-  { src: "/assets/logos/hamashbir.png", alt: "המשביר" },
-  { src: "/assets/logos/ktm.svg", alt: "KTM" },
 ];
 
 export default function LogoCarousel() {
@@ -50,7 +47,7 @@ export default function LogoCarousel() {
               alt={logo.alt}
               width={80}
               height={32}
-              className="object-contain brightness-0 invert opacity-70"
+              className="object-contain opacity-60"
             />
           ))}
         </motion.div>
