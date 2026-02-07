@@ -400,7 +400,7 @@ export default function HomeV2() {
           </motion.div>
 
           <p className="text-white/40 text-sm mt-8">
-            ⚡ תגובה תוך 5 דקות • 📱 80% מהלקוחות שלי מגיעים דרך מובייל • 🔒 שיחה סודית ללא התחייבות
+            ⚡ תגובה תוך 5 דקות • 📱 זמין גם בווטסאפ • 🤝 ללא התחייבות
           </p>
         </div>
       </section>
