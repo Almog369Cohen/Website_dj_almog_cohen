@@ -159,7 +159,17 @@ export default function WeddingReceptionMusicPage() {
                   <tbody>
                     {cat.songs.map((song, songIdx) => (
                       <tr key={songIdx} className="border-b border-foreground/5 last:border-0">
-                        <td className="px-4 py-3 text-sm font-bold text-foreground">{song.name}</td>
+                        <td className="px-4 py-3 text-sm font-bold text-foreground">
+                          <a
+                            href={`https://www.youtube.com/results?search_query=${encodeURIComponent(song.artist + ' ' + song.name)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-brand-blue transition inline-flex items-center gap-1"
+                          >
+                            {song.name}
+                            <svg className="h-3 w-3 opacity-40" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19V6.413L11.2071 14.2071L9.79289 12.7929L17.585 5H13V3H21Z"/></svg>
+                          </a>
+                        </td>
                         <td className="px-4 py-3 text-sm text-foreground-secondary">{song.artist}</td>
                       </tr>
                     ))}

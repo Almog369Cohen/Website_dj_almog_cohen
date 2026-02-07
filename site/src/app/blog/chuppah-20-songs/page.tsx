@@ -99,11 +99,11 @@ export default function Chuppah20SongsPage() {
               שירים שמבטיחים צמרמורת ומתאימים כמעט לכל זוג. הם חזקים מוזיקלית ומעבירים רגש טהור:
             </p>
             <ul className="list-disc space-y-1 pr-5 text-white">
-              <li>שלמה ארצי – אהבה</li>
-              <li>עידן רייכל – מכל האהבות</li>
-              <li>יונתן רזאל – קטונתי</li>
-              <li>אריק איינשטיין – עוף גוזל</li>
-              <li>אברהם טל – שירת העשבים</li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%A9%D7%9C%D7%9E%D7%94+%D7%90%D7%A8%D7%A6%D7%99+%D7%90%D7%94%D7%91%D7%94" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">שלמה ארצי – אהבה ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%A2%D7%99%D7%93%D7%9F+%D7%A8%D7%99%D7%99%D7%9B%D7%9C+%D7%9E%D7%9B%D7%9C+%D7%94%D7%90%D7%94%D7%91%D7%95%D7%AA" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">עידן רייכל – מכל האהבות ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%99%D7%95%D7%A0%D7%AA%D7%9F+%D7%A8%D7%96%D7%90%D7%9C+%D7%A7%D7%98%D7%95%D7%A0%D7%AA%D7%99" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">יונתן רזאל – קטונתי ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%90%D7%A8%D7%99%D7%A7+%D7%90%D7%99%D7%99%D7%A0%D7%A9%D7%98%D7%99%D7%99%D7%9F+%D7%A2%D7%95%D7%A3+%D7%92%D7%95%D7%96%D7%9C" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">אריק איינשטיין – עוף גוזל ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%90%D7%91%D7%A8%D7%94%D7%9D+%D7%98%D7%9C+%D7%A9%D7%99%D7%A8%D7%AA+%D7%94%D7%A2%D7%A9%D7%91%D7%99%D7%9D" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">אברהם טל – שירת העשבים ↗</a></li>
             </ul>
           </section>
 
@@ -113,11 +113,11 @@ export default function Chuppah20SongsPage() {
               אם אתם מחפשים משהו קצת שונה ומפתיע, עם עיבודים מיוחדים או וייב פחות מיינסטרימי:
             </p>
             <ul className="list-disc space-y-1 pr-5 text-white">
-              <li>Coldplay – Sky Full of Stars (עיבוד אינסטרומנטלי)</li>
-              <li>אליעד – מתוק כשמרלי</li>
-              <li>קובי אפללו – שיר געגועים</li>
-              <li>The Lumineers – Ho Hey</li>
-              <li>A Great Big World – Say Something</li>
+              <li><a href="https://www.youtube.com/results?search_query=Coldplay+Sky+Full+of+Stars+instrumental" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">Coldplay – Sky Full of Stars (עיבוד אינסטרומנטלי) ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%90%D7%9C%D7%99%D7%A2%D7%93+%D7%9E%D7%AA%D7%95%D7%A7+%D7%9B%D7%A9%D7%9E%D7%A8%D7%9C%D7%99" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">אליעד – מתוק כשמרלי ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%A7%D7%95%D7%91%D7%99+%D7%90%D7%A4%D7%9C%D7%9C%D7%95+%D7%A9%D7%99%D7%A8+%D7%92%D7%A2%D7%92%D7%95%D7%A2%D7%99%D7%9D" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">קובי אפללו – שיר געגועים ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=The+Lumineers+Ho+Hey" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">The Lumineers – Ho Hey ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=A+Great+Big+World+Say+Something" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">A Great Big World – Say Something ↗</a></li>
             </ul>
           </section>
 
@@ -128,11 +128,11 @@ export default function Chuppah20SongsPage() {
               אבל עדיין מלאי רגש.
             </p>
             <ul className="list-disc space-y-1 pr-5 text-white">
-              <li>Queen – Love of My Life (ביצוע אקוסטי)</li>
-              <li>מאיר בנאי – אהבה קצרה</li>
-              <li>בניה ברבי – מישהו איתי כאן</li>
-              <li>Andrea Bocelli – Con Te Partiro</li>
-              <li>נתן גושן – כל מה שיש לי</li>
+              <li><a href="https://www.youtube.com/results?search_query=Queen+Love+of+My+Life+acoustic" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">Queen – Love of My Life (ביצוע אקוסטי) ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%9E%D7%90%D7%99%D7%A8+%D7%91%D7%A0%D7%90%D7%99+%D7%90%D7%94%D7%91%D7%94+%D7%A7%D7%A6%D7%A8%D7%94" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">מאיר בנאי – אהבה קצרה ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%91%D7%A0%D7%99%D7%94+%D7%91%D7%A8%D7%91%D7%99+%D7%9E%D7%99%D7%A9%D7%94%D7%95+%D7%90%D7%99%D7%AA%D7%99+%D7%9B%D7%90%D7%9F" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">בניה ברבי – מישהו איתי כאן ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=Andrea+Bocelli+Con+Te+Partiro" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">Andrea Bocelli – Con Te Partiro ↗</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=%D7%A0%D7%AA%D7%9F+%D7%92%D7%95%D7%A9%D7%9F+%D7%9B%D7%9C+%D7%9E%D7%94+%D7%A9%D7%99%D7%A9+%D7%9C%D7%99" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition">נתן גושן – כל מה שיש לי ↗</a></li>
             </ul>
           </section>
 
