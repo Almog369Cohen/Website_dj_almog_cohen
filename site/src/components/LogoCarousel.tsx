@@ -17,33 +17,42 @@ const logos = [
 ];
 
 export default function LogoCarousel() {
-  const [current, setCurrent] = useState(0);
+  const [startIdx, setStartIdx] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % logos.length);
+      setStartIdx((prev) => (prev + 3) % logos.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  const visible = [
+    logos[startIdx % logos.length],
+    logos[(startIdx + 1) % logos.length],
+    logos[(startIdx + 2) % logos.length],
+  ];
 
   return (
     <div className="flex items-center justify-center h-12 w-full">
       <AnimatePresence mode="wait">
         <motion.div
-          key={current}
+          key={startIdx}
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center gap-10"
         >
-          <Image
-            src={logos[current].src}
-            alt={logos[current].alt}
-            width={100}
-            height={40}
-            className="object-contain grayscale"
-          />
+          {visible.map((logo) => (
+            <Image
+              key={logo.alt}
+              src={logo.src}
+              alt={logo.alt}
+              width={80}
+              height={32}
+              className="object-contain grayscale"
+            />
+          ))}
         </motion.div>
       </AnimatePresence>
     </div>
