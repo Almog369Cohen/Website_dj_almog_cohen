@@ -76,7 +76,7 @@ export default function HomeV2() {
 
 
   return (
-    <div ref={pageRef} className="min-h-screen !bg-black !text-white relative overflow-x-hidden" data-theme="dark">
+    <div ref={pageRef} className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: '#000', color: '#fff' }}>
       {/* Urgency Bar — slides in after 3s, auto-hides after 10s */}
       <AnimatePresence>
         {showUrgencyBar && (
@@ -380,7 +380,7 @@ export default function HomeV2() {
           </div>
 
           <p className="reveal text-white/70 text-sm mt-8">
-            ⚡ תגובה מיידית • � וואטסאפ פתוח • 🎉 בואו נעשה מסיבה
+            ⚡ תגובה מיידית • 💬 וואטסאפ פתוח • 🤝 ללא התחייבות
           </p>
         </div>
       </section>
