@@ -8,15 +8,13 @@ const photos = [
   { src: "/assets/gallery/djavira/entrance.jpg", alt: "כניסה לחופה עם זיקוקים" },
   { src: "/assets/gallery/djavira/dj-booth.jpg", alt: "עמדת DJ באווירה" },
   { src: "/assets/gallery/djavira/dj-almog.jpg", alt: "DJ אלמוג כהן" },
-  { src: "/assets/gallery/djavira/traditional.jpg", alt: "מסיבה מסורתית" },
+  { src: "/assets/gallery/djavira/traditional.jpg", alt: "כניסה מסורתית" },
   { src: "/assets/gallery/djavira/crowd.jpg", alt: "קהל ברחבה" },
   { src: "/assets/gallery/djavira/shoulders.jpg", alt: "על הכתפיים" },
-  { src: "/assets/gallery/djavira/hupa-wide.jpeg", alt: "חופה - מבט רחב" },
-  { src: "/assets/gallery/djavira/dance.jpg", alt: "ריקודים ברחבה" },
-  { src: "/assets/gallery/djavira/vibes.jpg", alt: "אנרגיה מטורפת" },
-  { src: "/assets/gallery/djavira/energy.jpg", alt: "רגעי שיא" },
-  { src: "/assets/gallery/djavira/party.jpg", alt: "מסיבה בלתי נשכחת" },
-  { src: "/assets/gallery/djavira/hupa.jpg", alt: "רגע בחופה" },
+  { src: "/assets/gallery/djavira/hupa-wide.jpeg", alt: "זוג על הכתפיים ברחבה" },
+  { src: "/assets/gallery/djavira/dance.jpg", alt: "אלמוג עם הזוג" },
+  { src: "/assets/gallery/djavira/party.jpg", alt: "אלמוג וצוות ליד עמדה" },
+  { src: "/assets/gallery/djavira/hupa.jpg", alt: "אלמוג עם הזוג ליד החופה" },
 ];
 
 export default function WeddingsGallery() {
