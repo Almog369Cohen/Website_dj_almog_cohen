@@ -273,9 +273,9 @@ export default function HomeV2() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { url: "https://youtu.be/yarUtbqD0BI", thumb: "https://img.youtube.com/vi/yarUtbqD0BI/maxresdefault.jpg", title: "תדמית מחתונה", desc: "רחבה שלא עוצרת" },
-              { url: "https://youtu.be/cLZaotSdbAg", thumb: "https://img.youtube.com/vi/cLZaotSdbAg/maxresdefault.jpg", title: "סט DJ חי", desc: "אנרגיה מטורפת" },
-              { url: "https://youtu.be/ivoBO3wWCbI", thumb: "https://img.youtube.com/vi/ivoBO3wWCbI/maxresdefault.jpg", title: "תדמית מסיבה", desc: "כיף שלא נגמר" }
+              { url: "https://youtu.be/yarUtbqD0BI", thumb: "https://img.youtube.com/vi/yarUtbqD0BI/maxresdefault.jpg", title: "החתונה של גל ודימה", desc: "רחבה שלא עוצרת" },
+              { url: "https://youtu.be/cLZaotSdbAg", thumb: "https://img.youtube.com/vi/cLZaotSdbAg/maxresdefault.jpg", title: "Set Live Dead Sea", desc: "אנרגיה מטורפת" },
+              { url: "https://youtu.be/ivoBO3wWCbI", thumb: "https://img.youtube.com/vi/ivoBO3wWCbI/maxresdefault.jpg", title: "סטודנטים באריאל", desc: "כיף שלא נגמר" }
             ].map((video, i) => (
               <motion.a
                 key={i}
