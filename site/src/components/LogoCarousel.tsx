@@ -42,9 +42,9 @@ export default function LogoCarousel() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-14 w-full gap-8 md:gap-14">
+    <div className="flex items-center justify-center h-8 w-full gap-6 md:gap-10">
       {slots.map((logo, i) => (
-        <div key={i} className="relative w-20 h-8">
+        <div key={i} className="relative w-16 h-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={logo.alt}
@@ -57,8 +57,8 @@ export default function LogoCarousel() {
               <Image
                 src={logo.src}
                 alt={logo.alt}
-                width={80}
-                height={32}
+                width={64}
+                height={24}
                 className="object-contain"
               />
             </motion.div>
