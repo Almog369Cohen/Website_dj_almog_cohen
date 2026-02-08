@@ -366,17 +366,7 @@ body {
   box-shadow: 0 12px 40px rgba(5, 156, 192, 0.12);
 }
 
-/* Homepage Cards - Light Mode Support */
-.light .group.relative {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(0, 0, 0, 0.08);
-}
-
-.light .group.relative:hover {
-  background: rgba(255, 255, 255, 1);
-  border-color: rgba(5, 156, 192, 0.3);
-  box-shadow: 0 20px 60px rgba(5, 156, 192, 0.15);
-}
+/* Homepage Cards - Light Mode Support removed (all pages use forced themes now) */
 
 /* Focus Visible for Accessibility */
 *:focus-visible {
