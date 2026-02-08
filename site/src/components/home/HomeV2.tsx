@@ -98,7 +98,7 @@ export default function HomeV2() {
         <div className="absolute inset-0 overflow-hidden bg-black" style={{ touchAction: 'pan-y' }}>
           <iframe
             className="absolute pointer-events-none"
-            src="https://www.youtube.com/embed/Sxfrs5Pzy8A?autoplay=1&mute=1&loop=1&playlist=Sxfrs5Pzy8A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+            src="https://www.youtube.com/embed/yarUtbqD0BI?autoplay=1&mute=1&loop=1&playlist=yarUtbqD0BI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
             title="DJ אלמוג כהן - תדמית"
             allow="autoplay; encrypted-media"
             style={{
@@ -116,11 +116,10 @@ export default function HomeV2() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 w-full text-center">
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
             >
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-4 py-2 mb-4">
@@ -128,7 +127,7 @@ export default function HomeV2() {
                 <span className="text-xs font-bold">10+ שנות ניסיון | דירוג 5★</span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black mb-3 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight">
                 <span className="bg-gradient-to-r from-[#059cc0] via-[#03b28c] to-[#059cc0] bg-clip-text text-transparent animate-gradient">
                   החתונה שלכם
                   <br />
@@ -136,14 +135,14 @@ export default function HomeV2() {
                 </span>
               </h1>
 
-              <p className="text-sm sm:text-base md:text-lg text-white/90 mb-4 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-white mb-6 leading-relaxed">
                 אל תסתכנו עם DJ שלא מכיר את הקהל שלכם.
                 <span className="block mt-1 text-[#03b28c] font-bold">
                   רחבה מלאה מהרגע הראשון. מובטח.
                 </span>
               </p>
 
-              <div className="flex flex-row gap-2 mb-4">
+              <div className="flex flex-row gap-3 mb-6 justify-center">
                 <a
                   href={getWhatsAppLink("היי אלמוג! אני רוצה לשמור תאריך לחתונה שלי 🎉")}
                   target="_blank"
@@ -170,7 +169,7 @@ export default function HomeV2() {
                 </a>
               </div>
 
-              <div className="flex items-center gap-6 text-sm text-white/60">
+              <div className="flex items-center gap-6 text-sm text-white/60 justify-center">
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5 text-[#03b28c]" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -185,7 +184,6 @@ export default function HomeV2() {
                 </div>
               </div>
             </motion.div>
-          </div>
         </div>
       </section>
 
@@ -253,8 +251,8 @@ export default function HomeV2() {
       <section className="relative py-10 md:py-14 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="reveal text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-3 text-white">תראו בעצמכם</h2>
-            <div className="h-1 w-24 mx-auto mt-1 bg-gradient-to-r from-[#059cc0] to-[#03b28c] rounded-full" />
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 text-white">תראו בעצמכם</h2>
+            <div className="h-1 w-24 mx-auto mb-4 bg-gradient-to-r from-[#059cc0] to-[#03b28c] rounded-full" />
             <p className="text-white text-base md:text-lg">לא צריך להאמין לי. תראו מה קורה באירועים שלי.</p>
           </div>
 
@@ -302,8 +300,8 @@ export default function HomeV2() {
       <section className="relative py-10 md:py-14 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="reveal text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 text-white">שאלות נפוצות</h2>
-            <div className="h-1 w-24 mx-auto mt-1 bg-gradient-to-r from-[#03b28c] to-[#059cc0] rounded-full" />
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-white">שאלות נפוצות</h2>
+            <div className="h-1 w-24 mx-auto mb-4 bg-gradient-to-r from-[#03b28c] to-[#059cc0] rounded-full" />
             <p className="text-white text-base md:text-lg">כל מה שצריך לדעת לפני שמתחילים</p>
           </div>
 

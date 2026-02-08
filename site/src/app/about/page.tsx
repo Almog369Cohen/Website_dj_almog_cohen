@@ -52,7 +52,7 @@ export default function AboutPage() {
             <p className="text-lg sm:text-xl md:text-2xl text-white font-bold max-w-2xl mx-auto">
               על הבמה — בונה רחבות.
               <br />
-              מחוץ לבמה — בונה DJ-ים.
+              מחוץ לבמה — בונה את הדור הבא.
             </p>
           </motion.div>
         </div>
@@ -158,7 +158,7 @@ export default function AboutPage() {
                     <span className="text-[10px] font-bold text-[#03b28c] uppercase tracking-wider">Compakt Academy</span>
                   </div>
                   <h2 className="text-2xl md:text-3xl font-black text-white mb-3">
-                    בונה DJ-ים
+                    בונה את הדור הבא
                   </h2>
                   <p className="text-white text-sm leading-relaxed mb-6">
                     לתת לדור הבא את הידע והכלים בדרך הכי חדשנית.
@@ -205,18 +205,6 @@ export default function AboutPage() {
             </blockquote>
             <p className="text-white/50 text-sm font-bold">— אלמוג כהן</p>
           </motion.div>
-        </div>
-      </section>
-
-      {/* Social Proof — Logos */}
-      <section className="px-4 py-12 border-t border-white/10">
-        <div className="mx-auto max-w-4xl">
-          <p className="text-center text-xs font-bold uppercase tracking-widest text-white/50 mb-6">עבדתי עם</p>
-          <div className="flex flex-wrap items-center justify-center gap-8 opacity-50">
-            <Image src="/assets/clients/DHL.png" alt="DHL" width={60} height={30} className="h-8 w-auto object-contain invert" />
-            <Image src="/assets/clients/logoapril.jpeg" alt="April" width={60} height={30} className="h-8 w-auto object-contain invert rounded" />
-            <Image src="/assets/clients/אריאל .jpeg" alt="Ariel" width={60} height={30} className="h-8 w-auto object-contain invert rounded" />
-          </div>
         </div>
       </section>
 
