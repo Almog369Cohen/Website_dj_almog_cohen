@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
-/* Global mobile scroll safety */
-html, body {
+/* Global mobile scroll safety — only on body, never html (breaks mobile Safari scroll) */
+body {
   overflow-x: hidden;
 }
 
@@ -399,11 +399,15 @@ body {
 
 @media (max-width: 768px) {
   /* Prevent horizontal scroll and layout shifts */
-  html, body {
+  body {
     overflow-x: hidden !important;
     width: 100%;
-    position: relative;
     -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure vertical scroll + pinch-zoom always work on mobile */
+  html, body {
+    touch-action: pan-y pinch-zoom;
   }
   
   /* SMART ANIMATIONS: קיצור במקום ביטול */
@@ -440,9 +444,9 @@ body {
     font-display: swap;
   }
   
-  /* Prevent iOS bounce/rubber-band effect */
+  /* Contain iOS bounce — 'contain' prevents propagation without blocking scroll */
   body {
-    overscroll-behavior-y: none;
+    overscroll-behavior-y: contain;
     overscroll-behavior-x: none;
   }
   

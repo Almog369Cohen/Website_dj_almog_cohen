@@ -94,8 +94,8 @@ export default function HomeV2() {
       </AnimatePresence>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-end justify-center pb-12 md:pb-16">
-        <div className="absolute inset-0 overflow-hidden bg-black" style={{ touchAction: 'pan-y' }}>
+      <section className="relative min-h-screen flex items-end justify-center pb-12 md:pb-16" style={{ touchAction: 'pan-y' }}>
+        <div className="absolute inset-0 overflow-hidden bg-black pointer-events-none">
           <iframe
             className="absolute pointer-events-none"
             src="https://www.youtube.com/embed/yarUtbqD0BI?autoplay=1&mute=1&loop=1&playlist=yarUtbqD0BI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
@@ -113,7 +113,7 @@ export default function HomeV2() {
               transform: 'translate(-50%, -50%)',
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black pointer-events-none" />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 w-full text-center">
