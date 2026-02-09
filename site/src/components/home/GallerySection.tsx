@@ -7,11 +7,15 @@ import { useReveal } from "@/hooks/useReveal";
 
 const photos = [
   { src: "/assets/gallery/djavira/entrance.jpg", alt: "כניסה לחופה עם זיקוקים" },
+  { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.04 (4).jpeg", alt: "מסיבה עם אורות ניאון" },
   { src: "/assets/gallery/djavira/dj-almog.jpg", alt: "DJ אלמוג כהן" },
+  { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.08 (2).jpeg", alt: "אלמוג על עמדת Pioneer DJ" },
   { src: "/assets/gallery/djavira/traditional.jpg", alt: "מסיבה מסורתית" },
   { src: "/assets/gallery/djavira/crowd.jpg", alt: "קהל ברחבה" },
+  { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.09.jpeg", alt: "אלמוג מחייך על העמדה" },
   { src: "/assets/gallery/djavira/shoulders.jpg", alt: "על הכתפיים" },
   { src: "/assets/gallery/djavira/hupa-wide.jpeg", alt: "חופה - מבט רחב" },
+  { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.04.jpeg", alt: "זוג עם DJ ליד העמדה" },
   { src: "/assets/gallery/djavira/dance.jpg", alt: "ריקודים ברחבה" },
   { src: "/assets/gallery/djavira/party.jpg", alt: "מסיבה בלתי נשכחת" },
 ];

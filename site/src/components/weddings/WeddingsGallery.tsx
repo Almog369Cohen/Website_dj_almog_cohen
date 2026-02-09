@@ -6,12 +6,16 @@ import Image from "next/image";
 
 const photos = [
   { src: "/assets/gallery/djavira/entrance.jpg", alt: "כניסה לחופה עם זיקוקים" },
+  { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.04 (4).jpeg", alt: "מסיבה עם אורות ניאון" },
   { src: "/assets/gallery/djavira/dj-booth.jpg", alt: "עמדת DJ באווירה" },
   { src: "/assets/gallery/djavira/dj-almog.jpg", alt: "DJ אלמוג כהן" },
+  { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.08 (2).jpeg", alt: "אלמוג על עמדת Pioneer DJ" },
   { src: "/assets/gallery/djavira/traditional.jpg", alt: "כניסה מסורתית" },
   { src: "/assets/gallery/djavira/crowd.jpg", alt: "קהל ברחבה" },
+  { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.09.jpeg", alt: "אלמוג מחייך על העמדה" },
   { src: "/assets/gallery/djavira/shoulders.jpg", alt: "על הכתפיים" },
   { src: "/assets/gallery/djavira/hupa-wide.jpeg", alt: "זוג על הכתפיים ברחבה" },
+  { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.04.jpeg", alt: "זוג עם DJ ליד העמדה" },
   { src: "/assets/gallery/djavira/dance.jpg", alt: "אלמוג עם הזוג" },
   { src: "/assets/gallery/djavira/party.jpg", alt: "אלמוג וצוות ליד עמדה" },
   { src: "/assets/gallery/djavira/hupa.jpg", alt: "אלמוג עם הזוג ליד החופה" },
