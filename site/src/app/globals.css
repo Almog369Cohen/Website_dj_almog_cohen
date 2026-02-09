@@ -410,32 +410,16 @@ body {
     touch-action: pan-y pinch-zoom;
   }
   
-  /* SMART ANIMATIONS: קיצור במקום ביטול */
-  *:not(.no-animation) {
-    animation-duration: 0.2s !important;
-    transition-duration: 0.15s !important;
-  }
-  
-  *::before,
-  *::after {
-    animation-duration: 0.2s !important;
-    transition-duration: 0.15s !important;
-  }
-  
-  /* Framer Motion - קיצור, לא ביטול */
-  [data-framer-motion],
-  [data-projection-id] {
-    transition-duration: 0.15s !important;
-  }
-  
-  /* רק אנימציות כבדות מבוטלות */
+  /* Disable only heavy/infinite animations on mobile */
   .animate-pulse,
   .animate-ping,
   .animate-spin,
   .animate-bounce,
   [class*="blob"],
   [class*="morph"],
-  [class*="float"] {
+  [class*="float"],
+  .fade-mask-premium,
+  .image-fade-premium {
     animation: none !important;
   }
   
@@ -450,25 +434,15 @@ body {
     overscroll-behavior-x: none;
   }
   
-  /* Remove will-change to prevent repaint issues */
-  * {
-    will-change: auto !important;
-  }
+  /* Let Framer Motion and browser manage their own compositing layers */
 }
 
-/* Typography - Anti-Shake & Smooth Rendering */
+/* Typography - Smooth Rendering */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-assistant), var(--font-hebrew-sans), system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue";
-  /* Prevent text shaking/jittering during scroll */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  /* Stabilize transforms */
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-  /* Prevent subpixel shifts */
-  will-change: transform;
 }
 
 /* Body text - Smooth rendering */

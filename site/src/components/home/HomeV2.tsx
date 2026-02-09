@@ -13,7 +13,7 @@ function FAQItem({ faq }: { faq: { q: string; a: string; icon: React.ReactNode; 
   const [isOpen, setIsOpen] = useState(faq.defaultOpen);
   return (
     <div
-      className="reveal bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:border-[#03b28c]/50 transition-all"
+      className="reveal bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-[#03b28c]/50 transition-colors"
     >
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -60,12 +60,7 @@ export default function HomeV2() {
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setViewersCount(Math.floor(Math.random() * 20) + 40);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  // Removed: viewer count interval was causing re-renders during scroll
 
   useEffect(() => {
     const showTimer = setTimeout(() => setShowUrgencyBar(true), 3000);
@@ -188,7 +183,7 @@ export default function HomeV2() {
       </section>
 
       {/* Logo Carousel */}
-      <section className="relative py-4 md:py-6 bg-white/5 backdrop-blur-xl border-y border-white/10 overflow-hidden">
+      <section className="relative py-4 md:py-6 bg-[#0d0d0d] border-y border-white/10 overflow-hidden">
         <div className="mb-4 text-center">
           <p className="text-white text-xs font-bold">עבדתי עם המותגים הגדולים בארץ</p>
         </div>
@@ -207,7 +202,7 @@ export default function HomeV2() {
       {/* Stats Section — Elegant Counter Strip */}
       <section className="relative py-6 md:py-8 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-2xl">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a]">
             <div className="absolute inset-0 bg-gradient-to-r from-[#059cc0]/10 via-transparent to-[#03b28c]/10" />
             <div className="relative flex items-center justify-around py-8 md:py-10">
               {[
