@@ -9,6 +9,8 @@ const screenshots = [
   { src: "/assets/testimonials/wa-2.png", name: "אוריאל ויעל" },
   { src: "/assets/testimonials/wa-4.png", name: "שיר ואדיר" },
   { src: "/assets/testimonials/wa-5.png", name: "הראל ואביב" },
+  { src: "/assets/testimonials/wa-6.png", name: "טלי" },
+  { src: "/assets/testimonials/wa-8.png", name: "חגי ואוראל" },
 ];
 
 export default function WhatsAppTestimonials() {
