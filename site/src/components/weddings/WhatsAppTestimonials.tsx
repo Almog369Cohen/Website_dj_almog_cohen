@@ -7,7 +7,8 @@ import Image from "next/image";
 const screenshots = [
   { src: "/assets/testimonials/wa-1.png", name: "שיראל ואופק" },
   { src: "/assets/testimonials/wa-2.png", name: "אוריאל ויעל" },
-  { src: "/assets/testimonials/wa-3.png", name: "פלורין" },
+  { src: "/assets/testimonials/wa-4.png", name: "שיר ואדיר" },
+  { src: "/assets/testimonials/wa-5.png", name: "הראל ואביב" },
 ];
 
 export default function WhatsAppTestimonials() {
