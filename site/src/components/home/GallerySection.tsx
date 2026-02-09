@@ -16,7 +16,9 @@ const photos = [
   { src: "/assets/gallery/djavira/shoulders.jpg", alt: "על הכתפיים" },
   { src: "/assets/gallery/djavira/hupa-wide.jpeg", alt: "חופה - מבט רחב" },
   { src: "/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.04.jpeg", alt: "זוג עם DJ ליד העמדה" },
+  { src: "/photo almog cohen website/1-145.jpg", alt: "כלה על עמדת DJ" },
   { src: "/assets/gallery/djavira/dance.jpg", alt: "ריקודים ברחבה" },
+  { src: "/photo almog cohen website/1-555.jpg", alt: "אלמוג עם הזוג ליד החופה" },
   { src: "/assets/gallery/djavira/party.jpg", alt: "מסיבה בלתי נשכחת" },
 ];
 
