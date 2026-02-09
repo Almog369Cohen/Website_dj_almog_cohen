@@ -175,6 +175,22 @@ export default function WeddingsPage() {
               </a>
             </div>
           </div>
+
+          <div className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-gray-50 backdrop-blur-xl">
+            <div className="p-4 text-center">
+              <p className="text-black font-bold text-lg mb-1">המלצה מהזוג</p>
+              <p className="text-gray-600 text-sm">שמעו מה הזוג אומר אחרי האירוע</p>
+            </div>
+            <div className="aspect-video w-full">
+              <iframe
+                className="h-full w-full"
+                src="https://www.youtube-nocookie.com/embed/wtd6UuvGaGk"
+                title="המלצה מזוג - DJ אלמוג כהן"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          </div>
         </div>
       </section>
 
