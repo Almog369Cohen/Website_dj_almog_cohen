@@ -1,0 +1,40 @@
+{
+  "name": "Compakt — המסע המוזיקלי שלכם",
+  "short_name": "Compakt",
+  "description": "תאמו את המוזיקה לאירוע שלכם בצורה כיפית ופשוטה",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0f",
+  "theme_color": "#059cc0",
+  "dir": "rtl",
+  "lang": "he",
+  "categories": [
+    "entertainment",
+    "music"
+  ],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "פאנל ניהול",
+      "url": "/admin",
+      "description": "ניהול שירים ואירועים"
+    }
+  ]
+}

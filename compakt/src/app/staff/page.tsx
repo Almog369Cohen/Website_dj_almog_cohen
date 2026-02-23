@@ -1,0 +1,129 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Shield, Loader2, Eye, EyeOff } from "lucide-react";
+import { supabase } from "@/lib/supabase/client";
+import { hebrewAuthError } from "@/lib/auth/errors-he";
+
+export default function StaffLoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("almog294@gmail.com");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const canSubmit = useMemo(() => {
+    return email.trim().length > 3 && password.length >= 6 && !loading;
+  }, [email, password, loading]);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      // All auth + profile read happens server-side (bypasses RLS)
+      const res = await fetch("/api/auth/staff-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), password }),
+      });
+
+      const body = await res.json();
+
+      if (!res.ok) {
+        if (body.error === "NOT_STAFF") {
+          setError("המשתמש לא מוגדר כאיש צוות");
+        } else {
+          setError(hebrewAuthError(body.error ?? "Unknown error"));
+        }
+        return;
+      }
+
+      // Set the session on the client so subsequent pages work
+      if (supabase && body.session) {
+        await supabase.auth.setSession({
+          access_token: body.session.access_token,
+          refresh_token: body.session.refresh_token,
+        });
+      }
+
+      router.replace("/backoffice");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-dvh gradient-hero flex items-center justify-center px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass-card p-8 w-full max-w-md"
+      >
+        <div
+          className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4"
+          style={{ background: "linear-gradient(135deg, #059cc0, #03b28c)" }}
+        >
+          <Shield className="w-6 h-6 text-white" />
+        </div>
+        <h1 className="text-xl font-bold mb-2">כניסה לצוות</h1>
+        <p className="text-sm text-secondary mb-6">התחבר כדי להיכנס ל־Backoffice</p>
+
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm mb-2">אימייל</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl bg-transparent border border-glass text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-brand-blue transition-colors"
+              placeholder="name@example.com"
+              autoComplete="email"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">סיסמה</label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-transparent border border-glass text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-brand-blue transition-colors"
+                placeholder="••••••••"
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground transition-colors"
+                aria-label={showPassword ? "הסתר סיסמה" : "הצג סיסמה"}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+
+          {error && (
+            <div className="text-sm" style={{ color: "var(--accent-danger)" }}>
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={!canSubmit}
+            className="btn-primary w-full flex items-center justify-center gap-2"
+          >
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+            התחבר
+          </button>
+        </form>
+      </motion.div>
+    </div>
+  );
+}
