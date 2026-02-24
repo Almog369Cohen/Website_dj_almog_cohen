@@ -21,7 +21,7 @@ export function VinylSpinner({ size = 80, spinning = true, className = "" }: Vin
     >
       <svg viewBox="0 0 100 100" width={size} height={size}>
         {/* Outer ring */}
-        <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(201,168,76,0.15)" strokeWidth="1.5" />
+        <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(5,156,192,0.2)" strokeWidth="1.5" />
 
         {/* Vinyl body */}
         <circle cx="50" cy="50" r="46" fill="#12101a" />
@@ -36,7 +36,7 @@ export function VinylSpinner({ size = 80, spinning = true, className = "" }: Vin
               cy="50"
               r={grooveR}
               fill="none"
-              stroke="rgba(201,168,76,0.06)"
+              stroke="rgba(5,156,192,0.08)"
               strokeWidth="0.5"
             />
           );
@@ -45,8 +45,8 @@ export function VinylSpinner({ size = 80, spinning = true, className = "" }: Vin
         {/* Gold gradient ring — label area */}
         <defs>
           <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#c9a84c" />
-            <stop offset="100%" stopColor="#e8c87a" />
+            <stop offset="0%" stopColor="#059cc0" />
+            <stop offset="100%" stopColor="#03b28c" />
           </linearGradient>
           <radialGradient id="label-grad">
             <stop offset="0%" stopColor="#1a1520" />

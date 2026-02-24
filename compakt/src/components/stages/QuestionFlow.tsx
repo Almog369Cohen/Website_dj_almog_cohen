@@ -126,7 +126,7 @@ export function QuestionFlow() {
   if (!question) return null;
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto flex flex-col min-h-[calc(100dvh-180px)]">
       {/* Back to setup confirm */}
       <ConfirmModal
         open={showBackConfirm}
@@ -139,57 +139,61 @@ export function QuestionFlow() {
         onCancel={() => setShowBackConfirm(false)}
       />
 
-      {/* Progress bar + percentage */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-2 px-1">
-          <span className="text-xs text-muted font-medium">שאלה {currentIndex + 1} מתוך {total}</span>
-          <span className="text-xs font-bold text-gold">{Math.round(((currentIndex) / total) * 100)}%</span>
-        </div>
-        <div className="h-1 rounded-full bg-white/[0.06] overflow-hidden">
+      {/* ── Top: thin progress bar + counter ── */}
+      <div className="mb-4">
+        <div className="h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
           <motion.div
             className="h-full rounded-full"
-            style={{ background: "linear-gradient(to right, var(--accent-primary), var(--accent-secondary))" }}
+            style={{ background: "linear-gradient(to right, #059cc0, #03b28c)" }}
             initial={false}
             animate={{ width: `${((currentIndex + 1) / total) * 100}%` }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           />
         </div>
+        <div className="flex items-center justify-between mt-2 px-1">
+          <span className="text-[11px] text-muted font-medium">{currentIndex + 1} / {total}</span>
+          <span className="text-[11px] font-bold text-brand-blue">{Math.round(((currentIndex + 1) / total) * 100)}%</span>
+        </div>
       </div>
 
-      <AnimatePresence mode="wait" custom={direction}>
-        <motion.div
-          key={question.id}
-          custom={direction}
-          initial={{ opacity: 0, x: direction * 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: direction * -100 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        >
-          <QuestionCard
-            question={question}
-            existingValue={existingAnswer?.answerValue}
-            onAnswer={(value) => {
-              if (question.id === ETHNIC_MUSIC_Q_ID) {
-                if (value === "yes") {
-                  saveAnswer(ETHNIC_MUSIC_Q_ID, "yes");
-                  setShowEthnicModal(true);
-                  trackEvent("ethnic_music_yes", {});
+      {/* ── Center: Question content — grows to fill ── */}
+      <div className="flex-1 flex flex-col justify-center">
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={question.id}
+            custom={direction}
+            initial={{ opacity: 0, scale: 0.96, rotateY: direction * 8 }}
+            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+            exit={{ opacity: 0, scale: 0.96, rotateY: direction * -8 }}
+            transition={{ type: "spring", stiffness: 280, damping: 28 }}
+            style={{ perspective: "1200px" }}
+          >
+            <QuestionCard
+              question={question}
+              existingValue={existingAnswer?.answerValue}
+              onAnswer={(value) => {
+                if (question.id === ETHNIC_MUSIC_Q_ID) {
+                  if (value === "yes") {
+                    saveAnswer(ETHNIC_MUSIC_Q_ID, "yes");
+                    setShowEthnicModal(true);
+                    trackEvent("ethnic_music_yes", {});
+                    return;
+                  }
+                  saveAnswer(ETHNIC_MUSIC_Q_ID, "no");
+                  saveAnswer(ETHNIC_MUSIC_TEXT_ID, "");
+                  trackEvent("ethnic_music_no", {});
                   return;
                 }
-                saveAnswer(ETHNIC_MUSIC_Q_ID, "no");
-                saveAnswer(ETHNIC_MUSIC_TEXT_ID, "");
-                trackEvent("ethnic_music_no", {});
-                return;
-              }
 
-              saveAnswer(question.id, value);
-            }}
-            onSubmitText={() => {
-              if (canContinue) goNext();
-            }}
-          />
-        </motion.div>
-      </AnimatePresence>
+                saveAnswer(question.id, value);
+              }}
+              onSubmitText={() => {
+                if (canContinue) goNext();
+              }}
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       <AnimatePresence>
         {showEthnicModal && (
@@ -206,35 +210,51 @@ export function QuestionFlow() {
         )}
       </AnimatePresence>
 
-      {/* Navigation */}
-      <div className="flex items-center justify-between mt-8 gap-3">
-        <button
-          onClick={goBack}
-          className="flex items-center gap-1.5 text-sm text-secondary hover:text-foreground transition-all active:scale-95 py-2.5 px-4 rounded-full hover:bg-white/[0.05]"
+      {/* ── Fixed Bottom Navigation Bar ── */}
+      <div className="mt-auto pt-4 pb-2">
+        <div
+          className="flex items-center justify-between gap-3 px-4 py-3 rounded-2xl"
+          style={{
+            background: "var(--bg-surface)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: "1px solid var(--glass-border)",
+          }}
         >
-          <ChevronRight className="w-4 h-4" />
-          הקודם
-        </button>
+          <button
+            onClick={goBack}
+            className="flex items-center gap-1 text-sm text-secondary hover:text-foreground transition-all active:scale-95 py-2 px-3 rounded-xl hover:bg-white/[0.05]"
+          >
+            <ChevronRight className="w-4 h-4" />
+            הקודם
+          </button>
 
-        <button
-          onClick={skip}
-          className="flex items-center gap-1.5 text-xs text-muted hover:text-secondary transition-all active:scale-95 py-2 px-3 rounded-full"
-        >
-          דלג
-          <SkipForward className="w-3.5 h-3.5" />
-        </button>
+          <button
+            onClick={skip}
+            className="flex items-center gap-1 text-[11px] text-muted hover:text-secondary transition-all active:scale-95 py-1.5 px-2.5 rounded-lg"
+          >
+            דלג
+            <SkipForward className="w-3 h-3" />
+          </button>
 
-        <button
-          onClick={goNext}
-          disabled={!canContinue}
-          className={`flex items-center gap-1.5 text-sm font-bold transition-all active:scale-95 py-2.5 px-5 rounded-full ${canContinue
-            ? "btn-primary !py-2.5 !px-5 !rounded-full"
-            : "text-muted opacity-40 cursor-not-allowed"
-            }`}
-        >
-          המשך
-          <ChevronLeft className="w-4 h-4" />
-        </button>
+          <motion.button
+            onClick={goNext}
+            disabled={!canContinue}
+            animate={canContinue ? { scale: [1, 1.04, 1] } : {}}
+            transition={canContinue ? { duration: 1.5, repeat: Infinity, ease: "easeInOut" } : {}}
+            className={`flex items-center gap-1.5 text-sm font-bold py-2.5 px-6 rounded-xl transition-all active:scale-95 ${canContinue
+              ? "text-white shadow-gold-sm"
+              : "text-muted opacity-40 cursor-not-allowed bg-white/[0.04]"
+              }`}
+            style={canContinue ? {
+              background: "linear-gradient(135deg, #059cc0, #03b28c)",
+              boxShadow: "0 4px 20px rgba(5, 156, 192, 0.3)",
+            } : undefined}
+          >
+            המשך
+            <ChevronLeft className="w-4 h-4" />
+          </motion.button>
+        </div>
       </div>
     </div>
   );
@@ -452,6 +472,9 @@ function QuestionCard({
     );
   };
 
+  const stripEmoji = (text: string) =>
+    text.replace(/(?:[\u2600-\u27BF]|[\uD83C-\uDBFF][\uDC00-\uDFFF]|\uFE0F|\u200D)+/g, "").trim();
+
   return (
     <div className="glass-card p-6 sm:p-8">
       <h2 className="font-display text-2xl sm:text-3xl font-black text-center mb-8 leading-relaxed tracking-tight text-balance">
@@ -467,11 +490,11 @@ function QuestionCard({
               whileTap={{ scale: 0.97 }}
               onClick={() => onAnswer(opt.value)}
               className={`w-full min-h-[56px] text-center px-4 py-3.5 rounded-2xl border-2 transition-all whitespace-normal break-words text-[0.94rem] leading-snug ${existingValue === opt.value
-                ? "border-brand-gold bg-brand-gold/10 text-brand-gold font-semibold shadow-gold-sm"
-                : "border-glass-strong text-secondary hover:border-brand-gold/30 hover:bg-white/[0.03]"
+                ? "border-brand-blue bg-brand-blue/10 text-brand-blue font-semibold shadow-gold-sm"
+                : "border-glass-strong text-secondary hover:border-brand-blue/30 hover:bg-white/[0.03]"
                 }`}
             >
-              {opt.label}
+              {stripEmoji(opt.label)}
             </motion.button>
           ))}
         </div>
@@ -525,8 +548,8 @@ function QuestionCard({
                       }
                     }}
                     className={`w-full min-h-[56px] text-center px-4 py-3.5 rounded-2xl border-2 transition-all whitespace-normal break-words text-[0.94rem] leading-snug ${active
-                      ? "border-brand-gold bg-brand-gold/10 text-brand-gold font-semibold shadow-gold-sm"
-                      : "border-glass-strong text-secondary hover:border-brand-gold/30 hover:bg-white/[0.03]"
+                      ? "border-brand-blue bg-brand-blue/10 text-brand-blue font-semibold shadow-gold-sm"
+                      : "border-glass-strong text-secondary hover:border-brand-blue/30 hover:bg-white/[0.03]"
                       }`}
                   >
                     {p.label}
@@ -656,27 +679,11 @@ function QuestionCard({
                   onAnswer(updated);
                 }}
                 className={`w-full min-h-[56px] text-center px-4 py-3.5 rounded-2xl border-2 transition-all whitespace-normal break-words text-[0.94rem] leading-snug ${isSelected
-                  ? "border-brand-gold bg-brand-gold/10 text-brand-gold font-semibold shadow-gold-sm"
-                  : "border-glass-strong text-secondary hover:border-brand-gold/30 hover:bg-white/[0.03]"
+                  ? "border-brand-blue bg-brand-blue/10 text-brand-blue font-semibold shadow-gold-sm"
+                  : "border-glass-strong text-secondary hover:border-brand-blue/30 hover:bg-white/[0.03]"
                   }`}
               >
-                <span className="flex items-center justify-center gap-2.5">
-                  <span
-                    className={`w-5 h-5 rounded-md border-2 flex-shrink-0 flex items-center justify-center transition-all ${isSelected ? "border-brand-gold bg-brand-gold" : "border-glass-strong"
-                      }`}
-                  >
-                    {isSelected && (
-                      <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="text-white text-xs"
-                      >
-                        ✓
-                      </motion.span>
-                    )}
-                  </span>
-                  {opt.label}
-                </span>
+                {stripEmoji(opt.label)}
               </motion.button>
             );
           })}

@@ -30,7 +30,7 @@ export function AmbientBackground() {
             bottom: "-5%",
             width: p.size,
             height: p.size,
-            background: `radial-gradient(circle, rgba(201,168,76,${p.opacity}) 0%, transparent 70%)`,
+            background: `radial-gradient(circle, rgba(5,156,192,${p.opacity}) 0%, transparent 70%)`,
             animation: `float-particle ${p.duration}s ${p.delay}s linear infinite`,
           }}
         />

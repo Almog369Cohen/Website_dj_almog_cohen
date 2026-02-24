@@ -31,14 +31,14 @@ export function StageNav() {
               }}
               disabled={isFuture}
               className={`text-[11px] sm:text-xs font-medium px-2 sm:px-3 py-1.5 sm:py-2 rounded-full transition-all flex items-center gap-1.5 min-h-[32px] ${isCurrent
-                ? "bg-gradient-to-r from-brand-gold to-brand-gold-light text-brand-gray shadow-gold-sm"
+                ? "bg-brand-blue text-white shadow-gold-sm"
                 : isDone
                   ? "bg-brand-green/15 text-brand-green cursor-pointer hover:bg-brand-green/25"
                   : "glass-card text-muted opacity-50 cursor-default"
                 }`}
             >
               {isDone ? (
-                <Check className="w-3 h-3 text-brand-gold" />
+                <Check className="w-3 h-3" />
               ) : (
                 <Icon className="w-3 h-3" />
               )}

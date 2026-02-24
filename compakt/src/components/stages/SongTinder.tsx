@@ -8,6 +8,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform, animate, PanInfo
 import { Heart, X, Star, HelpCircle, Play, Pause, Volume2, SkipForward, SkipBack, ChevronLeft } from "lucide-react";
 import type { SwipeAction, Song, SongSwipe, SongCategory } from "@/lib/types";
 import { SwipeTutorial, useSwipeTutorial } from "@/components/ui/SwipeTutorial";
+import { CircularProgress } from "@/components/ui/CircularProgress";
 
 const SWIPE_THRESHOLD = 100;
 
@@ -267,7 +268,7 @@ export function SongTinder() {
               className={`w-2 h-2 rounded-full transition-colors ${i < currentCatIdx
                 ? "bg-brand-green"
                 : i === currentCatIdx
-                  ? "bg-brand-gold"
+                  ? "bg-brand-blue"
                   : "bg-white/10"
                 }`}
             />
@@ -784,9 +785,19 @@ function SwipeCard({
 
         {/* Center: Cover + Info */}
         <div className="flex flex-col items-center w-full">
-          {/* Cover Art with vinyl effect */}
-          <div className="relative mb-5">
-            <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10 relative">
+          {/* Cover Art with breathe animation */}
+          <motion.div
+            className="relative mb-5"
+            animate={isPlaying ? { scale: [1, 1.02, 1] } : { scale: 1 }}
+            transition={isPlaying ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : {}}
+          >
+            <div className="w-52 h-52 sm:w-60 sm:h-60 rounded-3xl overflow-hidden shadow-2xl relative"
+              style={{
+                boxShadow: isPlaying
+                  ? "0 20px 60px rgba(5,156,192,0.2), 0 0 0 1px rgba(255,255,255,0.08)"
+                  : "0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)",
+              }}
+            >
               {!imgError && song.coverUrl ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
@@ -797,23 +808,22 @@ function SwipeCard({
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center"
-                  style={{ background: "linear-gradient(135deg, #1a1a3e, #0a0a1e)" }}>
+                  style={{ background: "linear-gradient(135deg, #0d1b2a, #0a0a1e)" }}>
                   <Volume2 className="w-14 h-14 text-white/20" />
                 </div>
               )}
-              {/* Spinning vinyl ring when playing */}
+              {/* Glow ring when playing */}
               {isPlaying && (
                 <div className="absolute inset-0 rounded-3xl pointer-events-none"
                   style={{
-                    boxShadow: "inset 0 0 0 3px rgba(5,156,192,0.4), 0 0 20px rgba(5,156,192,0.2)",
-                    animation: "pulse 2s ease-in-out infinite",
+                    boxShadow: "inset 0 0 0 2px rgba(5,156,192,0.35)",
                   }} />
               )}
             </div>
-          </div>
+          </motion.div>
 
           {/* Song Info */}
-          <h3 className="text-2xl font-black text-white text-center leading-tight mb-1 tracking-tight">
+          <h3 className="font-display text-3xl font-black text-white text-center leading-tight mb-1.5 tracking-tight">
             {song.title}
           </h3>
           <p className="text-white/50 text-sm font-medium mb-3">{song.artist}</p>
@@ -829,8 +839,8 @@ function SwipeCard({
           </div>
         </div>
 
-        {/* ── Bottom: Audio Player ── */}
-        <div className="w-full space-y-2">
+        {/* ── Bottom: Premium Audio Player ── */}
+        <div className="w-full space-y-3">
           {/* Hidden audio */}
           {isGcsAudio && (
             <audio
@@ -856,66 +866,72 @@ function SwipeCard({
             />
           )}
 
-          {hasAnyPreview && (
+          {hasAnyPreview ? (
             <>
-              {/* Progress bar */}
-              <div className="w-full">
-                <div className="w-full h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.08)" }}>
-                  <div
-                    className="h-full rounded-full transition-[width] duration-300 ease-linear"
-                    style={{
-                      width: `${progress}%`,
-                      background: "linear-gradient(to right, #059cc0, #03b28c)",
-                    }}
-                  />
-                </div>
-                <div className="flex justify-between mt-1 text-[10px] font-mono text-white/30" dir="ltr">
-                  <span>{formatPlayerTime(currentTimeSec)}</span>
-                  <span>{formatPlayerTime(clipDuration)}</span>
-                </div>
-              </div>
-
-              {/* Transport controls */}
-              <div className="flex items-center justify-center gap-3">
+              {/* Transport: Seek Back — Circular Play — Seek Forward */}
+              <div className="flex items-center justify-center gap-5">
                 {/* -15s */}
                 <button
                   onClick={(e) => { e.stopPropagation(); seekRelative(-15); }}
-                  className="w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90"
-                  style={{ background: "rgba(255,255,255,0.06)" }}
+                  className="w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-90"
+                  style={{
+                    background: "rgba(255,255,255,0.08)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                  }}
                   aria-label="15 שניות אחורה"
                 >
-                  <SkipBack className="w-4 h-4 text-white/50" />
+                  <SkipBack className="w-4 h-4 text-white/60" />
                 </button>
 
-                {/* Play/Pause */}
-                <button
-                  onClick={(e) => { e.stopPropagation(); onTogglePlay(); }}
-                  className="w-14 h-14 rounded-full flex items-center justify-center transition-all active:scale-90 shadow-lg"
-                  style={{
-                    background: isPlaying
-                      ? "linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))"
-                      : "linear-gradient(135deg, #059cc0, #03b28c)",
-                  }}
-                  aria-label={isPlaying ? "השהה" : "נגן"}
-                >
-                  {isPlaying ? (
-                    <Pause className="w-6 h-6 text-white" />
-                  ) : (
-                    <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
-                  )}
-                </button>
+                {/* Play/Pause with circular progress ring */}
+                <div className="relative">
+                  <CircularProgress progress={progress} size={72} strokeWidth={3} />
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onTogglePlay(); }}
+                    className="absolute inset-0 m-auto w-14 h-14 rounded-full flex items-center justify-center transition-all active:scale-90"
+                    style={{
+                      background: isPlaying
+                        ? "rgba(255,255,255,0.1)"
+                        : "linear-gradient(135deg, #059cc0, #03b28c)",
+                      boxShadow: isPlaying
+                        ? "none"
+                        : "0 4px 24px rgba(5,156,192,0.35)",
+                    }}
+                    aria-label={isPlaying ? "השהה" : "נגן"}
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-6 h-6 text-white" />
+                    ) : (
+                      <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
+                    )}
+                  </button>
+                </div>
 
                 {/* +15s */}
                 <button
                   onClick={(e) => { e.stopPropagation(); seekRelative(15); }}
-                  className="w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90"
-                  style={{ background: "rgba(255,255,255,0.06)" }}
+                  className="w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-90"
+                  style={{
+                    background: "rgba(255,255,255,0.08)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                  }}
                   aria-label="15 שניות קדימה"
                 >
-                  <SkipForward className="w-4 h-4 text-white/50" />
+                  <SkipForward className="w-4 h-4 text-white/60" />
                 </button>
               </div>
+
+              {/* Time display */}
+              <div className="flex justify-center text-[10px] font-mono text-white/35 gap-1" dir="ltr">
+                <span>{formatPlayerTime(currentTimeSec)}</span>
+                <span>/</span>
+                <span>{formatPlayerTime(clipDuration)}</span>
+              </div>
             </>
+          ) : (
+            <div className="text-center py-2">
+              <p className="text-[11px] text-white/30">אין תצוגה מקדימה</p>
+            </div>
           )}
 
           {/* YouTube fallback */}

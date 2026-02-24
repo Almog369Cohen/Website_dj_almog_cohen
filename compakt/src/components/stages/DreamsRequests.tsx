@@ -130,7 +130,7 @@ export function DreamsRequests() {
                 />
                 <button
                   onClick={addMomentRequest}
-                  className="p-2 rounded-xl bg-brand-gold text-brand-gray"
+                  className="p-2 rounded-xl bg-brand-blue text-white"
                   aria-label="הוסף"
                 >
                   <Plus className="w-4 h-4" />
@@ -177,7 +177,7 @@ export function DreamsRequests() {
           />
           <button
             onClick={() => addTextRequest("free_text", freeText, setFreeText)}
-            className="p-2 rounded-xl bg-brand-gold text-brand-gray"
+            className="p-2 rounded-xl bg-brand-blue text-white"
             aria-label="הוסף בקשה"
           >
             <Plus className="w-4 h-4" />
@@ -217,7 +217,7 @@ export function DreamsRequests() {
               />
               <button
                 onClick={() => addTextRequest("do", doText, setDoText)}
-                className="p-2 rounded-xl bg-brand-green text-brand-gray"
+                className="p-2 rounded-xl bg-brand-green text-white"
                 aria-label="הוסף כן"
               >
                 <Plus className="w-4 h-4" />
@@ -291,7 +291,7 @@ export function DreamsRequests() {
           />
           <button
             onClick={addLink}
-            className="p-2 rounded-xl bg-brand-gold text-brand-gray"
+            className="p-2 rounded-xl bg-brand-blue text-white"
             aria-label="הוסף לינק"
           >
             <LinkIcon className="w-4 h-4" />

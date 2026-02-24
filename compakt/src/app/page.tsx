@@ -105,10 +105,10 @@ function JourneyApp() {
         <AnimatePresence mode="wait">
           <motion.div
             key={stageKey}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
+            initial={{ opacity: 0, scale: 0.97, filter: "blur(4px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.97, filter: "blur(4px)" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             className="w-full"
           >
             <ErrorBoundary>

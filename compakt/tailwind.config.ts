@@ -11,14 +11,12 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          gold: "#c9a84c",
-          "gold-light": "#e8c87a",
-          rose: "#d4627a",
+          blue: "#059cc0",
           green: "#03b28c",
-          gray: "#1a1715",
-          white: "#f5f0e8",
-          /* Legacy aliases for backward compat */
-          blue: "#c9a84c",
+          gray: "#1f1f21",
+          white: "#ffffff",
+          rose: "#d4627a",
+          gold: "#f5c542",
         },
         surface: "var(--bg-surface)",
         "surface-hover": "var(--bg-surface-hover)",
@@ -46,9 +44,9 @@ const config: Config = {
       boxShadow: {
         glass: "var(--card-shadow)",
         "glass-glow": "var(--card-shadow-glow)",
-        "gold-sm": "0 2px 12px rgba(201, 168, 76, 0.15)",
-        "gold-md": "0 4px 24px rgba(201, 168, 76, 0.2)",
-        "gold-lg": "0 8px 40px rgba(201, 168, 76, 0.25)",
+        "gold-sm": "0 2px 12px rgba(5, 156, 192, 0.2)",
+        "gold-md": "0 4px 24px rgba(5, 156, 192, 0.25)",
+        "gold-lg": "0 8px 40px rgba(5, 156, 192, 0.3)",
       },
       fontFamily: {
         rubik: ["var(--font-rubik)", "Rubik", "sans-serif"],

@@ -151,8 +151,8 @@ export function EventSetup() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedType(et.type)}
                 className={`flex flex-col items-center gap-2 p-3.5 rounded-2xl border-2 transition-all ${selectedType === et.type
-                  ? "border-brand-gold bg-gradient-to-br from-brand-gold/15 to-brand-gold/5 text-brand-gold shadow-gold-sm"
-                  : "border-glass-strong text-secondary hover:border-brand-gold/30 hover:bg-white/[0.02]"
+                  ? "border-brand-blue bg-gradient-to-br from-brand-blue/15 to-brand-blue/5 text-brand-blue shadow-gold-sm"
+                  : "border-glass-strong text-secondary hover:border-brand-blue/30 hover:bg-white/[0.02]"
                   }`}
               >
                 {et.icon}
@@ -264,7 +264,7 @@ export function EventSetup() {
         <div className="text-center mt-2">
           <a
             href="/admin"
-            className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-brand-gold transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-brand-blue transition-colors"
           >
             <Disc3 className="w-3.5 h-3.5" />
             כניסת DJ
