@@ -490,7 +490,7 @@ function QuestionCard({
               whileTap={{ scale: 0.97 }}
               onClick={() => onAnswer(opt.value)}
               className={`w-full min-h-[56px] text-center px-4 py-3.5 rounded-2xl border-2 transition-all whitespace-normal break-words text-[0.94rem] leading-snug ${existingValue === opt.value
-                ? "border-brand-blue bg-brand-blue/10 text-brand-blue font-semibold shadow-gold-sm"
+                ? "border-brand-blue/40 bg-brand-blue/12 backdrop-blur-sm text-brand-blue font-semibold shadow-gold-sm"
                 : "border-glass-strong text-secondary hover:border-brand-blue/30 hover:bg-white/[0.03]"
                 }`}
             >
@@ -548,7 +548,7 @@ function QuestionCard({
                       }
                     }}
                     className={`w-full min-h-[56px] text-center px-4 py-3.5 rounded-2xl border-2 transition-all whitespace-normal break-words text-[0.94rem] leading-snug ${active
-                      ? "border-brand-blue bg-brand-blue/10 text-brand-blue font-semibold shadow-gold-sm"
+                      ? "border-brand-blue/40 bg-brand-blue/12 backdrop-blur-sm text-brand-blue font-semibold shadow-gold-sm"
                       : "border-glass-strong text-secondary hover:border-brand-blue/30 hover:bg-white/[0.03]"
                       }`}
                   >
@@ -679,7 +679,7 @@ function QuestionCard({
                   onAnswer(updated);
                 }}
                 className={`w-full min-h-[56px] text-center px-4 py-3.5 rounded-2xl border-2 transition-all whitespace-normal break-words text-[0.94rem] leading-snug ${isSelected
-                  ? "border-brand-blue bg-brand-blue/10 text-brand-blue font-semibold shadow-gold-sm"
+                  ? "border-brand-blue/40 bg-brand-blue/12 backdrop-blur-sm text-brand-blue font-semibold shadow-gold-sm"
                   : "border-glass-strong text-secondary hover:border-brand-blue/30 hover:bg-white/[0.03]"
                   }`}
               >

@@ -151,7 +151,7 @@ export function EventSetup() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedType(et.type)}
                 className={`flex flex-col items-center gap-2 p-3.5 rounded-2xl border-2 transition-all ${selectedType === et.type
-                  ? "border-brand-blue bg-gradient-to-br from-brand-blue/15 to-brand-blue/5 text-brand-blue shadow-gold-sm"
+                  ? "border-brand-blue/40 bg-brand-blue/10 backdrop-blur-sm text-brand-blue shadow-gold-sm"
                   : "border-glass-strong text-secondary hover:border-brand-blue/30 hover:bg-white/[0.02]"
                   }`}
               >

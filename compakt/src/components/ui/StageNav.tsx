@@ -31,7 +31,7 @@ export function StageNav() {
               }}
               disabled={isFuture}
               className={`text-[11px] sm:text-xs font-medium px-2 sm:px-3 py-1.5 sm:py-2 rounded-full transition-all flex items-center gap-1.5 min-h-[32px] ${isCurrent
-                ? "bg-brand-blue text-white shadow-gold-sm"
+                ? "bg-brand-blue/15 border border-brand-blue/40 text-brand-blue backdrop-blur-sm shadow-gold-sm"
                 : isDone
                   ? "bg-brand-green/15 text-brand-green cursor-pointer hover:bg-brand-green/25"
                   : "glass-card text-muted opacity-50 cursor-default"

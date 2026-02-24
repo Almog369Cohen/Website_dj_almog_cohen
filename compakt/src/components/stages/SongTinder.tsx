@@ -265,11 +265,11 @@ export function SongTinder() {
           {categoryGroups.map((g, i) => (
             <div
               key={g.key}
-              className={`w-2 h-2 rounded-full transition-colors ${i < currentCatIdx
-                ? "bg-brand-green"
+              className={`w-2.5 h-2.5 rounded-full transition-all ${i < currentCatIdx
+                ? "bg-brand-green/30 ring-1 ring-brand-green/60"
                 : i === currentCatIdx
-                  ? "bg-brand-blue"
-                  : "bg-white/10"
+                  ? "bg-brand-blue/30 ring-1 ring-brand-blue/60 shadow-[0_0_6px_rgba(5,156,192,0.3)]"
+                  : "bg-white/5 ring-1 ring-white/10"
                 }`}
             />
           ))}
@@ -315,7 +315,7 @@ export function SongTinder() {
           {categoryGroups.map((g, i) => (
             <div
               key={g.key}
-              className={`w-2 h-2 rounded-full transition-colors ${i <= currentCatIdx ? "bg-brand-green" : "bg-white/10"
+              className={`w-2.5 h-2.5 rounded-full transition-all ${i <= currentCatIdx ? "bg-brand-green/30 ring-1 ring-brand-green/60" : "bg-white/5 ring-1 ring-white/10"
                 }`}
             />
           ))}

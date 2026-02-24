@@ -70,8 +70,7 @@ export function DreamsRequests() {
   const adminUpsells = useAdminStore((s) => s.upsells);
   const upsells = adminUpsells.filter((u) => {
     if (!u.isActive || u.placement !== "stage_4") return false;
-    const hay = `${u.titleHe} ${u.descriptionHe} ${u.priceHint ?? ""}`;
-    return !/אפטר|after|6,?000|6000/i.test(hay);
+    return u.id !== "u3";
   });
 
   return (
@@ -135,7 +134,7 @@ export function DreamsRequests() {
                 />
                 <button
                   onClick={addMomentRequest}
-                  className="p-2 rounded-xl bg-brand-blue text-white"
+                  className="p-2 rounded-xl bg-brand-blue/15 border border-brand-blue/40 text-brand-blue backdrop-blur-sm"
                   aria-label="הוסף"
                 >
                   <Plus className="w-4 h-4" />
@@ -182,7 +181,7 @@ export function DreamsRequests() {
           />
           <button
             onClick={() => addTextRequest("free_text", freeText, setFreeText)}
-            className="p-2 rounded-xl bg-brand-blue text-white"
+            className="p-2 rounded-xl bg-brand-blue/15 border border-brand-blue/40 text-brand-blue backdrop-blur-sm"
             aria-label="הוסף בקשה"
           >
             <Plus className="w-4 h-4" />
@@ -222,7 +221,7 @@ export function DreamsRequests() {
               />
               <button
                 onClick={() => addTextRequest("do", doText, setDoText)}
-                className="p-2 rounded-xl bg-brand-green text-white"
+                className="p-2 rounded-xl bg-brand-green/15 border border-brand-green/40 text-brand-green backdrop-blur-sm"
                 aria-label="הוסף כן"
               >
                 <Plus className="w-4 h-4" />
@@ -296,7 +295,7 @@ export function DreamsRequests() {
           />
           <button
             onClick={addLink}
-            className="p-2 rounded-xl bg-brand-blue text-white"
+            className="p-2 rounded-xl bg-brand-blue/15 border border-brand-blue/40 text-brand-blue backdrop-blur-sm"
             aria-label="הוסף לינק"
           >
             <LinkIcon className="w-4 h-4" />
@@ -335,9 +334,8 @@ export function DreamsRequests() {
               key={upsell.id}
               className="glass-card p-5 relative overflow-hidden"
               style={{
-                borderImage: "linear-gradient(135deg, #059cc0, #03b28c) 1",
-                borderWidth: "1px",
-                borderStyle: "solid",
+                border: "1px solid rgba(5, 156, 192, 0.25)",
+                boxShadow: "0 0 20px rgba(5, 156, 192, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
               }}
             >
               <div className="flex items-start gap-3">

@@ -161,8 +161,7 @@ export const useAdminStore = create<AdminStore>()(
           state.isAuthenticated = false;
 
           state.upsells = (Array.isArray(state.upsells) ? state.upsells : []).filter((u) => {
-            const hay = `${u.titleHe} ${u.descriptionHe} ${u.priceHint ?? ""}`;
-            return !/אפטר|after|6,?000|6000/i.test(hay);
+            return u.id !== "u3";
           });
 
           // Merge in any missing default questions (localStorage may contain an older set)
