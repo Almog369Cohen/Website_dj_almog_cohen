@@ -8,9 +8,9 @@ RUN npm ci
 
 COPY . .
 
-# Build args for env vars needed at build time (public ones only)
-ARG NEXT_PUBLIC_SUPABASE_URL
-ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+# Public env vars inlined into client JS at build time
+ENV NEXT_PUBLIC_SUPABASE_URL=https://rgfajvnkrszwksiidspm.supabase.co
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_-QT5X5pqKmKr0RXOecj3rA_gf-d-1K-
 
 RUN npm run build
 
