@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Shield, Loader2, Eye, EyeOff } from "lucide-react";
+import { Shield, Loader2, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { hebrewAuthError } from "@/lib/auth/errors-he";
 
@@ -13,7 +13,9 @@ export default function StaffLoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [resetSent, setResetSent] = useState(false);
 
   const canSubmit = useMemo(() => {
     return email.trim().length > 3 && password.length >= 6 && !loading;
@@ -22,6 +24,7 @@ export default function StaffLoginPage() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setResetSent(false);
     setLoading(true);
 
     try {
@@ -54,6 +57,33 @@ export default function StaffLoginPage() {
       router.replace("/backoffice");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email.trim() || !supabase) {
+      setError("הזן אימייל קודם");
+      return;
+    }
+
+    setError(null);
+    setResetSent(false);
+    setResetLoading(true);
+
+    try {
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+        email.trim(),
+        { redirectTo: `${origin}/admin/reset-password` }
+      );
+
+      if (resetError) {
+        setError(hebrewAuthError(resetError.message));
+      } else {
+        setResetSent(true);
+      }
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -114,6 +144,13 @@ export default function StaffLoginPage() {
             </div>
           )}
 
+          {resetSent && (
+            <div className="flex items-center gap-2 text-sm" style={{ color: "var(--accent-success, #03b28c)" }}>
+              <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+              נשלח מייל לאיפוס סיסמה — בדוק את תיבת המייל
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={!canSubmit}
@@ -121,6 +158,16 @@ export default function StaffLoginPage() {
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
             התחבר
+          </button>
+
+          <button
+            type="button"
+            onClick={handleResetPassword}
+            disabled={resetLoading || !email.trim()}
+            className="w-full text-sm text-secondary hover:text-foreground transition-colors flex items-center justify-center gap-2 py-2"
+          >
+            {resetLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
+            שכחתי סיסמה
           </button>
         </form>
       </motion.div>
