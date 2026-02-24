@@ -57,13 +57,17 @@ function StaffLoginForm() {
         body: JSON.stringify({ email: email.trim(), password }),
       });
 
-      const body = await res.json();
+      const rawText = await res.text();
+      const body = rawText ? (JSON.parse(rawText) as any) : null;
 
       if (!res.ok) {
-        if (body.error === "NOT_STAFF") {
+        if (body?.error === "NOT_STAFF") {
           setError("NOT_STAFF");
         } else {
-          setError(hebrewAuthError(body.error ?? "Unknown error"));
+          const msg = body?.error
+            ? hebrewAuthError(body.error)
+            : `שגיאה לא צפויה (${res.status})`;
+          setError(msg);
         }
         return;
       }
@@ -77,7 +81,7 @@ function StaffLoginForm() {
         return;
       }
 
-      if (!body.session?.access_token || !body.session?.refresh_token) {
+      if (!body?.session?.access_token || !body?.session?.refresh_token) {
         setError("שגיאה — לא התקבל session מהשרת");
         return;
       }
