@@ -30,6 +30,7 @@ import {
 import type { Song, SongCategory } from "@/lib/types";
 import { ClipTrimmer } from "./ClipTrimmer";
 import { BulkUpload } from "./BulkUpload";
+import { supabase } from "@/lib/supabase/client";
 
 const categories: { value: SongCategory; label: string }[] = [
   { value: "reception", label: "קבלת פנים" },
@@ -800,6 +801,38 @@ function SpotifyImportModal({
     Array<{ id: string; name: string; tracksTotal: number; imageUrl?: string }>
   >([]);
 
+  const getBearer = async (): Promise<string | null> => {
+    if (!supabase) return null;
+    const { data } = await supabase.auth.getSession();
+    return data.session?.access_token || null;
+  };
+
+  const handleConnect = async () => {
+    setError(null);
+    try {
+      const bearer = await getBearer();
+      if (!bearer) throw new Error("יש להתחבר קודם");
+
+      const res = await fetch("/api/spotify/connect", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${bearer}`,
+        },
+        body: JSON.stringify({ returnTo: "/admin" }),
+      });
+      if (!res.ok) {
+        const txt = await res.text().catch(() => "");
+        throw new Error((txt || "Spotify connect failed").trim());
+      }
+      const data = (await res.json()) as { url?: string };
+      if (!data.url) throw new Error("Spotify connect failed");
+      window.location.href = data.url;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "שגיאה לא ידועה");
+    }
+  };
+
   const handleImport = async () => {
     const url = playlistUrl.trim();
     if (!url) return;
@@ -875,7 +908,11 @@ function SpotifyImportModal({
     setPlaylistsLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/spotify/me/playlists", { cache: "no-store" });
+      const bearer = await getBearer();
+      const res = await fetch("/api/spotify/me/playlists", {
+        cache: "no-store",
+        headers: bearer ? { Authorization: `Bearer ${bearer}` } : undefined,
+      });
       if (!res.ok) {
         const text = await res.text();
         throw new Error(text || "Failed");
@@ -898,7 +935,11 @@ function SpotifyImportModal({
     setResult(null);
     setError(null);
     try {
-      const res = await fetch(`/api/spotify/import/playlist?id=${encodeURIComponent(id)}`, { cache: "no-store" });
+      const bearer = await getBearer();
+      const res = await fetch(`/api/spotify/import/playlist?id=${encodeURIComponent(id)}`, {
+        cache: "no-store",
+        headers: bearer ? { Authorization: `Bearer ${bearer}` } : undefined,
+      });
       if (!res.ok) {
         const text = await res.text();
         const msg = (text || "Import failed").trim();
@@ -949,6 +990,28 @@ function SpotifyImportModal({
     }
   };
 
+  const disconnect = async () => {
+    setError(null);
+    try {
+      const bearer = await getBearer();
+      if (!bearer) throw new Error("יש להתחבר קודם");
+
+      const res = await fetch("/api/spotify/disconnect", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${bearer}` },
+      });
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error((text || "Disconnect failed").trim());
+      }
+
+      setConnected(false);
+      setPlaylists([]);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "שגיאה לא ידועה");
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -975,13 +1038,14 @@ function SpotifyImportModal({
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <a
-            href={`/api/spotify/connect?returnTo=${encodeURIComponent("/admin")}`}
+          <button
+            type="button"
+            onClick={handleConnect}
             className="btn-primary text-sm flex items-center gap-1.5 py-2 px-4"
           >
             <LogIn className="w-4 h-4" />
             התחבר עם Spotify
-          </a>
+          </button>
           <button
             type="button"
             onClick={loadPlaylists}
@@ -991,6 +1055,15 @@ function SpotifyImportModal({
             <ListMusic className="w-4 h-4" />
             {playlistsLoading ? "טוען..." : "טען פלייליסטים"}
           </button>
+          {connected && (
+            <button
+              type="button"
+              onClick={disconnect}
+              className="btn-secondary text-sm flex items-center gap-1.5 py-2 px-4"
+            >
+              נתק
+            </button>
+          )}
           {connected && (
             <span className="text-xs text-brand-green">מחובר</span>
           )}

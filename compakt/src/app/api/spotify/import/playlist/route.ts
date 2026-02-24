@@ -1,9 +1,16 @@
 import { NextResponse } from "next/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 
 type SpotifyCookie = {
   access_token: string;
   refresh_token?: string;
   expires_at: number;
+};
+
+type SpotifyConn = {
+  access_token: string | null;
+  refresh_token: string;
+  expires_at: string | null;
 };
 
 function parseCookie(req: Request): SpotifyCookie | null {
@@ -61,22 +68,78 @@ async function refreshToken(refreshToken: string): Promise<SpotifyCookie> {
   };
 }
 
-export async function GET(req: Request) {
-  const cookie = parseCookie(req);
-  if (!cookie) {
-    return new NextResponse("Not connected", { status: 401 });
-  }
+async function refreshTokenWithConn(conn: SpotifyConn): Promise<{ accessToken: string; expiresAtMs: number }> {
+  const refreshed = await refreshToken(conn.refresh_token);
+  return { accessToken: refreshed.access_token, expiresAtMs: refreshed.expires_at };
+}
 
+export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id") || "";
   if (!id) return new NextResponse("Missing playlist id", { status: 400 });
 
   try {
-    let token = cookie.access_token;
-    let nextCookie = cookie;
-    if (cookie.refresh_token && Date.now() > cookie.expires_at - 30_000) {
-      nextCookie = await refreshToken(cookie.refresh_token);
-      token = nextCookie.access_token;
+    const authHeader = req.headers.get("Authorization");
+    const supabase = createServerSupabase();
+
+    let token: string | null = null;
+    let nextCookie: SpotifyCookie | null = null;
+    let shouldSetCookie = false;
+
+    if (authHeader?.startsWith("Bearer ")) {
+      const accessToken = authHeader.slice(7);
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser(accessToken);
+
+      if (error || !user) {
+        return new NextResponse("SESSION_EXPIRED", { status: 401 });
+      }
+
+      const { data: conn } = await supabase
+        .from("spotify_connections")
+        .select("access_token, refresh_token, expires_at")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (!conn?.refresh_token) {
+        return new NextResponse("Not connected", { status: 401 });
+      }
+
+      const expiresAtMs = conn.expires_at ? new Date(conn.expires_at).getTime() : 0;
+      const needsRefresh = !conn.access_token || !expiresAtMs || Date.now() > expiresAtMs - 30_000;
+
+      if (needsRefresh) {
+        const refreshed = await refreshTokenWithConn(conn as SpotifyConn);
+        token = refreshed.accessToken;
+        await supabase
+          .from("spotify_connections")
+          .update({
+            access_token: refreshed.accessToken,
+            expires_at: new Date(refreshed.expiresAtMs).toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .eq("user_id", user.id);
+      } else {
+        token = conn.access_token;
+      }
+    } else {
+      const cookie = parseCookie(req);
+      if (!cookie) {
+        return new NextResponse("Not connected", { status: 401 });
+      }
+      token = cookie.access_token;
+      nextCookie = cookie;
+      if (cookie.refresh_token && Date.now() > cookie.expires_at - 30_000) {
+        nextCookie = await refreshToken(cookie.refresh_token);
+        token = nextCookie.access_token;
+        shouldSetCookie = true;
+      }
+    }
+
+    if (!token) {
+      return new NextResponse("Not connected", { status: 401 });
     }
 
     const songs: Array<{ title: string; artist: string; coverUrl: string; externalLink?: string }> = [];
@@ -121,7 +184,7 @@ export async function GET(req: Request) {
 
     const res = NextResponse.json({ songs });
 
-    if (nextCookie !== cookie) {
+    if (shouldSetCookie && nextCookie) {
       const payload = Buffer.from(JSON.stringify(nextCookie)).toString("base64");
       res.cookies.set("compakt_spotify", payload, {
         httpOnly: true,

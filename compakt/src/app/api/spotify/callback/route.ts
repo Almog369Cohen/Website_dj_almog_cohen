@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 
 function getSiteOrigin(req: Request): string {
   if (process.env.URL) return process.env.URL;
@@ -6,6 +7,14 @@ function getSiteOrigin(req: Request): string {
   const host = req.headers.get("host") || url.host;
   const isLocal = host.startsWith("localhost") || host.startsWith("127.0.0.1");
   return `${isLocal ? "http" : "https"}://${host}`;
+}
+
+function buildSpotifyCookie(payload: {
+  access_token: string;
+  refresh_token?: string;
+  expires_at: number;
+}): string {
+  return Buffer.from(JSON.stringify(payload)).toString("base64");
 }
 
 function getRedirectUri(req: Request): string {
@@ -87,6 +96,22 @@ export async function GET(req: Request) {
     })
   ).toString("base64");
 
+  const boundUserId = getCookieValue(req, "compakt_spotify_user_id");
+  if (boundUserId) {
+    try {
+      const supabase = createServerSupabase();
+      await supabase.from("spotify_connections").upsert({
+        user_id: boundUserId,
+        access_token: json.access_token,
+        refresh_token: json.refresh_token,
+        expires_at: new Date(expiresAt).toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+    } catch {
+      // ignore persistence errors; cookie fallback still works
+    }
+  }
+
   const returnTo = getCookieValue(req, "compakt_spotify_return_to");
 
   const siteOrigin = getSiteOrigin(req);
@@ -103,6 +128,7 @@ export async function GET(req: Request) {
   });
   res.cookies.delete("compakt_spotify_oauth_state");
   res.cookies.delete("compakt_spotify_return_to");
+  res.cookies.delete("compakt_spotify_user_id");
 
   return res;
 }
