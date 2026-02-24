@@ -11,7 +11,7 @@ import type { PlanTier } from "@/lib/types";
 
 const planInfo: Record<string, { name: string; price: number; color: string }> = {
   basic: { name: "Basic — בסיס", price: 8, color: "#059cc0" },
-  pro: { name: "Pro — פרו", price: 12, color: "#03b28c" },
+  pro: { name: "Pro — פרו", price: 20, color: "#03b28c" },
 };
 
 function CheckoutContent() {

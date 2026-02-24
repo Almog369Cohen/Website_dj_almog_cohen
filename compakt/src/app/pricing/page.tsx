@@ -26,6 +26,7 @@ const plans = [
       "דשבורד אנליטיקס",
     ],
     cta: "התחל בחינם",
+    href: "/signup",
     popular: false,
     gradient: "from-white/5 to-white/[0.02]",
   },
@@ -40,7 +41,7 @@ const plans = [
     features: [
       "עד 8 אירועים בחודש",
       "10 שאלות מותאמות",
-      "העלאת שירים משלך",
+      "העלאת שירים עד 10GB",
       "מיתוג בסיסי (לוגו + צבע)",
       "עד 3 כרטיסי שדרוג",
       "ייצוא Music Brief ל-PDF",
@@ -49,21 +50,44 @@ const plans = [
     ],
     missing: [],
     cta: "בחר Basic",
+    href: "/checkout?plan=basic",
     popular: true,
     gradient: "from-brand-blue/10 to-brand-green/5",
+  },
+  {
+    id: "studio",
+    name: "Studio",
+    nameHe: "סטודיו",
+    price: 35,
+    period: "/חודש",
+    description: "חבילת ביניים (בקרוב)",
+    icon: <Star className="w-6 h-6" />,
+    features: [
+      "עד 14 אירועים בחודש",
+      "שאלות ללא הגבלה",
+      "העלאת שירים עד 10GB",
+      "מיתוג מלא",
+      "דשבורד אנליטיקס מתקדם",
+    ],
+    missing: [],
+    cta: "בקרוב",
+    href: "",
+    popular: false,
+    comingSoon: true,
+    gradient: "from-white/5 to-white/[0.02]",
   },
   {
     id: "pro",
     name: "Pro",
     nameHe: "פרו",
-    price: 12,
+    price: 20,
     period: "/חודש",
     description: "לדי.ג׳יי מקצועי",
     icon: <Crown className="w-6 h-6" />,
     features: [
       "עד 20 אירועים בחודש",
       "שאלות ללא הגבלה",
-      "העלאת שירים ללא הגבלה",
+      "העלאת שירים עד 10GB",
       "מיתוג מלא (לוגו, צבעים, טקסט)",
       "כרטיסי שדרוג ללא הגבלה",
       "ייצוא Music Brief ל-PDF",
@@ -73,6 +97,7 @@ const plans = [
     ],
     missing: [],
     cta: "בחר Pro",
+    href: "/checkout?plan=pro",
     popular: false,
     gradient: "from-brand-blue/15 to-purple-500/10",
   },
@@ -104,19 +129,23 @@ export default function PricingPage() {
         </motion.div>
 
         {/* Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.id}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className={`relative glass-card p-6 flex flex-col ${
-                plan.popular
+              className={`relative glass-card p-6 flex flex-col ${plan.popular
                   ? "ring-2 ring-brand-blue/40 shadow-gold-md"
                   : ""
-              }`}
+                }`}
             >
+              {plan.comingSoon && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold bg-white/10 border border-glass text-muted backdrop-blur-sm">
+                  בקרוב
+                </div>
+              )}
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold bg-brand-blue/20 border border-brand-blue/40 text-brand-blue backdrop-blur-sm">
                   הכי פופולרי
@@ -157,16 +186,25 @@ export default function PricingPage() {
                 ))}
               </div>
 
-              <Link
-                href={`/checkout?plan=${plan.id}`}
-                className={`w-full text-center py-3 rounded-2xl font-bold text-sm transition-all ${
-                  plan.popular
-                    ? "btn-primary"
-                    : "btn-secondary"
-                }`}
-              >
-                {plan.cta}
-              </Link>
+              {plan.comingSoon ? (
+                <button
+                  type="button"
+                  disabled
+                  className="w-full text-center py-3 rounded-2xl font-bold text-sm transition-all btn-secondary opacity-50 cursor-not-allowed"
+                >
+                  {plan.cta}
+                </button>
+              ) : (
+                <Link
+                  href={plan.href ?? `/checkout?plan=${plan.id}`}
+                  className={`w-full text-center py-3 rounded-2xl font-bold text-sm transition-all ${plan.popular
+                      ? "btn-primary"
+                      : "btn-secondary"
+                    }`}
+                >
+                  {plan.cta}
+                </Link>
+              )}
             </motion.div>
           ))}
         </div>
