@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Rubik } from "next/font/google";
+import { Rubik, Heebo } from "next/font/google";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -7,6 +7,13 @@ const rubik = Rubik({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
   variable: "--font-rubik",
+});
+
+const heebo = Heebo({
+  subsets: ["hebrew", "latin"],
+  weight: ["300", "400", "500", "700", "800", "900"],
+  display: "swap",
+  variable: "--font-heebo",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="he" dir="rtl" data-theme="night" className={rubik.variable}>
+    <html lang="he" dir="rtl" data-theme="night" className={`${rubik.variable} ${heebo.variable}`}>
       <body className="font-rubik antialiased min-h-dvh">
         {children}
       </body>

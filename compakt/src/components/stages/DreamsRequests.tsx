@@ -76,7 +76,7 @@ export function DreamsRequests() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-2"
       >
-        <h1 className="text-2xl font-bold mb-1">✨ הרגעים שלכם</h1>
+        <h1 className="font-display text-3xl font-black mb-2 text-gold">הרגעים שלכם</h1>
         <p className="text-secondary text-sm">
           ספרו לנו על הרגעים המיוחדים, בקשות וחלומות
         </p>
@@ -126,11 +126,11 @@ export function DreamsRequests() {
                   onChange={(e) => setMomentText(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && addMomentRequest()}
                   placeholder="מה חשוב לכם ברגע הזה?"
-                  className="flex-1 px-3 py-2 rounded-xl bg-transparent border border-glass text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-brand-blue transition-colors"
+                  className="flex-1 input-field !py-2 !px-3 !rounded-xl text-sm"
                 />
                 <button
                   onClick={addMomentRequest}
-                  className="p-2 rounded-xl bg-brand-blue text-white"
+                  className="p-2 rounded-xl bg-brand-gold text-brand-gray"
                   aria-label="הוסף"
                 >
                   <Plus className="w-4 h-4" />
@@ -173,11 +173,11 @@ export function DreamsRequests() {
             onChange={(e) => setFreeText(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && addTextRequest("free_text", freeText, setFreeText)}
             placeholder="...שיר ספציפי, אמן, רגע"
-            className="flex-1 px-3 py-2 rounded-xl bg-transparent border border-glass text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-brand-blue transition-colors"
+            className="flex-1 input-field !py-2 !px-3 !rounded-xl text-sm"
           />
           <button
             onClick={() => addTextRequest("free_text", freeText, setFreeText)}
-            className="p-2 rounded-xl bg-brand-blue text-white"
+            className="p-2 rounded-xl bg-brand-gold text-brand-gray"
             aria-label="הוסף בקשה"
           >
             <Plus className="w-4 h-4" />
@@ -213,11 +213,11 @@ export function DreamsRequests() {
                 onChange={(e) => setDoText(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addTextRequest("do", doText, setDoText)}
                 placeholder="שני שירים לפחות שאין סיכוי שאתם מוותרים עליהם ברחבה"
-                className="flex-1 px-3 py-2 rounded-xl bg-transparent border border-glass text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-brand-green transition-colors"
+                className="flex-1 input-field !py-2 !px-3 !rounded-xl text-sm !focus:border-brand-green"
               />
               <button
                 onClick={() => addTextRequest("do", doText, setDoText)}
-                className="p-2 rounded-xl bg-brand-green text-white"
+                className="p-2 rounded-xl bg-brand-green text-brand-gray"
                 aria-label="הוסף כן"
               >
                 <Plus className="w-4 h-4" />
@@ -246,7 +246,7 @@ export function DreamsRequests() {
                 onChange={(e) => setDontText(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addTextRequest("dont", dontText, setDontText)}
                 placeholder="שירים / סגנונות שלא בשום אופן"
-                className="flex-1 px-3 py-2 rounded-xl bg-transparent border border-glass text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent-danger transition-colors"
+                className="flex-1 input-field !py-2 !px-3 !rounded-xl text-sm"
               />
               <button
                 onClick={() => addTextRequest("dont", dontText, setDontText)}
@@ -287,11 +287,11 @@ export function DreamsRequests() {
             onKeyDown={(e) => e.key === "Enter" && addLink()}
             placeholder="YouTube / Spotify URL"
             dir="ltr"
-            className="flex-1 px-3 py-2 rounded-xl bg-transparent border border-glass text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-brand-blue transition-colors"
+            className="flex-1 input-field !py-2 !px-3 !rounded-xl text-sm"
           />
           <button
             onClick={addLink}
-            className="p-2 rounded-xl bg-brand-blue text-white"
+            className="p-2 rounded-xl bg-brand-gold text-brand-gray"
             aria-label="הוסף לינק"
           >
             <LinkIcon className="w-4 h-4" />

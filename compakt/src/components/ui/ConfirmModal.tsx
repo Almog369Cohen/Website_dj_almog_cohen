@@ -47,18 +47,17 @@ export function ConfirmModal({
             {icon && (
               <div className="flex justify-center">{icon}</div>
             )}
-            <h3 className="text-lg font-bold">{title}</h3>
+            <h3 className="font-display text-xl font-black">{title}</h3>
             {description && (
               <p className="text-sm text-secondary">{description}</p>
             )}
             <div className="flex gap-3">
               <button
                 onClick={onConfirm}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all active:scale-[0.97] ${
-                  danger
+                className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all active:scale-[0.97] ${danger
                     ? "text-white"
                     : "btn-primary"
-                }`}
+                  }`}
                 style={danger ? { background: "var(--accent-danger)" } : undefined}
               >
                 {confirmText}

@@ -250,7 +250,7 @@ export function SongTinder() {
         className="glass-card p-8 text-center max-w-md mx-auto"
       >
         <div className="text-5xl mb-4">{currentGroup.emoji}</div>
-        <h2 className="text-xl font-bold mb-1">{currentGroup.label}</h2>
+        <h2 className="font-display text-2xl font-black mb-1">{currentGroup.label}</h2>
         <p className="text-secondary text-sm mb-1">
           {categorySongs.length} שירים
           {categorySwipedCount > 0 && ` (${categorySwipedCount} כבר סומנו)`}
@@ -267,8 +267,8 @@ export function SongTinder() {
               className={`w-2 h-2 rounded-full transition-colors ${i < currentCatIdx
                 ? "bg-brand-green"
                 : i === currentCatIdx
-                  ? "bg-brand-blue"
-                  : "bg-white/20"
+                  ? "bg-brand-gold"
+                  : "bg-white/10"
                 }`}
             />
           ))}
@@ -303,7 +303,7 @@ export function SongTinder() {
         className="glass-card p-8 text-center max-w-md mx-auto"
       >
         <div className="text-3xl mb-3">✅</div>
-        <h2 className="text-lg font-bold mb-1">
+        <h2 className="font-display text-lg font-black mb-1">
           {currentGroup.emoji} {currentGroup.label} — סיימנו!
         </h2>
         <p className="text-secondary text-sm mb-4">
@@ -314,7 +314,7 @@ export function SongTinder() {
           {categoryGroups.map((g, i) => (
             <div
               key={g.key}
-              className={`w-2 h-2 rounded-full transition-colors ${i <= currentCatIdx ? "bg-brand-green" : "bg-white/20"
+              className={`w-2 h-2 rounded-full transition-colors ${i <= currentCatIdx ? "bg-brand-green" : "bg-white/10"
                 }`}
             />
           ))}
@@ -383,7 +383,7 @@ export function SongTinder() {
       <div className="mx-2 mb-4 h-1 rounded-full bg-white/10 overflow-hidden">
         <motion.div
           className="h-full rounded-full"
-          style={{ background: "linear-gradient(to right, #059cc0, #03b28c)" }}
+          style={{ background: "linear-gradient(to right, var(--accent-primary), var(--accent-secondary))" }}
           initial={false}
           animate={{ width: `${(categorySwipedCount / Math.max(1, categorySongs.length)) * 100}%` }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}

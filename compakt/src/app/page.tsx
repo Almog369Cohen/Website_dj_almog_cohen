@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { RotateCcw } from "lucide-react";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { AmbientBackground } from "@/components/ui/AmbientBackground";
 
 function JourneyApp() {
   const event = useEventStore((s) => s.event);
@@ -64,6 +65,7 @@ function JourneyApp() {
 
   return (
     <main className="min-h-dvh gradient-hero relative">
+      <AmbientBackground />
       {/* Top Controls */}
       <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
         <ThemeToggle />

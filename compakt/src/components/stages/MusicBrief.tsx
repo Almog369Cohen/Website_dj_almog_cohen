@@ -238,32 +238,33 @@ export function MusicBrief() {
         className="flex items-center justify-center gap-2 flex-wrap"
       >
         <button
+          onClick={handleShareWhatsApp}
+          className="flex-1 sm:flex-none text-sm flex items-center justify-center gap-2 py-3 px-5 rounded-2xl font-bold text-white transition-all active:scale-[0.97]"
+          style={{ background: "#25D366", boxShadow: "0 4px 20px rgba(37,211,102,0.25)" }}
+        >
+          <Share2 className="w-4 h-4" />
+          שתפו בוואטסאפ
+        </button>
+        <button
           onClick={handleDownloadPDF}
-          className="btn-primary text-sm flex items-center gap-2 py-2 px-4"
+          className="btn-primary text-sm flex items-center gap-2 py-2.5 px-4"
         >
           <Download className="w-4 h-4" />
-          הורדת PDF
+          PDF
         </button>
         <button
           onClick={handleCopyLink}
           className="btn-secondary text-sm flex items-center gap-2 py-2 px-4"
         >
           {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-          {copiedLink ? "הועתק!" : "העתק לינק"}
+          {copiedLink ? "הועתק!" : "לינק"}
         </button>
         <button
           onClick={handleCopyText}
           className="btn-secondary text-sm flex items-center gap-2 py-2 px-4"
         >
           {copiedText ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-          {copiedText ? "הועתק!" : "העתק סיכום"}
-        </button>
-        <button
-          onClick={handleShareWhatsApp}
-          className="btn-secondary text-sm flex items-center gap-2 py-2 px-4"
-        >
-          <Share2 className="w-4 h-4" />
-          שתפו
+          {copiedText ? "הועתק!" : "סיכום"}
         </button>
       </motion.div>
 
@@ -290,12 +291,12 @@ export function MusicBrief() {
         >
           <div
             className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-3"
-            style={{ background: "linear-gradient(135deg, #059cc0, #03b28c)" }}
+            style={{ background: "linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))" }}
           >
-            <Music className="w-7 h-7 text-white" />
+            <Music className="w-7 h-7" style={{ color: "#08070d" }} />
           </div>
-          <h1 className="text-2xl font-bold mb-1">Music Brief</h1>
-          <h2 className="text-lg text-secondary mb-1">{eventTitle}</h2>
+          <h1 className="font-display text-3xl font-black mb-2 text-gold">Music Brief</h1>
+          <h2 className="font-display text-lg text-secondary font-medium mb-1">{eventTitle}</h2>
           {event?.eventDate && (
             <p className="text-sm text-muted">{formatDate(event.eventDate)}</p>
           )}

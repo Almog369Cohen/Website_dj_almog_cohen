@@ -140,15 +140,15 @@ export function QuestionFlow() {
       />
 
       {/* Progress bar + percentage */}
-      <div className="mb-6">
+      <div className="mb-8">
         <div className="flex items-center justify-between mb-2 px-1">
-          <span className="text-xs text-muted">שאלה {currentIndex + 1} מתוך {total}</span>
-          <span className="text-xs font-medium text-brand-blue">{Math.round(((currentIndex) / total) * 100)}%</span>
+          <span className="text-xs text-muted font-medium">שאלה {currentIndex + 1} מתוך {total}</span>
+          <span className="text-xs font-bold text-gold">{Math.round(((currentIndex) / total) * 100)}%</span>
         </div>
-        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+        <div className="h-1 rounded-full bg-white/[0.06] overflow-hidden">
           <motion.div
             className="h-full rounded-full"
-            style={{ background: "linear-gradient(to right, #059cc0, #03b28c)" }}
+            style={{ background: "linear-gradient(to right, var(--accent-primary), var(--accent-secondary))" }}
             initial={false}
             animate={{ width: `${((currentIndex + 1) / total) * 100}%` }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -207,10 +207,10 @@ export function QuestionFlow() {
       </AnimatePresence>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between mt-6 px-2">
+      <div className="flex items-center justify-between mt-8 gap-3">
         <button
           onClick={goBack}
-          className="flex items-center gap-1 text-sm text-secondary hover:text-foreground transition-colors"
+          className="flex items-center gap-1.5 text-sm text-secondary hover:text-foreground transition-all active:scale-95 py-2.5 px-4 rounded-full hover:bg-white/[0.05]"
         >
           <ChevronRight className="w-4 h-4" />
           הקודם
@@ -218,18 +218,18 @@ export function QuestionFlow() {
 
         <button
           onClick={skip}
-          className="flex items-center gap-1 text-sm text-muted hover:text-secondary transition-colors"
+          className="flex items-center gap-1.5 text-xs text-muted hover:text-secondary transition-all active:scale-95 py-2 px-3 rounded-full"
         >
           דלג
-          <SkipForward className="w-4 h-4" />
+          <SkipForward className="w-3.5 h-3.5" />
         </button>
 
         <button
           onClick={goNext}
           disabled={!canContinue}
-          className={`flex items-center gap-1 text-sm font-medium transition-colors ${canContinue
-            ? "text-brand-blue hover:text-brand-blue/80"
-            : "text-muted opacity-60 cursor-not-allowed"
+          className={`flex items-center gap-1.5 text-sm font-bold transition-all active:scale-95 py-2.5 px-5 rounded-full ${canContinue
+            ? "btn-primary !py-2.5 !px-5 !rounded-full"
+            : "text-muted opacity-40 cursor-not-allowed"
             }`}
         >
           המשך
@@ -454,7 +454,7 @@ function QuestionCard({
 
   return (
     <div className="glass-card p-6 sm:p-8">
-      <h2 className="text-xl font-bold text-center mb-6 leading-relaxed">
+      <h2 className="font-display text-2xl sm:text-3xl font-black text-center mb-8 leading-relaxed tracking-tight text-balance">
         {question.questionHe}
       </h2>
 
@@ -466,9 +466,9 @@ function QuestionCard({
               key={opt.value}
               whileTap={{ scale: 0.97 }}
               onClick={() => onAnswer(opt.value)}
-              className={`w-full min-h-[52px] text-right px-3 py-3 rounded-xl border transition-all whitespace-normal break-words ${existingValue === opt.value
-                ? "border-brand-blue bg-brand-blue/10 text-brand-blue font-medium"
-                : "border-glass text-secondary hover:border-brand-blue/50"
+              className={`w-full min-h-[56px] text-center px-4 py-3.5 rounded-2xl border-2 transition-all whitespace-normal break-words text-[0.94rem] leading-snug ${existingValue === opt.value
+                ? "border-brand-gold bg-brand-gold/10 text-brand-gold font-semibold shadow-gold-sm"
+                : "border-glass-strong text-secondary hover:border-brand-gold/30 hover:bg-white/[0.03]"
                 }`}
             >
               {opt.label}
@@ -524,9 +524,9 @@ function QuestionCard({
                         emitDemographics(demoTotal, demoGroups, next);
                       }
                     }}
-                    className={`w-full min-h-[52px] text-right px-3 py-3 rounded-xl border transition-all whitespace-normal break-words ${active
-                      ? "border-brand-blue bg-brand-blue/10 text-brand-blue font-medium"
-                      : "border-glass text-secondary hover:border-brand-blue/50"
+                    className={`w-full min-h-[56px] text-center px-4 py-3.5 rounded-2xl border-2 transition-all whitespace-normal break-words text-[0.94rem] leading-snug ${active
+                      ? "border-brand-gold bg-brand-gold/10 text-brand-gold font-semibold shadow-gold-sm"
+                      : "border-glass-strong text-secondary hover:border-brand-gold/30 hover:bg-white/[0.03]"
                       }`}
                   >
                     {p.label}
@@ -655,14 +655,14 @@ function QuestionCard({
                   setMultiSelected(updated);
                   onAnswer(updated);
                 }}
-                className={`w-full min-h-[52px] text-right px-3 py-3 rounded-xl border transition-all whitespace-normal break-words ${isSelected
-                  ? "border-brand-blue bg-brand-blue/10 text-brand-blue font-medium"
-                  : "border-glass text-secondary hover:border-brand-blue/50"
+                className={`w-full min-h-[56px] text-center px-4 py-3.5 rounded-2xl border-2 transition-all whitespace-normal break-words text-[0.94rem] leading-snug ${isSelected
+                  ? "border-brand-gold bg-brand-gold/10 text-brand-gold font-semibold shadow-gold-sm"
+                  : "border-glass-strong text-secondary hover:border-brand-gold/30 hover:bg-white/[0.03]"
                   }`}
               >
-                <span className="flex items-center gap-2">
+                <span className="flex items-center justify-center gap-2.5">
                   <span
-                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${isSelected ? "border-brand-blue bg-brand-blue" : "border-glass"
+                    className={`w-5 h-5 rounded-md border-2 flex-shrink-0 flex items-center justify-center transition-all ${isSelected ? "border-brand-gold bg-brand-gold" : "border-glass-strong"
                       }`}
                   >
                     {isSelected && (
