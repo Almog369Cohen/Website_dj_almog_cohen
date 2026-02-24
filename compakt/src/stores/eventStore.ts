@@ -57,6 +57,9 @@ interface EventStore {
   // Theme
   setTheme: (theme: ThemeMode) => void;
 
+  // Seed from server
+  seedFromServer: (data: Partial<EventData> & { id: string; magicToken: string }) => void;
+
   // Reset
   reset: () => void;
 }
@@ -226,6 +229,25 @@ export const useEventStore = create<EventStore>()(
         if (typeof document !== "undefined") {
           document.documentElement.setAttribute("data-theme", theme);
         }
+      },
+
+      seedFromServer: (data) => {
+        const event: EventData = {
+          id: data.id,
+          magicToken: data.magicToken,
+          eventType: data.eventType || "wedding",
+          eventDate: data.eventDate,
+          venue: data.venue,
+          city: data.city,
+          coupleNameA: data.coupleNameA,
+          coupleNameB: data.coupleNameB,
+          contactPhone: data.contactPhone,
+          contactRole: data.contactRole,
+          currentStage: data.currentStage ?? 0,
+          theme: data.theme || "night",
+          createdAt: data.createdAt || new Date().toISOString(),
+        };
+        set({ event, answers: [], swipes: [], requests: [], upsellClicks: [], analytics: [] });
       },
 
       reset: () => set(initialState),

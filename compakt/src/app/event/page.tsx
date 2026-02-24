@@ -1,6 +1,7 @@
 "use client";
 
 import { useEventStore } from "@/stores/eventStore";
+import { useAdminStore } from "@/stores/adminStore";
 import { EventSetup } from "@/components/stages/EventSetup";
 import { QuestionFlow } from "@/components/stages/QuestionFlow";
 import { SongTinder } from "@/components/stages/SongTinder";
@@ -10,30 +11,129 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { StageNav } from "@/components/ui/StageNav";
 import { HydrationGuard } from "@/components/ui/HydrationGuard";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Loader2 } from "lucide-react";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { AmbientBackground } from "@/components/ui/AmbientBackground";
+import type { Song, Question, Upsell, EventType, SongCategory, QuestionType } from "@/lib/types";
+
+/* ── helpers to map snake_case DB rows → camelCase TS types ── */
+function mapSong(row: Record<string, unknown>): Song {
+  return {
+    id: row.id as string,
+    title: row.title as string,
+    artist: row.artist as string,
+    coverUrl: (row.cover_url as string) ?? "",
+    previewUrl: row.preview_url as string | undefined,
+    clipStartSec: row.clip_start_sec as number | undefined,
+    clipEndSec: row.clip_end_sec as number | undefined,
+    externalLink: row.external_link as string | undefined,
+    category: (row.category as SongCategory) ?? "dancing",
+    tags: (row.tags as string[]) ?? [],
+    energy: (row.energy as number) ?? 3,
+    decade: row.decade as string | undefined,
+    language: (row.language as string) ?? "he",
+    isSafe: (row.is_safe as boolean) ?? true,
+    sortOrder: (row.sort_order as number) ?? 0,
+    isActive: (row.is_active as boolean) ?? true,
+  };
+}
+
+function mapQuestion(row: Record<string, unknown>): Question {
+  return {
+    id: row.id as string,
+    questionHe: row.question_he as string,
+    questionType: (row.question_type as QuestionType) ?? "single_select",
+    eventType: (row.event_type as EventType) ?? "wedding",
+    options: row.options as { label: string; value: string; icon?: string }[] | undefined,
+    sliderMin: row.slider_min as number | undefined,
+    sliderMax: row.slider_max as number | undefined,
+    sliderLabels: row.slider_labels as string[] | undefined,
+    sortOrder: (row.sort_order as number) ?? 0,
+    isActive: (row.is_active as boolean) ?? true,
+  };
+}
+
+function mapUpsell(row: Record<string, unknown>): Upsell {
+  return {
+    id: row.id as string,
+    titleHe: row.title_he as string,
+    descriptionHe: (row.description_he as string) ?? "",
+    priceHint: row.price_hint as string | undefined,
+    ctaTextHe: (row.cta_text_he as string) ?? "לפרטים",
+    imageUrl: row.image_url as string | undefined,
+    placement: (row.placement as "stage_4" | "post_brief" | "inline") ?? "stage_4",
+    sortOrder: (row.sort_order as number) ?? 0,
+    isActive: (row.is_active as boolean) ?? true,
+  };
+}
 
 function JourneyApp() {
   const event = useEventStore((s) => s.event);
   const theme = useEventStore((s) => s.theme);
   const loadEvent = useEventStore((s) => s.loadEvent);
+  const seedEvent = useEventStore((s) => s.seedFromServer);
+  const seedAdmin = useAdminStore((s) => s.seedFromServer);
   const reset = useEventStore((s) => s.reset);
   const currentStage = event?.currentStage ?? 0;
   const [showReset, setShowReset] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [serverLoading, setServerLoading] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const fetchedRef = useRef(false);
 
-  // Load event from magic link URL param
+  // Load event from magic link URL param — fetch from server
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
-    if (token) {
-      loadEvent(token);
-      window.history.replaceState({}, "", window.location.pathname);
-    }
-  }, [loadEvent]);
+    if (!token) return;
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+
+    // Clear URL immediately
+    window.history.replaceState({}, "", window.location.pathname);
+
+    setServerLoading(true);
+    setServerError(null);
+
+    fetch(`/api/events/${token}`)
+      .then(async (res) => {
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error((data as { error?: string }).error === "EVENT_NOT_FOUND" ? "הלינק לא תקין או שהאירוע לא נמצא" : "שגיאה בטעינת האירוע");
+        }
+        return res.json();
+      })
+      .then((data: { event: Record<string, unknown>; songs: Record<string, unknown>[]; questions: Record<string, unknown>[]; upsells: Record<string, unknown>[] }) => {
+        const ev = data.event;
+        seedEvent({
+          id: ev.id as string,
+          magicToken: ev.magic_token as string,
+          eventType: ev.event_type as EventType,
+          eventDate: ev.event_date as string | undefined,
+          venue: ev.venue as string | undefined,
+          city: ev.city as string | undefined,
+          coupleNameA: ev.couple_name_a as string | undefined,
+          coupleNameB: ev.couple_name_b as string | undefined,
+          currentStage: (ev.current_stage as number) ?? 0,
+          theme: (ev.theme as "night" | "day") ?? "night",
+          createdAt: ev.created_at as string,
+        });
+
+        seedAdmin({
+          songs: data.songs.map(mapSong),
+          questions: data.questions.map(mapQuestion),
+          upsells: data.upsells.map(mapUpsell),
+        });
+
+        setServerLoading(false);
+      })
+      .catch((err) => {
+        setServerError(err instanceof Error ? err.message : "שגיאה");
+        setServerLoading(false);
+      });
+  }, [loadEvent, seedEvent, seedAdmin]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -62,6 +162,34 @@ function JourneyApp() {
       default: return <EventSetup />;
     }
   };
+
+  // Server loading state
+  if (serverLoading) {
+    return (
+      <main className="min-h-dvh gradient-hero flex items-center justify-center">
+        <div className="text-center animate-fade-in">
+          <Loader2 className="w-8 h-8 animate-spin text-brand-blue mx-auto mb-3" />
+          <p className="text-sm text-secondary">טוען את האירוע...</p>
+        </div>
+      </main>
+    );
+  }
+
+  // Server error state
+  if (serverError) {
+    return (
+      <main className="min-h-dvh gradient-hero flex items-center justify-center px-4">
+        <div className="glass-card p-8 text-center max-w-sm">
+          <div className="text-4xl mb-3">😕</div>
+          <h2 className="font-bold text-lg mb-2">אופס</h2>
+          <p className="text-sm text-secondary mb-4">{serverError}</p>
+          <a href="/event" className="btn-primary text-sm py-2.5 px-6 inline-block">
+            חזרה לדף הראשי
+          </a>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-dvh gradient-hero relative">

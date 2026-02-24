@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { getPostLoginRedirect } from "@/lib/auth/roles";
 import { useAdminStore } from "@/stores/adminStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, Music, HelpCircle, Sparkles, LogOut, ChevronLeft, BarChart3, Eye, EyeOff, Loader2, Crown } from "lucide-react";
+import { Lock, Music, HelpCircle, Sparkles, LogOut, ChevronLeft, BarChart3, Eye, EyeOff, Loader2, Crown, Calendar } from "lucide-react";
 import { PasswordStrength } from "@/components/ui/PasswordStrength";
 import { hebrewAuthError } from "@/lib/auth/errors-he";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -14,14 +14,16 @@ import { SongManager } from "@/components/admin/SongManager";
 import { QuestionManager } from "@/components/admin/QuestionManager";
 import { UpsellManager } from "@/components/admin/UpsellManager";
 import { Dashboard } from "@/components/admin/Dashboard";
+import { EventManager } from "@/components/admin/EventManager";
 import { useAuthService } from "@/services";
 import { supabase } from "@/lib/supabase/client";
 import { useDJStore } from "@/stores/djStore";
 import Link from "next/link";
 
-type AdminTab = "dashboard" | "songs" | "questions" | "upsells";
+type AdminTab = "events" | "dashboard" | "songs" | "questions" | "upsells";
 
 const tabs: { id: AdminTab; label: string; icon: React.ReactNode }[] = [
+  { id: "events", label: "אירועים", icon: <Calendar className="w-4 h-4" /> },
   { id: "dashboard", label: "דשבורד", icon: <BarChart3 className="w-4 h-4" /> },
   { id: "songs", label: "שירים", icon: <Music className="w-4 h-4" /> },
   { id: "questions", label: "שאלות", icon: <HelpCircle className="w-4 h-4" /> },
@@ -40,7 +42,7 @@ export default function AdminPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [resetSent, setResetSent] = useState(false);
   const [isBusy, setIsBusy] = useState(false);
-  const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
+  const [activeTab, setActiveTab] = useState<AdminTab>("events");
   const theme = useEventStore((s) => s.theme);
   const router = useRouter();
   const djProfile = useDJStore((s) => s.profile);
@@ -312,6 +314,16 @@ export default function AdminPage() {
       {/* Content */}
       <main className="max-w-5xl mx-auto px-4 py-6">
         <AnimatePresence mode="wait">
+          {activeTab === "events" && (
+            <motion.div
+              key="events"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <EventManager />
+            </motion.div>
+          )}
           {activeTab === "dashboard" && (
             <motion.div
               key="dashboard"

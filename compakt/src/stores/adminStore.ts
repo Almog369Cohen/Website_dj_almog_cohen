@@ -16,6 +16,9 @@ interface AdminStore {
   setAuthenticated: (value: boolean) => void;
   logout: () => void;
 
+  // Seed from server (for client-facing event pages)
+  seedFromServer: (data: { songs: Song[]; questions: Question[]; upsells: Upsell[] }) => void;
+
   // Songs
   addSong: (song: Omit<Song, "id" | "sortOrder">) => void;
   updateSong: (id: string, data: Partial<Song>) => void;
@@ -147,6 +150,14 @@ export const useAdminStore = create<AdminStore>()(
 
       deleteUpsell: (id) => {
         set({ upsells: get().upsells.filter((u) => u.id !== id) });
+      },
+
+      seedFromServer: (data) => {
+        set({
+          songs: data.songs,
+          questions: data.questions,
+          upsells: data.upsells,
+        });
       },
     }),
     {
