@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  SERVICE_NAME: compakt-backoffice
+  SERVICE_NAME: compakt
   REGION: us-central1
   IMAGE: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/compakt/backoffice
 
@@ -31,6 +31,9 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
+
+      - name: Set active GCP project
+        run: gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
