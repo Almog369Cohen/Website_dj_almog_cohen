@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'compakt/**'
+      - '.github/workflows/deploy-compakt.yml'
   workflow_dispatch:
 
 env:
