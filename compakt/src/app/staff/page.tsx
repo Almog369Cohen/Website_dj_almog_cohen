@@ -39,7 +39,7 @@ export default function StaffLoginPage() {
 
       if (!res.ok) {
         if (body.error === "NOT_STAFF") {
-          setError("המשתמש לא מוגדר כאיש צוות");
+          setError("NOT_STAFF");
         } else {
           setError(hebrewAuthError(body.error ?? "Unknown error"));
         }
@@ -138,7 +138,20 @@ export default function StaffLoginPage() {
             </div>
           </div>
 
-          {error && (
+          {error === "NOT_STAFF" && (
+            <div className="rounded-xl border border-glass p-4 text-center space-y-3" style={{ background: "rgba(255,68,102,0.08)" }}>
+              <p className="text-sm font-semibold">משתמש יקר, כניסה זו לצוות בלבד</p>
+              <p className="text-xs text-secondary">נסה להתחבר דרך כניסת ה־DJ / אדמין</p>
+              <a
+                href="/admin"
+                className="btn-primary inline-block px-6 py-2.5 text-sm"
+              >
+                כניסה לאדמין DJ
+              </a>
+            </div>
+          )}
+
+          {error && error !== "NOT_STAFF" && (
             <div className="text-sm" style={{ color: "var(--accent-danger)" }}>
               {error}
             </div>
