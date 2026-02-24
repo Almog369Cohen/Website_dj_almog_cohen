@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useAdminStore } from "@/stores/adminStore";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -12,8 +12,11 @@ import {
   EyeOff,
   GripVertical,
   HelpCircle,
+  ChevronUp,
+  ChevronDown,
+  Copy,
 } from "lucide-react";
-import type { Question, QuestionType, EventType } from "@/lib/types";
+import type { Question, QuestionOption, QuestionType, EventType } from "@/lib/types";
 
 const questionTypes: { value: QuestionType; label: string }[] = [
   { value: "single_select", label: "בחירה יחידה" },
@@ -200,8 +203,10 @@ function QuestionModal({
   const [eventType, setEventType] = useState<EventType>(
     question?.eventType || defaultEventType
   );
-  const [optionsText, setOptionsText] = useState(
-    question?.options?.map((o) => `${o.label}|${o.value}`).join("\n") || ""
+  const [options, setOptions] = useState<QuestionOption[]>(
+    question?.options?.length
+      ? question.options.map((o) => ({ ...o }))
+      : [{ label: "", value: "" }]
   );
   const [sliderMin, setSliderMin] = useState(question?.sliderMin || 1);
   const [sliderMax, setSliderMax] = useState(question?.sliderMax || 5);
@@ -209,34 +214,89 @@ function QuestionModal({
     question?.sliderLabels?.join(", ") || ""
   );
 
+  const hasOptions = questionType === "single_select" || questionType === "multi_select";
+
+  /* ── Option helpers ── */
+  const updateOption = useCallback((index: number, field: "label" | "value", val: string) => {
+    setOptions((prev) => {
+      const next = [...prev];
+      next[index] = { ...next[index], [field]: val };
+      // Auto-generate value from label if value is empty or was auto-generated
+      if (field === "label") {
+        const autoVal = val
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9\u0590-\u05ff ]/g, "")
+          .replace(/\s+/g, "_")
+          .slice(0, 30);
+        // Only auto-fill if value was empty or looks auto-generated
+        const curVal = next[index].value;
+        if (!curVal || curVal === prev[index].value) {
+          next[index].value = autoVal || `opt_${index + 1}`;
+        }
+      }
+      return next;
+    });
+  }, []);
+
+  const addOption = useCallback(() => {
+    setOptions((prev) => [...prev, { label: "", value: "" }]);
+  }, []);
+
+  const removeOption = useCallback((index: number) => {
+    setOptions((prev) => prev.length > 1 ? prev.filter((_, i) => i !== index) : prev);
+  }, []);
+
+  const moveOption = useCallback((index: number, dir: -1 | 1) => {
+    setOptions((prev) => {
+      const next = [...prev];
+      const target = index + dir;
+      if (target < 0 || target >= next.length) return prev;
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
+  }, []);
+
+  const duplicateOption = useCallback((index: number) => {
+    setOptions((prev) => {
+      const next = [...prev];
+      const orig = prev[index];
+      next.splice(index + 1, 0, {
+        label: orig.label,
+        value: `${orig.value}_copy`,
+      });
+      return next;
+    });
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const options =
-      questionType === "single_select" || questionType === "multi_select"
-        ? optionsText
-          .split("\n")
-          .filter(Boolean)
-          .map((line) => {
-            const [label, value] = line.split("|");
-            return { label: label.trim(), value: (value || label).trim() };
-          })
-        : undefined;
+    const cleanOptions = hasOptions
+      ? options
+        .filter((o) => o.label.trim())
+        .map((o) => ({
+          label: o.label.trim(),
+          value: o.value.trim() || o.label.trim().toLowerCase().replace(/\s+/g, "_"),
+        }))
+      : undefined;
 
     onSave({
       questionHe,
       questionType,
       eventType,
-      options,
+      options: cleanOptions,
       sliderMin: questionType === "slider" ? sliderMin : undefined,
       sliderMax: questionType === "slider" ? sliderMax : undefined,
       sliderLabels:
         questionType === "slider" && sliderLabels
           ? sliderLabels.split(",").map((l) => l.trim())
           : undefined,
-      isActive: true,
+      isActive: question?.isActive ?? true,
     });
   };
+
+  const inputClass = "w-full px-3 py-2.5 rounded-xl bg-transparent border border-glass text-sm focus:outline-none focus:border-brand-blue transition-colors";
 
   return (
     <motion.div
@@ -252,7 +312,7 @@ function QuestionModal({
         exit={{ scale: 0.95, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
-        className="glass-card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto space-y-4"
+        className="glass-card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto space-y-5"
       >
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg">
@@ -263,25 +323,28 @@ function QuestionModal({
           </button>
         </div>
 
+        {/* Question text */}
         <div>
-          <label className="block text-xs text-muted mb-1">טקסט השאלה (עברית) *</label>
+          <label className="block text-xs text-muted mb-1.5 font-medium">טקסט השאלה *</label>
           <input
             type="text"
             value={questionHe}
             onChange={(e) => setQuestionHe(e.target.value)}
             required
-            placeholder="?מה האווירה שאתם חולמים עליה"
-            className="w-full px-3 py-2 rounded-xl bg-transparent border border-glass text-sm focus:outline-none focus:border-brand-blue transition-colors"
+            placeholder="מה האווירה שאתם חולמים עליה?"
+            className={inputClass}
+            autoFocus
           />
         </div>
 
+        {/* Type + Event selectors */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs text-muted mb-1">סוג שאלה</label>
+            <label className="block text-xs text-muted mb-1.5 font-medium">סוג שאלה</label>
             <select
               value={questionType}
               onChange={(e) => setQuestionType(e.target.value as QuestionType)}
-              className="w-full px-3 py-2 rounded-xl bg-transparent border border-glass text-sm focus:outline-none focus:border-brand-blue transition-colors"
+              className={inputClass}
             >
               {questionTypes.map((t) => (
                 <option key={t.value} value={t.value}>
@@ -291,11 +354,11 @@ function QuestionModal({
             </select>
           </div>
           <div>
-            <label className="block text-xs text-muted mb-1">סוג אירוע</label>
+            <label className="block text-xs text-muted mb-1.5 font-medium">סוג אירוע</label>
             <select
               value={eventType}
               onChange={(e) => setEventType(e.target.value as EventType)}
-              className="w-full px-3 py-2 rounded-xl bg-transparent border border-glass text-sm focus:outline-none focus:border-brand-blue transition-colors"
+              className={inputClass}
             >
               {eventTypes.map((et) => (
                 <option key={et.value} value={et.value}>
@@ -306,48 +369,119 @@ function QuestionModal({
           </div>
         </div>
 
-        {/* Options for select types */}
-        {(questionType === "single_select" || questionType === "multi_select") && (
-          <div>
-            <label className="block text-xs text-muted mb-1">
-              אפשרויות (שורה לכל אפשרות, פורמט: תווית|ערך)
-            </label>
-            <textarea
-              value={optionsText}
-              onChange={(e) => setOptionsText(e.target.value)}
-              placeholder={"מסיבה פרועה 🔥|party\nאלגנטית ✨|elegant"}
-              rows={5}
-              className="w-full px-3 py-2 rounded-xl bg-transparent border border-glass text-sm focus:outline-none focus:border-brand-blue transition-colors resize-none font-mono"
-              dir="ltr"
-            />
+        {/* ── Options Editor (for select types) ── */}
+        {hasOptions && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-xs text-muted font-medium">
+                תשובות ({options.filter((o) => o.label.trim()).length})
+              </label>
+              <button
+                type="button"
+                onClick={addOption}
+                className="text-xs text-brand-blue hover:text-foreground transition-colors flex items-center gap-1"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                הוסף תשובה
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              {options.map((opt, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 group"
+                >
+                  {/* Order number */}
+                  <span className="text-xs text-muted w-5 text-center flex-shrink-0 font-bold">
+                    {i + 1}
+                  </span>
+
+                  {/* Label input */}
+                  <div className="flex-1 min-w-0">
+                    <input
+                      type="text"
+                      value={opt.label}
+                      onChange={(e) => updateOption(i, "label", e.target.value)}
+                      placeholder={`תשובה ${i + 1}`}
+                      className="w-full px-3 py-2 rounded-lg bg-transparent border border-glass text-sm focus:outline-none focus:border-brand-blue transition-colors"
+                    />
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="flex items-center gap-0.5 flex-shrink-0 opacity-40 group-hover:opacity-100 transition-opacity">
+                    <button
+                      type="button"
+                      onClick={() => moveOption(i, -1)}
+                      disabled={i === 0}
+                      className="p-1 rounded text-muted hover:text-foreground disabled:opacity-20 transition-colors"
+                      title="הזז למעלה"
+                    >
+                      <ChevronUp className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => moveOption(i, 1)}
+                      disabled={i === options.length - 1}
+                      className="p-1 rounded text-muted hover:text-foreground disabled:opacity-20 transition-colors"
+                      title="הזז למטה"
+                    >
+                      <ChevronDown className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => duplicateOption(i)}
+                      className="p-1 rounded text-muted hover:text-brand-blue transition-colors"
+                      title="שכפל"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeOption(i)}
+                      disabled={options.length <= 1}
+                      className="p-1 rounded text-muted hover:text-accent-danger disabled:opacity-20 transition-colors"
+                      title="מחק"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Quick add on Enter */}
+            <p className="text-[11px] text-muted">
+              הזינו טקסט התשובה. הערך הטכני נוצר אוטומטית.
+            </p>
           </div>
         )}
 
-        {/* Slider settings */}
+        {/* ── Slider settings ── */}
         {questionType === "slider" && (
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-muted mb-1">מינימום</label>
+                <label className="block text-xs text-muted mb-1.5 font-medium">מינימום</label>
                 <input
                   type="number"
                   value={sliderMin}
                   onChange={(e) => setSliderMin(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-xl bg-transparent border border-glass text-sm focus:outline-none focus:border-brand-blue transition-colors"
+                  className={inputClass}
                 />
               </div>
               <div>
-                <label className="block text-xs text-muted mb-1">מקסימום</label>
+                <label className="block text-xs text-muted mb-1.5 font-medium">מקסימום</label>
                 <input
                   type="number"
                   value={sliderMax}
                   onChange={(e) => setSliderMax(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-xl bg-transparent border border-glass text-sm focus:outline-none focus:border-brand-blue transition-colors"
+                  className={inputClass}
                 />
               </div>
             </div>
             <div>
-              <label className="block text-xs text-muted mb-1">
+              <label className="block text-xs text-muted mb-1.5 font-medium">
                 תוויות (מופרדות בפסיק, לפי סדר)
               </label>
               <input
@@ -355,17 +489,18 @@ function QuestionModal({
                 value={sliderLabels}
                 onChange={(e) => setSliderLabels(e.target.value)}
                 placeholder="רגוע, קליל, אנרגטי, פרוע, מטורף"
-                className="w-full px-3 py-2 rounded-xl bg-transparent border border-glass text-sm focus:outline-none focus:border-brand-blue transition-colors"
+                className={inputClass}
               />
             </div>
           </div>
         )}
 
-        <div className="flex gap-2 pt-2">
-          <button type="submit" className="btn-primary flex-1">
+        {/* ── Actions ── */}
+        <div className="flex gap-3 pt-2">
+          <button type="submit" className="btn-primary flex-1 py-2.5">
             {question ? "שמור שינויים" : "הוסף שאלה"}
           </button>
-          <button type="button" onClick={onClose} className="btn-secondary flex-1">
+          <button type="button" onClick={onClose} className="btn-secondary flex-1 py-2.5">
             ביטול
           </button>
         </div>
