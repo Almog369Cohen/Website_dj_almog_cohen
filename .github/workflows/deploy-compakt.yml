@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  SERVICE_NAME: compakt
+  SERVICE_NAME: compakt-backoffice
   REGION: us-central1
   IMAGE: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/compakt/backoffice
 
