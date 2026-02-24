@@ -144,7 +144,7 @@ export default function DJClientPage() {
             }}
             onClick={() => {
               // TODO: Create event for this DJ and redirect to client flow
-              window.location.href = `/?dj=${dj.id}`;
+              window.location.href = `/event?dj=${dj.id}`;
             }}
           >
             יאללה מתחילים!
