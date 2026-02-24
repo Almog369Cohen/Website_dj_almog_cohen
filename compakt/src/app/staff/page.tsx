@@ -58,15 +58,21 @@ function StaffLoginForm() {
       });
 
       const rawText = await res.text();
-      const body = rawText ? (JSON.parse(rawText) as any) : null;
+      let body: any = null;
+      if (rawText) {
+        try {
+          body = JSON.parse(rawText) as any;
+        } catch {
+          body = null;
+        }
+      }
 
       if (!res.ok) {
         if (body?.error === "NOT_STAFF") {
           setError("NOT_STAFF");
         } else {
-          const msg = body?.error
-            ? hebrewAuthError(body.error)
-            : `שגיאה לא צפויה (${res.status})`;
+          const serverMsg = body?.error ? hebrewAuthError(body.error) : null;
+          const msg = serverMsg ?? `שגיאת שרת (${res.status}) — נסו שוב`;
           setError(msg);
         }
         return;
