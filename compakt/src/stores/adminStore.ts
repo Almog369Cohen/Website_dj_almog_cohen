@@ -160,6 +160,11 @@ export const useAdminStore = create<AdminStore>()(
         if (state) {
           state.isAuthenticated = false;
 
+          state.upsells = (Array.isArray(state.upsells) ? state.upsells : []).filter((u) => {
+            const hay = `${u.titleHe} ${u.descriptionHe} ${u.priceHint ?? ""}`;
+            return !/אפטר|after|6,?000|6000/i.test(hay);
+          });
+
           // Merge in any missing default questions (localStorage may contain an older set)
           const existingIds = new Set(state.questions.map((q) => q.id));
           for (const q of defaultQuestions) {

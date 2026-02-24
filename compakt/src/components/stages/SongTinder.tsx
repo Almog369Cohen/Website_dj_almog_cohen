@@ -837,10 +837,17 @@ function SwipeCard({
               </span>
             ))}
           </div>
+
+          <p className="text-[11px] text-white/40 text-center mt-2">
+            אפשר לגרור את הכרטיס או להשתמש בכפתורים למטה
+          </p>
         </div>
 
         {/* ── Bottom: Premium Audio Player ── */}
         <div className="w-full space-y-3">
+          <p className="text-[11px] text-white/40 text-center">
+            האזינו לקטע קצר ואז החליקו ימינה/שמאלה כדי לבחור
+          </p>
           {/* Hidden audio */}
           {isGcsAudio && (
             <audio

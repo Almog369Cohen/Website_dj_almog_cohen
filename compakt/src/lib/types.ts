@@ -20,6 +20,7 @@ export type MomentType =
   | "ceremony_bride"
   | "glass_break"
   | "slow"
+  | "ending"
   | "entrance"
   | "parents"
   | "other";

@@ -21,6 +21,7 @@ const specialMoments: { type: MomentType; label: string; icon: React.ReactNode }
   { type: "ceremony_bride", label: "כניסה לחופה כלה", icon: <Heart className="w-4 h-4" /> },
   { type: "glass_break", label: "שבירת כוס", icon: <GlassWater className="w-4 h-4" /> },
   { type: "slow", label: "סלואו", icon: <Music className="w-4 h-4" /> },
+  { type: "ending", label: "שיר סיום", icon: <Music className="w-4 h-4" /> },
 ];
 
 export function DreamsRequests() {
@@ -67,7 +68,11 @@ export function DreamsRequests() {
   };
 
   const adminUpsells = useAdminStore((s) => s.upsells);
-  const upsells = adminUpsells.filter((u) => u.isActive && u.placement === "stage_4");
+  const upsells = adminUpsells.filter((u) => {
+    if (!u.isActive || u.placement !== "stage_4") return false;
+    const hay = `${u.titleHe} ${u.descriptionHe} ${u.priceHint ?? ""}`;
+    return !/אפטר|after|6,?000|6000/i.test(hay);
+  });
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
