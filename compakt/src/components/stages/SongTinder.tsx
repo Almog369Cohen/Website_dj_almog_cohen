@@ -233,7 +233,7 @@ export function SongTinder() {
           עכשיו בואו נדבר על הרגעים המיוחדים
         </p>
         <button onClick={handleFinish} className="btn-primary w-full">
-          המשיכו לבקשות ←
+          המשיכו לבקשות →
         </button>
       </motion.div>
     );
@@ -585,7 +585,7 @@ export function SongTinder() {
                   border: "1px solid rgba(255,255,255,0.1)",
                 }}
               >
-                המשך ←
+                המשך →
               </button>
             </div>
           </motion.div>

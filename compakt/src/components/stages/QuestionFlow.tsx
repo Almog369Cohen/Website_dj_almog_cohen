@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEventStore } from "@/stores/eventStore";
 import { useAdminStore } from "@/stores/adminStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft, SkipForward, Home, Shield } from "lucide-react";
+import { ChevronRight, ChevronLeft, SkipForward, ArrowRight } from "lucide-react";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import type { Question } from "@/lib/types";
 
 const ETHNIC_MUSIC_Q_ID = "ethnic_music";
@@ -41,6 +42,7 @@ export function QuestionFlow() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [showBackConfirm, setShowBackConfirm] = useState(false);
   const [showEthnicModal, setShowEthnicModal] = useState(false);
   const [ethnicText, setEthnicText] = useState(
     typeof answers.find((a) => a.questionId === ETHNIC_MUSIC_TEXT_ID)?.answerValue === "string"
@@ -112,10 +114,9 @@ export function QuestionFlow() {
       setDirection(-1);
       setCurrentIndex((i) => i - 1);
     } else {
-      const ok = confirm("לחזור להגדרות האירוע? אפשר תמיד לחזור אחר כך");
-      if (ok) setStage(0);
+      setShowBackConfirm(true);
     }
-  }, [currentIndex, setStage]);
+  }, [currentIndex]);
 
   const skip = useCallback(() => {
     trackEvent("question_skip", { questionId: question?.id });
@@ -126,49 +127,33 @@ export function QuestionFlow() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="flex items-center justify-between mb-3 px-1">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => {
-              trackEvent("navigate_home", { from: "questions" });
-              setStage(0);
-              router.push("/");
-            }}
-            className="glass-card p-2 rounded-full transition-all hover:scale-110 active:scale-95"
-            aria-label="חזרה למסך הבית"
-            title="בית"
-          >
-            <Home className="w-4 h-4 text-muted" />
-          </button>
+      {/* Back to setup confirm */}
+      <ConfirmModal
+        open={showBackConfirm}
+        title="לחזור להגדרות האירוע?"
+        description="התשובות שלכם נשמרות. אפשר תמיד לחזור."
+        icon={<ArrowRight className="w-8 h-8 text-muted" />}
+        confirmText="כן, חזרה"
+        cancelText="הישאר כאן"
+        onConfirm={() => { setShowBackConfirm(false); setStage(0); }}
+        onCancel={() => setShowBackConfirm(false)}
+      />
 
-          <button
-            onClick={() => {
-              trackEvent("navigate_admin", { from: "questions" });
-              router.push("/admin");
-            }}
-            className="glass-card p-2 rounded-full transition-all hover:scale-110 active:scale-95"
-            aria-label="כניסה ל-DJ"
-            title="DJ"
-          >
-            <Shield className="w-4 h-4 text-muted" />
-          </button>
+      {/* Progress bar + percentage */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-2 px-1">
+          <span className="text-xs text-muted">שאלה {currentIndex + 1} מתוך {total}</span>
+          <span className="text-xs font-medium text-brand-blue">{Math.round(((currentIndex) / total) * 100)}%</span>
         </div>
-        <div className="text-xs text-muted" />
-      </div>
-
-      {/* Progress */}
-      <div className="flex items-center justify-center gap-1.5 mb-6">
-        {questions.map((_, i) => (
-          <div
-            key={i}
-            className={`progress-dot ${i === currentIndex ? "active" : i < currentIndex ? "done" : ""
-              }`}
+        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <motion.div
+            className="h-full rounded-full"
+            style={{ background: "linear-gradient(to right, #059cc0, #03b28c)" }}
+            initial={false}
+            animate={{ width: `${((currentIndex + 1) / total) * 100}%` }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
           />
-        ))}
-      </div>
-
-      <div className="text-center text-xs text-muted mb-4">
-        {currentIndex + 1} / {total}
+        </div>
       </div>
 
       <AnimatePresence mode="wait" custom={direction}>

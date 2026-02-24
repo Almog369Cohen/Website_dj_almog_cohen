@@ -13,6 +13,7 @@ import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { RotateCcw } from "lucide-react";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 function JourneyApp() {
   const event = useEventStore((s) => s.event);
@@ -21,6 +22,7 @@ function JourneyApp() {
   const reset = useEventStore((s) => s.reset);
   const currentStage = event?.currentStage ?? 0;
   const [showReset, setShowReset] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   // Load event from magic link URL param
   useEffect(() => {
@@ -37,10 +39,13 @@ function JourneyApp() {
   }, [theme]);
 
   const handleReset = () => {
-    if (confirm("?בטוחים שרוצים להתחיל מחדש? כל הנתונים יימחקו")) {
-      reset();
-      setShowReset(false);
-    }
+    setShowResetConfirm(true);
+  };
+
+  const confirmReset = () => {
+    reset();
+    setShowReset(false);
+    setShowResetConfirm(false);
   };
 
   const stageKey = !event ? "setup" : `stage-${currentStage}`;
@@ -73,27 +78,18 @@ function JourneyApp() {
         )}
       </div>
 
-      {/* Reset Confirmation */}
-      <AnimatePresence>
-        {showReset && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="fixed top-16 left-4 z-50 glass-card p-3 rounded-xl text-sm"
-          >
-            <p className="text-xs text-secondary mb-2">?להתחיל מחדש</p>
-            <div className="flex gap-2">
-              <button onClick={handleReset} className="text-xs px-3 py-1 rounded-lg text-white" style={{ background: "var(--accent-danger)" }}>
-                כן, מחק הכל
-              </button>
-              <button onClick={() => setShowReset(false)} className="text-xs px-3 py-1 rounded-lg border border-glass text-muted">
-                ביטול
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Reset Confirmation Modal */}
+      <ConfirmModal
+        open={showResetConfirm}
+        title="להתחיל מחדש?"
+        description="כל הנתונים יימחקו — שאלות, שירים ובקשות"
+        icon={<RotateCcw className="w-8 h-8 text-muted" />}
+        confirmText="כן, מחק הכל"
+        cancelText="חזרה"
+        danger
+        onConfirm={confirmReset}
+        onCancel={() => setShowResetConfirm(false)}
+      />
 
       {/* Stage Navigation */}
       {event && currentStage > 0 && currentStage <= 4 && (

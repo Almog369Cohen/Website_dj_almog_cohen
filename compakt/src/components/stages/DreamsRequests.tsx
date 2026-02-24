@@ -369,8 +369,8 @@ export function DreamsRequests() {
           onClick={handleFinish}
           className="btn-primary w-full text-base flex items-center justify-center gap-2"
         >
-          <ChevronLeft className="w-5 h-5" />
           סיימנו! צרו Music Brief
+          <ChevronLeft className="w-5 h-5" />
         </button>
       </motion.div>
     </div>

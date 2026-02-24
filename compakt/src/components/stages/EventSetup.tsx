@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useEventStore } from "@/stores/eventStore";
 import { motion } from "framer-motion";
-import { Music, PartyPopper, Briefcase, Star, Heart } from "lucide-react";
+import { Music, PartyPopper, Briefcase, Star, Heart, UserCircle } from "lucide-react";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import type { EventType } from "@/lib/types";
 
 const eventTypes: { type: EventType; label: string; icon: React.ReactNode }[] = [
@@ -29,6 +30,7 @@ export function EventSetup() {
   const [contactPhone, setContactPhone] = useState(event?.contactPhone || "");
   const [contactRole, setContactRole] = useState(event?.contactRole || "groom");
   const [nameHint, setNameHint] = useState(false);
+  const [showNoNameConfirm, setShowNoNameConfirm] = useState(false);
 
   const nameLabels = (() => {
     if (selectedType === "corporate") {
@@ -57,14 +59,7 @@ export function EventSetup() {
     };
   })();
 
-  const handleStart = () => {
-    if (!coupleNameA.trim() && !coupleNameB.trim()) {
-      setNameHint(true);
-      setTimeout(() => setNameHint(false), 1600);
-      const ok = confirm("רוצים להמשיך בלי שמות? אפשר גם להוסיף אחר כך");
-      if (!ok) return;
-    }
-
+  const proceedToStage1 = () => {
     if (event) {
       updateEvent({
         eventType: selectedType,
@@ -94,6 +89,16 @@ export function EventSetup() {
     }
   };
 
+  const handleStart = () => {
+    if (!coupleNameA.trim() && !coupleNameB.trim()) {
+      setNameHint(true);
+      setTimeout(() => setNameHint(false), 1600);
+      setShowNoNameConfirm(true);
+      return;
+    }
+    proceedToStage1();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -118,7 +123,7 @@ export function EventSetup() {
             <Music className="w-8 h-8 text-white" />
           </motion.div>
           <h1 className="text-2xl font-bold mb-2">Compakt</h1>
-          <p className="text-secondary text-sm">!בואו ניצור את האירוע שלכם</p>
+          <p className="text-secondary text-sm">בואו ניצור את האירוע שלכם!</p>
         </div>
 
         <div className="space-y-6">
@@ -227,9 +232,20 @@ export function EventSetup() {
             </div>
           </div>
 
-          <button onClick={handleStart} className="btn-primary w-full text-base">
-            ← יאללה מתחילים
+          <button onClick={handleStart} className="btn-primary w-full text-base py-3.5">
+            יאללה מתחילים →
           </button>
+
+          <ConfirmModal
+            open={showNoNameConfirm}
+            title="להמשיך בלי שמות?"
+            description="אפשר להוסיף שמות גם אחר כך"
+            icon={<UserCircle className="w-8 h-8 text-muted" />}
+            confirmText="כן, המשיכו"
+            cancelText="אוסיף שמות"
+            onConfirm={() => { setShowNoNameConfirm(false); proceedToStage1(); }}
+            onCancel={() => setShowNoNameConfirm(false)}
+          />
 
           <div className="text-center mt-4">
             <a
