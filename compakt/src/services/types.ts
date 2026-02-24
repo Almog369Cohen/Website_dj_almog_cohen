@@ -17,6 +17,7 @@ import type {
   SwipeAction,
   QuestionAnswer,
   EventRequest,
+  DJProfile,
 } from "@/lib/types";
 
 // ── Song Service ──
@@ -90,6 +91,8 @@ export interface IRequestService {
 export interface IAuthService {
   isAuthenticated(): boolean;
   login(email: string, password: string): Promise<{ ok: true; role?: string } | { ok: false; error: string }>;
+  loginWithGoogle?(): Promise<{ ok: true } | { ok: false; error: string }>;
+  fetchProfile?(): Promise<DJProfile | null>;
   sendPasswordReset(email: string): Promise<{ ok: true } | { ok: false; error: string }>;
   updatePassword(newPassword: string): Promise<{ ok: true } | { ok: false; error: string }>;
   logout(): void;

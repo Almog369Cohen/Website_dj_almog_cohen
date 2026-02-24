@@ -27,6 +27,82 @@ export type MomentType =
 
 export type ThemeMode = "night" | "day";
 
+export type PlanTier = "free" | "basic" | "pro";
+
+export interface DJProfile {
+  id: string;
+  email: string;
+  fullName: string;
+  role: string;
+  plan: PlanTier;
+  djSlug: string | null;
+  businessName: string | null;
+  logoUrl: string | null;
+  accentColor: string;
+  tagline: string | null;
+  onboardingComplete: boolean;
+}
+
+export interface Subscription {
+  id: string;
+  userId: string;
+  plan: PlanTier;
+  status: "active" | "expired" | "cancelled";
+  startedAt: string;
+  expiresAt: string | null;
+  couponCode: string | null;
+}
+
+export interface Coupon {
+  id: string;
+  code: string;
+  plan: PlanTier;
+  durationDays: number;
+  maxUses: number | null;
+  usesCount: number;
+  isActive: boolean;
+}
+
+export interface PlanLimits {
+  eventsPerMonth: number;
+  maxQuestions: number;
+  canUploadSongs: boolean;
+  canBrand: boolean;
+  maxUpsells: number;
+  canExportPdf: boolean;
+  hasAnalytics: boolean;
+}
+
+export const PLAN_LIMITS: Record<PlanTier, PlanLimits> = {
+  free: {
+    eventsPerMonth: 2,
+    maxQuestions: 3,
+    canUploadSongs: false,
+    canBrand: false,
+    maxUpsells: 0,
+    canExportPdf: false,
+    hasAnalytics: false,
+  },
+  basic: {
+    eventsPerMonth: 8,
+    maxQuestions: 10,
+    canUploadSongs: true,
+    canBrand: true,
+    maxUpsells: 3,
+    canExportPdf: true,
+    hasAnalytics: true,
+  },
+  pro: {
+    eventsPerMonth: 20,
+    maxQuestions: 999,
+    canUploadSongs: true,
+    canBrand: true,
+    maxUpsells: 999,
+    canExportPdf: true,
+    hasAnalytics: true,
+  },
+};
+
 export interface EventData {
   id: string;
   magicToken: string;
