@@ -66,6 +66,27 @@ export default function AdminPage() {
     };
   }, [setAuthenticated]);
 
+  useEffect(() => {
+    if (!supabase) return;
+    if (!isAuthenticated) return;
+
+    let cancelled = false;
+
+    (async () => {
+      if (auth.fetchProfile) {
+        const profile = await auth.fetchProfile();
+        if (cancelled) return;
+        if (profile && !profile.onboardingComplete) {
+          router.replace("/admin/onboarding");
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [auth, isAuthenticated, router]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsBusy(true);
@@ -85,6 +106,14 @@ export default function AdminPage() {
     if (redirect !== "/admin") {
       router.push(redirect);
       return;
+    }
+
+    if (auth.fetchProfile) {
+      const profile = await auth.fetchProfile();
+      if (profile && !profile.onboardingComplete) {
+        router.replace("/admin/onboarding");
+        return;
+      }
     }
     setIsBusy(false);
   };

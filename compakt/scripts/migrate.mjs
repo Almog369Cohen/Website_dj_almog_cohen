@@ -18,7 +18,7 @@ if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
   process.exit(1);
 }
 
-const sqlPath = resolve(__dirname, "../supabase/migrations/001_multi_tenant.sql");
+const sqlPath = resolve(__dirname, "../supabase/migrations/002_multi_tenant.sql");
 const sql = readFileSync(sqlPath, "utf-8");
 
 // Split SQL into individual statements (handling $$ blocks)
