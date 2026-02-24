@@ -21,7 +21,7 @@ export function Header({ email, role, onMenuToggle }: HeaderProps) {
   const handleLogout = () => {
     if (!supabase) return;
     void supabase.auth.signOut().then(() => {
-      window.location.href = "/admin";
+      window.location.href = "/staff";
     });
   };
 

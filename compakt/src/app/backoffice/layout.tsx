@@ -2,27 +2,20 @@
 
 import { useState, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { StaffGuard } from "@/components/auth/StaffGuard";
+import { StaffGuard, useViewer } from "@/components/auth/StaffGuard";
 import { Sidebar } from "@/components/backoffice/Sidebar";
 import { Header } from "@/components/backoffice/Header";
-import { useViewerRole } from "@/components/backoffice/useViewerRole";
-import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 30_000, retry: 1 } },
 });
 
 function BackofficeShell({ children }: { children: ReactNode }) {
-  const viewer = useViewerRole();
+  const viewer = useViewer();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  if (!viewer) {
-    return (
-      <div className="min-h-dvh gradient-hero flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
-      </div>
-    );
-  }
+  // viewer is guaranteed by StaffGuard, but guard against null just in case
+  if (!viewer) return null;
 
   return (
     <div className="min-h-dvh flex" dir="rtl">

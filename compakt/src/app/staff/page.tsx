@@ -1,21 +1,43 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useMemo, useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Shield, Loader2, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { hebrewAuthError } from "@/lib/auth/errors-he";
 
 export default function StaffLoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-dvh gradient-hero flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
+      </div>
+    }>
+      <StaffLoginForm />
+    </Suspense>
+  );
+}
+
+function StaffLoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState("almog294@gmail.com");
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/backoffice";
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resetSent, setResetSent] = useState(false);
+
+  // Restore last-used email from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("compakt-staff-email");
+      if (saved) setEmail(saved);
+    } catch { }
+  }, []);
 
   const canSubmit = useMemo(() => {
     return email.trim().length > 3 && password.length >= 6 && !loading;
@@ -46,15 +68,41 @@ export default function StaffLoginPage() {
         return;
       }
 
+      // Save email for next visit
+      try { localStorage.setItem("compakt-staff-email", email.trim()); } catch { }
+
       // Set the session on the client so subsequent pages work
-      if (supabase && body.session) {
-        await supabase.auth.setSession({
-          access_token: body.session.access_token,
-          refresh_token: body.session.refresh_token,
-        });
+      if (!supabase) {
+        setError("שגיאת תצורה — Supabase לא מוגדר");
+        return;
       }
 
-      router.replace("/backoffice");
+      if (!body.session?.access_token || !body.session?.refresh_token) {
+        setError("שגיאה — לא התקבל session מהשרת");
+        return;
+      }
+
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: body.session.access_token,
+        refresh_token: body.session.refresh_token,
+      });
+
+      if (sessionError) {
+        setError("שגיאה בשמירת ההתחברות: " + sessionError.message);
+        return;
+      }
+
+      // Verify session actually persisted before navigating
+      const { data: check } = await supabase.auth.getSession();
+      if (!check.session) {
+        setError("ההתחברות לא נשמרה — נסה שוב");
+        return;
+      }
+
+      // Use window.location for a full navigation to ensure StaffGuard picks up the new session
+      window.location.href = redirectTo;
+    } catch (err) {
+      setError("שגיאה לא צפויה — " + (err instanceof Error ? err.message : "נסה שוב"));
     } finally {
       setLoading(false);
     }

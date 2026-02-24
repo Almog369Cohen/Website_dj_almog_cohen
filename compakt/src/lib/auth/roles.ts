@@ -2,6 +2,15 @@ export type UserRole = "owner" | "admin" | "support" | "accountant" | "assistant
 
 const STAFF_ROLES: UserRole[] = ["owner", "admin", "support", "accountant", "assistant"];
 
+export const ROLE_LABELS: Record<UserRole, string> = {
+  owner: "בעלים",
+  admin: "מנהל",
+  support: "תמיכה",
+  accountant: "רו״ח",
+  assistant: "עוזר",
+  dj: "DJ",
+};
+
 export function isStaff(role: UserRole | string | null | undefined): boolean {
   return STAFF_ROLES.includes(role as UserRole);
 }

@@ -1,60 +1,111 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { isStaff } from "@/lib/auth/roles";
+import type { UserRole } from "@/lib/auth/roles";
 import { Loader2 } from "lucide-react";
+
+interface ViewerInfo {
+  id: string;
+  email: string;
+  role: UserRole;
+  fullName: string;
+}
+
+type GuardStatus =
+  | { state: "loading" }
+  | { state: "authorized"; viewer: ViewerInfo }
+  | { state: "no_session" }
+  | { state: "session_expired" }
+  | { state: "no_profile" }
+  | { state: "not_staff"; role: string }
+  | { state: "error"; message: string };
+
+const ViewerContext = createContext<ViewerInfo | null>(null);
+
+export function useViewer(): ViewerInfo | null {
+  return useContext(ViewerContext);
+}
 
 interface StaffGuardProps {
   children: ReactNode;
 }
 
 export function StaffGuard({ children }: StaffGuardProps) {
-  const [status, setStatus] = useState<"loading" | "authorized" | "unauthorized">("loading");
+  const [status, setStatus] = useState<GuardStatus>({ state: "loading" });
 
   useEffect(() => {
     if (!supabase) {
-      setStatus("unauthorized");
+      setStatus({ state: "error", message: "Supabase לא מוגדר — בדוק הגדרות סביבה" });
       return;
     }
 
     let cancelled = false;
 
     async function checkAccess() {
-      setStatus("loading");
+      setStatus({ state: "loading" });
 
       const { data: { session } } = await supabase!.auth.getSession();
       if (cancelled) return;
 
       if (!session) {
-        setStatus("unauthorized");
+        setStatus({ state: "no_session" });
         return;
       }
 
-      // Use server-side API to read profile (bypasses RLS)
-      const res = await fetch("/api/auth/me", {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-      });
+      try {
+        const res = await fetch("/api/auth/me", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
 
-      if (cancelled) return;
+        if (cancelled) return;
 
-      if (!res.ok) {
-        setStatus("unauthorized");
-        return;
-      }
+        const data = await res.json();
 
-      const data = await res.json();
-      if (data.role && isStaff(data.role)) {
-        setStatus("authorized");
-      } else {
-        setStatus("unauthorized");
+        if (res.status === 401) {
+          setStatus({ state: "session_expired" });
+          return;
+        }
+
+        if (res.status === 404 && data.code === "PROFILE_MISSING") {
+          setStatus({ state: "no_profile" });
+          return;
+        }
+
+        if (!res.ok) {
+          setStatus({ state: "error", message: data.error ?? "שגיאת שרת" });
+          return;
+        }
+
+        if (data.role && isStaff(data.role)) {
+          setStatus({
+            state: "authorized",
+            viewer: {
+              id: data.id,
+              email: data.email,
+              role: data.role as UserRole,
+              fullName: data.fullName ?? "",
+            },
+          });
+        } else {
+          setStatus({ state: "not_staff", role: data.role ?? "unknown" });
+        }
+      } catch {
+        if (!cancelled) {
+          setStatus({ state: "error", message: "שגיאת רשת — בדוק חיבור אינטרנט" });
+        }
       }
     }
 
     void checkAccess();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      void checkAccess();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        void checkAccess();
+      } else {
+        setStatus({ state: "no_session" });
+      }
     });
 
     return () => {
@@ -63,20 +114,38 @@ export function StaffGuard({ children }: StaffGuardProps) {
     };
   }, []);
 
-  if (status === "loading") {
+  if (status.state === "loading") {
     return (
       <div className="min-h-dvh gradient-hero flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-brand-blue mx-auto mb-3" />
+          <p className="text-sm text-secondary">בודק הרשאות...</p>
+        </div>
       </div>
     );
   }
 
-  if (status === "unauthorized") {
-    if (typeof window !== "undefined") {
-      window.location.href = "/unauthorized";
-    }
-    return null;
+  if (status.state === "authorized") {
+    return (
+      <ViewerContext.Provider value={status.viewer}>
+        {children}
+      </ViewerContext.Provider>
+    );
   }
 
-  return <>{children}</>;
+  // All other states → redirect to appropriate page
+  if (typeof window !== "undefined") {
+    const currentPath = window.location.pathname;
+    const reason = status.state;
+
+    if (status.state === "no_session" || status.state === "session_expired") {
+      // Redirect to staff login with return URL
+      window.location.href = `/staff?redirect=${encodeURIComponent(currentPath)}`;
+    } else {
+      // Redirect to unauthorized with reason
+      window.location.href = `/unauthorized?reason=${reason}&from=${encodeURIComponent(currentPath)}`;
+    }
+  }
+
+  return null;
 }
