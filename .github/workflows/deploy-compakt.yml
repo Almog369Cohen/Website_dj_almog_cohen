@@ -9,8 +9,8 @@ on:
 
 env:
   SERVICE_NAME: compakt-backoffice
-  REGION: me-west1
-  IMAGE: me-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/compakt/backoffice
+  REGION: us-central1
+  IMAGE: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/compakt/backoffice
 
 jobs:
   deploy:
@@ -33,15 +33,15 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker me-west1-docker.pkg.dev --quiet
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
       - name: Create Artifact Registry (if not exists)
         run: |
           gcloud artifacts repositories describe compakt \
-            --location=me-west1 2>/dev/null || \
+            --location=us-central1 2>/dev/null || \
           gcloud artifacts repositories create compakt \
             --repository-format=docker \
-            --location=me-west1 \
+            --location=us-central1 \
             --description="Compakt Backoffice images"
 
       - name: Build Docker image
