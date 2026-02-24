@@ -7,6 +7,26 @@ import { Loader2, UserPlus, Eye, EyeOff, ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
 
+function hebrewSignupError(message: string): string {
+  const msg = message.toLowerCase();
+  if (msg.includes("rate") && msg.includes("exceed")) {
+    return "יותר מדי ניסיונות בזמן קצר. נסו שוב בעוד דקה.";
+  }
+  if (msg.includes("user already registered")) {
+    return "המשתמש כבר קיים. נסו להתחבר באדמין או להשתמש באימייל אחר.";
+  }
+  if (msg.includes("invalid") && msg.includes("email")) {
+    return "אימייל לא תקין.";
+  }
+  if (msg.includes("password") && (msg.includes("should") || msg.includes("weak") || msg.includes("length"))) {
+    return "הסיסמה חלשה מדי (מינימום 6 תווים).";
+  }
+  if (msg.includes("database error saving new user")) {
+    return "שגיאת בסיס נתונים ביצירת משתמש. ודאו שה-DB trigger עודכן (handle_new_user).";
+  }
+  return message;
+}
+
 export default function SignupPage() {
   const router = useRouter();
 
@@ -17,6 +37,11 @@ export default function SignupPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
+
+  const cooldownRemainingSec = cooldownUntil
+    ? Math.max(0, Math.ceil((cooldownUntil - Date.now()) / 1000))
+    : 0;
 
   useEffect(() => {
     if (!supabase) return;
@@ -27,12 +52,28 @@ export default function SignupPage() {
     });
   }, [router]);
 
+  useEffect(() => {
+    if (!cooldownUntil) return;
+    if (Date.now() >= cooldownUntil) return;
+    const t = setInterval(() => {
+      if (Date.now() >= cooldownUntil) {
+        setCooldownUntil(null);
+      }
+    }, 250);
+    return () => clearInterval(t);
+  }, [cooldownUntil]);
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
     if (!supabase) {
       setError("Supabase לא מוגדר");
+      return;
+    }
+
+    if (cooldownUntil && Date.now() < cooldownUntil) {
+      setError("יותר מדי ניסיונות בזמן קצר. נסו שוב בעוד דקה.");
       return;
     }
 
@@ -51,7 +92,15 @@ export default function SignupPage() {
       });
 
       if (signUpError) {
-        setError(signUpError.message);
+        const he = hebrewSignupError(signUpError.message);
+        setError(he);
+
+        // If this is a rate limit, enforce a local cooldown to prevent hammering.
+        const msg = signUpError.message.toLowerCase();
+        if (msg.includes("rate") && msg.includes("exceed")) {
+          setCooldownUntil(Date.now() + 60_000);
+        }
+
         setBusy(false);
         return;
       }
@@ -160,6 +209,12 @@ export default function SignupPage() {
                 </div>
               </div>
 
+              {cooldownRemainingSec > 0 && (
+                <p className="text-xs text-muted text-center">
+                  נסו שוב בעוד {cooldownRemainingSec} שניות
+                </p>
+              )}
+
               {error && (
                 <p className="text-xs" style={{ color: "var(--accent-danger)" }}>
                   {error}
@@ -168,7 +223,7 @@ export default function SignupPage() {
 
               <button
                 type="submit"
-                disabled={busy}
+                disabled={busy || cooldownRemainingSec > 0}
                 className="btn-primary w-full flex items-center justify-center gap-2 py-3 disabled:opacity-50"
               >
                 {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
