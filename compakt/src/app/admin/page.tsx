@@ -16,6 +16,7 @@ import { UpsellManager } from "@/components/admin/UpsellManager";
 import { Dashboard } from "@/components/admin/Dashboard";
 import { EventManager } from "@/components/admin/EventManager";
 import { ProfileSettings } from "@/components/admin/ProfileSettings";
+import { SetupChecklist } from "@/components/admin/SetupChecklist";
 import { useAuthService } from "@/services";
 import { useAdminSync } from "@/hooks/useAdminSync";
 import { supabase } from "@/lib/supabase/client";
@@ -339,6 +340,7 @@ export default function AdminPage() {
 
       {/* Content */}
       <main className="max-w-5xl mx-auto px-4 py-6">
+        <SetupChecklist onNavigate={(tab) => setActiveTab(tab as AdminTab)} />
         <AnimatePresence mode="wait">
           {activeTab === "events" && (
             <motion.div
