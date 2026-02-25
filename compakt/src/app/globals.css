@@ -128,17 +128,19 @@ select option {
   }
 
   /* ── Primary Button — Glass ── */
+  /* Uses --dj-accent when set (portal), otherwise falls back to brand-blue */
   .btn-primary {
-    background: rgba(5, 156, 192, 0.12);
+    --_accent: var(--dj-accent, #059cc0);
+    background: color-mix(in srgb, var(--_accent) 12%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1.5px solid rgba(5, 156, 192, 0.3);
+    border: 1.5px solid color-mix(in srgb, var(--_accent) 30%, transparent);
     color: #ffffff;
     border-radius: 16px;
     font-weight: 800;
     padding: 14px 28px;
     transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    box-shadow: 0 4px 20px rgba(5, 156, 192, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--_accent) 12%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     position: relative;
     overflow: hidden;
   }
@@ -149,7 +151,7 @@ select option {
     inset: 0;
     background: linear-gradient(105deg,
         transparent 40%,
-        rgba(5, 156, 192, 0.12) 50%,
+        color-mix(in srgb, var(--_accent, #059cc0) 12%, transparent) 50%,
         transparent 60%);
     transform: translateX(-100%);
     transition: transform 0.6s ease;
@@ -160,9 +162,9 @@ select option {
   }
 
   .btn-primary:hover {
-    background: rgba(5, 156, 192, 0.18);
-    border-color: rgba(5, 156, 192, 0.45);
-    box-shadow: 0 6px 30px rgba(5, 156, 192, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    background: color-mix(in srgb, var(--_accent, #059cc0) 18%, transparent);
+    border-color: color-mix(in srgb, var(--_accent, #059cc0) 45%, transparent);
+    box-shadow: 0 6px 30px color-mix(in srgb, var(--_accent, #059cc0) 20%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .btn-primary:active {

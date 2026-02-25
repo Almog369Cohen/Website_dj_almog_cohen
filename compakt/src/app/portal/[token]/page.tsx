@@ -309,7 +309,10 @@ function PortalJourney() {
   }
 
   return (
-    <main className="min-h-dvh gradient-hero relative">
+    <main
+      className="min-h-dvh gradient-hero relative"
+      style={djBranding?.accentColor ? { "--dj-accent": djBranding.accentColor } as React.CSSProperties : undefined}
+    >
       <AmbientBackground />
 
       {/* Top Controls */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -26,6 +26,7 @@ import {
   FileText,
   ShieldOff,
   ShieldCheck,
+  StickyNote,
 } from "lucide-react";
 import { BriefViewer } from "./BriefViewer";
 import { formatDate } from "@/lib/utils";
@@ -52,6 +53,7 @@ interface DJEvent {
   status: string | null;
   locked_at: string | null;
   portal_closed_at: string | null;
+  dj_notes: string | null;
   contact_id: string | null;
   portal_token: string | null;
   contact: EventContact | null;
@@ -225,6 +227,16 @@ export function EventManager() {
       headers: { Authorization: `Bearer ${bearer}` },
     });
     loadEvents();
+  };
+
+  const saveNotes = async (eventId: string, notes: string) => {
+    const bearer = await getBearer();
+    if (!bearer) return;
+    await fetch(`/api/events/${eventId}/notes`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${bearer}` },
+      body: JSON.stringify({ notes }),
+    });
   };
 
   const intakeEvents = events.filter((e) => (e.status ?? "active") === "intake");
@@ -436,6 +448,7 @@ export function EventManager() {
               onViewBrief={() => setBriefEventId(event.id)}
               onToggleLock={() => toggleLock(event.id)}
               onToggleClosePortal={() => toggleClosePortal(event.id)}
+              onSaveNotes={(notes) => saveNotes(event.id, notes)}
             />
           ))}
         </div>
@@ -466,6 +479,7 @@ function EventCard({
   onViewBrief,
   onToggleLock,
   onToggleClosePortal,
+  onSaveNotes,
 }: {
   event: DJEvent;
   copiedId: string | null;
@@ -477,6 +491,7 @@ function EventCard({
   onViewBrief?: () => void;
   onToggleLock?: () => void;
   onToggleClosePortal?: () => void;
+  onSaveNotes?: (notes: string) => void;
 }) {
   const isExpanded = expandedId === event.id;
   const isCopied = copiedId === event.id;
@@ -605,11 +620,14 @@ function EventCard({
                   </div>
                 )}
                 {(event.contact_phone || event.contact?.phone) && (
-                  <div className="flex items-center gap-1.5 text-secondary">
+                  <a
+                    href={`tel:${event.contact?.phone || event.contact_phone}`}
+                    className="flex items-center gap-1.5 text-secondary hover:text-brand-blue transition-colors"
+                  >
                     <Phone className="w-3.5 h-3.5 text-muted" />
                     <span dir="ltr">{event.contact?.phone || event.contact_phone}</span>
                     {event.contact_role && ` (${event.contact_role})`}
-                  </div>
+                  </a>
                 )}
                 {event.couple_name_a && (
                   <div className="flex items-center gap-1.5 text-secondary">
@@ -624,8 +642,11 @@ function EventCard({
                 </div>
               </div>
 
+              {/* DJ Notes */}
+              {onSaveNotes && <NotesField initialValue={event.dj_notes ?? ""} onSave={onSaveNotes} />}
+
               {/* Actions */}
-              <div className="flex gap-2 pt-1">
+              <div className="flex gap-2 pt-1 flex-wrap">
                 {onConfirm && isIntake && (
                   <button
                     onClick={onConfirm}
@@ -952,5 +973,50 @@ function CreateEventModal({
         )}
       </motion.div>
     </motion.div>
+  );
+}
+
+/* ── Notes Field (debounced auto-save) ── */
+function NotesField({
+  initialValue,
+  onSave,
+}: {
+  initialValue: string;
+  onSave: (notes: string) => void;
+}) {
+  const [value, setValue] = useState(initialValue);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  const handleChange = (text: string) => {
+    setValue(text);
+    setSaved(false);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      onSave(text);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1500);
+    }, 1000);
+  };
+
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center gap-1.5 text-xs text-muted">
+        <StickyNote className="w-3 h-3" />
+        הערות פנימיות
+        {saved && <span className="text-brand-green text-[10px]">נשמר ✓</span>}
+      </div>
+      <textarea
+        value={value}
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder="הערות לעצמך על האירוע..."
+        rows={2}
+        className="w-full px-3 py-2 rounded-xl bg-transparent border border-glass text-xs text-foreground placeholder:text-muted focus:outline-none focus:border-brand-blue/50 transition-colors resize-none"
+      />
+    </div>
   );
 }

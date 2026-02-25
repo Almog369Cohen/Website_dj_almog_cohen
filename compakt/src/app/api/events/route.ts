@@ -25,7 +25,7 @@ export async function GET(req: Request) {
       id, event_type, couple_name_a, couple_name_b, event_date, venue, city,
       contact_phone, contact_role, magic_token, current_stage, is_archived,
       status, locked_at, portal_closed_at, completed_at, archived_at,
-      contact_id, created_at, updated_at
+      contact_id, dj_notes, created_at, updated_at
     `)
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
