@@ -295,46 +295,48 @@ export default function AdminPage() {
   return (
     <div className="min-h-dvh gradient-hero">
       {/* Header */}
-      <header className="sticky top-0 z-50 glass-card rounded-none border-x-0 border-t-0 px-4 py-3">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <a href="/" className="text-sm text-secondary hover:text-foreground flex items-center gap-1">
-              <ChevronLeft className="w-4 h-4" />
-              חזרה
-            </a>
-            <h1 className="font-bold text-lg">Compakt Admin</h1>
+      <header className="sticky top-0 z-50 glass-card rounded-none border-x-0 border-t-0 px-4 py-2">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <a href="/" className="text-sm text-secondary hover:text-foreground flex items-center gap-1">
+                <ChevronLeft className="w-4 h-4" />
+                חזרה
+              </a>
+              <h1 className="font-bold text-lg">Compakt Admin</h1>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <button
+                onClick={() => {
+                  auth.logout();
+                  logout();
+                }}
+                className="p-2 rounded-lg text-muted hover:text-foreground transition-colors"
+                aria-label="התנתקות"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* Tabs */}
-            <nav className="flex gap-1 overflow-x-auto max-w-[60vw] sm:max-w-none">
-              {visibleTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
-                    ? "bg-brand-blue text-white"
-                    : "text-secondary hover:text-foreground"
-                    }`}
-                >
-                  {tab.icon}
-                  <span className="hidden sm:inline">{tab.label}</span>
-                </button>
-              ))}
-            </nav>
-
-            <ThemeToggle />
-            <button
-              onClick={() => {
-                auth.logout();
-                logout();
-              }}
-              className="p-2 rounded-lg text-muted hover:text-foreground transition-colors"
-              aria-label="התנתקות"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
+          {/* Tabs — own row, full width scroll */}
+          <nav className="flex gap-1 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1">
+            {visibleTabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${activeTab === tab.id
+                  ? "bg-brand-blue text-white"
+                  : "text-secondary hover:text-foreground"
+                  }`}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            ))}
+          </nav>
         </div>
       </header>
 
