@@ -264,62 +264,80 @@ export function EventManager() {
 
   return (
     <div className="space-y-6">
-      {/* DJ General Link */}
-      {!djSlug && (
-        <div className="glass-card p-4 flex items-center gap-3 text-center">
-          <Share2 className="w-4 h-4 text-muted flex-shrink-0" />
-          <p className="text-sm text-secondary flex-1">
-            כדי ליצור לינקים ללקוחות, הגדירו קודם את הפרופיל שלכם בטאב{" "}
-            <span className="font-bold text-brand-blue">הגדרות</span>
+      {/* ── Hero: DJ Link ── */}
+      {!djSlug ? (
+        <div className="glass-card p-6 text-center space-y-3">
+          <div className="w-12 h-12 mx-auto rounded-2xl bg-brand-blue/10 flex items-center justify-center">
+            <Link2 className="w-6 h-6 text-brand-blue" />
+          </div>
+          <h2 className="font-bold text-lg">צרו את הלינק שלכם</h2>
+          <p className="text-sm text-secondary max-w-xs mx-auto">
+            הגדירו שם קישור (slug) בטאב{" "}
+            <span className="font-bold text-brand-blue">הגדרות</span>{" "}
+            כדי לקבל לינק אישי לשליחה ללקוחות
           </p>
         </div>
-      )}
-      {djSlug && (
-        <div className="glass-card p-4 flex items-center gap-3 flex-wrap">
-          <Share2 className="w-4 h-4 text-brand-blue flex-shrink-0" />
-          <div className="flex-1 min-w-0">
-            <p className="text-xs text-muted mb-0.5">הלינק הכללי שלך — שלח ללקוחות</p>
-            <code className="text-sm text-secondary truncate block" dir="ltr">
+      ) : (
+        <div className="glass-card p-5 space-y-4">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h2 className="font-bold text-lg mb-0.5">הלינק שלך</h2>
+              <p className="text-xs text-muted">שלח את הלינק ללקוח — הוא ימלא את הפרטים בעצמו</p>
+            </div>
+            <ExternalLink
+              className="w-4 h-4 text-muted flex-shrink-0 mt-1 cursor-pointer hover:text-brand-blue transition-colors"
+              onClick={() => window.open(getDjLink(djSlug), "_blank")}
+            />
+          </div>
+
+          {/* Link display */}
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-brand-blue/5 border border-brand-blue/15">
+            <Link2 className="w-4 h-4 text-brand-blue flex-shrink-0" />
+            <code className="text-sm text-secondary truncate flex-1" dir="ltr">
               {getDjLink(djSlug)}
             </code>
           </div>
-          <button
-            onClick={copyDjLink}
-            className="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5 flex-shrink-0"
-          >
-            {copiedDjLink ? (
-              <><Check className="w-3.5 h-3.5 text-brand-green" /> הועתק!</>
-            ) : (
-              <><Copy className="w-3.5 h-3.5" /> העתק</>
-            )}
-          </button>
 
-          <div className="w-full pt-3 mt-2 border-t border-glass">
-            <p className="text-xs text-muted mb-2">יצירת לינק לפי סוג אירוע</p>
+          {/* Primary actions */}
+          <div className="flex gap-2">
+            <button
+              onClick={copyDjLink}
+              className="btn-primary flex-1 flex items-center justify-center gap-2 text-sm py-3"
+            >
+              {copiedDjLink ? (
+                <><Check className="w-4 h-4" /> הועתק!</>
+              ) : (
+                <><Copy className="w-4 h-4" /> העתק קישור</>
+              )}
+            </button>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(`היי! הנה הלינק למסע המוזיקלי שלכם 🎵\n${getDjLink(djSlug)}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-medium border border-brand-green/30 text-brand-green hover:bg-brand-green/10 transition-colors"
+            >
+              <Share2 className="w-4 h-4" />
+              וואטסאפ
+            </a>
+          </div>
+
+          {/* Event type presets */}
+          <div className="pt-2 border-t border-glass">
+            <p className="text-xs text-muted mb-2">קישור לפי סוג אירוע</p>
             <div className="flex flex-wrap gap-2">
-              {linkPresets.map((p) => {
-                const url = p.type ? getDjLink(djSlug, p.type) : getDjLink(djSlug);
-                return (
-                  <div key={p.id} className="flex items-center gap-1.5">
-                    <button
-                      onClick={() => void copyPresetLink(p.id, p.type)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-medium border border-glass text-secondary hover:text-foreground hover:border-brand-blue/30 transition-all"
-                      title={url}
-                    >
-                      {copiedPreset === p.id ? "הועתק" : p.label}
-                    </button>
-                    <a
-                      href={`https://wa.me/?text=${encodeURIComponent(`היי! הנה הלינק למסע המוזיקלי שלכם 🎵\n${url}`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1 rounded-md hover:bg-brand-green/10 transition-colors"
-                      title="שלח בוואטסאפ"
-                    >
-                      <Share2 className="w-3.5 h-3.5 text-brand-green" />
-                    </a>
-                  </div>
-                );
-              })}
+              {linkPresets.filter(p => p.type).map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => void copyPresetLink(p.id, p.type)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${copiedPreset === p.id
+                      ? "border-brand-green/40 text-brand-green bg-brand-green/5"
+                      : "border-glass text-secondary hover:text-foreground hover:border-brand-blue/30"
+                    }`}
+                  title={getDjLink(djSlug, p.type)}
+                >
+                  {copiedPreset === p.id ? "✓ הועתק" : p.label}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -330,15 +348,15 @@ export function EventManager() {
         <div>
           <h2 className="text-xl font-bold">אירועים</h2>
           <p className="text-sm text-secondary">
-            צרו אירוע, קבלו לינק לפורטל, שלחו ללקוח
+            ניהול אירועים שנוצרו מלקוחות או ידנית
           </p>
         </div>
         <button
           onClick={() => setShowCreate(true)}
-          className="btn-primary text-sm flex items-center gap-2 py-2.5 px-5"
+          className="btn-secondary text-xs flex items-center gap-1.5 py-2 px-4"
         >
-          <Plus className="w-4 h-4" />
-          אירוע חדש
+          <Plus className="w-3.5 h-3.5" />
+          אירוע ידני
         </button>
       </div>
 
