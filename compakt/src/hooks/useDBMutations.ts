@@ -20,9 +20,11 @@ export function useDBMutations() {
   const addSong = useAdminStore((s) => s.addSong);
   const updateSong = useAdminStore((s) => s.updateSong);
   const deleteSong = useAdminStore((s) => s.deleteSong);
+  const reorderSongs = useAdminStore((s) => s.reorderSongs);
   const addQuestion = useAdminStore((s) => s.addQuestion);
   const updateQuestion = useAdminStore((s) => s.updateQuestion);
   const deleteQuestion = useAdminStore((s) => s.deleteQuestion);
+  const reorderQuestions = useAdminStore((s) => s.reorderQuestions);
   const addUpsell = useAdminStore((s) => s.addUpsell);
   const updateUpsell = useAdminStore((s) => s.updateUpsell);
   const deleteUpsell = useAdminStore((s) => s.deleteUpsell);
@@ -210,9 +212,45 @@ export function useDBMutations() {
     }
   }, [deleteUpsell]);
 
+  // ── Reorder ──
+
+  const dbReorderSongs = useCallback(async (ids: string[]) => {
+    reorderSongs(ids);
+
+    const bearer = await getBearer();
+    if (!bearer) return;
+
+    try {
+      await fetch("/api/songs/reorder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${bearer}` },
+        body: JSON.stringify({ ids }),
+      });
+    } catch (err) {
+      console.error("[dbReorderSongs] API failed:", err);
+    }
+  }, [reorderSongs]);
+
+  const dbReorderQuestions = useCallback(async (ids: string[]) => {
+    reorderQuestions(ids);
+
+    const bearer = await getBearer();
+    if (!bearer) return;
+
+    try {
+      await fetch("/api/questions/reorder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${bearer}` },
+        body: JSON.stringify({ ids }),
+      });
+    } catch (err) {
+      console.error("[dbReorderQuestions] API failed:", err);
+    }
+  }, [reorderQuestions]);
+
   return {
-    dbAddSong, dbUpdateSong, dbDeleteSong,
-    dbAddQuestion, dbUpdateQuestion, dbDeleteQuestion,
+    dbAddSong, dbUpdateSong, dbDeleteSong, dbReorderSongs,
+    dbAddQuestion, dbUpdateQuestion, dbDeleteQuestion, dbReorderQuestions,
     dbAddUpsell, dbUpdateUpsell, dbDeleteUpsell,
   };
 }
