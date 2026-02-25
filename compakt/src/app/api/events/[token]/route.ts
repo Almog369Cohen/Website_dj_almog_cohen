@@ -40,7 +40,7 @@ export async function GET(
   // 3. Load DJ's questions for this event type
   const { data: questions } = await supabase
     .from("dj_questions")
-    .select("id, question_he, question_type, event_type, options, slider_min, slider_max, slider_labels, sort_order, is_active")
+    .select("id, question_he, question_type, event_type, event_types, options, slider_min, slider_max, slider_labels, sort_order, is_active")
     .eq("user_id", event.user_id)
     .eq("is_active", true)
     .order("sort_order", { ascending: true });
@@ -56,9 +56,16 @@ export async function GET(
   // 5. Load DJ profile for branding
   const { data: djProfile } = await supabase
     .from("profiles")
-    .select("id, business_name, tagline, accent_color, logo_url, dj_slug")
+    .select("id, business_name, tagline, accent_color, logo_url, dj_slug, whatsapp_number")
     .eq("id", event.user_id)
     .single();
+
+  // 6. Load existing answers/swipes/requests for this event
+  const [answersRes, swipesRes, requestsRes] = await Promise.all([
+    supabase.from("event_answers").select("*").eq("event_id", event.id),
+    supabase.from("event_swipes").select("*").eq("event_id", event.id),
+    supabase.from("event_requests").select("*").eq("event_id", event.id),
+  ]);
 
   return NextResponse.json({
     event,
@@ -66,5 +73,8 @@ export async function GET(
     questions: questions ?? [],
     upsells: upsells ?? [],
     dj: djProfile ?? null,
+    answers: answersRes.data ?? [],
+    swipes: swipesRes.data ?? [],
+    requests: requestsRes.data ?? [],
   });
 }

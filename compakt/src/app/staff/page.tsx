@@ -7,6 +7,7 @@ import { Shield, Loader2, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { hebrewAuthError } from "@/lib/auth/errors-he";
 import { isStaff } from "@/lib/auth/roles";
+import { getSafeOrigin } from "@/lib/utils";
 
 const STAFF_ACCESS_CODE = process.env.NEXT_PUBLIC_STAFF_ACCESS_CODE || "";
 const STAFF_SESSION_KEY = "compakt-staff-session";
@@ -212,7 +213,7 @@ function StaffLoginForm() {
     setLoading(true);
 
     try {
-      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const origin = getSafeOrigin();
       const emailRedirectTo = `${origin}/staff?redirect=${encodeURIComponent(redirectTo)}`;
       const { error: otpError } = await supabase.auth.signInWithOtp({
         email: email.trim(),
@@ -241,7 +242,7 @@ function StaffLoginForm() {
     setResetLoading(true);
 
     try {
-      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const origin = getSafeOrigin();
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(
         email.trim(),
         { redirectTo: `${origin}/admin/reset-password` }

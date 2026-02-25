@@ -46,6 +46,7 @@ function mapQuestion(row: Record<string, unknown>): Question {
     questionHe: row.question_he as string,
     questionType: (row.question_type as QuestionType) ?? "single_select",
     eventType: (row.event_type as EventType) ?? "wedding",
+    eventTypes: (row.event_types as EventType[]) ?? undefined,
     options: row.options as { label: string; value: string; icon?: string }[] | undefined,
     sliderMin: row.slider_min as number | undefined,
     sliderMax: row.slider_max as number | undefined,
@@ -74,6 +75,7 @@ interface DJBranding {
   accentColor: string;
   logoUrl: string | null;
   tagline: string | null;
+  whatsappNumber?: string | null;
 }
 
 function PortalJourney() {
@@ -95,6 +97,9 @@ function PortalJourney() {
   const fetchedRef = useRef(false);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const [saveError, setSaveError] = useState(false);
+  const lastSaveHashRef = useRef("");
+
   // Auto-save function
   const saveToServer = useCallback(async () => {
     if (!token || isLocked) return;
@@ -102,40 +107,54 @@ function PortalJourney() {
     const state = useEventStore.getState();
     if (!state.event) return;
 
+    // Build payload and hash to avoid duplicate saves
+    const payload = {
+      currentStage: state.event.currentStage,
+      eventUpdate: {
+        coupleNameA: state.event.coupleNameA,
+        coupleNameB: state.event.coupleNameB,
+        eventDate: state.event.eventDate,
+        venue: state.event.venue,
+        city: state.event.city,
+        contactPhone: state.event.contactPhone,
+        contactRole: state.event.contactRole,
+      },
+      answers: state.answers.map((a) => ({
+        questionId: a.questionId,
+        answerValue: a.answerValue,
+      })),
+      swipes: state.swipes.map((s) => ({
+        songId: s.songId,
+        action: s.action,
+        reasonChips: s.reasonChips,
+      })),
+      requests: state.requests.map((r) => ({
+        requestType: r.requestType,
+        content: r.content,
+        momentType: r.momentType,
+      })),
+    };
+
+    const hash = JSON.stringify(payload);
+    if (hash === lastSaveHashRef.current) return; // skip if nothing changed
+
     setSaving(true);
+    setSaveError(false);
     try {
-      await fetch(`/api/portal/${token}`, {
+      const res = await fetch(`/api/portal/${token}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          currentStage: state.event.currentStage,
-          eventUpdate: {
-            coupleNameA: state.event.coupleNameA,
-            coupleNameB: state.event.coupleNameB,
-            eventDate: state.event.eventDate,
-            venue: state.event.venue,
-            city: state.event.city,
-            contactPhone: state.event.contactPhone,
-            contactRole: state.event.contactRole,
-          },
-          answers: state.answers.map((a) => ({
-            questionId: a.questionId,
-            answerValue: a.answerValue,
-          })),
-          swipes: state.swipes.map((s) => ({
-            songId: s.songId,
-            action: s.action,
-            reasonChips: s.reasonChips,
-          })),
-          requests: state.requests.map((r) => ({
-            requestType: r.requestType,
-            content: r.content,
-            momentType: r.momentType,
-          })),
-        }),
+        body: hash,
       });
+      if (!res.ok) {
+        console.error("[Portal] Save failed:", res.status, await res.text().catch(() => ""));
+        setSaveError(true);
+      } else {
+        lastSaveHashRef.current = hash;
+      }
     } catch (err) {
       console.error("[Portal] Save failed:", err);
+      setSaveError(true);
     } finally {
       setSaving(false);
       setSaved(true);
@@ -143,19 +162,26 @@ function PortalJourney() {
     }
   }, [token, isLocked]);
 
-  // Debounced auto-save: save 2s after last change
+  // Debounced auto-save: save 3s after last meaningful change
+  const answers = useEventStore((s) => s.answers);
+  const swipes = useEventStore((s) => s.swipes);
+  const requests = useEventStore((s) => s.requests);
+  const answersLen = answers.length;
+  const swipesLen = swipes.length;
+  const requestsLen = requests.length;
+
   useEffect(() => {
     if (!event || serverLoading) return;
 
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     saveTimerRef.current = setTimeout(() => {
       void saveToServer();
-    }, 2000);
+    }, 3000);
 
     return () => {
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     };
-  }, [event, event?.currentStage, saveToServer, serverLoading]);
+  }, [currentStage, answersLen, swipesLen, requestsLen, saveToServer, serverLoading, event]);
 
   // Load portal data
   useEffect(() => {
@@ -239,6 +265,7 @@ function PortalJourney() {
             accentColor: (data.dj.accent_color as string) ?? "#059cc0",
             logoUrl: (data.dj.logo_url as string) ?? null,
             tagline: (data.dj.tagline as string) ?? null,
+            whatsappNumber: (data.dj.whatsapp_number as string) ?? null,
           });
         }
 
@@ -265,7 +292,7 @@ function PortalJourney() {
       case 1: return <QuestionFlow />;
       case 2: return <SongTinder />;
       case 3: return <DreamsRequests />;
-      case 4: return <MusicBrief />;
+      case 4: return <MusicBrief djBranding={djBranding} />;
       default: return <EventSetup {...portalSetupProps} />;
     }
   };
@@ -317,18 +344,43 @@ function PortalJourney() {
       <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
         <ThemeToggle />
         {/* Save indicator */}
-        {saving && (
-          <div className="glass-card px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs text-muted">
-            <Loader2 className="w-3 h-3 animate-spin" />
-            שומר...
-          </div>
-        )}
-        {!saving && saved && (
-          <div className="glass-card px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs text-brand-green">
-            <CheckCircle2 className="w-3 h-3" />
-            נשמר
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {saving && (
+            <motion.div
+              key="saving"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="glass-card px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs text-muted font-medium"
+            >
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              שומר...
+            </motion.div>
+          )}
+          {!saving && saved && !saveError && (
+            <motion.div
+              key="saved"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="glass-card px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-medium bg-brand-green/10 border-brand-green/20 text-brand-green"
+            >
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              נשמר ✓
+            </motion.div>
+          )}
+          {!saving && saveError && (
+            <motion.div
+              key="save-error"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="glass-card px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-medium bg-red-500/10 border-red-500/20 text-red-400"
+            >
+              שגיאה בשמירה
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* DJ Branding header */}
@@ -370,7 +422,7 @@ function PortalJourney() {
       )}
 
       {/* Stage Navigation — shifted down to avoid DJ branding overlap */}
-      {event && currentStage > 0 && currentStage <= 4 && (
+      {event && currentStage >= 0 && currentStage <= 4 && (
         <div className={`fixed left-28 z-40 ${djBranding ? "top-14 right-4" : "top-4 right-4"}`}>
           <StageNav />
         </div>

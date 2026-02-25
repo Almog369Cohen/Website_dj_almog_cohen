@@ -43,6 +43,7 @@ export function SongTinder() {
 
   const [currentCatIdx, setCurrentCatIdx] = useState(0);
   const [showCategoryIntro, setShowCategoryIntro] = useState(true);
+  const [startedCategories, setStartedCategories] = useState<Set<string>>(new Set());
   const [skippedCategories, setSkippedCategories] = useState<Set<string>>(new Set());
   const [showReasons, setShowReasons] = useState(false);
   const [lastSwipedSongId, setLastSwipedSongId] = useState<string | null>(null);
@@ -57,16 +58,84 @@ export function SongTinder() {
   } | null>(null);
 
   const swipedIds = getSwipedSongIds();
+  const swipedIdSet = useMemo(() => new Set(swipedIds), [swipedIds]);
   const totalLikeCount = swipes.filter((s) => s.action === "like" || s.action === "super_like").length;
+
+  const didAutoSelectCategory = useRef(false);
+
+  const isCategoryDone = useCallback(
+    (group: { key: SongCategory; songs: Song[] }, skippedOverride?: Set<string>) => {
+      const skipped = skippedOverride ?? skippedCategories;
+      if (skipped.has(group.key)) return true;
+      for (const song of group.songs) {
+        if (!swipedIdSet.has(song.id)) return false;
+      }
+      return true;
+    },
+    [skippedCategories, swipedIdSet]
+  );
+
+  const findNextIncompleteIdx = useCallback(
+    (fromIdx: number, skippedOverride?: Set<string>) => {
+      const n = categoryGroups.length;
+      if (n === 0) return 0;
+      const skipped = skippedOverride ?? skippedCategories;
+      for (let step = 0; step < n; step++) {
+        const idx = (fromIdx + step) % n;
+        const g = categoryGroups[idx];
+        if (!g) continue;
+        if (skipped.has(g.key)) continue;
+        for (const song of g.songs) {
+          if (!swipedIdSet.has(song.id)) return idx;
+        }
+      }
+      return fromIdx;
+    },
+    [categoryGroups, skippedCategories, swipedIdSet]
+  );
+
+  const resetInteractionState = useCallback(() => {
+    setShowReasons(false);
+    setLastSwipedSongId(null);
+    setLastAction(null);
+    setIsPlaying(false);
+    setLastUndo(null);
+  }, []);
+
+  const switchCategory = useCallback(
+    (idx: number, skippedOverride?: Set<string>) => {
+      const g = categoryGroups[idx];
+      const skipped = skippedOverride ?? skippedCategories;
+      const hasRemaining = !!g && !skipped.has(g.key) && g.songs.some((s) => !swipedIdSet.has(s.id));
+      const shouldShowIntro = !!g && hasRemaining && !startedCategories.has(g.key) && !skipped.has(g.key);
+
+      setCurrentCatIdx(idx);
+      setShowCategoryIntro(shouldShowIntro);
+      resetInteractionState();
+
+      didAutoSelectCategory.current = true;
+    },
+    [categoryGroups, resetInteractionState, skippedCategories, startedCategories, swipedIdSet]
+  );
 
   // Current category data
   const currentGroup = categoryGroups[currentCatIdx];
-  const allDone = !currentGroup;
+  const allDone = categoryGroups.length > 0 && categoryGroups.every((g) => isCategoryDone(g));
+
+  useEffect(() => {
+    if (categoryGroups.length === 0) return;
+    if (currentCatIdx >= categoryGroups.length) {
+      switchCategory(0);
+    }
+  }, [categoryGroups.length, currentCatIdx, switchCategory]);
 
   // Songs remaining in current category
   const categorySongs = currentGroup?.songs ?? [];
-  const categoryRemaining = categorySongs.filter((s) => !swipedIds.includes(s.id));
-  const categoryDone = currentGroup && categoryRemaining.length === 0;
+  const currentSkipped = currentGroup ? skippedCategories.has(currentGroup.key) : false;
+  const categoryRemaining = currentSkipped
+    ? []
+    : categorySongs.filter((s) => !swipedIdSet.has(s.id));
+  const categoryDone = currentGroup && (currentSkipped || categoryRemaining.length === 0);
   const categorySwipedCount = categorySongs.length - categoryRemaining.length;
   const categoryLikeCount = currentGroup
     ? swipes.filter(
@@ -78,35 +147,62 @@ export function SongTinder() {
 
   const currentSong = categoryRemaining[0];
 
-  // Skip to first category that has remaining songs on mount
   useEffect(() => {
-    if (showCategoryIntro || !currentGroup) return;
-    if (categoryDone) {
-      // Auto advance if current category is done
-      advanceCategory();
+    if (didAutoSelectCategory.current) return;
+    if (categoryGroups.length === 0) return;
+    if (allDone) {
+      didAutoSelectCategory.current = true;
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    const idx = categoryGroups.findIndex((g) => {
+      if (skippedCategories.has(g.key)) return false;
+      return g.songs.some((s) => !swipedIdSet.has(s.id));
+    });
+
+    switchCategory(idx >= 0 ? idx : 0);
+    didAutoSelectCategory.current = true;
+  }, [allDone, categoryGroups, skippedCategories, swipedIdSet, switchCategory]);
+
+  useEffect(() => {
+    if (!currentGroup) return;
+    const hasRemaining = !skippedCategories.has(currentGroup.key) && currentGroup.songs.some((s) => !swipedIdSet.has(s.id));
+    setShowCategoryIntro(hasRemaining && !startedCategories.has(currentGroup.key) && !skippedCategories.has(currentGroup.key));
+  }, [currentGroup, skippedCategories, startedCategories, swipedIdSet]);
 
   const advanceCategory = useCallback(() => {
-    setCurrentCatIdx((prev) => prev + 1);
-    setShowCategoryIntro(true);
-    setShowReasons(false);
-    setLastSwipedSongId(null);
-    setIsPlaying(false);
-    setLastUndo(null);
-  }, []);
+    const n = categoryGroups.length;
+    if (n === 0) return;
+    const start = (currentCatIdx + 1) % n;
+    const nextIdx = findNextIncompleteIdx(start);
+    switchCategory(nextIdx);
+  }, [categoryGroups.length, currentCatIdx, findNextIncompleteIdx, switchCategory]);
 
   const handleSkipCategory = useCallback(() => {
     if (!currentGroup) return;
-    setSkippedCategories((prev) => new Set(prev).add(currentGroup.key));
+    const nextSkipped = new Set(skippedCategories);
+    nextSkipped.add(currentGroup.key);
+    setSkippedCategories(nextSkipped);
     trackEvent("category_skip", { category: currentGroup.key });
-    advanceCategory();
-  }, [currentGroup, trackEvent, advanceCategory]);
+    if (categoryGroups.length > 0) {
+      const start = (currentCatIdx + 1) % categoryGroups.length;
+      const nextIdx = findNextIncompleteIdx(start, nextSkipped);
+      switchCategory(nextIdx, nextSkipped);
+    } else {
+      resetInteractionState();
+    }
+  }, [categoryGroups.length, currentCatIdx, currentGroup, findNextIncompleteIdx, resetInteractionState, skippedCategories, switchCategory, trackEvent]);
 
   const handleStartCategory = useCallback(() => {
+    if (currentGroup) {
+      setStartedCategories((prev) => {
+        const next = new Set(prev);
+        next.add(currentGroup.key);
+        return next;
+      });
+    }
     setShowCategoryIntro(false);
-  }, []);
+  }, [currentGroup]);
 
   const handleSwipe = useCallback(
     (songId: string, action: SwipeAction) => {
@@ -201,6 +297,46 @@ export function SongTinder() {
     setStage(3);
   };
 
+  const renderCategoryTabs = () => {
+    if (categoryGroups.length <= 1) return null;
+    return (
+      <div className="flex gap-2 overflow-x-auto px-1 pb-2 -mx-1">
+        {categoryGroups.map((g, i) => {
+          const skipped = skippedCategories.has(g.key);
+          let remaining = 0;
+          if (!skipped) {
+            for (const song of g.songs) {
+              if (!swipedIdSet.has(song.id)) remaining++;
+            }
+          }
+          const done = skipped || remaining === 0;
+          const active = i === currentCatIdx;
+
+          return (
+            <button
+              key={g.key}
+              onClick={() => switchCategory(i)}
+              className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${active
+                ? "glass-card"
+                : "bg-white/5 hover:bg-white/10"
+                }`}
+              style={{
+                border: active ? "1px solid rgba(5,156,192,0.35)" : "1px solid rgba(255,255,255,0.08)",
+                color: done ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.8)",
+              }}
+            >
+              <span className="mr-1">{g.emoji}</span>
+              {g.label}
+              <span className="mr-2 text-[10px] font-mono" dir="ltr">
+                {skipped ? "(דולג)" : done ? "(✓)" : `(${remaining})`}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
+
   // ── No songs at all — skip to next stage ──
   if (categoryGroups.length === 0) {
     return (
@@ -229,6 +365,7 @@ export function SongTinder() {
         animate={{ opacity: 1, scale: 1 }}
         className="glass-card p-8 text-center max-w-md mx-auto"
       >
+        {renderCategoryTabs()}
         <div className="text-4xl mb-4">🎉</div>
         <h2 className="text-xl font-bold mb-2">סיימנו את השירים!</h2>
         <p className="text-secondary text-sm mb-2">
@@ -270,6 +407,7 @@ export function SongTinder() {
         exit={{ opacity: 0, y: -20 }}
         className="glass-card p-8 text-center max-w-md mx-auto"
       >
+        {renderCategoryTabs()}
         <div className="text-5xl mb-4">{currentGroup.emoji}</div>
         <h2 className="font-display text-2xl font-black mb-1">{currentGroup.label}</h2>
         <p className="text-secondary text-sm mb-1">
@@ -282,17 +420,21 @@ export function SongTinder() {
 
         {/* Category progress dots */}
         <div className="flex items-center justify-center gap-2 mb-6">
-          {categoryGroups.map((g, i) => (
-            <div
-              key={g.key}
-              className={`w-2.5 h-2.5 rounded-full transition-all ${i < currentCatIdx
-                ? "bg-brand-green/30 ring-1 ring-brand-green/60"
-                : i === currentCatIdx
-                  ? "bg-brand-blue/30 ring-1 ring-brand-blue/60 shadow-[0_0_6px_rgba(5,156,192,0.3)]"
-                  : "bg-white/5 ring-1 ring-white/10"
-                }`}
-            />
-          ))}
+          {categoryGroups.map((g, i) => {
+            const done = isCategoryDone(g);
+            const active = i === currentCatIdx;
+            return (
+              <div
+                key={g.key}
+                className={`w-2.5 h-2.5 rounded-full transition-all ${done
+                  ? "bg-brand-green/30 ring-1 ring-brand-green/60"
+                  : active
+                    ? "bg-brand-blue/30 ring-1 ring-brand-blue/60 shadow-[0_0_6px_rgba(5,156,192,0.3)]"
+                    : "bg-white/5 ring-1 ring-white/10"
+                  }`}
+              />
+            );
+          })}
         </div>
 
         <div className="flex gap-3">
@@ -316,6 +458,10 @@ export function SongTinder() {
 
   // ── Category complete → auto advance ──
   if (categoryDone && currentGroup) {
+    const start = categoryGroups.length > 0 ? (currentCatIdx + 1) % categoryGroups.length : 0;
+    const nextIdx = categoryGroups.length > 0 ? findNextIncompleteIdx(start) : 0;
+    const nextGroup = categoryGroups[nextIdx];
+
     return (
       <motion.div
         key={`done-${currentGroup.key}`}
@@ -323,6 +469,7 @@ export function SongTinder() {
         animate={{ opacity: 1, scale: 1 }}
         className="glass-card p-8 text-center max-w-md mx-auto"
       >
+        {renderCategoryTabs()}
         <div className="text-3xl mb-3">✅</div>
         <h2 className="font-display text-lg font-black mb-1">
           {currentGroup.emoji} {currentGroup.label} — סיימנו!
@@ -332,23 +479,31 @@ export function SongTinder() {
         </p>
 
         <div className="flex items-center justify-center gap-2 mb-6">
-          {categoryGroups.map((g, i) => (
-            <div
-              key={g.key}
-              className={`w-2.5 h-2.5 rounded-full transition-all ${i <= currentCatIdx ? "bg-brand-green/30 ring-1 ring-brand-green/60" : "bg-white/5 ring-1 ring-white/10"
-                }`}
-            />
-          ))}
+          {categoryGroups.map((g, i) => {
+            const done = isCategoryDone(g);
+            const active = i === currentCatIdx;
+            return (
+              <div
+                key={g.key}
+                className={`w-2.5 h-2.5 rounded-full transition-all ${done
+                  ? "bg-brand-green/30 ring-1 ring-brand-green/60"
+                  : active
+                    ? "bg-brand-blue/30 ring-1 ring-brand-blue/60 shadow-[0_0_6px_rgba(5,156,192,0.3)]"
+                    : "bg-white/5 ring-1 ring-white/10"
+                  }`}
+              />
+            );
+          })}
         </div>
 
         <button
           onClick={advanceCategory}
           className="btn-primary w-full flex items-center justify-center gap-2"
         >
-          {currentCatIdx < categoryGroups.length - 1 ? (
+          {nextGroup && nextIdx !== currentCatIdx ? (
             <>
               <ChevronLeft className="w-4 h-4" />
-              לחלק הבא: {categoryGroups[currentCatIdx + 1]?.emoji} {categoryGroups[currentCatIdx + 1]?.label}
+              לחלק הבא: {nextGroup.emoji} {nextGroup.label}
             </>
           ) : (
             "סיום ←"
@@ -362,6 +517,7 @@ export function SongTinder() {
 
   return (
     <div className="w-full max-w-md mx-auto relative">
+      {renderCategoryTabs()}
       {/* Swipe Tutorial */}
       <AnimatePresence>
         {showTutorial && <SwipeTutorial onDismiss={dismissTutorial} />}
@@ -893,9 +1049,9 @@ function SwipeCard({
             />
           )}
 
-          {hasAnyPreview ? (
+          {isGcsAudio ? (
             <>
-              {/* Transport: Seek Back — Circular Play — Seek Forward */}
+              {/* GCS Audio: Full transport controls */}
               <div className="flex items-center justify-center gap-5">
                 {/* -15s */}
                 <button
@@ -955,23 +1111,52 @@ function SwipeCard({
                 <span>{formatPlayerTime(clipDuration)}</span>
               </div>
             </>
+          ) : youtubeId ? (
+            <>
+              {/* YouTube: Play button toggles visible embed */}
+              {!isPlaying ? (
+                <div className="flex items-center justify-center">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onTogglePlay(); }}
+                    className="w-14 h-14 rounded-full flex items-center justify-center transition-all active:scale-90"
+                    style={{
+                      background: "linear-gradient(135deg, #059cc0, #03b28c)",
+                      boxShadow: "0 4px 24px rgba(5,156,192,0.35)",
+                    }}
+                    aria-label="נגן"
+                  >
+                    <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.1)" }}>
+                    <iframe
+                      width="100%"
+                      height="80"
+                      src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&start=${clipStart}&end=${clipEnd}&controls=1`}
+                      allow="autoplay; encrypted-media"
+                      className="rounded-xl"
+                      title={`${song.title} preview`}
+                    />
+                  </div>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onTogglePlay(); }}
+                    className="w-full py-2 rounded-xl text-xs font-medium transition-all active:scale-[0.98]"
+                    style={{
+                      background: "rgba(255,255,255,0.08)",
+                      color: "rgba(255,255,255,0.5)",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                    }}
+                  >
+                    סגור נגן
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="text-center py-2">
               <p className="text-[11px] text-white/30">אין תצוגה מקדימה</p>
-            </div>
-          )}
-
-          {/* YouTube fallback */}
-          {!isGcsAudio && youtubeId && isPlaying && (
-            <div className="rounded-xl overflow-hidden opacity-50">
-              <iframe
-                width="100%"
-                height="52"
-                src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&start=${clipStart}&end=${clipEnd}&controls=1`}
-                allow="autoplay; encrypted-media"
-                className="rounded-xl"
-                title={`${song.title} preview`}
-              />
             </div>
           )}
         </div>

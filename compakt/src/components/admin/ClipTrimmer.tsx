@@ -69,6 +69,8 @@ export function ClipTrimmer({
   useEffect(() => {
     if (!containerRef.current || !audioUrl) return;
 
+    let alive = true;
+
     setIsLoading(true);
     setIsReady(false);
     setError(null);
@@ -93,6 +95,7 @@ export function ClipTrimmer({
     wsRef.current = ws;
 
     ws.on("ready", () => {
+      if (!alive) return;
       const dur = ws.getDuration();
       setDuration(dur);
       setIsLoading(false);
@@ -114,14 +117,27 @@ export function ClipTrimmer({
     });
 
     ws.on("error", () => {
+      if (!alive) return;
       setError("שגיאה בטעינת הקובץ");
       setIsLoading(false);
     });
 
-    ws.on("timeupdate", (t: number) => setCurrentTime(t));
-    ws.on("play", () => setIsPlaying(true));
-    ws.on("pause", () => setIsPlaying(false));
-    ws.on("finish", () => setIsPlaying(false));
+    ws.on("timeupdate", (t: number) => {
+      if (!alive) return;
+      setCurrentTime(t);
+    });
+    ws.on("play", () => {
+      if (!alive) return;
+      setIsPlaying(true);
+    });
+    ws.on("pause", () => {
+      if (!alive) return;
+      setIsPlaying(false);
+    });
+    ws.on("finish", () => {
+      if (!alive) return;
+      setIsPlaying(false);
+    });
 
     // Prevent creating extra regions
     regions.on("region-created", (reg: RegionLike) => {
@@ -146,11 +162,33 @@ export function ClipTrimmer({
     regions.on("region-updated", handleRegionChange);
     regions.on("region-update-end", handleRegionChange);
 
-    ws.load(audioUrl);
+    try {
+      const maybePromise = ws.load(audioUrl) as unknown;
+      if (maybePromise && typeof (maybePromise as { catch?: unknown }).catch === "function") {
+        (maybePromise as Promise<unknown>).catch((e) => {
+          const msg = e instanceof Error ? e.message : String(e);
+          if (msg.toLowerCase().includes("abort")) return;
+          console.error("[ClipTrimmer] load failed:", e);
+        });
+      }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (!msg.toLowerCase().includes("abort")) {
+        console.error("[ClipTrimmer] load threw:", e);
+      }
+    }
 
     return () => {
+      alive = false;
       regionRef.current = null;
-      ws.destroy();
+      try {
+        ws.destroy();
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        if (!msg.toLowerCase().includes("abort")) {
+          console.error("[ClipTrimmer] destroy failed:", e);
+        }
+      }
       wsRef.current = null;
     };
     // Only re-init when URL changes

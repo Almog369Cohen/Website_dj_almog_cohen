@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Loader2, UserPlus, Eye, EyeOff, ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
+import { getSafeOrigin } from "@/lib/utils";
 
 function hebrewSignupError(message: string): string {
   const msg = message.toLowerCase();
@@ -79,7 +80,7 @@ export default function SignupPage() {
 
     setBusy(true);
     try {
-      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const origin = getSafeOrigin();
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: email.trim(),
         password,

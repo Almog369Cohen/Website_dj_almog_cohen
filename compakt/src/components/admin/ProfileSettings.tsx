@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useDJStore } from "@/stores/djStore";
 import { supabase } from "@/lib/supabase/client";
 import { motion } from "framer-motion";
+import { useAuthService } from "@/services";
+import { getSafeOrigin } from "@/lib/utils";
 import {
   User,
   Palette,
@@ -31,11 +33,21 @@ const PLAN_LABELS: Record<PlanTier, string> = {
 export function ProfileSettings() {
   const profile = useDJStore((s) => s.profile);
   const setProfile = useDJStore((s) => s.setProfile);
+  const auth = useAuthService();
+
+  const [profileLoadError, setProfileLoadError] = useState(false);
+  const [retryingProfile, setRetryingProfile] = useState(false);
 
   const [businessName, setBusinessName] = useState(profile?.businessName ?? "");
   const [tagline, setTagline] = useState(profile?.tagline ?? "");
   const [accentColor, setAccentColor] = useState(profile?.accentColor ?? "#059cc0");
   const [slug, setSlug] = useState(profile?.djSlug ?? "");
+  const [bio, setBio] = useState(profile?.bio ?? "");
+  const [instagramUrl, setInstagramUrl] = useState(profile?.instagramUrl ?? "");
+  const [tiktokUrl, setTiktokUrl] = useState(profile?.tiktokUrl ?? "");
+  const [websiteUrl, setWebsiteUrl] = useState(profile?.websiteUrl ?? "");
+  const [whatsappNumber, setWhatsappNumber] = useState(profile?.whatsappNumber ?? "");
+  const [coverUrl, setCoverUrl] = useState(profile?.coverUrl ?? "");
   const [slugError, setSlugError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -48,11 +60,17 @@ export function ProfileSettings() {
       setTagline(profile.tagline ?? "");
       setAccentColor(profile.accentColor ?? "#059cc0");
       setSlug(profile.djSlug ?? "");
+      setBio(profile.bio ?? "");
+      setInstagramUrl(profile.instagramUrl ?? "");
+      setTiktokUrl(profile.tiktokUrl ?? "");
+      setWebsiteUrl(profile.websiteUrl ?? "");
+      setWhatsappNumber(profile.whatsappNumber ?? "");
+      setCoverUrl(profile.coverUrl ?? "");
     }
   }, [profile]);
 
   const djLink = slug
-    ? `${typeof window !== "undefined" ? window.location.origin : ""}/dj/${slug}`
+    ? `${getSafeOrigin()}/dj/${slug}`
     : null;
 
   const handleSave = async () => {
@@ -86,6 +104,12 @@ export function ProfileSettings() {
         tagline: tagline.trim() || null,
         accent_color: accentColor,
         dj_slug: cleanSlug || null,
+        bio: bio.trim() || null,
+        instagram_url: instagramUrl.trim() || null,
+        tiktok_url: tiktokUrl.trim() || null,
+        website_url: websiteUrl.trim() || null,
+        whatsapp_number: whatsappNumber.trim() || null,
+        cover_url: coverUrl.trim() || null,
         updated_at: new Date().toISOString(),
       })
       .eq("id", profile.id);
@@ -103,6 +127,12 @@ export function ProfileSettings() {
       tagline: tagline.trim() || null,
       accentColor,
       djSlug: cleanSlug || null,
+      bio: bio.trim() || null,
+      instagramUrl: instagramUrl.trim() || null,
+      tiktokUrl: tiktokUrl.trim() || null,
+      websiteUrl: websiteUrl.trim() || null,
+      whatsappNumber: whatsappNumber.trim() || null,
+      coverUrl: coverUrl.trim() || null,
     });
 
     setSaving(false);
@@ -117,11 +147,63 @@ export function ProfileSettings() {
     setTimeout(() => setCopiedLink(false), 1500);
   };
 
+  useEffect(() => {
+    if (profile) return;
+    if (!auth.fetchProfile) return;
+
+    let cancelled = false;
+    setRetryingProfile(true);
+    setProfileLoadError(false);
+
+    auth
+      .fetchProfile()
+      .then((p) => {
+        if (cancelled) return;
+        if (!p) setProfileLoadError(true);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setProfileLoadError(true);
+      })
+      .finally(() => {
+        if (cancelled) return;
+        setRetryingProfile(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [profile, auth]);
+
   if (!profile) {
     return (
       <div className="glass-card p-8 text-center text-muted">
-        <Loader2 className="w-6 h-6 animate-spin mx-auto mb-3" />
-        <p className="text-sm">טוען פרופיל...</p>
+        {retryingProfile ? (
+          <>
+            <Loader2 className="w-6 h-6 animate-spin mx-auto mb-3" />
+            <p className="text-sm">טוען פרופיל...</p>
+          </>
+        ) : profileLoadError ? (
+          <>
+            <p className="text-sm mb-4">לא הצלחנו לטעון את הפרופיל</p>
+            <button
+              onClick={async () => {
+                if (!auth.fetchProfile) return;
+                setRetryingProfile(true);
+                setProfileLoadError(false);
+                const p = await auth.fetchProfile();
+                if (p) setProfile(p);
+                if (!p) setProfileLoadError(true);
+                setRetryingProfile(false);
+              }}
+              className="btn-primary text-sm"
+            >
+              נסו שוב
+            </button>
+          </>
+        ) : (
+          <p className="text-sm">טוען פרופיל...</p>
+        )}
       </div>
     );
   }
@@ -204,6 +286,95 @@ export function ProfileSettings() {
             className={inputClass}
           />
         </div>
+
+        <div>
+          <label className="block text-xs text-muted mb-1.5 font-medium">קצת עליי (Bio)</label>
+          <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder="ספרו קצת על הסגנון והניסיון שלכם..."
+            className={`${inputClass} min-h-[80px] resize-y`}
+            rows={3}
+          />
+        </div>
+      </div>
+
+      {/* Social & Contact */}
+      <div className="glass-card p-4 space-y-4">
+        <h3 className="text-sm font-bold flex items-center gap-2">
+          <Link2 className="w-4 h-4 text-brand-blue" />
+          רשתות ויצירת קשר
+        </h3>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs text-muted mb-1.5 font-medium">אינסטגרם (URL)</label>
+            <input
+              type="url"
+              value={instagramUrl}
+              onChange={(e) => setInstagramUrl(e.target.value)}
+              placeholder="https://instagram.com/..."
+              className={inputClass}
+              dir="ltr"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-muted mb-1.5 font-medium">טיקטוק (URL)</label>
+            <input
+              type="url"
+              value={tiktokUrl}
+              onChange={(e) => setTiktokUrl(e.target.value)}
+              placeholder="https://tiktok.com/@..."
+              className={inputClass}
+              dir="ltr"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-muted mb-1.5 font-medium">אתר אינטרנט</label>
+            <input
+              type="url"
+              value={websiteUrl}
+              onChange={(e) => setWebsiteUrl(e.target.value)}
+              placeholder="https://..."
+              className={inputClass}
+              dir="ltr"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-muted mb-1.5 font-medium">וואטסאפ (לכפתור יצירת קשר)</label>
+            <input
+              type="tel"
+              value={whatsappNumber}
+              onChange={(e) => setWhatsappNumber(e.target.value)}
+              placeholder="0501234567"
+              className={inputClass}
+              dir="ltr"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Media & Images */}
+      <div className="glass-card p-4 space-y-4">
+        <h3 className="text-sm font-bold flex items-center gap-2">
+          <Palette className="w-4 h-4 text-brand-blue" />
+          מדיה ותמונות
+        </h3>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs text-muted mb-1.5 font-medium">לינק לתמונת קאבר</label>
+            <input
+              type="url"
+              value={coverUrl}
+              onChange={(e) => setCoverUrl(e.target.value)}
+              placeholder="https://... (מומלץ לרוחב)"
+              className={inputClass}
+              dir="ltr"
+            />
+          </div>
+          {/* Note: Logo upload UI would go here, currently using URL/placeholder or handled separately */}
+        </div>
       </div>
 
       {/* Branding */}
@@ -220,11 +391,10 @@ export function ProfileSettings() {
               <button
                 key={color}
                 onClick={() => setAccentColor(color)}
-                className={`w-10 h-10 rounded-xl transition-all ${
-                  accentColor === color
-                    ? "ring-2 ring-offset-2 ring-offset-[var(--bg-primary)] scale-110"
-                    : "hover:scale-105"
-                }`}
+                className={`w-10 h-10 rounded-xl transition-all ${accentColor === color
+                  ? "ring-2 ring-offset-2 ring-offset-[var(--bg-primary)] scale-110"
+                  : "hover:scale-105"
+                  }`}
                 style={{
                   background: color,
                   // @ts-expect-error -- ring color

@@ -16,9 +16,10 @@ import {
   Link as LinkIcon,
   Copy,
   Check,
+  MessageCircle,
 } from "lucide-react";
 import { useState } from "react";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getSafeOrigin } from "@/lib/utils";
 
 const CELEBRATION_EMOJIS = ["🎉", "🎵", "🎶", "✨", "💫", "🎧", "🎤", "💃", "🕺", "🌟"];
 
@@ -36,7 +37,7 @@ function CelebrationParticle({ emoji, delay, x }: { emoji: string; delay: number
   );
 }
 
-export function MusicBrief() {
+export function MusicBrief({ djBranding }: { djBranding?: { whatsappNumber?: string | null, businessName?: string | null, accentColor?: string } | null }) {
   const event = useEventStore((s) => s.event);
   const swipes = useEventStore((s) => s.swipes);
   const answers = useEventStore((s) => s.answers);
@@ -144,7 +145,7 @@ export function MusicBrief() {
   }, [event]);
 
   const handleCopyLink = () => {
-    const url = `${window.location.origin}/event?token=${event?.magicToken}`;
+    const url = `${getSafeOrigin()}/event?token=${event?.magicToken}`;
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
@@ -197,7 +198,7 @@ export function MusicBrief() {
       dontRequests.forEach((r) => lines.push(`  • ${r.content}`));
       lines.push("");
     }
-    const url = `${window.location.origin}/event?token=${event?.magicToken}`;
+    const url = `${getSafeOrigin()}/event?token=${event?.magicToken}`;
     lines.push(`🔗 ${url}`);
     return lines.join("\n");
   };
@@ -235,7 +236,7 @@ export function MusicBrief() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-center gap-2 flex-wrap"
+        className="flex items-center justify-center gap-2 flex-wrap mb-6"
       >
         <button
           onClick={handleShareWhatsApp}
@@ -268,8 +269,38 @@ export function MusicBrief() {
         </button>
       </motion.div>
 
-      {/* Brief Content */}
-      <div ref={briefRef} className="space-y-4">
+      {/* Completion Message & Next Steps */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="glass-card p-6 text-center border-t-4"
+        style={{ borderTopColor: djBranding?.accentColor || "var(--brand-blue)" }}
+      >
+        <div className="w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center bg-brand-green/20 text-brand-green">
+          <Check className="w-6 h-6" />
+        </div>
+        <h2 className="font-display font-black text-xl mb-2">
+          הכל מוכן! הפרטים הועברו ל{djBranding?.businessName || "דיג'יי"}
+        </h2>
+        <p className="text-sm text-secondary mb-5">
+          שמרנו את כל הבחירות והדגשים שלכם. אנחנו נעבור על הכל ונהיה בקשר כדי לדייק את הפסקול של האירוע!
+        </p>
+
+        {djBranding?.whatsappNumber && (
+          <a
+            href={`https://wa.me/${djBranding.whatsappNumber.replace(/[^0-9]/g, '')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-colors"
+          >
+            <MessageCircle className="w-5 h-5" />
+            יש לכם שאלה? דברו איתנו בוואטסאפ
+          </a>
+        )}
+      </motion.div>
+
+      <div ref={briefRef} className="space-y-4 pt-4">
         {isEmpty && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}

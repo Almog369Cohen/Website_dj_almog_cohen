@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Music2, Loader2, Heart, Star, PartyPopper, Briefcase, Music } from "lucide-react";
+import { Music2, Loader2, Heart, Star, PartyPopper, Briefcase, Music, Instagram, Globe, MessageCircle, Quote, Play } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import type { EventType } from "@/lib/types";
 
@@ -13,6 +13,13 @@ interface DJPublicProfile {
   tagline: string | null;
   accentColor: string;
   logoUrl: string | null;
+  coverUrl: string | null;
+  bio: string | null;
+  instagramUrl: string | null;
+  tiktokUrl: string | null;
+  websiteUrl: string | null;
+  whatsappNumber: string | null;
+  reviews: any[];
   slug: string;
 }
 
@@ -56,7 +63,7 @@ export default function DJClientPage() {
     async function loadDJ() {
       const { data, error } = await supabase!
         .from("profiles")
-        .select("id, business_name, tagline, accent_color, logo_url, dj_slug")
+        .select("id, business_name, tagline, accent_color, logo_url, dj_slug, cover_url, bio, instagram_url, tiktok_url, website_url, whatsapp_number, reviews")
         .eq("dj_slug", slug)
         .single();
 
@@ -69,6 +76,13 @@ export default function DJClientPage() {
           tagline: data.tagline ?? null,
           accentColor: data.accent_color ?? "#059cc0",
           logoUrl: data.logo_url ?? null,
+          coverUrl: data.cover_url ?? null,
+          bio: data.bio ?? null,
+          instagramUrl: data.instagram_url ?? null,
+          tiktokUrl: data.tiktok_url ?? null,
+          websiteUrl: data.website_url ?? null,
+          whatsappNumber: data.whatsapp_number ?? null,
+          reviews: Array.isArray(data.reviews) ? data.reviews : [],
           slug: data.dj_slug ?? slug,
         });
       }
@@ -216,35 +230,98 @@ export default function DJClientPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
+          className="text-center mb-8 relative"
         >
+          {dj.coverUrl ? (
+            <div className="absolute inset-0 -top-8 -mx-4 h-48 -z-10 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--bg-primary)] z-10" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={dj.coverUrl} alt="Cover" className="w-full h-full object-cover opacity-60" />
+            </div>
+          ) : null}
+
           {dj.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={dj.logoUrl}
               alt={dj.businessName}
-              className="w-20 h-20 rounded-full object-cover mx-auto mb-4 border-2"
+              className={`w-24 h-24 rounded-full object-cover mx-auto mb-4 border-4 shadow-xl ${dj.coverUrl ? "mt-12" : ""}`}
               style={{ borderColor: dj.accentColor }}
             />
           ) : (
             <div
-              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border-2"
+              className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 border-4 shadow-xl ${dj.coverUrl ? "mt-12" : ""}`}
               style={{
                 background: `${dj.accentColor}15`,
                 borderColor: `${dj.accentColor}40`,
               }}
             >
-              <Music2 className="w-8 h-8" style={{ color: dj.accentColor }} />
+              <Music2 className="w-10 h-10" style={{ color: dj.accentColor }} />
             </div>
           )}
           <h1
-            className="font-display text-3xl font-black mb-1"
+            className="font-display text-4xl font-black mb-2 tracking-tight"
             style={{ color: dj.accentColor }}
           >
             {dj.businessName}
           </h1>
           {dj.tagline && (
-            <p className="text-secondary text-sm">{dj.tagline}</p>
+            <p className="text-secondary text-base font-medium mb-4">{dj.tagline}</p>
+          )}
+
+          {/* Social Links */}
+          <div className="flex items-center justify-center gap-3 mb-6">
+            {dj.instagramUrl && (
+              <a href={dj.instagramUrl} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-glass hover:bg-glass-strong transition-colors text-secondary hover:text-foreground">
+                <Instagram className="w-5 h-5" />
+              </a>
+            )}
+            {dj.tiktokUrl && (
+              <a href={dj.tiktokUrl} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-glass hover:bg-glass-strong transition-colors text-secondary hover:text-foreground">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93v7.2c0 1.96-.5 3.96-1.74 5.37-1.35 1.54-3.5 2.27-5.52 1.92-1.95-.33-3.66-1.57-4.57-3.34-.87-1.7-.86-3.83-.01-5.54.8-1.59 2.31-2.73 4.09-3.04v4.05c-.46.16-.9.44-1.21.84-.33.43-.45 1.01-.3 1.53.18.66.74 1.17 1.39 1.32.74.16 1.56-.05 2.06-.61.47-.53.66-1.22.68-1.91v-19.4z" />
+                </svg>
+              </a>
+            )}
+            {dj.websiteUrl && (
+              <a href={dj.websiteUrl} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-glass hover:bg-glass-strong transition-colors text-secondary hover:text-foreground">
+                <Globe className="w-5 h-5" />
+              </a>
+            )}
+            {dj.whatsappNumber && (
+              <a href={`https://wa.me/${dj.whatsappNumber.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-glass hover:bg-brand-green/20 transition-colors text-secondary hover:text-brand-green">
+                <MessageCircle className="w-5 h-5" />
+              </a>
+            )}
+          </div>
+
+          {/* Bio */}
+          {dj.bio && (
+            <div className="glass-card p-5 mb-6 text-right relative overflow-hidden">
+              <Quote className="w-8 h-8 absolute -top-2 -right-2 text-brand-blue/10 rotate-180" style={{ color: `${dj.accentColor}20` }} />
+              <p className="text-sm text-secondary leading-relaxed whitespace-pre-wrap relative z-10">{dj.bio}</p>
+            </div>
+          )}
+
+          {/* Reviews Mini-Carousel */}
+          {dj.reviews && dj.reviews.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-xs font-bold text-muted mb-3 uppercase tracking-wider">מה זוגות אומרים</h3>
+              <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+                {dj.reviews.map((r: any, idx: number) => (
+                  <div key={idx} className="glass-card p-4 min-w-[240px] snap-center flex-shrink-0 text-right relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-1 h-full" style={{ background: dj.accentColor }} />
+                    <div className="flex items-center gap-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-current text-amber-400" />
+                      ))}
+                    </div>
+                    <p className="text-sm font-medium mb-3 italic">"{r.text}"</p>
+                    <p className="text-xs text-muted font-bold">— {r.name} {r.event ? `(${r.event})` : ""}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </motion.div>
 
@@ -260,10 +337,10 @@ export default function DJClientPage() {
             >
               <div className="text-3xl mb-3">👋</div>
               <h2 className="font-display text-lg font-bold mb-2">
-                מצאנו פנייה קיימת
+                ברוכים השבים!
               </h2>
               <p className="text-sm text-secondary mb-6">
-                נראה שכבר יש פנייה עם מספר הטלפון הזה. רוצים להמשיך את הפנייה הקיימת?
+                זיהינו שכבר התחלתם (או סיימתם) למלא פרטים בעבר עם המספר הזה. רוצים להמשיך מאיפה שעצרתם?
               </p>
               <div className="flex flex-col gap-3">
                 {duplicate.existingToken && (
@@ -275,7 +352,7 @@ export default function DJClientPage() {
                       boxShadow: `0 4px 20px ${dj.accentColor}30`,
                     }}
                   >
-                    המשך פנייה קיימת
+                    חזרה להמשך עריכה
                   </button>
                 )}
                 <button

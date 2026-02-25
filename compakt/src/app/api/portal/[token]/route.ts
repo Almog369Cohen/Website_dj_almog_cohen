@@ -73,7 +73,7 @@ export async function GET(
   // 5. Load DJ's questions
   const { data: questions } = await supabase
     .from("dj_questions")
-    .select("id, question_he, question_type, event_type, options, slider_min, slider_max, slider_labels, sort_order, is_active")
+    .select("id, question_he, question_type, event_type, event_types, options, slider_min, slider_max, slider_labels, sort_order, is_active")
     .eq("user_id", event.user_id)
     .eq("is_active", true)
     .order("sort_order", { ascending: true });
@@ -89,7 +89,7 @@ export async function GET(
   // 7. Load DJ profile for branding
   const { data: djProfile } = await supabase
     .from("profiles")
-    .select("id, business_name, tagline, accent_color, logo_url, dj_slug")
+    .select("id, business_name, tagline, accent_color, logo_url, dj_slug, whatsapp_number")
     .eq("id", event.user_id)
     .single();
 

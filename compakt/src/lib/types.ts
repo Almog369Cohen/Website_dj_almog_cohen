@@ -38,8 +38,15 @@ export interface DJProfile {
   djSlug: string | null;
   businessName: string | null;
   logoUrl: string | null;
+  coverUrl: string | null;
   accentColor: string;
   tagline: string | null;
+  bio: string | null;
+  instagramUrl: string | null;
+  tiktokUrl: string | null;
+  websiteUrl: string | null;
+  whatsappNumber: string | null;
+  reviews: any[]; // using any[] for simple JSONB structure or define specific Review type
   onboardingComplete: boolean;
 }
 

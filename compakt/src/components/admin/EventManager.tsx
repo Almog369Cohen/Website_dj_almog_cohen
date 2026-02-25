@@ -29,7 +29,7 @@ import {
   StickyNote,
 } from "lucide-react";
 import { BriefViewer } from "./BriefViewer";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getSafeOrigin } from "@/lib/utils";
 
 interface EventContact {
   id: string;
@@ -87,19 +87,19 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 function getPortalLink(token: string): string {
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const origin = getSafeOrigin();
   return `${origin}/portal/${token}`;
 }
 
 function getDjLink(slug: string, type?: string): string {
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const origin = getSafeOrigin();
   const base = `${origin}/dj/${slug}`;
   if (!type) return base;
   return `${base}?type=${encodeURIComponent(type)}`;
 }
 
 function getEventLink(token: string): string {
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const origin = getSafeOrigin();
   return `${origin}/event?token=${token}`;
 }
 
@@ -183,7 +183,7 @@ export function EventManager() {
 
   const copyDjLink = async () => {
     if (!djSlug) return;
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const origin = getSafeOrigin();
     await navigator.clipboard.writeText(`${origin}/dj/${djSlug}`);
     setCopiedDjLink(true);
     setTimeout(() => setCopiedDjLink(false), 2000);

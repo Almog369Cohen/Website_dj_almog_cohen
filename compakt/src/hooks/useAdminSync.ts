@@ -14,12 +14,13 @@ export function useAdminSync() {
 
   const syncFromDB = useCallback(async () => {
     if (!supabase || didSync.current) return;
-    didSync.current = true;
 
     try {
       const { data: session } = await supabase.auth.getSession();
       const bearer = session.session?.access_token;
       if (!bearer) return;
+
+      didSync.current = true;
 
       // Fetch songs
       const songsRes = await fetch("/api/songs", {

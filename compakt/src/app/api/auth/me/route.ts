@@ -18,12 +18,42 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "SESSION_EXPIRED", code: "INVALID_TOKEN" }, { status: 401 });
     }
 
+    const selectProfile = async () => {
+      return supabase
+        .from("profiles")
+        .select(
+          "id, email, full_name, role, plan, dj_slug, business_name, logo_url, cover_url, accent_color, tagline, bio, instagram_url, tiktok_url, website_url, whatsapp_number, reviews, onboarding_complete"
+        )
+        .eq("id", user.id)
+        .maybeSingle();
+    };
+
     // Read profile (service role bypasses RLS)
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("role, full_name")
-      .eq("id", user.id)
-      .single();
+    let { data: profile, error: profileError } = await selectProfile();
+
+    // Older accounts may exist without a profiles row (trigger added later) — bootstrap it.
+    if (!profile && !profileError) {
+      const vFullName =
+        (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) ||
+        "";
+
+      const { error: insertError } = await supabase.from("profiles").insert({
+        id: user.id,
+        email: user.email ?? null,
+        full_name: vFullName,
+        role: "dj",
+        plan: "free",
+        onboarding_complete: false,
+      });
+
+      if (!insertError) {
+        const res = await selectProfile();
+        profile = res.data;
+        profileError = res.error;
+      } else {
+        profileError = insertError;
+      }
+    }
 
     if (profileError || !profile) {
       return NextResponse.json(
@@ -31,6 +61,7 @@ export async function GET(request: Request) {
           error: "NO_PROFILE",
           code: "PROFILE_MISSING",
           userId: user.id,
+          details: profileError?.message ?? null,
         },
         { status: 404 }
       );
@@ -38,9 +69,23 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       id: user.id,
-      email: user.email ?? "",
-      role: profile.role,
+      email: user.email ?? profile.email ?? "",
       fullName: profile.full_name ?? "",
+      role: profile.role ?? "dj",
+      plan: profile.plan ?? "free",
+      djSlug: profile.dj_slug ?? null,
+      businessName: profile.business_name ?? null,
+      logoUrl: profile.logo_url ?? null,
+      coverUrl: profile.cover_url ?? null,
+      accentColor: profile.accent_color ?? "#059cc0",
+      tagline: profile.tagline ?? null,
+      bio: profile.bio ?? null,
+      instagramUrl: profile.instagram_url ?? null,
+      tiktokUrl: profile.tiktok_url ?? null,
+      websiteUrl: profile.website_url ?? null,
+      whatsappNumber: profile.whatsapp_number ?? null,
+      reviews: Array.isArray(profile.reviews) ? profile.reviews : [],
+      onboardingComplete: profile.onboarding_complete ?? false,
     });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Internal error";

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { User, Palette, FileText, Check, ArrowLeft, Loader2, Music2 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { useDJStore } from "@/stores/djStore";
+import { getSafeOrigin } from "@/lib/utils";
 
 const ACCENT_COLORS = [
   "#059cc0", "#03b28c", "#d4627a", "#f5c542",
@@ -53,52 +54,67 @@ export default function OnboardingPage() {
   };
 
   const handleFinish = async () => {
-    if (!supabase || !profile) return;
+    if (!supabase) return;
     setSaving(true);
     setSlugError(null);
 
     const cleanSlug = slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
 
-    // Check slug uniqueness
-    const { data: existing } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("dj_slug", cleanSlug)
-      .neq("id", profile.id)
-      .limit(1);
-
-    if (existing && existing.length > 0) {
-      setSlugError("הכתובת הזו כבר תפוסה, בחרו אחרת");
+    const { data: session } = await supabase.auth.getSession();
+    const bearer = session.session?.access_token;
+    if (!bearer) {
+      setSlugError("ההתחברות פגה תוקף — התחברו מחדש");
       setSaving(false);
       return;
     }
 
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        business_name: businessName.trim(),
-        tagline: tagline.trim() || null,
-        accent_color: accentColor,
-        dj_slug: cleanSlug || null,
-        onboarding_complete: true,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", profile.id);
-
-    if (error) {
-      setSlugError("שגיאה בשמירה, נסו שוב");
+    let res: Response;
+    try {
+      res = await fetch("/api/admin/onboarding/finish", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${bearer}`,
+        },
+        body: JSON.stringify({
+          businessName,
+          tagline,
+          accentColor,
+          slug: cleanSlug,
+        }),
+      });
+    } catch (e) {
+      console.error("[onboarding] finish request failed:", e);
+      setSlugError("שגיאה ברשת — נסו שוב");
       setSaving(false);
       return;
     }
 
-    setProfile({
-      ...profile,
-      businessName: businessName.trim(),
-      tagline: tagline.trim() || null,
-      accentColor,
-      djSlug: cleanSlug || null,
-      onboardingComplete: true,
-    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => null);
+      const err = (body && (body as { error?: string }).error) || "";
+      console.error("[onboarding] finish failed:", res.status, body);
+
+      if (res.status === 409 && err === "SLUG_TAKEN") {
+        setSlugError("הכתובת הזו כבר תפוסה, בחרו אחרת");
+      } else if (res.status === 401) {
+        setSlugError("ההתחברות פגה תוקף — התחברו מחדש");
+      } else {
+        setSlugError(err ? `שגיאה בשמירה: ${err}` : `שגיאה בשמירה (${res.status}) — נסו שוב`);
+      }
+      setSaving(false);
+      return;
+    }
+
+    const updatedProfile = await res.json().catch(() => null);
+    if (!updatedProfile) {
+      setSlugError("שגיאה בשמירה (תגובה לא תקינה) — נסו שוב");
+      setSaving(false);
+      return;
+    }
+
+    setProfile(updatedProfile);
+    setSaving(false);
 
     setStep("done");
     setTimeout(() => router.push("/admin"), 2000);
@@ -124,10 +140,10 @@ export default function OnboardingPage() {
               <div key={s.id} className="flex items-center gap-2">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${s.id === step
-                      ? "bg-brand-blue/15 border border-brand-blue/40 text-brand-blue"
-                      : steps.indexOf(steps.find((x) => x.id === step)!) > i
-                        ? "bg-brand-green/15 border border-brand-green/40 text-brand-green"
-                        : "bg-white/5 border border-glass text-muted"
+                    ? "bg-brand-blue/15 border border-brand-blue/40 text-brand-blue"
+                    : steps.indexOf(steps.find((x) => x.id === step)!) > i
+                      ? "bg-brand-green/15 border border-brand-green/40 text-brand-green"
+                      : "bg-white/5 border border-glass text-muted"
                     }`}
                 >
                   {steps.indexOf(steps.find((x) => x.id === step)!) > i ? (
@@ -220,8 +236,8 @@ export default function OnboardingPage() {
                       key={color}
                       onClick={() => setAccentColor(color)}
                       className={`w-10 h-10 rounded-xl transition-all ${accentColor === color
-                          ? "ring-2 ring-offset-2 ring-offset-[var(--bg-primary)] scale-110"
-                          : "hover:scale-105"
+                        ? "ring-2 ring-offset-2 ring-offset-[var(--bg-primary)] scale-110"
+                        : "hover:scale-105"
                         }`}
                       style={{
                         background: color,
@@ -299,7 +315,7 @@ export default function OnboardingPage() {
                 )}
                 {slug && !slugError && (
                   <p className="text-xs text-muted mt-1" dir="ltr">
-                    {typeof window !== "undefined" ? window.location.origin : ""}/dj/{slug}
+                    {getSafeOrigin()}/dj/{slug}
                   </p>
                 )}
               </div>

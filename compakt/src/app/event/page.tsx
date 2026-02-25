@@ -16,7 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { RotateCcw, Loader2 } from "lucide-react";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { AmbientBackground } from "@/components/ui/AmbientBackground";
-import type { Song, Question, Upsell, EventType, SongCategory, QuestionType } from "@/lib/types";
+import type { Song, Question, Upsell, EventType, SongCategory, QuestionType, MomentType } from "@/lib/types";
 
 /* ── helpers to map snake_case DB rows → camelCase TS types ── */
 function mapSong(row: Record<string, unknown>): Song {
@@ -46,6 +46,7 @@ function mapQuestion(row: Record<string, unknown>): Question {
     questionHe: row.question_he as string,
     questionType: (row.question_type as QuestionType) ?? "single_select",
     eventType: (row.event_type as EventType) ?? "wedding",
+    eventTypes: (row.event_types as EventType[]) ?? undefined,
     options: row.options as { label: string; value: string; icon?: string }[] | undefined,
     sliderMin: row.slider_min as number | undefined,
     sliderMax: row.slider_max as number | undefined,
@@ -105,8 +106,36 @@ function JourneyApp() {
         }
         return res.json();
       })
-      .then((data: { event: Record<string, unknown>; songs: Record<string, unknown>[]; questions: Record<string, unknown>[]; upsells: Record<string, unknown>[] }) => {
+      .then((data: { event: Record<string, unknown>; songs: Record<string, unknown>[]; questions: Record<string, unknown>[]; upsells: Record<string, unknown>[]; answers?: Record<string, unknown>[]; swipes?: Record<string, unknown>[]; requests?: Record<string, unknown>[] }) => {
         const ev = data.event;
+
+        // Map existing answers/swipes/requests from DB rows
+        const existingAnswers = ((data.answers ?? []) as Record<string, unknown>[]).map((a) => ({
+          id: (a.id as string) ?? crypto.randomUUID(),
+          eventId: a.event_id as string,
+          questionId: a.question_id as string,
+          answerValue: a.answer_value as string | string[] | number,
+          answeredAt: (a.answered_at as string) ?? new Date().toISOString(),
+        }));
+
+        const existingSwipes = ((data.swipes ?? []) as Record<string, unknown>[]).map((s) => ({
+          id: (s.id as string) ?? crypto.randomUUID(),
+          eventId: s.event_id as string,
+          songId: s.song_id as string,
+          action: s.action as "like" | "dislike" | "super_like" | "unsure",
+          reasonChips: (s.reason_chips as string[]) ?? [],
+          swipedAt: (s.swiped_at as string) ?? new Date().toISOString(),
+        }));
+
+        const existingRequests = ((data.requests ?? []) as Record<string, unknown>[]).map((r) => ({
+          id: (r.id as string) ?? crypto.randomUUID(),
+          eventId: r.event_id as string,
+          requestType: r.request_type as "free_text" | "do" | "dont" | "link" | "special_moment",
+          content: r.content as string,
+          momentType: r.moment_type as MomentType | undefined,
+          createdAt: (r.created_at as string) ?? new Date().toISOString(),
+        }));
+
         seedEvent({
           id: ev.id as string,
           magicToken: ev.magic_token as string,
@@ -119,6 +148,9 @@ function JourneyApp() {
           currentStage: (ev.current_stage as number) ?? 0,
           theme: (ev.theme as "night" | "day") ?? "night",
           createdAt: ev.created_at as string,
+          answers: existingAnswers,
+          swipes: existingSwipes,
+          requests: existingRequests,
         });
 
         seedAdmin({

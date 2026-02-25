@@ -17,6 +17,7 @@ interface AdminStore {
   questions: Question[];
   upsells: Upsell[];
   eventTypes: AdminEventTypeConfig[];
+  _seededFromServer: boolean;
 
   // Auth
   login: (password: string) => boolean;
@@ -70,6 +71,7 @@ export const useAdminStore = create<AdminStore>()(
       questions: defaultQuestions,
       upsells: defaultUpsells,
       eventTypes: DEFAULT_EVENT_TYPES,
+      _seededFromServer: false,
 
       login: (password) => {
         if (password === ADMIN_PASSWORD) {
@@ -192,6 +194,7 @@ export const useAdminStore = create<AdminStore>()(
           songs: data.songs,
           questions: data.questions,
           upsells: data.upsells,
+          _seededFromServer: true,
         });
       },
     }),
@@ -206,6 +209,9 @@ export const useAdminStore = create<AdminStore>()(
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.isAuthenticated = false;
+
+          // Skip destructive mutations if data was seeded from server
+          if (state._seededFromServer) return;
 
           // Merge event types defaults (so new types like 'other' appear even on old storage)
           const byId: Record<string, AdminEventTypeConfig> = Object.fromEntries(
