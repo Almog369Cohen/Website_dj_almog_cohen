@@ -55,56 +55,31 @@ export function StaffGuard({ children }: StaffGuardProps) {
       }
 
       try {
-        const res = await fetch("/api/auth/me", {
-          headers: { Authorization: `Bearer ${session.access_token}` },
-        });
+        const { data: profile, error: profileError } = await supabase!
+          .from("profiles")
+          .select("role, full_name")
+          .eq("id", session.user.id)
+          .single();
 
         if (cancelled) return;
 
-        const rawText = await res.text();
-        let data: any = null;
-        if (rawText) {
-          try {
-            data = JSON.parse(rawText) as any;
-          } catch {
-            data = null;
-          }
-        }
-
-        if (res.status === 401) {
-          setStatus({ state: "session_expired" });
-          return;
-        }
-
-        if (res.status === 404 && data?.code === "PROFILE_MISSING") {
+        if (profileError || !profile) {
           setStatus({ state: "no_profile" });
           return;
         }
 
-        if (!res.ok) {
-          if (data?.code === "SERVER_ENV_MISSING") {
-            setStatus({
-              state: "error",
-              message: "שגיאת שרת: חסר SUPABASE_SERVICE_ROLE_KEY ב-Cloud Run. עדכון משתני סביבה נדרש.",
-            });
-          } else {
-            setStatus({ state: "error", message: data?.error ?? `שגיאת שרת (${res.status})` });
-          }
-          return;
-        }
-
-        if (data?.role && isStaff(data.role)) {
+        if (profile.role && isStaff(profile.role)) {
           setStatus({
             state: "authorized",
             viewer: {
-              id: data.id,
-              email: data.email,
-              role: data.role as UserRole,
-              fullName: data.fullName ?? "",
+              id: session.user.id,
+              email: session.user.email ?? "",
+              role: profile.role as UserRole,
+              fullName: profile.full_name ?? "",
             },
           });
         } else {
-          setStatus({ state: "not_staff", role: data?.role ?? "unknown" });
+          setStatus({ state: "not_staff", role: profile.role ?? "unknown" });
         }
       } catch {
         if (!cancelled) {

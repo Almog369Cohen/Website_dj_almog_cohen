@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Shield, Loader2, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { hebrewAuthError } from "@/lib/auth/errors-he";
+import { isStaff } from "@/lib/auth/roles";
 
 export default function StaffLoginPage() {
   return (
@@ -30,6 +31,7 @@ function StaffLoginForm() {
   const [resetLoading, setResetLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resetSent, setResetSent] = useState(false);
+  const [magicSent, setMagicSent] = useState(false);
 
   // Restore last-used email from localStorage
   useEffect(() => {
@@ -43,76 +45,130 @@ function StaffLoginForm() {
     return email.trim().length > 3 && password.length >= 6 && !loading;
   }, [email, password, loading]);
 
+  const ensureStaffAndRedirect = async () => {
+    if (!supabase) {
+      setError("שגיאת תצורה — Supabase לא מוגדר");
+      return;
+    }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      setError("התחברות לא נשמרה — נסה שוב");
+      return;
+    }
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single();
+
+    if (profileError || !profile) {
+      setError("פרופיל לא נמצא — פנה למנהל המערכת");
+      return;
+    }
+
+    if (!isStaff(profile.role)) {
+      void supabase.auth.signOut();
+      setError("NOT_STAFF");
+      return;
+    }
+
+    window.location.href = redirectTo;
+  };
+
+  useEffect(() => {
+    if (!supabase) return;
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
+
+        if (code) {
+          await supabase.auth.exchangeCodeForSession(window.location.href);
+          if (cancelled) return;
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+        if (cancelled) return;
+        if (!session) return;
+
+        await ensureStaffAndRedirect();
+      } catch {
+        // ignore init errors
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [redirectTo]);
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setResetSent(false);
+    setMagicSent(false);
     setLoading(true);
 
     try {
-      // All auth + profile read happens server-side (bypasses RLS)
-      const res = await fetch("/api/auth/staff-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), password }),
-      });
-
-      const rawText = await res.text();
-      let body: any = null;
-      if (rawText) {
-        try {
-          body = JSON.parse(rawText) as any;
-        } catch {
-          body = null;
-        }
-      }
-
-      if (!res.ok) {
-        if (body?.error === "NOT_STAFF") {
-          setError("NOT_STAFF");
-        } else {
-          const serverMsg = body?.error ? hebrewAuthError(body.error) : null;
-          const msg = serverMsg ?? `שגיאת שרת (${res.status}) — נסו שוב`;
-          setError(msg);
-        }
-        return;
-      }
-
       // Save email for next visit
       try { localStorage.setItem("compakt-staff-email", email.trim()); } catch { }
 
-      // Set the session on the client so subsequent pages work
       if (!supabase) {
         setError("שגיאת תצורה — Supabase לא מוגדר");
         return;
       }
 
-      if (!body?.session?.access_token || !body?.session?.refresh_token) {
-        setError("שגיאה — לא התקבל session מהשרת");
-        return;
-      }
-
-      const { error: sessionError } = await supabase.auth.setSession({
-        access_token: body.session.access_token,
-        refresh_token: body.session.refresh_token,
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
       });
 
-      if (sessionError) {
-        setError("שגיאה בשמירת ההתחברות: " + sessionError.message);
+      if (signInError) {
+        setError(hebrewAuthError(signInError.message));
         return;
       }
 
-      // Verify session actually persisted before navigating
-      const { data: check } = await supabase.auth.getSession();
-      if (!check.session) {
-        setError("ההתחברות לא נשמרה — נסה שוב");
-        return;
-      }
-
-      // Use window.location for a full navigation to ensure StaffGuard picks up the new session
-      window.location.href = redirectTo;
+      await ensureStaffAndRedirect();
     } catch (err) {
       setError("שגיאה לא צפויה — " + (err instanceof Error ? err.message : "נסה שוב"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleMagicLink = async () => {
+    if (!supabase) {
+      setError("שגיאת תצורה — Supabase לא מוגדר");
+      return;
+    }
+    if (!email.trim()) {
+      setError("הזן אימייל קודם");
+      return;
+    }
+
+    setError(null);
+    setResetSent(false);
+    setMagicSent(false);
+    setLoading(true);
+
+    try {
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const emailRedirectTo = `${origin}/staff?redirect=${encodeURIComponent(redirectTo)}`;
+      const { error: otpError } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: { emailRedirectTo },
+      });
+      if (otpError) {
+        setError(hebrewAuthError(otpError.message));
+        return;
+      }
+
+      try { localStorage.setItem("compakt-staff-email", email.trim()); } catch { }
+      setMagicSent(true);
     } finally {
       setLoading(false);
     }
@@ -196,6 +252,16 @@ function StaffLoginForm() {
             </div>
           </div>
 
+          <button
+            type="button"
+            onClick={handleMagicLink}
+            disabled={loading || !email.trim()}
+            className="btn-secondary w-full flex items-center justify-center gap-2"
+          >
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+            שלח לינק התחברות למייל
+          </button>
+
           {error === "NOT_STAFF" && (
             <div className="rounded-xl border border-glass p-4 text-center space-y-3" style={{ background: "rgba(255,68,102,0.08)" }}>
               <p className="text-sm font-semibold">משתמש יקר, כניסה זו לצוות בלבד</p>
@@ -219,6 +285,13 @@ function StaffLoginForm() {
             <div className="flex items-center gap-2 text-sm" style={{ color: "var(--accent-success, #03b28c)" }}>
               <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
               נשלח מייל לאיפוס סיסמה — בדוק את תיבת המייל
+            </div>
+          )}
+
+          {magicSent && (
+            <div className="flex items-center gap-2 text-sm" style={{ color: "var(--accent-success, #03b28c)" }}>
+              <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+              נשלח לינק התחברות — פתח את המייל ולחץ על הקישור
             </div>
           )}
 
