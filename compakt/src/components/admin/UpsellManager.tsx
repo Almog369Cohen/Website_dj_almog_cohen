@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { Upsell } from "@/lib/types";
+import { useDBMutations } from "@/hooks/useDBMutations";
 
 const placements: { value: Upsell["placement"]; label: string }[] = [
   { value: "stage_4", label: "שלב בקשות" },
@@ -22,9 +23,7 @@ const placements: { value: Upsell["placement"]; label: string }[] = [
 
 export function UpsellManager() {
   const upsells = useAdminStore((s) => s.upsells);
-  const addUpsell = useAdminStore((s) => s.addUpsell);
-  const updateUpsell = useAdminStore((s) => s.updateUpsell);
-  const deleteUpsell = useAdminStore((s) => s.deleteUpsell);
+  const { dbAddUpsell: addUpsell, dbUpdateUpsell: updateUpsell, dbDeleteUpsell: deleteUpsell } = useDBMutations();
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingUpsell, setEditingUpsell] = useState<Upsell | null>(null);
@@ -64,11 +63,10 @@ export function UpsellManager() {
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-brand-blue" />
                 <span
-                  className={`text-xs px-2 py-0.5 rounded-full ${
-                    upsell.isActive
+                  className={`text-xs px-2 py-0.5 rounded-full ${upsell.isActive
                       ? "bg-brand-green/10 text-brand-green"
                       : "bg-accent-danger/10 text-accent-danger"
-                  }`}
+                    }`}
                 >
                   {upsell.isActive ? "פעיל" : "מוסתר"}
                 </span>

@@ -17,6 +17,7 @@ import {
   Copy,
 } from "lucide-react";
 import type { Question, QuestionOption, QuestionType, EventType } from "@/lib/types";
+import { useDBMutations } from "@/hooks/useDBMutations";
 
 const questionTypes: { value: QuestionType; label: string }[] = [
   { value: "single_select", label: "בחירה יחידה" },
@@ -31,9 +32,7 @@ export function QuestionManager() {
   const questions = useAdminStore((s) => s.questions);
   const eventTypes = useAdminStore((s) => s.eventTypes);
   const updateEventType = useAdminStore((s) => s.updateEventType);
-  const addQuestion = useAdminStore((s) => s.addQuestion);
-  const updateQuestion = useAdminStore((s) => s.updateQuestion);
-  const deleteQuestion = useAdminStore((s) => s.deleteQuestion);
+  const { dbAddQuestion: addQuestion, dbUpdateQuestion: updateQuestion, dbDeleteQuestion: deleteQuestion } = useDBMutations();
 
   const [filterType, setFilterType] = useState<string>("wedding");
   const [showAddModal, setShowAddModal] = useState(false);

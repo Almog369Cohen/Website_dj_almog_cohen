@@ -31,6 +31,7 @@ import type { Song, SongCategory } from "@/lib/types";
 import { ClipTrimmer } from "./ClipTrimmer";
 import { BulkUpload } from "./BulkUpload";
 import { supabase } from "@/lib/supabase/client";
+import { useDBMutations } from "@/hooks/useDBMutations";
 
 const categories: { value: SongCategory; label: string }[] = [
   { value: "reception", label: "קבלת פנים" },
@@ -52,9 +53,7 @@ const PAGE_SIZE = 25;
 
 export function SongManager() {
   const songs = useAdminStore((s) => s.songs);
-  const addSong = useAdminStore((s) => s.addSong);
-  const updateSong = useAdminStore((s) => s.updateSong);
-  const deleteSong = useAdminStore((s) => s.deleteSong);
+  const { dbAddSong: addSong, dbUpdateSong: updateSong, dbDeleteSong: deleteSong } = useDBMutations();
 
   const [search, setSearch] = useState("");
   const [filterCategory, setFilterCategory] = useState<string>("all");
