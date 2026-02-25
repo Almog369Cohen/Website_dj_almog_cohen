@@ -11,9 +11,9 @@ async function fetchStats() {
 
   const [usersRes, eventsRes, recentRes] = await Promise.all([
     supabase.from("profiles").select("id", { count: "exact", head: true }),
-    supabase.from("events").select("id", { count: "exact", head: true }),
+    supabase.from("dj_events").select("id", { count: "exact", head: true }),
     supabase
-      .from("events")
+      .from("dj_events")
       .select("id", { count: "exact", head: true })
       .gte("created_at", new Date(Date.now() - 7 * 86400000).toISOString()),
   ]);

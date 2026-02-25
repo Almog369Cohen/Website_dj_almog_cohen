@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useAdminStore } from "@/stores/adminStore";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -27,15 +27,10 @@ const questionTypes: { value: QuestionType; label: string }[] = [
   { value: "text", label: "טקסט חופשי" },
 ];
 
-const eventTypes: { value: EventType; label: string }[] = [
-  { value: "wedding", label: "חתונה" },
-  { value: "bar_mitzvah", label: "בר/בת מצווה" },
-  { value: "private", label: "אירוע פרטי" },
-  { value: "corporate", label: "עסקי" },
-];
-
 export function QuestionManager() {
   const questions = useAdminStore((s) => s.questions);
+  const eventTypes = useAdminStore((s) => s.eventTypes);
+  const updateEventType = useAdminStore((s) => s.updateEventType);
   const addQuestion = useAdminStore((s) => s.addQuestion);
   const updateQuestion = useAdminStore((s) => s.updateQuestion);
   const deleteQuestion = useAdminStore((s) => s.deleteQuestion);
@@ -45,7 +40,10 @@ export function QuestionManager() {
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
 
   const filtered = questions
-    .filter((q) => q.eventType === filterType)
+    .filter((q) => {
+      const types = Array.isArray(q.eventTypes) && q.eventTypes.length ? q.eventTypes : [q.eventType];
+      return types.includes(filterType as EventType);
+    })
     .sort((a, b) => a.sortOrder - b.sortOrder);
 
   return (
@@ -64,13 +62,46 @@ export function QuestionManager() {
         </button>
       </div>
 
+      {/* Event Types Settings */}
+      <div className="glass-card p-4">
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <h3 className="text-sm font-bold">סוגי אירועים</h3>
+          <p className="text-xs text-muted">אפשר לשנות שמות ולהסתיר סוגים</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {eventTypes.map((t) => (
+            <div key={t.id} className="flex items-center gap-2 p-2 rounded-xl border border-glass">
+              <button
+                type="button"
+                onClick={() => updateEventType(t.id, { enabled: !t.enabled })}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors ${t.enabled
+                  ? "border-brand-green/30 text-brand-green hover:bg-brand-green/10"
+                  : "border-glass text-muted hover:text-foreground"}`}
+                title={t.enabled ? "מוצג" : "מוסתר"}
+              >
+                {t.enabled ? "מוצג" : "מוסתר"}
+              </button>
+              <input
+                value={t.label}
+                onChange={(e) => updateEventType(t.id, { label: e.target.value })}
+                className="flex-1 bg-transparent border border-glass rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-blue"
+                placeholder={t.id}
+              />
+              <code className="text-[10px] text-muted" dir="ltr">
+                {t.id}
+              </code>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Event Type Filter */}
       <div className="flex gap-1">
-        {eventTypes.map((et) => (
+        {eventTypes.filter((t) => t.enabled).map((et) => (
           <button
-            key={et.value}
-            onClick={() => setFilterType(et.value)}
-            className={`chip text-xs ${filterType === et.value ? "active" : ""}`}
+            key={et.id}
+            onClick={() => setFilterType(et.id)}
+            className={`chip text-xs ${filterType === et.id ? "active" : ""}`}
           >
             {et.label}
           </button>
@@ -196,13 +227,27 @@ function QuestionModal({
   onSave: (data: Partial<Question>) => void;
   onClose: () => void;
 }) {
+  const eventTypesConfig = useAdminStore((s) => s.eventTypes);
+  const enabledEventTypes = useMemo(
+    () => eventTypesConfig.filter((t) => t.enabled),
+    [eventTypesConfig]
+  );
+
   const [questionHe, setQuestionHe] = useState(question?.questionHe || "");
   const [questionType, setQuestionType] = useState<QuestionType>(
     question?.questionType || "single_select"
   );
-  const [eventType, setEventType] = useState<EventType>(
-    question?.eventType || defaultEventType
-  );
+  const initialTypes = (() => {
+    const t = Array.isArray(question?.eventTypes) && question?.eventTypes.length
+      ? question.eventTypes
+      : [question?.eventType || defaultEventType];
+    // Ensure at least one and keep only enabled/known types
+    const known = new Set(enabledEventTypes.map((e) => e.id));
+    const cleaned = t.filter((x) => known.has(x));
+    return cleaned.length ? cleaned : [defaultEventType];
+  })();
+
+  const [eventTypes, setEventTypes] = useState<EventType[]>(initialTypes);
   const [options, setOptions] = useState<QuestionOption[]>(
     question?.options?.length
       ? question.options.map((o) => ({ ...o }))
@@ -284,7 +329,9 @@ function QuestionModal({
     onSave({
       questionHe,
       questionType,
-      eventType,
+      // Back-compat: keep eventType as primary (first selected)
+      eventType: (eventTypes[0] ?? defaultEventType),
+      eventTypes,
       options: cleanOptions,
       sliderMin: questionType === "slider" ? sliderMin : undefined,
       sliderMax: questionType === "slider" ? sliderMax : undefined,
@@ -354,18 +401,28 @@ function QuestionModal({
             </select>
           </div>
           <div>
-            <label className="block text-xs text-muted mb-1.5 font-medium">סוג אירוע</label>
-            <select
-              value={eventType}
-              onChange={(e) => setEventType(e.target.value as EventType)}
-              className={inputClass}
-            >
-              {eventTypes.map((et) => (
-                <option key={et.value} value={et.value}>
-                  {et.label}
-                </option>
-              ))}
-            </select>
+            <label className="block text-xs text-muted mb-1.5 font-medium">סוגי אירועים (אפשר לבחור כמה)</label>
+            <div className="flex flex-wrap gap-2">
+              {enabledEventTypes.map((et) => {
+                const selected = eventTypes.includes(et.id);
+                return (
+                  <button
+                    key={et.id}
+                    type="button"
+                    onClick={() => {
+                      setEventTypes((prev) => {
+                        const next = selected ? prev.filter((x) => x !== et.id) : [...prev, et.id];
+                        return next.length ? next : prev; // never allow empty
+                      });
+                    }}
+                    className={`chip text-xs ${selected ? "active" : ""}`}
+                    title={et.id}
+                  >
+                    {et.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 

@@ -11,6 +11,7 @@ COPY . .
 # Public env vars inlined into client JS at build time
 ENV NEXT_PUBLIC_SUPABASE_URL=https://rgfajvnkrszwksiidspm.supabase.co
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_-QT5X5pqKmKr0RXOecj3rA_gf-d-1K-
+ENV NEXT_PUBLIC_STAFF_ACCESS_CODE=compakt2025staff
 
 RUN npm run build
 

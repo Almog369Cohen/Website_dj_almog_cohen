@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Users, BarChart3, Shield, ScrollText, UserCog, LayoutDashboard, X } from "lucide-react";
-import { hasPermission } from "@/lib/auth/permissions";
+import { hasPermission, type BackofficePermission } from "@/lib/permissions";
 import type { UserRole } from "@/lib/auth/roles";
 
 interface SidebarProps {
@@ -11,19 +11,19 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-const NAV_ITEMS = [
-  { href: "/backoffice", label: "דשבורד", icon: LayoutDashboard, permission: null },
-  { href: "/backoffice/users", label: "משתמשים", icon: Users, permission: "users.read" as const },
-  { href: "/backoffice/analytics", label: "אנליטיקות", icon: BarChart3, permission: "analytics.read" as const },
-  { href: "/backoffice/team", label: "צוות", icon: UserCog, permission: "team.manage" as const },
-  { href: "/backoffice/audit", label: "יומן פעולות", icon: ScrollText, permission: "users.read" as const },
+const NAV_ITEMS: { href: string; label: string; icon: typeof LayoutDashboard; permission: BackofficePermission | null }[] = [
+  { href: "/backoffice", label: "דשבורד", icon: LayoutDashboard, permission: "dashboard.read" },
+  { href: "/backoffice/users", label: "משתמשים", icon: Users, permission: "users.read" },
+  { href: "/backoffice/analytics", label: "אנליטיקות", icon: BarChart3, permission: "analytics.read" },
+  { href: "/backoffice/team", label: "צוות", icon: UserCog, permission: "team.read" },
+  { href: "/backoffice/audit", label: "יומן פעולות", icon: ScrollText, permission: "audit.read" },
 ];
 
 export function Sidebar({ role, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   const visibleItems = NAV_ITEMS.filter(
-    (item) => !item.permission || hasPermission(role, item.permission)
+    (item) => !item.permission || hasPermission(role, "backoffice", item.permission)
   );
 
   return (
@@ -52,11 +52,10 @@ export function Sidebar({ role, onClose }: SidebarProps) {
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                isActive
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${isActive
                   ? "bg-brand-blue/10 text-brand-blue"
                   : "text-secondary hover:text-foreground hover:bg-[var(--bg-surface-hover)]"
-              }`}
+                }`}
             >
               <item.icon className="w-4 h-4 flex-shrink-0" />
               {item.label}

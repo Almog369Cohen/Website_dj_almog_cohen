@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { getPostLoginRedirect } from "@/lib/auth/roles";
 import { useAdminStore } from "@/stores/adminStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, Music, HelpCircle, Sparkles, LogOut, ChevronLeft, BarChart3, Eye, EyeOff, Loader2, Crown, Calendar } from "lucide-react";
+import { Lock, Music, HelpCircle, Sparkles, LogOut, ChevronLeft, BarChart3, Eye, EyeOff, Loader2, Crown, Calendar, Settings } from "lucide-react";
 import { PasswordStrength } from "@/components/ui/PasswordStrength";
 import { hebrewAuthError } from "@/lib/auth/errors-he";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -15,22 +15,27 @@ import { QuestionManager } from "@/components/admin/QuestionManager";
 import { UpsellManager } from "@/components/admin/UpsellManager";
 import { Dashboard } from "@/components/admin/Dashboard";
 import { EventManager } from "@/components/admin/EventManager";
+import { ProfileSettings } from "@/components/admin/ProfileSettings";
 import { useAuthService } from "@/services";
+import { useAdminSync } from "@/hooks/useAdminSync";
 import { supabase } from "@/lib/supabase/client";
 import { useDJStore } from "@/stores/djStore";
+import { hasPermission, type AdminPermission } from "@/lib/permissions";
 import Link from "next/link";
 
-type AdminTab = "events" | "dashboard" | "songs" | "questions" | "upsells";
+type AdminTab = "events" | "dashboard" | "songs" | "questions" | "upsells" | "settings";
 
-const tabs: { id: AdminTab; label: string; icon: React.ReactNode }[] = [
-  { id: "events", label: "אירועים", icon: <Calendar className="w-4 h-4" /> },
-  { id: "dashboard", label: "דשבורד", icon: <BarChart3 className="w-4 h-4" /> },
-  { id: "songs", label: "שירים", icon: <Music className="w-4 h-4" /> },
-  { id: "questions", label: "שאלות", icon: <HelpCircle className="w-4 h-4" /> },
-  { id: "upsells", label: "שדרוגים", icon: <Sparkles className="w-4 h-4" /> },
+const ALL_TABS: { id: AdminTab; label: string; icon: React.ReactNode; permission: AdminPermission | null }[] = [
+  { id: "events", label: "אירועים", icon: <Calendar className="w-4 h-4" />, permission: "events.read" },
+  { id: "dashboard", label: "דשבורד", icon: <BarChart3 className="w-4 h-4" />, permission: null },
+  { id: "songs", label: "שירים", icon: <Music className="w-4 h-4" />, permission: "songs.manage" },
+  { id: "questions", label: "שאלות", icon: <HelpCircle className="w-4 h-4" />, permission: "questions.manage" },
+  { id: "upsells", label: "שדרוגים", icon: <Sparkles className="w-4 h-4" />, permission: "upsells.manage" },
+  { id: "settings", label: "הגדרות", icon: <Settings className="w-4 h-4" />, permission: null },
 ];
 
 export default function AdminPage() {
+  useAdminSync();
   const isAuthenticated = useAdminStore((s) => s.isAuthenticated);
   const auth = useAuthService();
   const logout = useAdminStore((s) => s.logout);
@@ -47,6 +52,27 @@ export default function AdminPage() {
   const router = useRouter();
   const djProfile = useDJStore((s) => s.profile);
   const [googleBusy, setGoogleBusy] = useState(false);
+  const [userRole, setUserRole] = useState<string>("dj");
+
+  // Fetch user role for permissions
+  useEffect(() => {
+    if (!supabase || !isAuthenticated) return;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) return;
+      supabase!
+        .from("profiles")
+        .select("role")
+        .eq("id", data.session.user.id)
+        .single()
+        .then(({ data: profile }) => {
+          if (profile?.role) setUserRole(profile.role);
+        });
+    });
+  }, [isAuthenticated]);
+
+  const visibleTabs = ALL_TABS.filter(
+    (tab) => !tab.permission || hasPermission(userRole, "admin", tab.permission)
+  );
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -281,7 +307,7 @@ export default function AdminPage() {
           <div className="flex items-center gap-2">
             {/* Tabs */}
             <nav className="flex gap-1 overflow-x-auto max-w-[60vw] sm:max-w-none">
-              {tabs.map((tab) => (
+              {visibleTabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
@@ -362,6 +388,16 @@ export default function AdminPage() {
               exit={{ opacity: 0, y: -10 }}
             >
               <UpsellManager />
+            </motion.div>
+          )}
+          {activeTab === "settings" && (
+            <motion.div
+              key="settings"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <ProfileSettings />
             </motion.div>
           )}
         </AnimatePresence>

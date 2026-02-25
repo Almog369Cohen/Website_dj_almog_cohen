@@ -22,7 +22,12 @@ export function QuestionFlow() {
 
   const adminQuestions = useAdminStore((s) => s.questions);
   const baseQuestions = adminQuestions
-    .filter((q) => q.isActive && q.eventType === (event?.eventType || "wedding"))
+    .filter((q) => {
+      if (!q.isActive) return false;
+      const currentType = (event?.eventType || "wedding");
+      const types = Array.isArray(q.eventTypes) && q.eventTypes.length ? q.eventTypes : [q.eventType];
+      return types.includes(currentType);
+    })
     .sort((a, b) => a.sortOrder - b.sortOrder);
 
   const ethnicMusicQuestion: Question = {

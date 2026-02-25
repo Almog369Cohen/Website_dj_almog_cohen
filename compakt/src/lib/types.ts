@@ -128,6 +128,7 @@ export interface QuestionOption {
 export interface Question {
   id: string;
   eventType: EventType;
+  eventTypes?: EventType[];
   sortOrder: number;
   questionHe: string;
   questionType: QuestionType;

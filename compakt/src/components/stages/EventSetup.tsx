@@ -16,7 +16,7 @@ const eventTypes: { type: EventType; label: string; icon: React.ReactNode; gradi
   { type: "other", label: "אחר", icon: <Music className="w-5 h-5" />, gradient: "from-emerald-400/20 to-teal-500/10" },
 ];
 
-export function EventSetup() {
+export function EventSetup({ portalMode, djName }: { portalMode?: boolean; djName?: string }) {
   const event = useEventStore((s) => s.event);
   const createEvent = useEventStore((s) => s.createEvent);
   const updateEvent = useEventStore((s) => s.updateEvent);
@@ -108,30 +108,53 @@ export function EventSetup() {
     >
       {/* Hero Header — no card wrapper, floats on ambient */}
       <div className="text-center mb-10">
-        <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", damping: 15, stiffness: 100, delay: 0.1 }}
-          className="inline-block mb-5"
-        >
-          <VinylSpinner size={88} spinning />
-        </motion.div>
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="font-display text-4xl sm:text-5xl font-black tracking-tight mb-3 text-gold"
-        >
-          Compakt
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-secondary text-sm font-light"
-        >
-          בואו ניצור את המסע המוזיקלי שלכם
-        </motion.p>
+        {portalMode ? (
+          <>
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="font-display text-3xl sm:text-4xl font-black tracking-tight mb-2"
+            >
+              {djName || "המסע המוזיקלי שלכם"}
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-secondary text-sm font-light"
+            >
+              מלאו כמה פרטים ונתחיל
+            </motion.p>
+          </>
+        ) : (
+          <>
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", damping: 15, stiffness: 100, delay: 0.1 }}
+              className="inline-block mb-5"
+            >
+              <VinylSpinner size={88} spinning />
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="font-display text-4xl sm:text-5xl font-black tracking-tight mb-3 text-gold"
+            >
+              Compakt
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-secondary text-sm font-light"
+            >
+              בואו ניצור את המסע המוזיקלי שלכם
+            </motion.p>
+          </>
+        )}
       </div>
 
       {/* Form Card */}
@@ -261,15 +284,17 @@ export function EventSetup() {
           onCancel={() => setShowNoNameConfirm(false)}
         />
 
-        <div className="text-center mt-2">
-          <a
-            href="/admin"
-            className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-brand-blue transition-colors"
-          >
-            <Disc3 className="w-3.5 h-3.5" />
-            כניסת DJ
-          </a>
-        </div>
+        {!portalMode && (
+          <div className="text-center mt-2">
+            <a
+              href="/admin"
+              className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-brand-blue transition-colors"
+            >
+              <Disc3 className="w-3.5 h-3.5" />
+              כניסת DJ
+            </a>
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );

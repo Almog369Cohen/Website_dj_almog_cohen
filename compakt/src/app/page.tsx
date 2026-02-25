@@ -42,7 +42,7 @@ export default function HomePage() {
               כניסת DJ
             </Link>
             <Link
-              href="/event"
+              href="/signup"
               className="btn-primary text-sm py-2 px-5 flex items-center gap-1.5"
             >
               התחל בחינם
@@ -85,32 +85,54 @@ export default function HomePage() {
             בלי וואטסאפ, בלי טפסים ארוכים.
           </motion.p>
 
+          {/* Mini product preview — warm the visitor */}
           <motion.div
             {...fadeUp}
             transition={{ ...fadeUp.transition, delay: 0.3 }}
-            className="flex items-center justify-center gap-4 flex-wrap"
+            className="mt-10 max-w-sm mx-auto"
           >
-            <Link
-              href="/event"
-              className="btn-primary text-base py-3.5 px-8 flex items-center gap-2 shadow-lg"
-              style={{ background: "linear-gradient(135deg, #059cc0, #03b28c)" }}
-            >
-              נסו עכשיו — בחינם
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <Link
-              href="/admin"
-              className="btn-secondary text-base py-3.5 px-8"
-            >
-              כניסה לפאנל DJ
-            </Link>
+            <div className="glass-card p-5 relative overflow-hidden">
+              <div className="absolute inset-0 opacity-5 pointer-events-none"
+                style={{ background: "linear-gradient(135deg, #059cc0, #03b28c)" }} />
+              <div className="relative z-10 space-y-3">
+                {/* Fake swipe card */}
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-glass">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{ background: "rgba(5,156,192,0.15)" }}>
+                    <Headphones className="w-5 h-5" style={{ color: "#059cc0" }} />
+                  </div>
+                  <div className="flex-1 text-right">
+                    <p className="text-sm font-bold">Uptown Funk</p>
+                    <p className="text-xs text-muted">Bruno Mars</p>
+                  </div>
+                  <div className="flex gap-1.5">
+                    <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs" style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)" }}>✕</span>
+                    <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs" style={{ background: "rgba(34,197,94,0.15)", border: "1px solid rgba(34,197,94,0.3)" }}>♥</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-glass">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{ background: "rgba(3,178,140,0.15)" }}>
+                    <Music className="w-5 h-5" style={{ color: "#03b28c" }} />
+                  </div>
+                  <div className="flex-1 text-right">
+                    <p className="text-sm font-bold">שיר של יום יום</p>
+                    <p className="text-xs text-muted">אהוד בנאי</p>
+                  </div>
+                  <div className="flex gap-1.5">
+                    <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs" style={{ background: "rgba(234,179,8,0.15)", border: "1px solid rgba(234,179,8,0.3)" }}>★</span>
+                  </div>
+                </div>
+                <p className="text-[10px] text-muted text-center pt-1">הלקוחות סווייפ על השירים שלכם — אתם מקבלים בריף מושלם</p>
+              </div>
+            </div>
           </motion.div>
 
           {/* Trust indicators */}
           <motion.div
             {...fadeUp}
             transition={{ ...fadeUp.transition, delay: 0.4 }}
-            className="flex items-center justify-center gap-6 mt-10 text-xs text-muted"
+            className="flex items-center justify-center gap-6 mt-8 text-xs text-muted"
           >
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-brand-green" /> בחינם
@@ -241,7 +263,7 @@ export default function HomePage() {
               התחילו לנהל את המוזיקה של האירועים שלכם בצורה מקצועית. בחינם, בלי הרשמה.
             </p>
             <Link
-              href="/event"
+              href="/signup"
               className="btn-primary text-lg py-4 px-10 inline-flex items-center gap-2"
               style={{ background: "linear-gradient(135deg, #059cc0, #03b28c)" }}
             >
@@ -266,7 +288,7 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="/admin" className="hover:text-foreground transition-colors">ניהול</Link>
-            <Link href="/event" className="hover:text-foreground transition-colors">אירוע חדש</Link>
+            <Link href="/signup" className="hover:text-foreground transition-colors">הרשמה</Link>
           </div>
         </div>
       </footer>

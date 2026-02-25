@@ -32,21 +32,51 @@ interface StaffGuardProps {
   children: ReactNode;
 }
 
+const STAFF_SESSION_KEY = "compakt-staff-session";
+const CODE_SESSION_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours
+
+function getCodeSession(): ViewerInfo | null {
+  try {
+    const raw = localStorage.getItem(STAFF_SESSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (Date.now() - (parsed.ts ?? 0) > CODE_SESSION_MAX_AGE) {
+      localStorage.removeItem(STAFF_SESSION_KEY);
+      return null;
+    }
+    return {
+      id: parsed.id ?? "staff-code-access",
+      email: parsed.email ?? "staff@compakt.app",
+      role: (parsed.role ?? "owner") as UserRole,
+      fullName: parsed.fullName ?? "Staff",
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function StaffGuard({ children }: StaffGuardProps) {
   const [status, setStatus] = useState<GuardStatus>({ state: "loading" });
 
   useEffect(() => {
-    if (!supabase) {
-      setStatus({ state: "error", message: "Supabase לא מוגדר — בדוק הגדרות סביבה" });
-      return;
-    }
-
     let cancelled = false;
 
     async function checkAccess() {
       setStatus({ state: "loading" });
 
-      const { data: { session } } = await supabase!.auth.getSession();
+      // Check code-based session first (bypass)
+      const codeViewer = getCodeSession();
+      if (codeViewer) {
+        if (!cancelled) setStatus({ state: "authorized", viewer: codeViewer });
+        return;
+      }
+
+      if (!supabase) {
+        setStatus({ state: "error", message: "Supabase לא מוגדר — בדוק הגדרות סביבה" });
+        return;
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
       if (cancelled) return;
 
       if (!session) {
@@ -55,7 +85,7 @@ export function StaffGuard({ children }: StaffGuardProps) {
       }
 
       try {
-        const { data: profile, error: profileError } = await supabase!
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("role, full_name")
           .eq("id", session.user.id)
@@ -64,6 +94,13 @@ export function StaffGuard({ children }: StaffGuardProps) {
         if (cancelled) return;
 
         if (profileError || !profile) {
+          console.error("[StaffGuard] Profile fetch failed:", {
+            userId: session.user.id,
+            email: session.user.email,
+            errorCode: profileError?.code,
+            errorMessage: profileError?.message,
+            errorDetails: profileError?.details,
+          });
           setStatus({ state: "no_profile" });
           return;
         }
@@ -90,18 +127,22 @@ export function StaffGuard({ children }: StaffGuardProps) {
 
     void checkAccess();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        void checkAccess();
-      } else {
-        setStatus({ state: "no_session" });
-      }
-    });
+    if (supabase) {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (session) {
+          void checkAccess();
+        } else if (!getCodeSession()) {
+          setStatus({ state: "no_session" });
+        }
+      });
 
-    return () => {
-      cancelled = true;
-      subscription.unsubscribe();
-    };
+      return () => {
+        cancelled = true;
+        subscription.unsubscribe();
+      };
+    }
+
+    return () => { cancelled = true; };
   }, []);
 
   if (status.state === "loading") {

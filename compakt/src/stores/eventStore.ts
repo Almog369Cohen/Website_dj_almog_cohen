@@ -58,7 +58,7 @@ interface EventStore {
   setTheme: (theme: ThemeMode) => void;
 
   // Seed from server
-  seedFromServer: (data: Partial<EventData> & { id: string; magicToken: string }) => void;
+  seedFromServer: (data: Partial<EventData> & { id: string; magicToken: string; answers?: QuestionAnswer[]; swipes?: SongSwipe[]; requests?: EventRequest[] }) => void;
 
   // Reset
   reset: () => void;
@@ -247,7 +247,14 @@ export const useEventStore = create<EventStore>()(
           theme: data.theme || "night",
           createdAt: data.createdAt || new Date().toISOString(),
         };
-        set({ event, answers: [], swipes: [], requests: [], upsellClicks: [], analytics: [] });
+        set({
+          event,
+          answers: data.answers ?? [],
+          swipes: data.swipes ?? [],
+          requests: data.requests ?? [],
+          upsellClicks: [],
+          analytics: [],
+        });
       },
 
       reset: () => set(initialState),

@@ -8,6 +8,9 @@ import { supabase } from "@/lib/supabase/client";
 import { hebrewAuthError } from "@/lib/auth/errors-he";
 import { isStaff } from "@/lib/auth/roles";
 
+const STAFF_ACCESS_CODE = process.env.NEXT_PUBLIC_STAFF_ACCESS_CODE || "";
+const STAFF_SESSION_KEY = "compakt-staff-session";
+
 export default function StaffLoginPage() {
   return (
     <Suspense fallback={
@@ -32,6 +35,8 @@ function StaffLoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [resetSent, setResetSent] = useState(false);
   const [magicSent, setMagicSent] = useState(false);
+  const [accessCode, setAccessCode] = useState("");
+  const [useCodeMode, setUseCodeMode] = useState(false);
 
   // Restore last-used email from localStorage
   useEffect(() => {
@@ -57,14 +62,42 @@ function StaffLoginForm() {
       return;
     }
 
-    const { data: profile, error: profileError } = await supabase
+    let { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("role")
       .eq("id", session.user.id)
       .single();
 
+    // Auto-heal: if profile row is missing, try to create it
+    if (profileError?.code === "PGRST116" || (!profile && !profileError)) {
+      console.warn("[Staff Login] Profile missing, auto-creating for", session.user.id);
+      const { error: upsertErr } = await supabase.from("profiles").upsert({
+        id: session.user.id,
+        email: session.user.email ?? "",
+        full_name: session.user.user_metadata?.full_name ?? "",
+        role: "dj",
+      }, { onConflict: "id" });
+
+      if (!upsertErr) {
+        const retry = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .single();
+        profile = retry.data;
+        profileError = retry.error;
+      }
+    }
+
     if (profileError || !profile) {
-      setError("פרופיל לא נמצא — פנה למנהל המערכת");
+      console.error("[Staff Login] Profile fetch failed:", {
+        userId: session.user.id,
+        email: session.user.email,
+        errorCode: profileError?.code,
+        errorMessage: profileError?.message,
+        errorDetails: profileError?.details,
+      });
+      setError(`פרופיל לא נמצא (ID: ${session.user.id.slice(0, 8)}…) — פנה למנהל`);
       return;
     }
 
@@ -105,6 +138,29 @@ function StaffLoginForm() {
       cancelled = true;
     };
   }, [redirectTo]);
+
+  const onCodeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    if (!accessCode.trim()) {
+      setError("הזן קוד גישה");
+      return;
+    }
+    if (accessCode.trim() !== STAFF_ACCESS_CODE) {
+      setError("קוד גישה שגוי");
+      return;
+    }
+    // Store staff session
+    const staffSession = {
+      email: email.trim() || "staff@compakt.app",
+      role: "owner",
+      fullName: "Staff",
+      id: "staff-code-access",
+      ts: Date.now(),
+    };
+    localStorage.setItem(STAFF_SESSION_KEY, JSON.stringify(staffSession));
+    window.location.href = redirectTo;
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -262,6 +318,19 @@ function StaffLoginForm() {
             שלח לינק התחברות למייל
           </button>
 
+          <div className="relative my-2">
+            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-glass" /></div>
+            <div className="relative flex justify-center text-xs"><span className="bg-[var(--bg-card,#0d0d14)] px-3 text-muted">או</span></div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setUseCodeMode((v) => !v)}
+            className="w-full text-sm text-brand-blue hover:underline transition-colors py-1"
+          >
+            {useCodeMode ? "חזור להתחברות רגילה" : "כניסה עם קוד גישה"}
+          </button>
+
           {error === "NOT_STAFF" && (
             <div className="rounded-xl border border-glass p-4 text-center space-y-3" style={{ background: "rgba(255,68,102,0.08)" }}>
               <p className="text-sm font-semibold">משתמש יקר, כניסה זו לצוות בלבד</p>
@@ -295,24 +364,50 @@ function StaffLoginForm() {
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={!canSubmit}
-            className="btn-primary w-full flex items-center justify-center gap-2"
-          >
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-            התחבר
-          </button>
+          {useCodeMode ? (
+            <>
+              <div>
+                <label className="block text-sm mb-2">קוד גישה</label>
+                <input
+                  type="password"
+                  value={accessCode}
+                  onChange={(e) => setAccessCode(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-transparent border border-glass text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-brand-blue transition-colors"
+                  placeholder="הזן קוד גישה"
+                  autoComplete="off"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={onCodeSubmit}
+                disabled={!accessCode.trim()}
+                className="btn-primary w-full flex items-center justify-center gap-2"
+              >
+                כניסה עם קוד
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="submit"
+                disabled={!canSubmit}
+                className="btn-primary w-full flex items-center justify-center gap-2"
+              >
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                התחבר
+              </button>
 
-          <button
-            type="button"
-            onClick={handleResetPassword}
-            disabled={resetLoading || !email.trim()}
-            className="w-full text-sm text-secondary hover:text-foreground transition-colors flex items-center justify-center gap-2 py-2"
-          >
-            {resetLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
-            שכחתי סיסמה
-          </button>
+              <button
+                type="button"
+                onClick={handleResetPassword}
+                disabled={resetLoading || !email.trim()}
+                className="w-full text-sm text-secondary hover:text-foreground transition-colors flex items-center justify-center gap-2 py-2"
+              >
+                {resetLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
+                שכחתי סיסמה
+              </button>
+            </>
+          )}
         </form>
       </motion.div>
     </div>

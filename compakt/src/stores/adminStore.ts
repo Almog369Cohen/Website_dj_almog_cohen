@@ -1,15 +1,22 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Song, Question, Upsell } from "@/lib/types";
+import type { Song, Question, Upsell, EventType } from "@/lib/types";
 import { defaultSongs } from "@/data/songs";
 import { defaultQuestions } from "@/data/questions";
 import { defaultUpsells } from "@/data/upsells";
+
+export interface AdminEventTypeConfig {
+  id: EventType;
+  label: string;
+  enabled: boolean;
+}
 
 interface AdminStore {
   isAuthenticated: boolean;
   songs: Song[];
   questions: Question[];
   upsells: Upsell[];
+  eventTypes: AdminEventTypeConfig[];
 
   // Auth
   login: (password: string) => boolean;
@@ -18,6 +25,14 @@ interface AdminStore {
 
   // Seed from server (for client-facing event pages)
   seedFromServer: (data: { songs: Song[]; questions: Question[]; upsells: Upsell[] }) => void;
+
+  // Event types (labels + enabled)
+  updateEventType: (id: EventType, data: Partial<AdminEventTypeConfig>) => void;
+
+  // Bulk setters (for DB sync)
+  setSongs: (songs: Song[]) => void;
+  setQuestions: (questions: Question[]) => void;
+  setUpsells: (upsells: Upsell[]) => void;
 
   // Songs
   addSong: (song: Omit<Song, "id" | "sortOrder">) => void;
@@ -39,6 +54,14 @@ interface AdminStore {
 
 const ADMIN_PASSWORD = "compakt2024";
 
+const DEFAULT_EVENT_TYPES: AdminEventTypeConfig[] = [
+  { id: "wedding", label: "חתונה", enabled: true },
+  { id: "bar_mitzvah", label: "בר/בת מצווה", enabled: true },
+  { id: "private", label: "אירוע פרטי", enabled: true },
+  { id: "corporate", label: "עסקי", enabled: true },
+  { id: "other", label: "אחר", enabled: true },
+];
+
 export const useAdminStore = create<AdminStore>()(
   persist(
     (set, get) => ({
@@ -46,6 +69,7 @@ export const useAdminStore = create<AdminStore>()(
       songs: defaultSongs,
       questions: defaultQuestions,
       upsells: defaultUpsells,
+      eventTypes: DEFAULT_EVENT_TYPES,
 
       login: (password) => {
         if (password === ADMIN_PASSWORD) {
@@ -58,6 +82,17 @@ export const useAdminStore = create<AdminStore>()(
       setAuthenticated: (value) => set({ isAuthenticated: value }),
 
       logout: () => set({ isAuthenticated: false }),
+
+      updateEventType: (id, data) => {
+        set({
+          eventTypes: get().eventTypes.map((t) => (t.id === id ? { ...t, ...data } : t)),
+        });
+      },
+
+      // Bulk setters
+      setSongs: (songs) => set({ songs }),
+      setQuestions: (questions) => set({ questions }),
+      setUpsells: (upsells) => set({ upsells }),
 
       // Songs
       addSong: (song) => {
@@ -166,10 +201,20 @@ export const useAdminStore = create<AdminStore>()(
         songs: state.songs,
         questions: state.questions,
         upsells: state.upsells,
+        eventTypes: state.eventTypes,
       }),
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.isAuthenticated = false;
+
+          // Merge event types defaults (so new types like 'other' appear even on old storage)
+          const byId: Record<string, AdminEventTypeConfig> = Object.fromEntries(
+            (Array.isArray(state.eventTypes) ? state.eventTypes : []).map((t) => [t.id, t])
+          );
+          state.eventTypes = DEFAULT_EVENT_TYPES.map((d) => ({
+            ...d,
+            ...(byId[d.id] ?? {}),
+          }));
 
           state.upsells = (Array.isArray(state.upsells) ? state.upsells : []).filter((u) => {
             return u.id !== "u3";

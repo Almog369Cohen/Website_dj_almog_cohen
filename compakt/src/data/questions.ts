@@ -4,6 +4,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q1",
     eventType: "wedding",
+    eventTypes: ["wedding"],
     sortOrder: 1,
     questionHe: "מה האווירה שאתם חולמים עליה?",
     questionType: "multi_select",
@@ -21,6 +22,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q2",
     eventType: "wedding",
+    eventTypes: ["wedding"],
     sortOrder: 2,
     questionHe: "כדי להתאים מוזיקה בול — מי מגיע לאירוע?",
     questionType: "demographics",
@@ -29,6 +31,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q3",
     eventType: "wedding",
+    eventTypes: ["wedding"],
     sortOrder: 3,
     questionHe: "איזה סגנון מוזיקלי הכי מדבר אליכם?",
     questionType: "multi_select",
@@ -49,6 +52,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q4",
     eventType: "wedding",
+    eventTypes: ["wedding"],
     sortOrder: 4,
     questionHe: "יש סגנון שלא תרצו לשמוע באירוע ?",
     questionType: "multi_select",
@@ -66,6 +70,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q8",
     eventType: "wedding",
+    eventTypes: ["wedding"],
     sortOrder: 8,
     questionHe: "כמה אורחים משוערים שיהיו באירוע?",
     questionType: "number",
@@ -74,6 +79,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q8_bar",
     eventType: "bar_mitzvah",
+    eventTypes: ["bar_mitzvah"],
     sortOrder: 8,
     questionHe: "כמה אורחים משוערים שיהיו באירוע?",
     questionType: "number",
@@ -82,6 +88,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q8_private",
     eventType: "private",
+    eventTypes: ["private"],
     sortOrder: 8,
     questionHe: "כמה אורחים משוערים שיהיו באירוע?",
     questionType: "number",
@@ -90,6 +97,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q8_corp",
     eventType: "corporate",
+    eventTypes: ["corporate"],
     sortOrder: 8,
     questionHe: "כמה אורחים משוערים שיהיו באירוע?",
     questionType: "number",
@@ -98,6 +106,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q8_other",
     eventType: "other",
+    eventTypes: ["other"],
     sortOrder: 8,
     questionHe: "כמה אורחים משוערים שיהיו באירוע?",
     questionType: "number",
@@ -107,6 +116,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q10",
     eventType: "wedding",
+    eventTypes: ["wedding"],
     sortOrder: 10,
     questionHe: "מי הקהל המרכזי באירוע?",
     questionType: "multi_select",
@@ -123,6 +133,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q5",
     eventType: "wedding",
+    eventTypes: ["wedding"],
     sortOrder: 5,
     questionHe: "מה רמת האנרגיה שאתם מדמיינים ברחבה?",
     questionType: "slider",
@@ -134,6 +145,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q6",
     eventType: "wedding",
+    eventTypes: ["wedding"],
     sortOrder: 6,
     questionHe: "כמה חשוב לכם שיהיו שירים בשפות שונות?",
     questionType: "single_select",
@@ -148,6 +160,7 @@ export const defaultQuestions: Question[] = [
   {
     id: "q7",
     eventType: "wedding",
+    eventTypes: ["wedding"],
     sortOrder: 7,
     questionHe: "יש רגע מיוחד שחשוב לכם במיוחד?",
     questionType: "text",

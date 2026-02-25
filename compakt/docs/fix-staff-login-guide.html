@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compakt — תיקון התחברות צוות</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --card: #12121a;
+    --border: #1e1e2e;
+    --brand: #059cc0;
+    --green: #03b28c;
+    --red: #ff4466;
+    --text: #e8e8ef;
+    --muted: #6b6b80;
+    --code-bg: #1a1a28;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.2rem; margin: 2rem 0 1rem; color: var(--brand); }
+  .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .step-number {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: var(--brand);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+  }
+  .step h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .step p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+  .sql-block {
+    position: relative;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+  }
+  .sql-block pre {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+    color: #c8c8d8;
+    line-height: 1.5;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: var(--brand);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { opacity: 0.85; }
+  .copy-btn.copied { background: var(--green); }
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brand);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    transition: all 0.2s;
+  }
+  .link-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .link-btn.green { background: var(--green); }
+  .warning {
+    background: rgba(255,68,102,0.08);
+    border: 1px solid rgba(255,68,102,0.2);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: var(--red);
+    margin: 0.75rem 0;
+  }
+  .success {
+    background: rgba(3,178,140,0.08);
+    border: 1px solid rgba(3,178,140,0.2);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: var(--green);
+    margin: 0.75rem 0;
+  }
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .checklist input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--green);
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .badge.required { background: rgba(255,68,102,0.15); color: var(--red); }
+  .badge.optional { background: rgba(3,178,140,0.15); color: var(--green); }
+</style>
+</head>
+<body>
+
+<h1>תיקון התחברות צוות — Compakt</h1>
+<p class="subtitle">מדריך שלב-אחר-שלב עם לינקים ישירים ל-Supabase. כל שלב עם כפתור העתקה.</p>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>שלב א׳ — אבחון (מה השורש של הבעיה?)</h2>
+
+<div class="step">
+  <div class="step-number">1</div>
+  <h3>פתח את Supabase SQL Editor</h3>
+  <p>לחץ על הכפתור למטה כדי לפתוח את עורך ה-SQL של הפרויקט שלך:</p>
+  <a class="link-btn" href="https://supabase.com/dashboard/project/rgfajvnkrszwksiidspm/sql/new" target="_blank">
+    🔗 פתח SQL Editor
+  </a>
+</div>
+
+<div class="step">
+  <div class="step-number">2</div>
+  <h3><span class="badge required">חובה</span> בדוק אם פרופילים קיימים</h3>
+  <p>העתק והדבק את הקוד הזה ב-SQL Editor ולחץ RUN. בדוק אם מוחזרות שורות:</p>
+  <div class="sql-block">
+    <button class="copy-btn" onclick="copySQL(this)">העתק</button>
+    <pre id="sql-diag-1">-- בדיקה: האם קיימות שורות פרופיל למשתמשי Owner?
+SELECT id, email, full_name, role, plan
+FROM profiles
+WHERE id IN (
+  '9adac9d6-1dea-4c20-937f-f5ec3cdb994d',
+  '1a40dcd5-f80f-412d-8658-81bb3b333769'
+);</pre>
+  </div>
+  <div class="warning">אם התוצאה ריקה (0 rows) — זה הבעיה! אין שורת פרופיל בטבלה.</div>
+  <div class="success">אם מוחזרות שורות — הפרופיל קיים, הבעיה במקום אחר (RLS / עמודה חסרה).</div>
+</div>
+
+<div class="step">
+  <div class="step-number">3</div>
+  <h3><span class="badge optional">אופציונלי</span> בדוק עמודות טבלת profiles</h3>
+  <p>בדיקה שכל העמודות הנדרשות קיימות (email, role, plan וכו׳):</p>
+  <div class="sql-block">
+    <button class="copy-btn" onclick="copySQL(this)">העתק</button>
+    <pre>-- בדיקה: אילו עמודות קיימות בטבלת profiles?
+SELECT column_name, data_type, column_default
+FROM information_schema.columns
+WHERE table_schema = 'public' AND table_name = 'profiles'
+ORDER BY ordinal_position;</pre>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-number">4</div>
+  <h3><span class="badge optional">אופציונלי</span> בדוק RLS policies פעילות</h3>
+  <p>בדיקה שיש policies שמאפשרות לקרוא פרופילים:</p>
+  <div class="sql-block">
+    <button class="copy-btn" onclick="copySQL(this)">העתק</button>
+    <pre>-- בדיקה: אילו policies פעילות על profiles?
+SELECT policyname, cmd, permissive, qual
+FROM pg_policies
+WHERE tablename = 'profiles'
+ORDER BY policyname;</pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<div class="divider"></div>
+<h2>שלב ב׳ — תיקון (הרצה אחת שמתקנת הכל)</h2>
+
+<div class="step">
+  <div class="step-number">5</div>
+  <h3><span class="badge required">חובה</span> הרץ את ה-Fix SQL</h3>
+  <p>הקוד הזה מתקן הכל: מוסיף עמודות חסרות, יוצר פרופילים אם לא קיימים, ומתקן את הטריגר. <strong>בטוח לריצה — לא מוחק שום דבר.</strong></p>
+  <a class="link-btn" href="https://supabase.com/dashboard/project/rgfajvnkrszwksiidspm/sql/new" target="_blank">
+    🔗 פתח SQL Editor חדש
+  </a>
+  <div class="sql-block">
+    <button class="copy-btn" onclick="copySQL(this)">העתק הכל</button>
+    <pre>-- ═══════════════════════════════════════════════════
+-- Compakt — Fix Owner Profiles + Schema + Trigger
+-- Safe to run multiple times (idempotent)
+-- ═══════════════════════════════════════════════════
+
+-- 1. הוסף עמודות חסרות (אם לא קיימות)
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS email text;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS plan text NOT NULL DEFAULT 'free';
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS dj_slug text;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS business_name text;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS logo_url text;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS accent_color text DEFAULT '#059cc0';
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS tagline text;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS onboarding_complete boolean DEFAULT false;
+
+-- 2. צור/עדכן פרופילי Owner (UPSERT — בטוח)
+INSERT INTO profiles (id, email, full_name, role, plan)
+VALUES
+  ('9adac9d6-1dea-4c20-937f-f5ec3cdb994d', 'almogmusiccohen@gmail.com', 'Almog Cohen', 'owner', 'pro'),
+  ('1a40dcd5-f80f-412d-8658-81bb3b333769', 'almog294@gmail.com', 'Almog', 'owner', 'pro')
+ON CONFLICT (id) DO UPDATE SET
+  role = EXCLUDED.role,
+  email = EXCLUDED.email,
+  plan = EXCLUDED.plan,
+  updated_at = now();
+
+-- 3. ודא שיש unique index על dj_slug (לא ייכשל אם כבר קיים)
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'profiles_dj_slug_key') THEN
+    BEGIN
+      ALTER TABLE profiles ADD CONSTRAINT profiles_dj_slug_key UNIQUE (dj_slug);
+    EXCEPTION WHEN duplicate_table THEN
+      NULL;
+    END;
+  END IF;
+END $$;
+
+-- 4. תקן את הטריגר (גרסה חזקה עם fallbacks)
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER SET search_path = public
+AS $$
+DECLARE
+  v_full_name text;
+BEGIN
+  v_full_name := COALESCE(
+    NEW.raw_user_meta_data->>'full_name',
+    NEW.raw_user_meta_data->>'name',
+    ''
+  );
+
+  BEGIN
+    INSERT INTO public.profiles (id, email, full_name, role, plan)
+    VALUES (NEW.id, NEW.email, v_full_name, 'dj', 'free')
+    ON CONFLICT (id) DO UPDATE SET
+      email = EXCLUDED.email,
+      full_name = COALESCE(EXCLUDED.full_name, profiles.full_name),
+      updated_at = now();
+    RETURN NEW;
+  EXCEPTION
+    WHEN undefined_column THEN NULL;
+  END;
+
+  BEGIN
+    INSERT INTO public.profiles (id, email, full_name, role)
+    VALUES (NEW.id, NEW.email, v_full_name, 'dj')
+    ON CONFLICT (id) DO UPDATE SET
+      email = EXCLUDED.email,
+      full_name = COALESCE(EXCLUDED.full_name, profiles.full_name),
+      updated_at = now();
+    RETURN NEW;
+  EXCEPTION
+    WHEN undefined_column THEN NULL;
+  END;
+
+  BEGIN
+    INSERT INTO public.profiles (id, full_name, role)
+    VALUES (NEW.id, v_full_name, 'dj')
+    ON CONFLICT (id) DO UPDATE SET
+      full_name = COALESCE(EXCLUDED.full_name, profiles.full_name),
+      role = COALESCE(profiles.role, 'dj');
+    RETURN NEW;
+  EXCEPTION
+    WHEN undefined_column THEN
+      RETURN NEW;
+  END;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- 5. ודא ש-RLS פעיל + policies נכונות
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+-- Policy: כל משתמש יכול לקרוא את הפרופיל שלו
+DO $$ BEGIN
+  CREATE POLICY profiles_self_select ON profiles
+    FOR SELECT USING (auth.uid() = id);
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+-- Policy: משתמש יכול לעדכן את הפרופיל שלו
+DO $$ BEGIN
+  CREATE POLICY profiles_self_update ON profiles
+    FOR UPDATE USING (auth.uid() = id);
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+-- ═══════════════════════════════════════════════════
+-- ✅ בוצע! עכשיו נסה להתחבר ב: /staff
+-- ═══════════════════════════════════════════════════</pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<div class="divider"></div>
+<h2>שלב ג׳ — בדיקה</h2>
+
+<div class="step">
+  <div class="step-number">6</div>
+  <h3>אמת שהתיקון עבד</h3>
+  <p>הרץ את הבדיקה הזו כדי לוודא שהפרופילים נוצרו:</p>
+  <div class="sql-block">
+    <button class="copy-btn" onclick="copySQL(this)">העתק</button>
+    <pre>-- אימות: בדוק שהפרופילים קיימים עם role = owner
+SELECT id, email, full_name, role, plan, created_at
+FROM profiles
+WHERE role = 'owner';</pre>
+  </div>
+  <div class="success">אם מוחזרות 2 שורות עם role = 'owner' — התיקון הצליח!</div>
+</div>
+
+<div class="step">
+  <div class="step-number">7</div>
+  <h3>נסה להתחבר</h3>
+  <p>לחץ על הלינק כדי לנסות את ההתחברות:</p>
+  <a class="link-btn green" href="https://compakt-219831650310.us-central1.run.app/staff" target="_blank">
+    🚀 פתח דף התחברות צוות
+  </a>
+  <p style="margin-top: 0.5rem;">התחבר עם <strong>almogmusiccohen@gmail.com</strong> + הסיסמה שלך.</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<div class="divider"></div>
+<h2>צ׳קליסט סיכום</h2>
+
+<ul class="checklist">
+  <li><input type="checkbox"> הרצתי את ה-Fix SQL (שלב 5)</li>
+  <li><input type="checkbox"> אימתתי שהפרופילים נוצרו (שלב 6)</li>
+  <li><input type="checkbox"> התחברות ל-/staff עובדת (שלב 7)</li>
+  <li><input type="checkbox"> Backoffice נטען בהצלחה</li>
+</ul>
+
+<div class="divider"></div>
+<p style="color: var(--muted); font-size: 0.8rem; text-align: center;">
+  Compakt Staff Login Fix Guide — Generated by Windsurf
+</p>
+
+<script>
+function copySQL(btn) {
+  const pre = btn.parentElement.querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    btn.textContent = '✓ הועתק!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'העתק';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

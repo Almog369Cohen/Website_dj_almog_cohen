@@ -155,7 +155,7 @@ export default function SignupPage() {
                 <UserPlus className="w-6 h-6 text-brand-blue" />
               </div>
               <h1 className="font-display text-2xl font-black">פתיחת משתמש</h1>
-              <p className="text-sm text-secondary mt-1">התחלה מהירה — אחר כך עושים onboarding</p>
+              <p className="text-sm text-secondary mt-1">יוצרים חשבון ומתחילים לעבוד — לוקח פחות מדקה</p>
             </div>
 
             <form onSubmit={submit} className="space-y-3">
@@ -231,7 +231,7 @@ export default function SignupPage() {
               </button>
 
               <p className="text-xs text-muted text-center">
-                פתיחת משתמש יוצרת רשומה ב-DB אוטומטית דרך trigger.
+                כבר יש לכם משתמש? <a href="/admin" className="text-brand-blue hover:underline">התחברו כאן</a>
               </p>
             </form>
           </>
