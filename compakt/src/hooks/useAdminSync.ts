@@ -27,9 +27,11 @@ export function useAdminSync() {
         headers: { Authorization: `Bearer ${bearer}` },
       });
 
+      let songCount = 0;
       if (songsRes.ok) {
         const { songs: dbSongs } = (await songsRes.json()) as { songs: DBSong[] };
-        if (dbSongs && dbSongs.length > 0) {
+        songCount = dbSongs?.length ?? 0;
+        if (songCount > 0) {
           const mapped: Song[] = dbSongs.map(mapDBSong);
           useAdminStore.getState().setSongs(mapped);
         }
@@ -40,9 +42,11 @@ export function useAdminSync() {
         headers: { Authorization: `Bearer ${bearer}` },
       });
 
+      let questionCount = 0;
       if (questionsRes.ok) {
         const { questions: dbQuestions } = (await questionsRes.json()) as { questions: DBQuestion[] };
-        if (dbQuestions && dbQuestions.length > 0) {
+        questionCount = dbQuestions?.length ?? 0;
+        if (questionCount > 0) {
           const mapped: Question[] = dbQuestions.map(mapDBQuestion);
           useAdminStore.getState().setQuestions(mapped);
         }
@@ -58,6 +62,34 @@ export function useAdminSync() {
         if (dbUpsells && dbUpsells.length > 0) {
           const mapped: Upsell[] = dbUpsells.map(mapDBUpsell);
           useAdminStore.getState().setUpsells(mapped);
+        }
+      }
+
+      // Auto-seed defaults if DJ has no questions or songs in DB
+      if (songCount === 0 || questionCount === 0) {
+        console.log("[useAdminSync] empty tables detected, seeding defaults...");
+        try {
+          const seedRes = await fetch("/api/admin/seed-defaults", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${bearer}` },
+          });
+          if (seedRes.ok) {
+            // Re-fetch after seeding
+            const [newSongs, newQuestions] = await Promise.all([
+              fetch("/api/songs", { headers: { Authorization: `Bearer ${bearer}` } }),
+              fetch("/api/questions", { headers: { Authorization: `Bearer ${bearer}` } }),
+            ]);
+            if (newSongs.ok) {
+              const { songs: s } = (await newSongs.json()) as { songs: DBSong[] };
+              if (s?.length) useAdminStore.getState().setSongs(s.map(mapDBSong));
+            }
+            if (newQuestions.ok) {
+              const { questions: q } = (await newQuestions.json()) as { questions: DBQuestion[] };
+              if (q?.length) useAdminStore.getState().setQuestions(q.map(mapDBQuestion));
+            }
+          }
+        } catch (seedErr) {
+          console.error("[useAdminSync] seed-defaults failed:", seedErr);
         }
       }
     } catch (err) {

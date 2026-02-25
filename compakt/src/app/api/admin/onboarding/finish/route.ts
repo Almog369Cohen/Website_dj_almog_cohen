@@ -68,6 +68,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: updateErr.message }, { status: 500 });
     }
 
+    // Seed default questions & songs for new DJ (safe to call even if already seeded)
+    try {
+      const seedUrl = new URL("/api/admin/seed-defaults", req.url);
+      await fetch(seedUrl.toString(), {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (seedErr) {
+      console.error("[onboarding/finish] seed-defaults call failed:", seedErr);
+    }
+
     const { data: profile, error: profErr } = await supabase
       .from("profiles")
       .select(
