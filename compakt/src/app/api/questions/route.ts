@@ -41,6 +41,7 @@ export async function POST(req: Request) {
       question_he: body.questionHe ?? body.question_he ?? "",
       question_type: body.questionType ?? body.question_type ?? "single_select",
       event_type: body.eventType ?? body.event_type ?? null,
+      event_types: body.eventTypes ?? body.event_types ?? null,
       options: body.options ?? null,
       slider_min: body.sliderMin ?? body.slider_min ?? null,
       slider_max: body.sliderMax ?? body.slider_max ?? null,

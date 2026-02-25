@@ -181,9 +181,25 @@ export async function PATCH(
 
   // 4. Update event stage if provided
   if (body.currentStage !== undefined) {
+    const stageUpdate: Record<string, unknown> = {
+      current_stage: body.currentStage,
+      updated_at: new Date().toISOString(),
+    };
+
+    // Auto-promote intake → active when couple starts the journey
+    if (body.currentStage >= 1 && event.status === "intake") {
+      stageUpdate.status = "active";
+    }
+
+    // Mark event as completed when couple reaches the final stage (MusicBrief)
+    if (body.currentStage >= 4) {
+      stageUpdate.status = "completed";
+      stageUpdate.completed_at = new Date().toISOString();
+    }
+
     await supabase
       .from("dj_events")
-      .update({ current_stage: body.currentStage, updated_at: new Date().toISOString() })
+      .update(stageUpdate)
       .eq("id", event.id);
   }
 
@@ -254,16 +270,19 @@ export async function PATCH(
     }
   }
 
-  // 9. Insert requests (append-only)
-  if (body.requests?.length) {
-    await supabase.from("event_requests").insert(
-      body.requests.map((r) => ({
-        event_id: event.id,
-        request_type: r.requestType,
-        content: r.content,
-        moment_type: r.momentType || null,
-      }))
-    );
+  // 9. Replace requests (delete existing + insert new to avoid duplicates on auto-save)
+  if (body.requests !== undefined) {
+    await supabase.from("event_requests").delete().eq("event_id", event.id);
+    if (body.requests.length > 0) {
+      await supabase.from("event_requests").insert(
+        body.requests.map((r) => ({
+          event_id: event.id,
+          request_type: r.requestType,
+          content: r.content,
+          moment_type: r.momentType || null,
+        }))
+      );
+    }
   }
 
   // 10. Log activity

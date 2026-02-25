@@ -201,6 +201,26 @@ export function SongTinder() {
     setStage(3);
   };
 
+  // ── No songs at all — skip to next stage ──
+  if (categoryGroups.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="glass-card p-8 text-center max-w-md mx-auto"
+      >
+        <div className="text-4xl mb-4">🎵</div>
+        <h2 className="text-xl font-bold mb-2">הדייג׳י עדיין מכין את הרשימה</h2>
+        <p className="text-secondary text-sm mb-6">
+          אפשר להמשיך לשלב הבא בינתיים
+        </p>
+        <button onClick={handleFinish} className="btn-primary w-full">
+          המשיכו לבקשות →
+        </button>
+      </motion.div>
+    );
+  }
+
   // ── All categories done ──
   if (allDone) {
     return (

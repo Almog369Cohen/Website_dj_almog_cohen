@@ -548,7 +548,9 @@ function EventCard({
             }`}>
             {isIntake
               ? "פנייה"
-              : STAGE_LABELS[event.current_stage] ?? `שלב ${event.current_stage}`}
+              : status === "completed"
+                ? "הושלם ✓"
+                : STAGE_LABELS[event.current_stage] ?? `שלב ${event.current_stage}`}
           </span>
           {event.locked_at && <Lock className="w-3.5 h-3.5 text-amber-400" />}
           <button
