@@ -61,24 +61,39 @@ export function StaffGuard({ children }: StaffGuardProps) {
 
         if (cancelled) return;
 
-        const data = await res.json();
+        const rawText = await res.text();
+        let data: any = null;
+        if (rawText) {
+          try {
+            data = JSON.parse(rawText) as any;
+          } catch {
+            data = null;
+          }
+        }
 
         if (res.status === 401) {
           setStatus({ state: "session_expired" });
           return;
         }
 
-        if (res.status === 404 && data.code === "PROFILE_MISSING") {
+        if (res.status === 404 && data?.code === "PROFILE_MISSING") {
           setStatus({ state: "no_profile" });
           return;
         }
 
         if (!res.ok) {
-          setStatus({ state: "error", message: data.error ?? "שגיאת שרת" });
+          if (data?.code === "SERVER_ENV_MISSING") {
+            setStatus({
+              state: "error",
+              message: "שגיאת שרת: חסר SUPABASE_SERVICE_ROLE_KEY ב-Cloud Run. עדכון משתני סביבה נדרש.",
+            });
+          } else {
+            setStatus({ state: "error", message: data?.error ?? `שגיאת שרת (${res.status})` });
+          }
           return;
         }
 
-        if (data.role && isStaff(data.role)) {
+        if (data?.role && isStaff(data.role)) {
           setStatus({
             state: "authorized",
             viewer: {
@@ -89,7 +104,7 @@ export function StaffGuard({ children }: StaffGuardProps) {
             },
           });
         } else {
-          setStatus({ state: "not_staff", role: data.role ?? "unknown" });
+          setStatus({ state: "not_staff", role: data?.role ?? "unknown" });
         }
       } catch {
         if (!cancelled) {
