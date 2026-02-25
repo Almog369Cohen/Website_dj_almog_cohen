@@ -48,10 +48,12 @@ export async function POST(request: Request) {
       session: authData.session,
     });
   } catch (e) {
+    const message = e instanceof Error ? e.message : "Internal error";
+    const envMissing = message.includes("[supabase/server] Missing") || message.includes("SUPABASE_SERVICE_ROLE_KEY");
     return NextResponse.json(
       {
-        error: e instanceof Error ? e.message : "Internal error",
-        code: "STAFF_LOGIN_INTERNAL",
+        error: envMissing ? "SERVER_ENV_MISSING" : message,
+        code: envMissing ? "SERVER_ENV_MISSING" : "STAFF_LOGIN_INTERNAL",
       },
       { status: 500 }
     );
