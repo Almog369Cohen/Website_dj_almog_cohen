@@ -92,7 +92,6 @@ function PortalJourney() {
   const [djBranding, setDJBranding] = useState<DJBranding | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [portalClosed, setPortalClosed] = useState(false);
   const fetchedRef = useRef(false);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -233,7 +232,6 @@ function PortalJourney() {
         });
 
         setIsLocked(Boolean(data.isLocked));
-        setPortalClosed(Boolean(data.isPortalClosed));
 
         if (data.dj) {
           setDJBranding({

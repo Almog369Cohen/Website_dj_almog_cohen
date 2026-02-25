@@ -668,30 +668,31 @@ function EventCard({
                 {onToggleLock && status !== "archived" && (
                   <button
                     onClick={onToggleLock}
-                    className="btn-secondary text-xs py-1.5 px-4 flex items-center gap-1.5"
+                    className="btn-secondary text-xs py-1.5 px-3 sm:px-4 flex items-center gap-1.5"
                     title={event.locked_at ? "בטל נעילה" : "נעל אירוע"}
                   >
                     {event.locked_at ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
-                    {event.locked_at ? "בטל נעילה" : "נעל"}
+                    <span className="hidden sm:inline">{event.locked_at ? "בטל נעילה" : "נעל"}</span>
                   </button>
                 )}
                 {onToggleClosePortal && status !== "archived" && (
                   <button
                     onClick={onToggleClosePortal}
-                    className={`btn-secondary text-xs py-1.5 px-4 flex items-center gap-1.5 ${event.portal_closed_at ? "text-brand-green" : "text-amber-400"}`}
+                    className={`btn-secondary text-xs py-1.5 px-3 sm:px-4 flex items-center gap-1.5 ${event.portal_closed_at ? "text-brand-green" : "text-amber-400"}`}
                     title={event.portal_closed_at ? "פתח פורטל" : "סגור פורטל"}
                   >
                     {event.portal_closed_at ? <ShieldCheck className="w-3.5 h-3.5" /> : <ShieldOff className="w-3.5 h-3.5" />}
-                    {event.portal_closed_at ? "פתח פורטל" : "סגור פורטל"}
+                    <span className="hidden sm:inline">{event.portal_closed_at ? "פתח פורטל" : "סגור פורטל"}</span>
                   </button>
                 )}
                 {onArchive && status !== "archived" && (
                   <button
                     onClick={onArchive}
-                    className="btn-secondary text-xs py-1.5 px-4 flex items-center gap-1.5 text-muted hover:text-foreground"
+                    className="btn-secondary text-xs py-1.5 px-3 sm:px-4 flex items-center gap-1.5 text-muted hover:text-foreground"
+                    title="ארכיון"
                   >
                     <Archive className="w-3.5 h-3.5" />
-                    ארכיון
+                    <span className="hidden sm:inline">ארכיון</span>
                   </button>
                 )}
               </div>
