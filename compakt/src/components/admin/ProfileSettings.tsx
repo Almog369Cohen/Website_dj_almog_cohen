@@ -16,8 +16,17 @@ import {
   Crown,
   Copy,
   Share2,
+  Plus,
+  Trash2,
+  GripVertical,
+  Music,
+  Video,
+  Headphones,
+  Play,
+  Image,
+  ExternalLink,
 } from "lucide-react";
-import type { PlanTier } from "@/lib/types";
+import type { PlanTier, DJCustomLink, DJGalleryPhoto } from "@/lib/types";
 
 const ACCENT_COLORS = [
   "#059cc0", "#03b28c", "#d4627a", "#f5c542",
@@ -48,6 +57,11 @@ export function ProfileSettings() {
   const [websiteUrl, setWebsiteUrl] = useState(profile?.websiteUrl ?? "");
   const [whatsappNumber, setWhatsappNumber] = useState(profile?.whatsappNumber ?? "");
   const [coverUrl, setCoverUrl] = useState(profile?.coverUrl ?? "");
+  const [soundcloudUrl, setSoundcloudUrl] = useState(profile?.soundcloudUrl ?? "");
+  const [spotifyUrl, setSpotifyUrl] = useState(profile?.spotifyUrl ?? "");
+  const [youtubeUrl, setYoutubeUrl] = useState(profile?.youtubeUrl ?? "");
+  const [customLinks, setCustomLinks] = useState<DJCustomLink[]>(profile?.customLinks ?? []);
+  const [galleryPhotos, setGalleryPhotos] = useState<DJGalleryPhoto[]>(profile?.galleryPhotos ?? []);
   const [slugError, setSlugError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -66,6 +80,11 @@ export function ProfileSettings() {
       setWebsiteUrl(profile.websiteUrl ?? "");
       setWhatsappNumber(profile.whatsappNumber ?? "");
       setCoverUrl(profile.coverUrl ?? "");
+      setSoundcloudUrl(profile.soundcloudUrl ?? "");
+      setSpotifyUrl(profile.spotifyUrl ?? "");
+      setYoutubeUrl(profile.youtubeUrl ?? "");
+      setCustomLinks(profile.customLinks ?? []);
+      setGalleryPhotos(profile.galleryPhotos ?? []);
     }
   }, [profile]);
 
@@ -109,7 +128,12 @@ export function ProfileSettings() {
         tiktok_url: tiktokUrl.trim() || null,
         website_url: websiteUrl.trim() || null,
         whatsapp_number: whatsappNumber.trim() || null,
+        soundcloud_url: soundcloudUrl.trim() || null,
+        spotify_url: spotifyUrl.trim() || null,
+        youtube_url: youtubeUrl.trim() || null,
         cover_url: coverUrl.trim() || null,
+        custom_links: customLinks,
+        gallery_photos: galleryPhotos,
         updated_at: new Date().toISOString(),
       })
       .eq("id", profile.id);
@@ -133,6 +157,11 @@ export function ProfileSettings() {
       websiteUrl: websiteUrl.trim() || null,
       whatsappNumber: whatsappNumber.trim() || null,
       coverUrl: coverUrl.trim() || null,
+      soundcloudUrl: soundcloudUrl.trim() || null,
+      spotifyUrl: spotifyUrl.trim() || null,
+      youtubeUrl: youtubeUrl.trim() || null,
+      customLinks,
+      galleryPhotos,
     });
 
     setSaving(false);
@@ -330,6 +359,39 @@ export function ProfileSettings() {
             />
           </div>
           <div>
+            <label className="block text-xs text-muted mb-1.5 font-medium">SoundCloud (URL)</label>
+            <input
+              type="url"
+              value={soundcloudUrl}
+              onChange={(e) => setSoundcloudUrl(e.target.value)}
+              placeholder="https://soundcloud.com/..."
+              className={inputClass}
+              dir="ltr"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-muted mb-1.5 font-medium">Spotify (URL)</label>
+            <input
+              type="url"
+              value={spotifyUrl}
+              onChange={(e) => setSpotifyUrl(e.target.value)}
+              placeholder="https://open.spotify.com/artist/..."
+              className={inputClass}
+              dir="ltr"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-muted mb-1.5 font-medium">YouTube (URL)</label>
+            <input
+              type="url"
+              value={youtubeUrl}
+              onChange={(e) => setYoutubeUrl(e.target.value)}
+              placeholder="https://youtube.com/@..."
+              className={inputClass}
+              dir="ltr"
+            />
+          </div>
+          <div>
             <label className="block text-xs text-muted mb-1.5 font-medium">אתר אינטרנט</label>
             <input
               type="url"
@@ -354,26 +416,195 @@ export function ProfileSettings() {
         </div>
       </div>
 
+      {/* Custom Links (music sets, mixes, etc.) */}
+      <div className="glass-card p-4 space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold flex items-center gap-2">
+            <ExternalLink className="w-4 h-4 text-brand-blue" />
+            קישורים מותאמים
+          </h3>
+          <button
+            type="button"
+            onClick={() =>
+              setCustomLinks([
+                ...customLinks,
+                { id: crypto.randomUUID(), title: "", url: "", icon: "music" },
+              ])
+            }
+            className="text-xs text-brand-blue hover:text-brand-blue/80 flex items-center gap-1 font-medium"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            הוסף קישור
+          </button>
+        </div>
+        <p className="text-xs text-muted">סטים, מיקסים, לינקים חיצוניים שיוצגו בדף הציבורי שלך</p>
+
+        {customLinks.length === 0 && (
+          <p className="text-xs text-muted text-center py-4 border border-dashed border-glass rounded-xl">
+            אין קישורים עדיין — לחצו &quot;הוסף קישור&quot;
+          </p>
+        )}
+
+        <div className="space-y-3">
+          {customLinks.map((link, idx) => (
+            <div key={link.id} className="flex items-start gap-2 p-3 rounded-xl border border-glass bg-white/[0.02]">
+              <GripVertical className="w-4 h-4 text-muted mt-2.5 flex-shrink-0 cursor-grab" />
+              <div className="flex-1 space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={link.title}
+                    onChange={(e) => {
+                      const updated = [...customLinks];
+                      updated[idx] = { ...updated[idx], title: e.target.value };
+                      setCustomLinks(updated);
+                    }}
+                    placeholder="כותרת (למשל: סט חתונה 2025)"
+                    className={`${inputClass} flex-1`}
+                  />
+                  <select
+                    value={link.icon}
+                    onChange={(e) => {
+                      const updated = [...customLinks];
+                      updated[idx] = { ...updated[idx], icon: e.target.value as DJCustomLink["icon"] };
+                      setCustomLinks(updated);
+                    }}
+                    className="px-2 py-2 rounded-xl bg-transparent border border-glass text-xs focus:outline-none focus:border-brand-blue transition-colors"
+                  >
+                    <option value="music">🎵 מוזיקה</option>
+                    <option value="video">🎬 וידאו</option>
+                    <option value="headphones">🎧 מיקס</option>
+                    <option value="play">▶️ סט</option>
+                    <option value="link">🔗 קישור</option>
+                  </select>
+                </div>
+                <input
+                  type="url"
+                  value={link.url}
+                  onChange={(e) => {
+                    const updated = [...customLinks];
+                    updated[idx] = { ...updated[idx], url: e.target.value };
+                    setCustomLinks(updated);
+                  }}
+                  placeholder="https://..."
+                  className={inputClass}
+                  dir="ltr"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => setCustomLinks(customLinks.filter((_, i) => i !== idx))}
+                className="p-2 rounded-lg hover:bg-red-500/10 text-muted hover:text-red-400 transition-colors mt-1"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Gallery Photos */}
+      <div className="glass-card p-4 space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold flex items-center gap-2">
+            <Image className="w-4 h-4 text-brand-blue" />
+            גלריית תמונות
+          </h3>
+          <button
+            type="button"
+            onClick={() =>
+              setGalleryPhotos([
+                ...galleryPhotos,
+                { id: crypto.randomUUID(), url: "", caption: "" },
+              ])
+            }
+            className="text-xs text-brand-blue hover:text-brand-blue/80 flex items-center gap-1 font-medium"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            הוסף תמונה
+          </button>
+        </div>
+        <p className="text-xs text-muted">תמונות שיוצגו בקרוסלה אלגנטית בדף הציבורי שלך</p>
+
+        {galleryPhotos.length === 0 && (
+          <p className="text-xs text-muted text-center py-4 border border-dashed border-glass rounded-xl">
+            אין תמונות עדיין — לחצו &quot;הוסף תמונה&quot;
+          </p>
+        )}
+
+        <div className="space-y-3">
+          {galleryPhotos.map((photo, idx) => (
+            <div key={photo.id} className="flex items-start gap-2 p-3 rounded-xl border border-glass bg-white/[0.02]">
+              {photo.url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={photo.url}
+                  alt={photo.caption || "Gallery"}
+                  className="w-16 h-16 rounded-lg object-cover flex-shrink-0 border border-glass"
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-lg flex-shrink-0 border border-dashed border-glass flex items-center justify-center">
+                  <Image className="w-5 h-5 text-muted" />
+                </div>
+              )}
+              <div className="flex-1 space-y-2">
+                <input
+                  type="url"
+                  value={photo.url}
+                  onChange={(e) => {
+                    const updated = [...galleryPhotos];
+                    updated[idx] = { ...updated[idx], url: e.target.value };
+                    setGalleryPhotos(updated);
+                  }}
+                  placeholder="URL של התמונה"
+                  className={inputClass}
+                  dir="ltr"
+                />
+                <input
+                  type="text"
+                  value={photo.caption ?? ""}
+                  onChange={(e) => {
+                    const updated = [...galleryPhotos];
+                    updated[idx] = { ...updated[idx], caption: e.target.value };
+                    setGalleryPhotos(updated);
+                  }}
+                  placeholder="כיתוב (אופציונלי)"
+                  className={inputClass}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => setGalleryPhotos(galleryPhotos.filter((_, i) => i !== idx))}
+                className="p-2 rounded-lg hover:bg-red-500/10 text-muted hover:text-red-400 transition-colors mt-1"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Media & Images */}
       <div className="glass-card p-4 space-y-4">
         <h3 className="text-sm font-bold flex items-center gap-2">
           <Palette className="w-4 h-4 text-brand-blue" />
-          מדיה ותמונות
+          תמונת קאבר
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-xs text-muted mb-1.5 font-medium">לינק לתמונת קאבר</label>
-            <input
-              type="url"
-              value={coverUrl}
-              onChange={(e) => setCoverUrl(e.target.value)}
-              placeholder="https://... (מומלץ לרוחב)"
-              className={inputClass}
-              dir="ltr"
-            />
-          </div>
-          {/* Note: Logo upload UI would go here, currently using URL/placeholder or handled separately */}
+        <div>
+          <label className="block text-xs text-muted mb-1.5 font-medium">לינק לתמונת קאבר</label>
+          <input
+            type="url"
+            value={coverUrl}
+            onChange={(e) => setCoverUrl(e.target.value)}
+            placeholder="https://... (מומלץ לרוחב)"
+            className={inputClass}
+            dir="ltr"
+          />
+          {coverUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={coverUrl} alt="Cover preview" className="mt-2 w-full h-32 object-cover rounded-xl border border-glass" />
+          )}
         </div>
       </div>
 

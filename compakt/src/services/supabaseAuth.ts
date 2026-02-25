@@ -42,6 +42,11 @@ async function fetchDJProfile(userId: string): Promise<DJProfile | null> {
     tiktokUrl: data.tiktok_url ?? null,
     websiteUrl: data.website_url ?? null,
     whatsappNumber: data.whatsapp_number ?? null,
+    soundcloudUrl: data.soundcloud_url ?? null,
+    spotifyUrl: data.spotify_url ?? null,
+    youtubeUrl: data.youtube_url ?? null,
+    customLinks: Array.isArray(data.custom_links) ? data.custom_links : [],
+    galleryPhotos: Array.isArray(data.gallery_photos) ? data.gallery_photos : [],
     reviews: Array.isArray(data.reviews) ? data.reviews : [],
     onboardingComplete: data.onboarding_complete ?? false,
   };

@@ -29,6 +29,19 @@ export type ThemeMode = "night" | "day";
 
 export type PlanTier = "free" | "basic" | "pro";
 
+export interface DJCustomLink {
+  id: string;
+  title: string;
+  url: string;
+  icon: "music" | "video" | "link" | "headphones" | "play";
+}
+
+export interface DJGalleryPhoto {
+  id: string;
+  url: string;
+  caption?: string;
+}
+
 export interface DJProfile {
   id: string;
   email: string;
@@ -46,7 +59,12 @@ export interface DJProfile {
   tiktokUrl: string | null;
   websiteUrl: string | null;
   whatsappNumber: string | null;
-  reviews: any[]; // using any[] for simple JSONB structure or define specific Review type
+  soundcloudUrl: string | null;
+  spotifyUrl: string | null;
+  youtubeUrl: string | null;
+  customLinks: DJCustomLink[];
+  galleryPhotos: DJGalleryPhoto[];
+  reviews: any[];
   onboardingComplete: boolean;
 }
 

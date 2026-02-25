@@ -22,7 +22,7 @@ export async function GET(request: Request) {
       return supabase
         .from("profiles")
         .select(
-          "id, email, full_name, role, plan, dj_slug, business_name, logo_url, cover_url, accent_color, tagline, bio, instagram_url, tiktok_url, website_url, whatsapp_number, reviews, onboarding_complete"
+          "id, email, full_name, role, plan, dj_slug, business_name, logo_url, cover_url, accent_color, tagline, bio, instagram_url, tiktok_url, website_url, whatsapp_number, soundcloud_url, spotify_url, youtube_url, custom_links, gallery_photos, reviews, onboarding_complete"
         )
         .eq("id", user.id)
         .maybeSingle();
@@ -84,6 +84,11 @@ export async function GET(request: Request) {
       tiktokUrl: profile.tiktok_url ?? null,
       websiteUrl: profile.website_url ?? null,
       whatsappNumber: profile.whatsapp_number ?? null,
+      soundcloudUrl: profile.soundcloud_url ?? null,
+      spotifyUrl: profile.spotify_url ?? null,
+      youtubeUrl: profile.youtube_url ?? null,
+      customLinks: Array.isArray(profile.custom_links) ? profile.custom_links : [],
+      galleryPhotos: Array.isArray(profile.gallery_photos) ? profile.gallery_photos : [],
       reviews: Array.isArray(profile.reviews) ? profile.reviews : [],
       onboardingComplete: profile.onboarding_complete ?? false,
     });
