@@ -16,7 +16,7 @@ export async function GET(
   // 1. Find event by magic_token
   const { data: event, error: eventErr } = await supabase
     .from("dj_events")
-    .select("id, user_id, event_type, couple_name_a, couple_name_b, event_date, venue, city, magic_token, current_stage, theme, created_at")
+    .select("id, user_id, event_type, couple_name_a, couple_name_b, event_date, venue, city, contact_phone, contact_role, magic_token, current_stage, theme, created_at")
     .eq("magic_token", token)
     .eq("is_archived", false)
     .maybeSingle();

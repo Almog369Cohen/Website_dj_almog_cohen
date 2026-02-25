@@ -234,6 +234,9 @@ function PortalJourney() {
           createdAt: (r.created_at as string) ?? new Date().toISOString(),
         }));
 
+        // Use contact.phone as fallback if event doesn't have contact_phone
+        const contactPhone = (ev.contact_phone as string) || (data.contact?.phone as string) || undefined;
+
         seedEvent({
           id: ev.id as string,
           magicToken: ev.magic_token as string,
@@ -243,6 +246,8 @@ function PortalJourney() {
           city: ev.city as string | undefined,
           coupleNameA: ev.couple_name_a as string | undefined,
           coupleNameB: ev.couple_name_b as string | undefined,
+          contactPhone,
+          contactRole: ev.contact_role as string | undefined,
           currentStage: (ev.current_stage as number) ?? 0,
           theme: (ev.theme as "night" | "day") ?? "night",
           createdAt: ev.created_at as string,

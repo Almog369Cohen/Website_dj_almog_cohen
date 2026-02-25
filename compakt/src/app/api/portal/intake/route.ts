@@ -110,6 +110,7 @@ export async function POST(req: Request) {
       event_type: body.eventType || "wedding",
       event_date: body.eventDate || null,
       couple_name_a: body.name.trim(),
+      contact_phone: body.phone?.trim() || null,
       status: "intake",
     })
     .select("id, magic_token")

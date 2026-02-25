@@ -145,6 +145,8 @@ function JourneyApp() {
           city: ev.city as string | undefined,
           coupleNameA: ev.couple_name_a as string | undefined,
           coupleNameB: ev.couple_name_b as string | undefined,
+          contactPhone: ev.contact_phone as string | undefined,
+          contactRole: ev.contact_role as string | undefined,
           currentStage: (ev.current_stage as number) ?? 0,
           theme: (ev.theme as "night" | "day") ?? "night",
           createdAt: ev.created_at as string,
