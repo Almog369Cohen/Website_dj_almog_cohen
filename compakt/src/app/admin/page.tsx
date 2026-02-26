@@ -307,6 +307,18 @@ export default function AdminPage() {
             </div>
 
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => setActiveTab("settings")}
+                className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${activeTab === "settings"
+                  ? "bg-brand-blue text-white"
+                  : "text-secondary hover:text-foreground"
+                  }`}
+                aria-label="עריכת פרופיל"
+                title="פרופיל"
+              >
+                <Settings className="w-4 h-4" />
+                פרופיל
+              </button>
               <ThemeToggle />
               <button
                 onClick={() => {
