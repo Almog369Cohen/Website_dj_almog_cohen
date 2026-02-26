@@ -13,8 +13,8 @@ out/
 # production
 build/
 
- # local uploads
- .local-uploads/
+# local uploads
+.local-uploads/
 
 # env files (NEVER commit secrets)
 .env

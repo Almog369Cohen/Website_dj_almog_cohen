@@ -59,3 +59,6 @@ key.json
 
 # Local Netlify folder
 .netlify
+
+# Local dev folders (not part of Compakt deploy)
+new/soundview-pro/
