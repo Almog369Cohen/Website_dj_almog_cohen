@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Compaktt School: שיעורי DJ פרטיים עם אלמוג כהן. ציוד מקצועי (XDJ-RX3, DDJ-1000), יציאה לאירועים אמיתיים וליווי אישי. מסלולים מ-1,500 ₪.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:title" content="Compaktt School · בית הספר ל-DJ של אלמוג כהן">
+<meta property="og:description" content="מאפס לעמדה מקצועית: ציוד אמיתי, ליווי אישי ואירוע אמיתי בשטח.">
+<meta property="og:image" content="assets/hero.jpg">
+<link rel="icon" type="image/png" href="assets/logo-white.png">
+<title>Compaktt School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Hebrew:wght@400;500;700&family=Karantina:wght@400;700&display=swap">
+<style>
+/* Layout: "the booth" — RTL split hero, full-bleed photo bands, packages as mixer channel strips with LED session meters */
+:root {
+  --bg: #090c0d;
+  --surface: #11171a;
+  --surface-2: #172125;
+  --line: #243237;
+  --fg: #eef4f3;
+  --muted: #9aaba9;
+  --dim: #62726f;
+  --green: #03b28c;
+  --blue: #059cc0;
+  --amber: #ffaa00;
+  --on-accent: #03110f;
+  --display: "Karantina", "Heebo", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans Hebrew", "Heebo", "Segoe UI", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --gutter: max(16px, 4vw);
+  --max: 1180px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+[hidden] { display: none !important; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 2px; }
+.page { overflow-x: clip; }
+.wrap { width: 100%; max-width: calc(var(--max) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
+
+/* type */
+.eyebrow {
+  font-family: var(--body);
+  font-size: .8125rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: var(--green);
+  display: flex; align-items: center; gap: .6em;
+  margin: 0;
+}
+.eyebrow::before { content: ""; width: .5em; height: .5em; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
+h1, h2 { font-family: var(--display); font-weight: 700; line-height: .9; letter-spacing: -.005em; margin: 0; text-wrap: balance; }
+h2 { font-size: clamp(3rem, 7.5vw, 5.25rem); }
+h3 { font-size: 1.25rem; line-height: 1.3; margin: 0; }
+p { margin: 0; }
+.lede { font-size: clamp(1.0625rem, 1.6vw, 1.25rem); color: var(--muted); max-width: 34em; }
+.lede strong { color: var(--fg); font-weight: 500; }
+.num { font-variant-numeric: tabular-nums; }
+.section { padding-block: clamp(72px, 10vw, 128px); }
+.section-head { display: grid; gap: 18px; margin-bottom: clamp(32px, 5vw, 56px); }
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .55em;
+  min-height: 52px; padding: 0 26px;
+  border-radius: 999px; border: 1px solid transparent;
+  font: 700 1rem/1 var(--body); text-decoration: none; cursor: pointer;
+  transition: transform .18s ease, background-color .18s ease, border-color .18s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-primary { background: linear-gradient(90deg, var(--green), var(--blue)); color: var(--on-accent); }
+.btn-ghost { border-color: var(--line); color: var(--fg); background: transparent; }
+.btn-ghost:hover { border-color: var(--muted); }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* header */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.bar-inner { display: flex; align-items: center; gap: 24px; min-height: 64px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand img { width: 26px; height: auto; }
+.brand b { display: block; font-size: 1rem; line-height: 1.1; }
+.brand span { display: block; font-size: .75rem; color: var(--muted); line-height: 1.2; }
+.nav { display: flex; gap: 22px; margin-inline-start: auto; }
+.nav a { text-decoration: none; color: var(--muted); font-size: .9375rem; }
+.nav a:hover { color: var(--fg); }
+.bar .btn { min-height: 40px; padding: 0 18px; font-size: .9375rem; }
+@media (max-width: 820px) { .nav { display: none; } .bar .btn { margin-inline-start: auto; } }
+
+/* hero */
+.hero { padding-block: clamp(40px, 7vw, 88px) clamp(56px, 8vw, 96px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: end; }
+.hero-copy { display: grid; gap: 26px; min-width: 0; }
+.hero h1 { font-size: clamp(5.5rem, 15vw, 11.5rem); }
+.hero h1 .line { display: block; }
+.hero h1 .accent { background: linear-gradient(90deg, var(--green), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .04em; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 36px; padding-top: 22px; border-top: 1px solid var(--line); }
+.stat b { display: block; font-family: var(--display); font-size: 2.6rem; line-height: 1; font-weight: 700; }
+.stat span { font-size: .8125rem; color: var(--muted); }
+.hero-photo { position: relative; min-width: 0; }
+.hero-photo img { width: 100%; aspect-ratio: 4 / 4.4; object-fit: cover; object-position: 38% 50%; border-radius: 6px; }
+.rig {
+  margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px 14px;
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; color: var(--dim); direction: ltr; justify-content: flex-end;
+}
+.rig span { white-space: nowrap; }
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-photo img { aspect-ratio: 4 / 3; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 .line { animation: rise .8s cubic-bezier(.2,.7,.2,1) both; }
+  .hero h1 .line + .line { animation-delay: .12s; }
+  @keyframes rise { from { transform: translateY(.35em); opacity: .2; } to { transform: none; opacity: 1; } }
+}
+
+/* booth band */
+.band { position: relative; isolation: isolate; min-height: clamp(420px, 62vw, 680px); display: flex; align-items: flex-end; }
+.band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.band::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, var(--bg) 4%, color-mix(in srgb, var(--bg) 55%, transparent) 45%, transparent 75%); }
+.band-copy { display: grid; gap: 16px; padding-block: 48px; max-width: 40rem; }
+.band-copy p { color: var(--fg); opacity: .86; font-size: 1.125rem; }
+
+/* finder */
+.finder { display: grid; gap: 12px; margin-bottom: 28px; }
+.finder-label { font-size: .9375rem; color: var(--muted); }
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.seg button {
+  font: 500 .9375rem/1.2 var(--body); color: var(--muted);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  padding: 11px 18px; cursor: pointer; transition: color .15s, border-color .15s, background-color .15s;
+}
+.seg button:hover { color: var(--fg); }
+.seg button[aria-pressed="true"] { color: var(--fg); border-color: var(--green); background: color-mix(in srgb, var(--green) 14%, var(--surface)); }
+
+/* channel strips */
+.strips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+@media (max-width: 980px) { .strips { grid-template-columns: 1fr; max-width: 560px; } }
+.strip {
+  --tone: var(--green);
+  position: relative; display: grid; gap: 22px; min-width: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 26px 24px 24px;
+  transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.strip.pro { --tone: var(--amber); }
+.strip.is-match { border-color: var(--tone); box-shadow: 0 0 0 1px var(--tone), 0 18px 50px -24px var(--tone); }
+.strip-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 26px; }
+.ch { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; color: var(--dim); direction: ltr; }
+.badge { font-size: .75rem; font-weight: 700; color: var(--tone); border: 1px solid color-mix(in srgb, var(--tone) 45%, transparent); padding: 3px 10px; border-radius: 999px; }
+.strip h3 { font-size: 1.5rem; }
+.strip .sub { color: var(--muted); font-size: .9375rem; margin-top: 4px; }
+
+.meter { display: grid; gap: 8px; }
+.leds { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; direction: ltr; }
+.leds i { height: 14px; border-radius: 2px; background: var(--surface-2); border: 1px solid var(--line); transition: background-color .3s ease, box-shadow .3s ease; }
+.leds i.on { border-color: transparent; background: var(--green); }
+.leds i.on:nth-child(n+6) { background: var(--blue); }
+.leds i.on:nth-child(8) { background: var(--amber); }
+.strip.is-match .leds i.on { box-shadow: 0 0 10px -1px currentColor; }
+.leds i.on { color: var(--green); }
+.leds i.on:nth-child(n+6) { color: var(--blue); }
+.leds i.on:nth-child(8) { color: var(--amber); }
+.meter-label { display: flex; justify-content: space-between; font-size: .8125rem; color: var(--muted); }
+.meter-label b { color: var(--fg); font-weight: 500; }
+
+.price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.price b { font-family: var(--display); font-size: 3.75rem; line-height: .9; font-weight: 700; }
+.price .cur { font-size: 1.5rem; font-weight: 700; }
+.price small { color: var(--muted); font-size: .875rem; }
+
+.feats { list-style: none; margin: 0; padding: 18px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px; font-size: .9375rem; }
+.feats li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; }
+.feats li::before { content: "✓"; color: var(--tone); font-weight: 700; line-height: 1.65; }
+.feats li.off { color: var(--dim); }
+.feats li.off::before { content: "–"; color: var(--dim); }
+.strip .btn { width: 100%; }
+.strip.pro .btn-primary { background: var(--amber); }
+.fine { font-size: .8125rem; color: var(--muted); text-align: center; margin-top: -10px; }
+
+.extras { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.extra { flex: 1 1 260px; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px; border: 1px dashed var(--line); border-radius: 10px; color: var(--muted); font-size: .9375rem; }
+.extra b { color: var(--fg); white-space: nowrap; }
+
+/* path */
+.path { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: step; }
+.path li { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 8px 20px; align-items: baseline; padding: 24px 0; border-top: 1px solid var(--line); counter-increment: step; }
+.path li:last-child { border-bottom: 1px solid var(--line); }
+.path li::before { content: counter(step, decimal-leading-zero); font-family: var(--mono); font-size: .875rem; color: var(--green); direction: ltr; }
+.path h3 { font-size: 1.25rem; }
+.path p { color: var(--muted); font-size: .9375rem; margin-top: 4px; max-width: 40em; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.chip { font-size: .75rem; font-weight: 500; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.chip.pro { border-color: color-mix(in srgb, var(--amber) 50%, transparent); color: var(--amber); }
+@media (max-width: 640px) {
+  .path li { grid-template-columns: 40px minmax(0, 1fr); }
+  .chips { grid-column: 2; justify-content: flex-start; }
+}
+
+/* teacher */
+.teacher { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(28px, 6vw, 80px); align-items: center; }
+.teacher img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 30%; border-radius: 6px; }
+.teacher-copy { display: grid; gap: 22px; min-width: 0; }
+.teacher-copy .story { color: var(--muted); max-width: 36em; }
+.teacher blockquote { margin: 0; padding-inline-start: 20px; border-inline-start: 2px solid var(--green); font-size: clamp(1.125rem, 2vw, 1.375rem); line-height: 1.5; font-weight: 500; }
+.teacher cite { display: block; margin-top: 10px; font-style: normal; font-size: .875rem; color: var(--muted); font-weight: 400; }
+@media (max-width: 820px) { .teacher { grid-template-columns: 1fr; } .teacher img { aspect-ratio: 4 / 3; max-height: 460px; } }
+
+/* fit */
+.fit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .fit { grid-template-columns: 1fr; } }
+.fit-col { padding: 28px 26px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); }
+.fit-col.yes { border-color: color-mix(in srgb, var(--green) 40%, var(--line)); }
+.fit-col h3 { margin-bottom: 18px; }
+.fit-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.fit-col li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; }
+.fit-col.yes li::before { content: "✓"; color: var(--green); font-weight: 700; }
+.fit-col.no li { color: var(--muted); }
+.fit-col.no li::before { content: "✕"; color: var(--dim); }
+
+/* voices */
+.voices { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 860px) { .voices { grid-template-columns: 1fr; } }
+.voice { padding: 26px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); display: grid; gap: 18px; align-content: start; }
+.voice-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.voice-head b { font-size: 1.125rem; }
+.voice-head span { color: var(--muted); font-size: .875rem; }
+.player { display: flex; align-items: center; gap: 16px; }
+.play {
+  flex: none; width: 56px; height: 56px; border-radius: 50%; border: 0; cursor: pointer;
+  background: linear-gradient(135deg, var(--green), var(--blue)); color: var(--on-accent);
+  display: grid; place-items: center; transition: transform .15s ease;
+}
+.play:hover { transform: scale(1.05); }
+.play svg { width: 22px; height: 22px; }
+.wave { flex: 1; min-width: 0; height: 56px; display: flex; align-items: center; gap: 2px; cursor: pointer; }
+.wave i { flex: 1; min-width: 1px; border-radius: 2px; background: var(--line); transition: background-color .1s linear; }
+.wave i.on { background: var(--green); }
+.time { font-family: var(--mono); font-size: .8125rem; color: var(--muted); direction: ltr; text-align: end; }
+.voice .note { color: var(--muted); font-size: .9375rem; }
+.voice.story-card p.big { font-size: clamp(1.25rem, 2.2vw, 1.5rem); line-height: 1.45; font-weight: 500; }
+
+/* groom */
+.groom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); text-decoration: none; }
+.groom img { width: 100%; height: 100%; min-height: 260px; object-fit: cover; }
+.groom-copy { padding: clamp(26px, 4vw, 48px); display: grid; gap: 14px; align-content: center; }
+.groom-copy h2 { font-size: clamp(2.75rem, 6vw, 4.25rem); }
+.groom-copy p { color: var(--muted); max-width: 30em; }
+.link-arrow { color: var(--green); font-weight: 700; display: inline-flex; gap: .4em; align-items: center; }
+.groom:hover .link-arrow { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 760px) { .groom { grid-template-columns: 1fr; } .groom img { min-height: 0; aspect-ratio: 16 / 10; } }
+
+/* faq */
+.faq { display: grid; gap: 0; max-width: 860px; }
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-child { border-bottom: 1px solid var(--line); }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 22px 0; font-weight: 700; font-size: 1.125rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-family: var(--mono); font-size: 1.25rem; color: var(--green); flex: none; transition: transform .2s ease; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { color: var(--muted); padding-bottom: 22px; max-width: 44em; }
+
+/* final */
+.final { position: relative; isolation: isolate; text-align: center; padding-block: clamp(96px, 14vw, 180px); }
+.final > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: .5; }
+.final::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at center, color-mix(in srgb, var(--bg) 55%, transparent), var(--bg) 78%); }
+.final .wrap { display: grid; gap: 22px; justify-items: center; }
+.final h2 { font-size: clamp(3.75rem, 11vw, 8rem); }
+.final .lede { margin-inline: auto; }
+.phone { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); font-size: .9375rem; }
+.phone span { font-family: var(--mono); color: var(--fg); direction: ltr; user-select: all; }
+.copy { font: 500 .8125rem/1 var(--body); color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.copy:hover { color: var(--fg); border-color: var(--muted); }
+
+/* footer */
+.foot { border-top: 1px solid var(--line); padding-block: 28px; color: var(--dim); font-size: .875rem; }
+.foot .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; }
+.foot a { color: var(--muted); }
+
+/* mobile sticky cta */
+.dock { display: none; }
+@media (max-width: 720px) {
+  .dock {
+    display: block; position: fixed; inset-inline: 0; bottom: 0; z-index: 30;
+    padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom, 0px));
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line);
+  }
+  .dock .btn { width: 100%; }
+  .page { padding-bottom: 76px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="page" dir="rtl" lang="he">
+
+  <header class="bar">
+    <div class="wrap bar-inner">
+      <a class="brand" href="#top" aria-label="Compaktt School, לראש העמוד">
+        <img src="assets/logo-white.png" alt="" width="26" height="30">
+        <div><b>Compaktt School</b><span>בית הספר ל-DJ של אלמוג כהן</span></div>
+      </a>
+      <nav class="nav" aria-label="ניווט">
+        <a href="#tracks">מסלולים</a>
+        <a href="#path">איך זה עובד</a>
+        <a href="#teacher">המורה</a>
+        <a href="#faq">שאלות</a>
+      </nav>
+      <a class="btn btn-ghost" data-wa="היי אלמוג, הגעתי מהאתר של Compaktt School ואשמח לשמוע על לימודי DJ" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">דברו איתי</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">שיעורי DJ פרטיים · אלמוג כהן</p>
+          <h1><span class="line">מאפס</span><span class="line accent">לעמדה.</span></h1>
+          <p class="lede">מסלול כניסה לעולם האירועים: <strong>שיעורים פרטיים על ציוד מקצועי, יציאה לאירועים אמיתיים וליווי אישי</strong> עד שאתם עומדים מול קהל ויודעים מה לעשות.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#tracks">
+              בחרו מסלול
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn-ghost" data-wa="היי אלמוג, מעוניין לשמוע על לימודי DJ ב-Compaktt School" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">שיחה עם אלמוג בוואטסאפ</a>
+          </div>
+          <div class="stats num">
+            <div class="stat"><b>14</b><span>שנים על העמדה</span></div>
+            <div class="stat"><b>1,000+</b><span>אירועים</span></div>
+            <div class="stat"><b>30+</b><span>תלמידים</span></div>
+          </div>
+        </div>
+        <figure class="hero-photo" style="margin:0">
+          <img src="assets/hero.jpg" alt="אלמוג כהן בעמדת DJ של Pioneer, ידיים פרושות" width="1600" height="1067">
+          <figcaption class="rig"><span>XDJ-RX3</span><span>DDJ-1000</span><span>APPLE</span><span>90 MIN / SESSION</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- BOOTH BAND -->
+    <section class="band" aria-label="הנוף מהעמדה">
+      <img src="assets/booth.jpg" alt="מבט מאחורי ה-DJ אל קהל גדול באירוע חוץ" loading="lazy" width="2000" height="1123">
+      <div class="wrap">
+        <div class="band-copy">
+          <p class="eyebrow">יציאה לשטח</p>
+          <h2>ככה זה נראה מהעמדה.</h2>
+          <p>במסלולי השטח אתם מגיעים איתי לאירועים אמיתיים ורואים מקרוב איך עובדים מול קהל. במסלול PRO אתם גם מנגנים באירוע, ואני עומד לידכם.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRACKS -->
+    <section class="section" id="tracks">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">מסלולים ומחירים</p>
+          <h2>בחרו מסלול</h2>
+          <p class="lede">בכל המסלולים: מפגשים של 90 דקות, ציוד מקצועי ותרגילי בית אחרי כל מפגש. המד מראה כמה מפגשים יש בכל מסלול.</p>
+        </div>
+
+        <div class="finder">
+          <span class="finder-label" id="goal-label">מה המטרה שלכם?</span>
+          <div class="seg" role="group" aria-labelledby="goal-label">
+            <button type="button" id="goal-basic" data-goal="basic" aria-pressed="false">לבדוק אם זה בשבילי</button>
+            <button type="button" id="goal-field" data-goal="field" aria-pressed="true">להתחיל לנגן באירועים</button>
+            <button type="button" id="goal-pro" data-goal="pro" aria-pressed="false">להפוך את זה למקצוע</button>
+          </div>
+        </div>
+
+        <div class="strips">
+          <article class="strip" data-track="basic">
+            <div class="strip-top"><span class="ch">CH 1</span></div>
+            <div>
+              <h3>חבילת בסיס</h3>
+              <p class="sub">היכרות עם עולם התקלוט</p>
+            </div>
+            <div class="meter" aria-label="3 מפגשים מתוך 8">
+              <div class="leds" data-on="3"></div>
+              <div class="meter-label"><span><b>3</b> מפגשים</span><span>ליווי 3 חודשים</span></div>
+            </div>
+            <div class="price num"><b>1,500</b><span class="cur">₪</span><small>כולל מע״מ</small></div>
+            <ul class="feats">
+              <li>3 מפגשי תקלוט של 90 דקות</li>
+              <li>תרגילי בית לכל מפגש</li>
+              <li>עבודה על ציוד מקצועי</li>
+              <li>ליווי בטלפון ובוואטסאפ ל-3 חודשים</li>
+              <li class="off">יציאה לאירוע בשטח</li>
+              <li class="off">ליווי באירוע שלכם</li>
+              <li class="off">זומים של תקלוט ועסקים</li>
+              <li class="off">סשן הגברה ותאורה</li>
+            </ul>
+            <a class="btn btn-primary" data-wa="היי אלמוג, מעוניין בחבילת הבסיס ללימודי DJ" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">אני רוצה להתחיל</a>
+            <p class="fine">למי שרוצה לבדוק אם זה בשבילו</p>
+          </article>
+
+          <article class="strip is-match" data-track="field">
+            <div class="strip-top"><span class="ch">CH 2</span><span class="badge">הכי מבוקש</span></div>
+            <div>
+              <h3>התמחות שטח</h3>
+              <p class="sub">מסלול DJ מעשי עם חשיפה לאירועים</p>
+            </div>
+            <div class="meter" aria-label="6 מפגשים מתוך 8">
+              <div class="leds" data-on="6"></div>
+              <div class="meter-label"><span><b>6</b> מפגשים</span><span>ליווי חצי שנה</span></div>
+            </div>
+            <div class="price num"><b>3,800</b><span class="cur">₪</span><small>+ מע״מ</small></div>
+            <ul class="feats">
+              <li>6 מפגשי תקלוט של 90 דקות</li>
+              <li>תרגילי בית לכל מפגש</li>
+              <li>עבודה על ציוד מקצועי</li>
+              <li>ליווי בטלפון ובוואטסאפ לחצי שנה</li>
+              <li>יציאה לאירוע בשטח (צפייה)</li>
+              <li class="off">ליווי באירוע שלכם</li>
+              <li class="off">זומים של תקלוט ועסקים</li>
+              <li class="off">סשן הגברה ותאורה</li>
+            </ul>
+            <a class="btn btn-primary" data-wa="היי אלמוג, מעוניין במסלול התמחות שטח ללימודי DJ" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">אני רוצה להתחיל</a>
+            <p class="fine">למי שרוצה להתקדם מהר ולראות אירוע מבפנים</p>
+          </article>
+
+          <article class="strip pro" data-track="pro">
+            <div class="strip-top"><span class="ch">CH 3</span><span class="badge">הכי משתלם</span></div>
+            <div>
+              <h3>מסלול PRO</h3>
+              <p class="sub">כניסה מלאה לעולם האירועים</p>
+            </div>
+            <div class="meter" aria-label="8 מפגשים מתוך 8">
+              <div class="leds" data-on="8"></div>
+              <div class="meter-label"><span><b>8</b> מפגשים</span><span>ליווי שנה</span></div>
+            </div>
+            <div class="price num"><b>7,000</b><span class="cur">₪</span><small>+ מע״מ</small></div>
+            <ul class="feats">
+              <li>8 מפגשים של 90 דקות: 6 מעשיים ו-2 עיוניים</li>
+              <li>תרגילי בית לכל מפגש</li>
+              <li>עבודה על ציוד מקצועי</li>
+              <li>ליווי בטלפון ובוואטסאפ לשנה</li>
+              <li>2 יציאות לאירועים בשטח (צפייה)</li>
+              <li>ליווי באירוע אחד שלכם, אני איתכם</li>
+              <li>3 זומי תקלוט ו-2 זומים עסקיים-מנטליים</li>
+              <li>סשן הגברה ותאורה</li>
+            </ul>
+            <a class="btn btn-primary" data-wa="היי אלמוג, מעוניין במסלול PRO ללימודי DJ" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">אני רוצה להתחיל</a>
+            <p class="fine">מספר המקומות מוגבל</p>
+          </article>
+        </div>
+
+        <div class="extras num">
+          <div class="extra"><span>שיעור בודד (90 דקות)</span><b>330 ₪ + מע״מ</b></div>
+          <div class="extra"><span>תוספת לכל מסלול: חבילת תדמית ושיווק</span><b>1,000 ₪ + מע״מ</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PATH -->
+    <section class="section" id="path" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">איך זה עובד</p>
+          <h2>מהשיחה הראשונה ועד הרחבה</h2>
+        </div>
+        <ol class="path">
+          <li>
+            <div><h3>מדברים ובוחרים מסלול</h3><p>שולחים הודעה בוואטסאפ, מספרים מה המטרה, ויחד בוחרים את המסלול שמתאים לכם.</p></div>
+            <div class="chips"><span class="chip">בסיס</span><span class="chip">שטח</span><span class="chip pro">PRO</span></div>
+          </li>
+          <li>
+            <div><h3>מפגשי תקלוט באולפן</h3><p>90 דקות על XDJ-RX3, DDJ-1000 ומחשבי Apple. אחרי כל מפגש יש תרגיל בית, ולתרגול מספיקות תוכנה חינמית ואוזניות.</p></div>
+            <div class="chips"><span class="chip">בסיס</span><span class="chip">שטח</span><span class="chip pro">PRO</span></div>
+          </li>
+          <li>
+            <div><h3>יציאה לאירוע אמיתי</h3><p>מגיעים איתי לאירוע, עומדים מאחורי העמדה ורואים איך קוראים קהל ובונים רחבה.</p></div>
+            <div class="chips"><span class="chip">שטח</span><span class="chip pro">PRO</span></div>
+          </li>
+          <li>
+            <div><h3>האירוע הראשון שלכם</h3><p>אתם מנגנים באירוע אמיתי ואני עומד לידכם בעמדה. כולל סשן הגברה ותאורה כדי שתדעו להקים את הציוד לבד.</p></div>
+            <div class="chips"><span class="chip pro">PRO</span></div>
+          </li>
+          <li>
+            <div><h3>בונים את העסק</h3><p>זומים של תקלוט וזומים עסקיים-מנטליים: איך להציג את עצמכם, לתמחר ולסגור אירועים.</p></div>
+            <div class="chips"><span class="chip pro">PRO</span></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TEACHER -->
+    <section class="section" id="teacher" style="padding-top:0">
+      <div class="wrap teacher">
+        <img src="assets/teacher.jpg" alt="אלמוג כהן מתקלט מול לפטופ עם המדבקה ALMOG COHEN" loading="lazy" width="900" height="1603">
+        <div class="teacher-copy">
+          <p class="eyebrow">המורה</p>
+          <h2>אלמוג כהן</h2>
+          <p class="story">בגיל 14 נכנסתי לשיעור DJ ראשון. המורה אמר לי לצרוב שני דיסקים ולבוא שבוע אחרי. בגיל 15 כבר עמדתי על במות. היום, אחרי 14 שנה ויותר מ-1,000 אירועים, אני עדיין על הרחבה, ומלמד בדרך שהייתי רוצה שילמדו אותי.</p>
+          <blockquote>לתת לדור הבא את הידע והכלים בדרך הכי חדשנית שאני הייתי רוצה ללמוד. זה מה שמניע אותי.<cite>אלמוג כהן</cite></blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIT -->
+    <section class="section" style="padding-top:0" aria-label="למי זה מתאים">
+      <div class="wrap fit">
+        <div class="fit-col yes">
+          <h3>מתאים למי ש...</h3>
+          <ul>
+            <li>רוצה להיכנס לתחום האירועים</li>
+            <li>מבין שתקלוט הוא יותר ממוזיקה</li>
+            <li>רוצה ללמוד על ציוד מקצועי אמיתי</li>
+            <li>מוכן להשקיע בעצמו ולתרגל</li>
+            <li>רוצה לנגן מול אנשים ולא רק בבית</li>
+          </ul>
+        </div>
+        <div class="fit-col no">
+          <h3>פחות מתאים למי ש...</h3>
+          <ul>
+            <li>מחפש תחביב בלי כוונה להתפתח</li>
+            <li>מחפש נוסחה קסומה בלי עבודה</li>
+            <li>לא מוכן להשקיע זמן בתרגול</li>
+            <li>רוצה תוצאות בלי סבלנות</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- VOICES -->
+    <section class="section" id="voices" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">מהתלמידים</p>
+          <h2>שמעו בעצמכם</h2>
+        </div>
+        <div class="voices">
+          <div class="voice">
+            <div class="voice-head"><b>איתי</b><span>הקלטה אחרי השיעור הראשון</span></div>
+            <div class="player">
+              <button class="play" type="button" id="play" aria-label="נגן את ההקלטה של איתי">
+                <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5v14l11-7z"/></svg>
+                <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+              </button>
+              <div class="wave" id="wave" role="slider" tabindex="0" aria-label="מיקום בהקלטה" aria-valuemin="0" aria-valuemax="69" aria-valuenow="0"></div>
+            </div>
+            <div class="time num" id="time">0:00 / 1:09</div>
+            <audio id="audio" src="assets/itay-lesson1.mp3" preload="metadata"></audio>
+            <p class="note">הקלטה אמיתית, בלי עריכה. צורת הגל היא של ההקלטה עצמה.</p>
+          </div>
+          <div class="voice story-card">
+            <div class="voice-head"><b>מהשיעור השלישי לאירוע ראשון</b></div>
+            <p class="big">״היה לי תלמיד שהגיע בלי שום ניסיון על פלטה, ובשיעור השלישי כבר סגר אירוע ב-1,000 ₪.״</p>
+            <p class="note">אלמוג, על אחד התלמידים</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GROOM DJ -->
+    <section class="section" style="padding-top:0" aria-label="חתן מתקלט">
+      <div class="wrap">
+        <a class="groom" href="https://www.compaktt.com/academy/groom-dj" target="_blank" rel="noopener noreferrer">
+          <img src="assets/groom.jpg" alt="חתן עם אוזניות בעמדת ה-DJ והכלה רוקדת לידו" loading="lazy" width="1200" height="800">
+          <div class="groom-copy">
+            <p class="eyebrow">אטרקציה לחתונה</p>
+            <h2>חתן מתקלט</h2>
+            <p>3 עד 5 שיעורים פרטיים לפני החתונה, חזרה אחרונה לפני האירוע, ובחתונה עצמה החתן עולה לעמדה ומרים את הרחבה.</p>
+            <span class="link-arrow">לפרטים על חתן מתקלט <span aria-hidden="true">←</span></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">שאלות נפוצות</p>
+          <h2>לפני שמתחילים</h2>
+        </div>
+        <div class="faq">
+          <details open>
+            <summary>צריך ניסיון קודם?</summary>
+            <p>בכלל לא. היה לי תלמיד שהגיע בלי שום ניסיון על פלטה, ובשיעור השלישי כבר סגר אירוע ב-1,000 ₪. המסלולים בנויים מאפס.</p>
+          </details>
+          <details>
+            <summary>איזה ציוד צריך?</summary>
+            <p>שום דבר. בשיעורים עובדים על XDJ-RX3, DDJ-1000, מחשבי Apple, מיקסר ורמקולים, והכול מסופק. לתרגול בבית מספיקות תוכנת DJ חינמית ואוזניות.</p>
+          </details>
+          <details>
+            <summary>כמה זמן עד שאוכל לנגן באירועים?</summary>
+            <p>זה תלוי בכם. יש תלמידים שמתחילים לקבל הזדמנויות כבר אחרי 3 שיעורים. במסלול PRO אתם יוצאים לאירועים אמיתיים כחלק מהתוכנית.</p>
+          </details>
+          <details>
+            <summary>מה ההבדל בין המסלולים?</summary>
+            <p>חבילת בסיס (1,500 ₪): 3 מפגשים והיכרות עם תקלוט. התמחות שטח (3,800 ₪ + מע״מ): 6 מפגשים ויציאה לאירוע. מסלול PRO (7,000 ₪ + מע״מ): 8 מפגשים, יציאות לשטח, ליווי באירוע וזומים עסקיים.</p>
+          </details>
+          <details>
+            <summary>יש ליווי אחרי הלימודים?</summary>
+            <p>כן. בכל מסלול יש ליווי בטלפון ובוואטסאפ, מ-3 חודשים בבסיס ועד שנה ב-PRO. במסלול PRO יש גם זומים עסקיים-מנטליים, יציאות לשטח וליווי באירוע הראשון שלכם. אפשר להוסיף ליווי נוסף לכל מסלול.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final" aria-label="יצירת קשר">
+      <img src="assets/crowd.jpg" alt="" loading="lazy" width="1800" height="1010">
+      <div class="wrap">
+        <p class="eyebrow">ההרשמה פתוחה</p>
+        <h2>מוכנים לעלות לעמדה?</h2>
+        <p class="lede">שלחו הודעה, ספרו מה המטרה שלכם, ונבנה יחד את המסלול.</p>
+        <a class="btn btn-primary" data-wa="היי אלמוג, אשמח לשמוע פרטים על לימודי DJ ב-Compaktt School" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>
+          כתבו לאלמוג בוואטסאפ
+        </a>
+        <div class="phone">או בטלפון: <span id="phone">050-242-7616</span><button class="copy" type="button" id="copy">העתקה</button></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span>Compaktt School · בית הספר ל-DJ של אלמוג כהן</span>
+      <a href="https://www.compaktt.com" target="_blank" rel="noopener noreferrer">לאתר ה-DJ של אלמוג לאירועים וחתונות</a>
+    </div>
+  </footer>
+
+  <div class="dock">
+    <a class="btn btn-primary" data-wa="היי אלמוג, הגעתי מהאתר של Compaktt School ואשמח לשמוע על לימודי DJ" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">כתבו לאלמוג בוואטסאפ</a>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "EducationalOrganization",
+      "name": "Compaktt School",
+      "description": "שיעורי DJ פרטיים עם אלמוג כהן: מסלולי תקלוט, יציאה לשטח וכניסה לעולם האירועים",
+      "founder": { "@type": "Person", "name": "אלמוג כהן" },
+      "telephone": "+972-50-242-7616",
+      "address": { "@type": "PostalAddress", "addressCountry": "IL" }
+    },
+    {
+      "@type": "Course",
+      "name": "חבילת בסיס: היכרות עם עולם התקלוט",
+      "description": "3 מפגשי תקלוט של 90 דקות, ציוד מקצועי, תרגילי בית וליווי ל-3 חודשים",
+      "provider": { "@type": "Organization", "name": "Compaktt School" },
+      "offers": { "@type": "Offer", "price": "1500", "priceCurrency": "ILS" }
+    },
+    {
+      "@type": "Course",
+      "name": "התמחות שטח",
+      "description": "6 מפגשי תקלוט של 90 דקות, יציאה לאירוע בשטח וליווי לחצי שנה",
+      "provider": { "@type": "Organization", "name": "Compaktt School" },
+      "offers": { "@type": "Offer", "price": "3800", "priceCurrency": "ILS" }
+    },
+    {
+      "@type": "Course",
+      "name": "מסלול PRO: כניסה מלאה לעולם האירועים",
+      "description": "8 מפגשים, 2 יציאות לשטח, ליווי באירוע, זומי תקלוט וזומים עסקיים, סשן הגברה ותאורה וליווי לשנה",
+      "provider": { "@type": "Organization", "name": "Compaktt School" },
+      "offers": { "@type": "Offer", "price": "7000", "priceCurrency": "ILS" }
+    }
+  ]
+}
+</script>
+
+<script>
+(function () {
+  var WA = "972502427616";
+
+  // WhatsApp links with prefilled text per button
+  document.querySelectorAll("[data-wa]").forEach(function (a) {
+    a.href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(a.getAttribute("data-wa"));
+  });
+
+  // LED session meters
+  document.querySelectorAll(".leds").forEach(function (el) {
+    var on = Number(el.getAttribute("data-on"));
+    for (var i = 0; i < 8; i++) {
+      var led = document.createElement("i");
+      if (i < on) led.className = "on";
+      el.appendChild(led);
+    }
+  });
+
+  // Goal finder highlights the matching track
+  var buttons = document.querySelectorAll(".seg button");
+  var strips = document.querySelectorAll(".strip");
+  buttons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var goal = btn.getAttribute("data-goal");
+      buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+      strips.forEach(function (s) {
+        var match = s.getAttribute("data-track") === goal;
+        s.classList.toggle("is-match", match);
+        if (match && window.matchMedia("(max-width: 980px)").matches) {
+          s.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      });
+    });
+  });
+
+  // Audio testimonial with the recording's real waveform
+  var PEAKS = [43,43,27,20,31,30,13,8,31,28,46,46,41,63,19,21,33,15,24,27,12,29,30,53,30,49,54,40,29,33,29,12,26,28,35,18,60,100,80,62,73,39,30,22,25,30,16,54,18,14,36,84,33,43,36,29,22,43,39,25,25,32,18,36,70,29,47,37,45,32,24,9];
+  var audio = document.getElementById("audio");
+  var wave = document.getElementById("wave");
+  var play = document.getElementById("play");
+  var timeEl = document.getElementById("time");
+  var iPlay = play.querySelector(".i-play");
+  var iPause = play.querySelector(".i-pause");
+  var bars = PEAKS.map(function (p) {
+    var b = document.createElement("i");
+    b.style.height = p + "%";
+    wave.appendChild(b);
+    return b;
+  });
+  var total = 69;
+
+  function fmt(s) {
+    s = Math.max(0, Math.floor(s));
+    return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  }
+  function render() {
+    var dur = isFinite(audio.duration) && audio.duration > 0 ? audio.duration : total;
+    var frac = audio.currentTime / dur;
+    var lit = Math.round(frac * bars.length);
+    bars.forEach(function (b, i) { b.classList.toggle("on", i < lit); });
+    timeEl.textContent = fmt(audio.currentTime) + " / " + fmt(dur);
+    wave.setAttribute("aria-valuenow", String(Math.floor(audio.currentTime)));
+  }
+  function setPlaying(on) {
+    iPlay.hidden = on;
+    iPause.hidden = !on;
+    play.setAttribute("aria-label", on ? "השהה את ההקלטה" : "נגן את ההקלטה של איתי");
+  }
+  play.addEventListener("click", function () {
+    if (audio.paused) {
+      audio.play().then(function () { setPlaying(true); }).catch(function () {
+        timeEl.textContent = "לא הצלחנו לנגן את ההקלטה";
+      });
+    } else {
+      audio.pause();
+      setPlaying(false);
+    }
+  });
+  audio.addEventListener("timeupdate", render);
+  audio.addEventListener("loadedmetadata", render);
+  audio.addEventListener("ended", function () { setPlaying(false); audio.currentTime = 0; render(); });
+  function seekTo(frac) {
+    var dur = isFinite(audio.duration) && audio.duration > 0 ? audio.duration : total;
+    audio.currentTime = Math.min(Math.max(frac, 0), 1) * dur;
+    render();
+  }
+  wave.addEventListener("click", function (e) {
+    var r = wave.getBoundingClientRect();
+    // RTL: the recording starts at the right edge
+    seekTo((r.right - e.clientX) / r.width);
+  });
+  wave.addEventListener("keydown", function (e) {
+    var dur = isFinite(audio.duration) && audio.duration > 0 ? audio.duration : total;
+    if (e.key === "ArrowLeft") { e.preventDefault(); seekTo((audio.currentTime + 5) / dur); }
+    if (e.key === "ArrowRight") { e.preventDefault(); seekTo((audio.currentTime - 5) / dur); }
+  });
+
+  // Copy phone number
+  var copyBtn = document.getElementById("copy");
+  copyBtn.addEventListener("click", function () {
+    var text = document.getElementById("phone").textContent;
+    function selectIt() {
+      var range = document.createRange();
+      range.selectNodeContents(document.getElementById("phone"));
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      copyBtn.textContent = "סומן, אפשר להעתיק";
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () {
+        copyBtn.textContent = "הועתק";
+        setTimeout(function () { copyBtn.textContent = "העתקה"; }, 1800);
+      }, selectIt);
+    } catch (err) { selectIt(); }
+  });
+})();
+</script>
+</body>
+</html>
