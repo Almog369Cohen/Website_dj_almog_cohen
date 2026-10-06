@@ -34,7 +34,7 @@ python3 -m http.server 8080
 One-time setup, from a machine with `gcloud` logged in to the compaktt project:
 
 ```bash
-DEPLOY_SA=<value of the GCP_SERVICE_ACCOUNT GitHub secret> ./scripts/setup-school-subdomain.sh
+./scripts/setup-school-subdomain.sh
 ```
 
 It creates the `school-compaktt-com` bucket, routes `school.compaktt.com` through the

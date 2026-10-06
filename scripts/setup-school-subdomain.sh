@@ -4,9 +4,10 @@
 # through the existing compaktt.com HTTPS load balancer (same static IP as www).
 #
 # Usage:
-#   DEPLOY_SA=<service account email used by GitHub Actions> ./scripts/setup-school-subdomain.sh
+#   ./scripts/setup-school-subdomain.sh
 #
-# DEPLOY_SA is the same value as the GCP_SERVICE_ACCOUNT GitHub secret.
+# DEPLOY_SA defaults to the github-actions service account created by
+# scripts/setup-gcs-bucket-wif.sh; override it if GitHub Actions uses another one.
 
 set -euo pipefail
 
@@ -18,6 +19,7 @@ URL_MAP_NAME="url-map-compaktt"
 TARGET_HTTPS_PROXY_NAME="https-proxy-compaktt"
 SSL_CERT_NAME="ssl-cert-school-compaktt"
 STATIC_IP_NAME="compaktt-static-ip"
+DEPLOY_SA="${DEPLOY_SA:-github-actions@${PROJECT_ID}.iam.gserviceaccount.com}"
 
 if ! command -v gcloud &> /dev/null; then
     echo "Error: gcloud CLI is not installed."
@@ -31,11 +33,7 @@ echo "Step 1: Creating bucket gs://$BUCKET_NAME ..."
 gsutil mb -l US -b on "gs://$BUCKET_NAME" || echo "Bucket might already exist"
 gsutil web set -m index.html -e index.html "gs://$BUCKET_NAME"
 gsutil iam ch allUsers:objectViewer "gs://$BUCKET_NAME"
-if [ -n "${DEPLOY_SA:-}" ]; then
-    gsutil iam ch "serviceAccount:${DEPLOY_SA}:objectAdmin" "gs://$BUCKET_NAME"
-else
-    echo "⚠️  DEPLOY_SA not set: grant the GitHub Actions service account objectAdmin on gs://$BUCKET_NAME yourself."
-fi
+gsutil iam ch "serviceAccount:${DEPLOY_SA}:objectAdmin" "gs://$BUCKET_NAME"
 
 echo ""
 echo "Step 2: Creating backend bucket..."
