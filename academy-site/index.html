@@ -14,11 +14,20 @@
 <link rel="canonical" href="https://school.compaktt.com/">
 <link rel="icon" type="image/png" href="assets/logo-white.png">
 <title>Compaktt School</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Hebrew:wght@400;500;700&family=Karantina:wght@400;700&display=swap">
+<link rel="preload" href="fonts/karantina-hebrew-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-/* Layout: "the booth" — RTL split hero, full-bleed photo bands, packages as mixer channel strips with LED session meters */
+/* Self-hosted fonts (OFL, from @fontsource) */
+@font-face { font-family: "Karantina"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/karantina-hebrew-700-normal.woff2") format("woff2"); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+@font-face { font-family: "Karantina"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/karantina-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/ibm-plex-sans-hebrew-hebrew-400-normal.woff2") format("woff2"); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/ibm-plex-sans-hebrew-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/ibm-plex-sans-hebrew-hebrew-500-normal.woff2") format("woff2"); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/ibm-plex-sans-hebrew-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/ibm-plex-sans-hebrew-hebrew-700-normal.woff2") format("woff2"); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/ibm-plex-sans-hebrew-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+/* Layout: "the booth" — a full-screen zoom journey opener, then packages as mixer channel strips with LED session meters */
 :root {
   --bg: #090c0d;
   --surface: #11171a;
@@ -110,38 +119,96 @@ p { margin: 0; }
 .bar .btn { min-height: 40px; padding: 0 18px; font-size: .9375rem; }
 @media (max-width: 820px) { .nav { display: none; } .bar .btn { margin-inline-start: auto; } }
 
-/* hero */
-.hero { padding-block: clamp(40px, 7vw, 88px) clamp(56px, 8vw, 96px); }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: end; }
-.hero-copy { display: grid; gap: 26px; min-width: 0; }
-.hero h1 { font-size: clamp(5.5rem, 15vw, 11.5rem); }
-.hero h1 .line { display: block; }
-.hero h1 .accent { background: linear-gradient(90deg, var(--green), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .04em; }
-.cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
-.stats { display: flex; flex-wrap: wrap; gap: 12px 36px; padding-top: 22px; border-top: 1px solid var(--line); }
-.stat b { display: block; font-family: var(--display); font-size: 2.6rem; line-height: 1; font-weight: 700; }
-.stat span { font-size: .8125rem; color: var(--muted); }
-.hero-photo { position: relative; min-width: 0; }
-.hero-media { overflow: hidden; border-radius: 6px; aspect-ratio: 4 / 4.4; }
-.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 38% 50%; }
-.rig {
-  margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px 14px;
-  font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; color: var(--dim); direction: ltr; justify-content: flex-end;
+/* journey: the zoom opener (zoom.js). Without JS it is a plain sequence of scenes. */
+.journey { position: relative; }
+.journey-stage { position: relative; }
+.scene { position: relative; margin: 0; }
+.scene picture, .scene img { display: block; width: 100%; }
+.scene img { aspect-ratio: 4 / 5; object-fit: cover; }
+.scene .cap { padding: 20px var(--gutter) 56px; }
+.journey-caps, .journey-fx, .journey-hud { display: none; }
+.scene-zero {
+  min-height: 100svh; display: grid; place-items: center; text-align: center; overflow: hidden;
+  padding: 96px var(--gutter) 72px;
+  background: radial-gradient(ellipse at 50% 42%, color-mix(in srgb, var(--blue) 16%, var(--bg)) 0%, var(--bg) 62%);
 }
-.rig span { white-space: nowrap; }
-@media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; }
-  .hero-media { aspect-ratio: 4 / 3; }
+.zero-wrap { display: grid; gap: 18px; justify-items: center; width: 100%; min-width: 0; }
+.zero-wrap .eyebrow { justify-content: center; }
+.zero-title { font-size: clamp(7rem, 36vw, 16rem); line-height: .86; }
+.zero-title .zl1, .zero-title .zl2 { display: block; }
+.zero {
+  display: inline-block; position: relative; width: .72em; height: .72em; border-radius: 50%;
+  vertical-align: -0.02em; margin-inline: .03em;
+  background: repeating-radial-gradient(circle, var(--surface) 0 2px, var(--surface-2) 2px 4px);
+  box-shadow: 0 0 0 .018em color-mix(in srgb, var(--fg) 45%, transparent), 0 .06em .35em rgba(0, 0, 0, .6);
 }
-.hero h1 .line { overflow: clip; padding-block: .06em; margin-block: -.06em; }
-.hero h1 .line-in { display: inline-block; }
+.zero::before {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 18%, rgba(255, 255, 255, .16) 24%, transparent 30% 68%, rgba(255, 255, 255, .1) 74%, transparent 80%);
+  animation: spin 2.2s linear infinite;
+}
+.zero::after {
+  content: ""; position: absolute; inset: 34%; border-radius: 50%;
+  background: radial-gradient(circle, var(--bg) 0 10%, transparent 11%), linear-gradient(135deg, var(--green), var(--blue));
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.zero-sub { color: var(--muted); max-width: 26em; font-size: clamp(1rem, 2.6vw, 1.25rem); }
+.scroll-hint { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; font-size: .8125rem; color: var(--dim); margin-top: 8px; }
+.scroll-hint i { width: 1px; height: 40px; background: linear-gradient(var(--green), transparent); transform-origin: top; animation: hint 1.8s ease-in-out infinite; }
+@keyframes hint { 0% { transform: scaleY(0); opacity: 1; } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
 
-/* booth band */
-.band { position: relative; isolation: isolate; overflow: hidden; min-height: clamp(420px, 62vw, 680px); display: flex; align-items: flex-end; }
-.band > img { position: absolute; top: -12%; left: 0; width: 100%; height: 124%; object-fit: cover; z-index: -2; }
-.band::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, var(--bg) 4%, color-mix(in srgb, var(--bg) 55%, transparent) 45%, transparent 75%); }
-.band-copy { display: grid; gap: 16px; padding-block: 48px; max-width: 40rem; }
-.band-copy p:not(.eyebrow) { color: var(--fg); opacity: .86; font-size: 1.125rem; }
+.cap { display: grid; gap: 10px; max-width: 46rem; }
+.cap-label { font-size: .8125rem; font-weight: 500; color: var(--green); display: flex; gap: .6em; align-items: baseline; }
+.cap-label b { font-family: var(--mono); font-weight: 500; letter-spacing: .08em; }
+.cap-title { font-family: var(--display); font-weight: 700; font-size: clamp(3.75rem, 16vw, 7.5rem); line-height: .9; text-wrap: balance; }
+.cap-text { color: var(--fg); opacity: .86; font-size: clamp(1rem, 2.4vw, 1.1875rem); max-width: 28em; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+
+/* zoom mode */
+.zoom-on .journey-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; background: var(--bg); }
+.zoom-on .scene { position: absolute; inset: 0; overflow: hidden; background: var(--bg); visibility: hidden; }
+.zoom-on .scene-zero { min-height: 0; visibility: visible; }
+.zoom-on .scene img { position: absolute; max-width: none; aspect-ratio: auto; object-fit: fill; }
+.zoom-on .journey-caps, .zoom-on .journey-fx, .zoom-on .journey-hud { display: block; }
+.journey-caps { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.zoom-on .cap {
+  position: absolute; inset-inline: var(--gutter); bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  padding: 0; visibility: hidden; pointer-events: auto;
+}
+.zoom-on .cap.cap-top { top: calc(118px + env(safe-area-inset-top, 0px)); bottom: auto; }
+.journey-fx { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.journey-fx div { position: absolute; inset: 0; }
+.fx-scrim { background: linear-gradient(to bottom, color-mix(in srgb, var(--bg) 72%, transparent) 0%, transparent 30%), linear-gradient(to top, color-mix(in srgb, var(--bg) 88%, transparent) 0%, color-mix(in srgb, var(--bg) 40%, transparent) 30%, transparent 55%); }
+.fx-vignette { background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, .9) 100%); opacity: 0; }
+.fx-flash { background: #fff; opacity: 0; }
+.zoom-on .journey-hud {
+  position: absolute; z-index: 6; inset-inline: var(--gutter); top: calc(78px + env(safe-area-inset-top, 0px));
+  display: flex; align-items: center; gap: 14px;
+}
+.hud-count { white-space: nowrap; font-family: var(--mono); font-size: .75rem; letter-spacing: .1em; color: var(--fg); direction: ltr; }
+.hud-bar { flex: 0 1 180px; height: 1px; background: color-mix(in srgb, var(--fg) 20%, transparent); }
+.hud-bar i { display: block; height: 100%; background: var(--green); transform: scaleX(0); transform-origin: right center; }
+.hud-skip {
+  margin-inline-start: auto; white-space: nowrap; font-size: .8125rem; color: var(--fg); text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); border-radius: 999px; padding: 7px 14px;
+  background: color-mix(in srgb, var(--bg) 55%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+@media (max-width: 720px) {
+  .zoom-on .cap { bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+}
+/* the WhatsApp dock steps aside while the journey plays */
+.dock { transition: transform .35s ease; }
+.in-journey .dock { transform: translateY(110%); }
+
+/* #portal: tool for marking the circle on a new photo */
+.ptool {
+  position: absolute; z-index: 10; inset-inline: 12px; bottom: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  background: rgba(0, 0, 0, .8); padding: 10px; border-radius: 10px; font-size: 13px;
+}
+.ptool output { flex: 1 1 100%; font-family: var(--mono); direction: ltr; user-select: all; word-break: break-all; }
+.ptool button { font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+.pring { position: absolute; z-index: 9; border: 2px solid var(--amber); border-radius: 50%; pointer-events: none; box-shadow: 0 0 0 9999px rgba(0, 0, 0, .35); }
 
 /* finder */
 .finder { display: grid; gap: 12px; margin-bottom: 28px; }
@@ -226,6 +293,9 @@ p { margin: 0; }
 .teacher img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 30%; border-radius: 6px; }
 .teacher-copy { display: grid; gap: 22px; min-width: 0; }
 .teacher-copy .story { color: var(--muted); max-width: 36em; }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 36px; padding-top: 22px; border-top: 1px solid var(--line); }
+.stat b { display: block; font-family: var(--display); font-size: 2.6rem; line-height: 1; font-weight: 700; }
+.stat span { font-size: .8125rem; color: var(--muted); }
 .teacher blockquote { margin: 0; padding-inline-start: 20px; border-inline-start: 2px solid var(--green); font-size: clamp(1.125rem, 2vw, 1.375rem); line-height: 1.5; font-weight: 500; }
 .teacher cite { display: block; margin-top: 10px; font-style: normal; font-size: .875rem; color: var(--muted); font-weight: 400; }
 @media (max-width: 820px) { .teacher { grid-template-columns: 1fr; } .teacher img { aspect-ratio: 4 / 3; max-height: 460px; } }
@@ -306,21 +376,7 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: clip; }
 
-/* intro guard: hides the hero for a moment until the intro animation takes over */
-.js-intro .hero-copy > *, .js-intro .hero-photo { visibility: hidden; }
-
-/* ticker */
-.marquee { overflow: hidden; border-block: 1px solid var(--line); padding-block: clamp(14px, 2vw, 22px); }
-.marquee-track { display: flex; align-items: center; gap: clamp(24px, 4vw, 56px); width: max-content; font-family: var(--display); font-weight: 700; font-size: clamp(2.75rem, 7vw, 5rem); line-height: 1; white-space: nowrap; will-change: transform; }
-.marquee-track span { color: transparent; -webkit-text-stroke: 1px var(--muted); }
-.marquee-track span:nth-of-type(odd) { color: var(--fg); -webkit-text-stroke: 0; }
-.marquee-track b { width: .22em; height: .22em; border-radius: 50%; background: var(--green); flex: none; }
-
-/* statement, lights up word by word while scrolling */
-.statement { padding-block: clamp(80px, 12vw, 160px); }
-.statement-text { font-family: var(--display); font-weight: 700; font-size: clamp(3rem, 8vw, 6.5rem); line-height: 1; max-width: 15em; text-wrap: balance; }
 h2 .w { display: inline-block; }
-.statement-text .hl { background: linear-gradient(90deg, var(--green), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
 /* footer */
 .foot { border-top: 1px solid var(--line); padding-block: 28px; color: var(--dim); font-size: .875rem; }
@@ -349,13 +405,6 @@ h2 .w { display: inline-block; }
 </head>
 <body>
 <div class="page" dir="rtl" lang="he">
-<script>
-  // Hide the hero only until the intro animation starts (with a timeout fallback)
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    document.documentElement.classList.add("js-intro");
-    setTimeout(function () { document.documentElement.classList.remove("js-intro"); }, 2500);
-  }
-</script>
 
   <header class="bar">
     <div class="progress" aria-hidden="true"><i></i></div>
@@ -375,58 +424,65 @@ h2 .w { display: inline-block; }
   </header>
 
   <main id="top">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">שיעורי DJ פרטיים · אלמוג כהן</p>
-          <h1><span class="line"><span class="line-in">מאפס</span></span><span class="line"><span class="line-in accent">לעמדה.</span></span></h1>
-          <p class="lede">מסלול כניסה לעולם האירועים: <strong>שיעורים פרטיים על ציוד מקצועי, יציאה לאירועים אמיתיים וליווי אישי</strong> עד שאתם עומדים מול קהל ויודעים מה לעשות.</p>
-          <div class="cta-row">
-            <a class="btn btn-primary" href="#tracks">
-              בחרו מסלול
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a class="btn btn-ghost" data-wa="היי אלמוג, מעוניין לשמוע על לימודי DJ ב-Compaktt School" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">שיחה עם אלמוג בוואטסאפ</a>
-          </div>
-          <div class="stats num">
-            <div class="stat"><b>14</b><span>שנים על העמדה</span></div>
-            <div class="stat"><b>1,000+</b><span>אירועים</span></div>
-            <div class="stat"><b>30+</b><span>תלמידים</span></div>
+    <!-- JOURNEY: מ-0 לעמדה. Zoom engine in zoom.js, crops from tools/zoom-crops.py -->
+    <section class="journey" id="journey" aria-label="מ-0 לעמדה">
+      <div class="journey-stage">
+        <div class="scene scene-zero" data-scene>
+          <div class="zero-wrap">
+            <p class="eyebrow">שיעורי DJ פרטיים · אלמוג כהן</p>
+            <h1 class="zero-title"><span class="zl1">מ-<span class="zero"><span class="sr">0</span></span></span><span class="zl2">לעמדה.</span></h1>
+            <p class="zero-sub">מסלול כניסה לעולם האירועים, מהצעד הראשון ועד שאתם עומדים מול קהל.</p>
+            <span class="scroll-hint" aria-hidden="true">גללו<i></i></span>
           </div>
         </div>
-        <figure class="hero-photo" style="margin:0">
-          <div class="hero-media"><img src="assets/hero.jpg" alt="אלמוג כהן בעמדת DJ של Pioneer, ידיים פרושות" width="1600" height="1067"></div>
-          <figcaption class="rig"><span>XDJ-RX3</span><span>DDJ-1000</span><span>APPLE</span><span>90 MIN / SESSION</span></figcaption>
+        <figure class="scene" data-scene data-size-p="961,1708" data-portal-p="0.4995,0.7986,0.2133" data-size-l="1920,1080" data-portal-l="0.4164,0.7611,0.0801">
+          <picture>
+            <source media="(orientation: portrait)" type="image/webp" srcset="assets/zoom/booth-portrait.webp">
+            <source media="(orientation: portrait)" srcset="assets/zoom/booth-portrait.jpg">
+            <source type="image/webp" srcset="assets/zoom/booth-landscape.webp">
+            <img src="assets/zoom/booth-landscape.jpg" alt="עמדת DJ עם הלוגו העגול של אלמוג כהן ועשן על הבמה" decoding="async">
+          </picture>
+          <figcaption class="cap"><span class="cap-label"><b>01</b>העמדה</span><span class="cap-title">פה תעמדו.</span><span class="cap-text">עמדה אמיתית, ציוד אמיתי ובמה אמיתית. ככה נראה היעד.</span></figcaption>
         </figure>
-      </div>
-    </section>
-
-    <!-- TICKER -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <span>מאפס לעמדה</span><b></b><span>XDJ-RX3</span><b></b><span>יציאה לשטח</span><b></b><span>DDJ-1000</span><b></b><span>ליווי אישי</span><b></b><span>90 דקות</span><b></b>
-        <span>מאפס לעמדה</span><b></b><span>XDJ-RX3</span><b></b><span>יציאה לשטח</span><b></b><span>DDJ-1000</span><b></b><span>ליווי אישי</span><b></b><span>90 דקות</span><b></b>
-        <span>מאפס לעמדה</span><b></b><span>XDJ-RX3</span><b></b><span>יציאה לשטח</span><b></b><span>DDJ-1000</span><b></b><span>ליווי אישי</span><b></b><span>90 דקות</span><b></b>
-      </div>
-    </div>
-
-    <!-- STATEMENT -->
-    <section class="statement" aria-label="הגישה">
-      <div class="wrap">
-        <p class="statement-text" id="statement">לא מלמדים רק ללחוץ פליי. מלמדים לחשוב כמו DJ מקצועי, לעבוד נכון מול קהל <span class="hl">ולהפוך ידע לכסף.</span></p>
-      </div>
-    </section>
-
-    <!-- BOOTH BAND -->
-    <section class="band" aria-label="הנוף מהעמדה">
-      <img src="assets/booth.jpg" alt="מבט מאחורי ה-DJ אל קהל גדול באירוע חוץ" loading="lazy" width="2000" height="1123">
-      <div class="wrap">
-        <div class="band-copy">
-          <p class="eyebrow">יציאה לשטח</p>
-          <h2>ככה זה נראה מהעמדה.</h2>
-          <p>במסלולי השטח אתם מגיעים איתי לאירועים אמיתיים ורואים מקרוב איך עובדים מול קהל. במסלול PRO אתם גם מנגנים באירוע, ואני עומד לידכם.</p>
-        </div>
+        <figure class="scene" data-scene data-size-p="637,1133" data-portal-p="0.4992,0.2083,0.0377" data-size-l="1700,956" data-portal-l="0.6541,0.2469,0.0141">
+          <picture>
+            <source media="(orientation: portrait)" type="image/webp" srcset="assets/zoom/headphones-portrait.webp">
+            <source media="(orientation: portrait)" srcset="assets/zoom/headphones-portrait.jpg">
+            <source type="image/webp" srcset="assets/zoom/headphones-landscape.webp">
+            <img src="assets/zoom/headphones-landscape.jpg" alt="אלמוג כהן שם אוזניות לפני שהוא מתחיל לנגן" decoding="async">
+          </picture>
+          <figcaption class="cap"><span class="cap-label"><b>02</b>שמיעה</span><span class="cap-title">שומעים לפני כולם.</span><span class="cap-text">האוזניות הן הכלי הראשון: מכינים את השיר הבא באוזן אחת ומקשיבים לרחבה בשנייה.</span></figcaption>
+        </figure>
+        <figure class="scene" data-scene data-size-p="1080,1921" data-portal-p="0.6309,0.5698,0.0238" data-size-l="1920,1080" data-portal-l="0.8833,0.5698,0.0075">
+          <picture>
+            <source media="(orientation: portrait)" type="image/webp" srcset="assets/zoom/crowd-pov-portrait.webp">
+            <source media="(orientation: portrait)" srcset="assets/zoom/crowd-pov-portrait.jpg">
+            <source type="image/webp" srcset="assets/zoom/crowd-pov-landscape.webp">
+            <img src="assets/zoom/crowd-pov-landscape.jpg" alt="מבט מאחורי ה-DJ אל קהל גדול, עם הלפטופ על העמדה" decoding="async">
+          </picture>
+          <figcaption class="cap"><span class="cap-label"><b>03</b>קריאת קהל</span><span class="cap-title">קוראים את הרחבה.</span><span class="cap-text">מהעמדה רואים הכול. לומדים להבין מה הקהל צריך עוד לפני שהוא מבקש.</span></figcaption>
+        </figure>
+        <figure class="scene" data-scene data-size-p="600,1067" data-portal-p="0.5000,0.6982,0.0750" data-size-l="1600,900" data-portal-l="0.3194,0.6422,0.0281">
+          <picture>
+            <source media="(orientation: portrait)" type="image/webp" srcset="assets/zoom/decks-portrait.webp">
+            <source media="(orientation: portrait)" srcset="assets/zoom/decks-portrait.jpg">
+            <source type="image/webp" srcset="assets/zoom/decks-landscape.webp">
+            <img src="assets/zoom/decks-landscape.jpg" alt="הידיים של אלמוג על ציוד Pioneer בעמדה" decoding="async">
+          </picture>
+          <figcaption class="cap"><span class="cap-label"><b>04</b>טכניקה</span><span class="cap-title">הידיים לומדות את הציוד.</span><span class="cap-text">XDJ-RX3 ו-DDJ-1000 בכל שיעור: 90 דקות על הציוד שמנגנים עליו באירועים.</span></figcaption>
+        </figure>
+        <figure class="scene" data-scene data-size-p="1080,1921" data-size-l="1920,1080">
+          <picture>
+            <source media="(orientation: portrait)" type="image/webp" srcset="assets/zoom/arrival-portrait.webp">
+            <source media="(orientation: portrait)" srcset="assets/zoom/arrival-portrait.jpg">
+            <source type="image/webp" srcset="assets/zoom/arrival-landscape.webp">
+            <img src="assets/zoom/arrival-landscape.jpg" alt="אלמוג כהן על הבמה עם ידיים פרושות מול קהל גדול" decoding="async">
+          </picture>
+          <figcaption class="cap"><span class="cap-label"><b>05</b>האירוע הראשון</span><span class="cap-title">לעמדה.</span><span class="cap-text">שיעורים פרטיים, יציאה לאירועים אמיתיים וליווי אישי של אלמוג כהן, עד שאתם מנגנים מול קהל.</span><span class="cta-row"><a class="btn btn-primary" href="#tracks">בחרו מסלול</a><a class="btn btn-ghost" data-wa="היי אלמוג, מעוניין לשמוע על לימודי DJ ב-Compaktt School" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">שיחה עם אלמוג בוואטסאפ</a></span></figcaption>
+        </figure>
+        <div class="journey-caps"></div>
+        <div class="journey-fx" aria-hidden="true"><div class="fx-scrim"></div><div class="fx-vignette"></div><div class="fx-flash"></div></div>
+        <div class="journey-hud"><span class="hud-count">00 / 05</span><span class="hud-bar"><i></i></span><a class="hud-skip" href="#tracks">דלגו למסלולים</a></div>
       </div>
     </section>
 
@@ -578,6 +634,11 @@ h2 .w { display: inline-block; }
           <h2>אלמוג כהן</h2>
           <p class="story">בגיל 14 נכנסתי לשיעור DJ ראשון. המורה אמר לי לצרוב שני דיסקים ולבוא שבוע אחרי. בגיל 15 כבר עמדתי על במות. היום, אחרי 14 שנה ויותר מ-1,000 אירועים, אני עדיין על הרחבה, ומלמד בדרך שהייתי רוצה שילמדו אותי.</p>
           <blockquote>לתת לדור הבא את הידע והכלים בדרך הכי חדשנית שאני הייתי רוצה ללמוד. זה מה שמניע אותי.<cite>אלמוג כהן</cite></blockquote>
+          <div class="stats num">
+            <div class="stat"><b>14</b><span>שנים על העמדה</span></div>
+            <div class="stat"><b>1,000+</b><span>אירועים</span></div>
+            <div class="stat"><b>30+</b><span>תלמידים</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -753,6 +814,7 @@ h2 .w { display: inline-block; }
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
+<script src="zoom.js"></script>
 <script>
 (function () {
   var WA = "972502427616";
@@ -877,11 +939,7 @@ h2 .w { display: inline-block; }
   initMotion();
 
   function initMotion() {
-    var root = document.documentElement;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.gsap || !window.ScrollTrigger) {
-      root.classList.remove("js-intro");
-      return;
-    }
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
     var desktop = window.matchMedia("(min-width: 981px)").matches;
 
@@ -937,48 +995,16 @@ h2 .w { display: inline-block; }
       });
     }
 
-    // Hero intro on load
-    var lines = gsap.utils.toArray(".hero h1 .line-in");
-    var heroBits = ".hero .eyebrow, .hero .lede, .hero .cta-row, .hero .stats";
-    gsap.set(lines, { yPercent: 110 });
-    gsap.set(heroBits, { autoAlpha: 0, y: 24 });
-    gsap.set(".hero .rig", { autoAlpha: 0 });
-    gsap.set(".hero-media", { clipPath: "inset(100% 0% 0% 0%)" });
-    gsap.set(".hero-media img", { scale: 1.3 });
-    root.classList.remove("js-intro");
-
-    var stats = gsap.utils.toArray(".stat b");
-    gsap.timeline({ defaults: { ease: "power4.out" }, delay: 0.1 })
-      .to(".hero .eyebrow", { autoAlpha: 1, y: 0, duration: 0.7 })
-      .to(lines, { yPercent: 0, duration: 1.1, stagger: 0.12 }, "-=0.45")
-      .to(".hero-media", { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "expo.inOut" }, "<-0.1")
-      .to(".hero-media img", { scale: 1.12, duration: 1.8, ease: "expo.out" }, "<0.2")
-      .to(".hero .lede, .hero .cta-row, .hero .stats", { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1 }, "-=1.5")
-      .add(function () { stats.forEach(function (el) { countUp(el, 1.8); }); }, "<0.2")
-      .to(".hero .rig", { autoAlpha: 1, duration: 0.6 }, "-=0.6");
-
-    // Hero parallax while scrolling away
-    var heroOut = { trigger: ".hero", start: "top top", end: "bottom top", scrub: true };
-    gsap.to(".hero-media img", { yPercent: 5, ease: "none", scrollTrigger: heroOut });
-    gsap.to(".hero-copy", { y: -60, ease: "none", scrollTrigger: heroOut });
+    // Stats count up when the teacher section comes into view
+    gsap.utils.toArray(".stat b").forEach(function (el) {
+      ScrollTrigger.create({ trigger: el, start: "top 90%", once: true, onEnter: function () { countUp(el, 1.8); } });
+    });
 
     // Track-style progress bar under the header
     gsap.to(".progress i", { scaleX: 1, ease: "none", scrollTrigger: { start: 0, end: "max", scrub: 0.3 } });
 
-    // Ticker moves with the scroll
-    gsap.fromTo(".marquee-track", { xPercent: 0 }, {
-      xPercent: 22, ease: "none",
-      scrollTrigger: { trigger: ".marquee", start: "top bottom", end: "bottom top", scrub: 0.6 }
-    });
-
-    // Statement lights up word by word
-    gsap.fromTo(splitWords(document.getElementById("statement")), { opacity: 0.12 }, {
-      opacity: 1, stagger: 0.1, ease: "none",
-      scrollTrigger: { trigger: "#statement", start: "top 80%", end: "bottom 45%", scrub: true }
-    });
-
     // Headings rise word by word, then the rest of the block fades in
-    gsap.utils.toArray(".section-head, .band-copy, .teacher-copy, .groom-copy, .final .wrap").forEach(function (box) {
+    gsap.utils.toArray(".section-head, .teacher-copy, .groom-copy, .final .wrap").forEach(function (box) {
       var h2 = box.querySelector("h2");
       var words = h2 ? splitWords(h2) : [];
       var others = Array.prototype.filter.call(box.children, function (c) { return c !== h2; });
@@ -987,11 +1013,7 @@ h2 .w { display: inline-block; }
         .from(others, { y: 28, autoAlpha: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, "<0.1");
     });
 
-    // Photo parallax
-    gsap.fromTo(".band > img", { yPercent: -8 }, {
-      yPercent: 8, ease: "none",
-      scrollTrigger: { trigger: ".band", start: "top bottom", end: "bottom top", scrub: true }
-    });
+    // Photo reveals and parallax
     gsap.from(".teacher-media", {
       clipPath: "inset(0% 0% 100% 0%)", duration: 1.4, ease: "expo.inOut",
       scrollTrigger: { trigger: ".teacher", start: "top 75%", once: true }
