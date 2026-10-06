@@ -23,7 +23,8 @@ When prices change, update both places.
 The page currently opens with a static, brand-neutral hero ("מ-0 לעמדה." with the vinyl 0).
 The scroll motion that replaces it is being chosen from four sketches: A "the hand leads",
 B "scroll is the crossfader", C "dive into the circle" (`zoom.js`), D "the record window".
-The motion lab: https://claude.ai/artifact/NGKJeiZCkebMDcwMvDyiMR
+The sketches (videos + pick): https://claude.ai/artifact/FkbCvgBSeyAY2T8296nEtg
+The interactive motion lab: https://claude.ai/artifact/NGKJeiZCkebMDcwMvDyiMR
 
 All imagery is AI-generated (hands and POV only, UV purple). The prompts are in `AI-PROMPTS.md`
 and in the Google Drive folder `academy-ai` (`PROMPTS.txt`); the generated images are saved to
