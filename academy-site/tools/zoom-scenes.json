@@ -1,11 +1,5 @@
 {
-  "_comment": "Sources and portal circles (in source pixels) for the zoom journey. Run tools/zoom-crops.py after changing.",
+  "_comment": "Sources and portal circles (in source pixels) for the zoom journey (option C). Empty until the new hands-only POV photos arrive; see SHOTLIST.md. Each entry: {\"id\": \"jog\", \"src\": \"path/to/photo.jpg\", \"portal\": [x, y, r]} or {\"id\": \"crowd\", \"src\": \"...\", \"focus\": [x, y]} for the last scene. Run tools/zoom-crops.py after changing.",
   "out": "assets/zoom",
-  "scenes": [
-    { "id": "booth",      "src": "../site/public/assets/gallery/djavira/dj-booth.jpg", "portal": [1066, 1364, 205] },
-    { "id": "headphones", "src": "../site/public/assets/gallery/djavira/dj-almog.jpg", "portal": [1112, 236, 24] },
-    { "id": "crowd-pov",  "src": "../site/public/assets/almog/corporate-1.jpg",        "portal": [5301, 1919, 45], "_note": "laptop software jog; corporate-1 is 3x booth.jpg" },
-    { "id": "decks",      "src": "../site/public/photo almog cohen website/WhatsApp Image 2025-04-24 at 03.31.09 (2).jpeg", "portal": [511, 745, 45] },
-    { "id": "arrival",    "src": "../site/public/assets/almog/ידיים של מלך מעלה אדומים.jpg", "focus": [3333, 1500] }
-  ]
+  "scenes": []
 }

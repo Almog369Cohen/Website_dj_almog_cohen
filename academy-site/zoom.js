@@ -34,6 +34,7 @@
   var HOLD = 0.32;          // share of each segment spent on a scene before diving in
   var FINAL_HOLD = 0.7;     // extra segment length for the last scene
   var LABEL = 0.16;         // vinyl label radius relative to the record's width
+  var MAX_ZOOM = 3;         // beyond this a photo turns to mush
   var portalMode = window.location.hash === "#portal";
 
   journey.classList.add("zoom-on");
@@ -116,8 +117,10 @@
     cur.style.clipPath = "none";
     if (!last && L.portal) {
       var P = L.portal;
+      // The picture zooms at most x3 (stays sharp); the circle keeps opening until it covers the screen
       var S = farthestCorner(P) / P.r;
-      var z = Math.pow(S, d);
+      var z = Math.pow(Math.min(S, MAX_ZOOM), d);
+      var open = Math.pow(S, d);
       var origin = P.x + "px " + P.y + "px";
       cur.style.transformOrigin = origin;
       cur.style.transform = "scale(" + (idle * z) + ")";
@@ -125,7 +128,7 @@
       // The next scene, seen through the circle, flying forward as the circle opens
       var nxt = scenes[i + 1];
       var sc = 1 + 0.35 * (1 - d);
-      var rad = (P.r * idle * z) / sc;
+      var rad = (P.r * idle * open) / sc;
       nxt.style.transformOrigin = origin;
       nxt.style.transform = "scale(" + sc + ")";
       nxt.style.clipPath = "circle(" + rad.toFixed(2) + "px at " + P.x.toFixed(1) + "px " + P.y.toFixed(1) + "px)";

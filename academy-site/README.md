@@ -1,11 +1,12 @@
 # Compaktt School – standalone academy site
 
-A separate one-page site for Almog Cohen's DJ school, split out from the `/academy`
-section of the main site (`site/`, www.compaktt.com). Live address: **https://school.compaktt.com**
+A separate one-page site for the DJ school, split out from the `/academy` section of the
+main site (`site/`, www.compaktt.com). The academy is its own brand: no Almog Cohen logo, colours
+or event photos here; Almog appears only as the teacher. Live address: **https://school.compaktt.com**
 
 - `index.html` – the whole site (HTML + CSS + a small vanilla JS script, no build step)
-- `zoom.js` – the "מ-0 לעמדה" zoom journey that opens the page (see below)
-- `assets/` – optimized photos, logo and the student audio recording; `assets/zoom/` holds the journey crops
+- `zoom.js` – the zoom-into-circles engine (motion option C); not loaded while the hero is interim
+- `assets/` – the student audio recording; journey crops go to `assets/zoom/` once the new photos exist
 - `fonts/` – self-hosted Karantina, IBM Plex Sans Hebrew and IBM Plex Mono (OFL, from @fontsource)
 - `tools/` – `zoom-crops.py` + `zoom-scenes.json` for making journey crops (not deployed)
 - `SHOTLIST.md` – what to photograph for the journey (not deployed)
@@ -17,14 +18,12 @@ Content (tracks, prices, FAQ, bio) is taken from `site/src/app/academy/page.tsx`
 `site/src/components/sections/FAQSection.tsx` and `site/src/app/about/page.tsx`.
 When prices change, update both places.
 
-## Zoom journey
+## Opening motion
 
-The page opens with a full-screen journey from a spinning record (the "0" of "מ-0 לעמדה") to the
-stage. Every scene ends in a circle; scrolling zooms into it while the next scene opens inside it.
-Scenes are the `[data-scene]` elements in `#journey`; each image scene carries the size of its
-portrait/landscape crop and its circle (`data-size-p/l`, `data-portal-p/l`). Open the page with
-`#portal` to mark circles on new photos. Reduced-motion visitors get the scenes as a plain sequence.
-New photos: see `SHOTLIST.md`.
+The page currently opens with a static, brand-neutral hero ("מ-0 לעמדה." with the vinyl 0).
+The scroll motion that replaces it is being chosen in the motion lab
+(https://claude.ai/artifact/NGKJeiZCkebMDcwMvDyiMR): A "the hand leads", B "scroll is the
+crossfader", C "dive into the circle". What to photograph for it: `SHOTLIST.md`.
 
 ## Scroll motion
 
