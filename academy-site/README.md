@@ -6,10 +6,10 @@ or event photos here; Almog appears only as the teacher. Live address: **https:/
 
 - `index.html` – the whole site (HTML + CSS + a small vanilla JS script, no build step)
 - `zoom.js` – the zoom-into-circles engine (motion option C); not loaded while the hero is interim
-- `assets/` – the student audio recording; journey crops go to `assets/zoom/` once the new photos exist
+- `assets/` – the student audio recording; journey crops go to `assets/zoom/` once the AI images exist
 - `fonts/` – self-hosted Karantina, IBM Plex Sans Hebrew and IBM Plex Mono (OFL, from @fontsource)
 - `tools/` – `zoom-crops.py` + `zoom-scenes.json` for making journey crops (not deployed)
-- `SHOTLIST.md` – what to photograph for the journey (not deployed)
+- `AI-PROMPTS.md` – prompts for the AI images of the journey (not deployed)
 - `vendor/` – GSAP 3.15 + ScrollTrigger (scroll animations) and Lenis 1.3 (smooth scrolling),
   copied from npm so the site has no CDN dependency
 - `robots.txt`, `sitemap.xml`
@@ -21,9 +21,13 @@ When prices change, update both places.
 ## Opening motion
 
 The page currently opens with a static, brand-neutral hero ("מ-0 לעמדה." with the vinyl 0).
-The scroll motion that replaces it is being chosen in the motion lab
-(https://claude.ai/artifact/NGKJeiZCkebMDcwMvDyiMR): A "the hand leads", B "scroll is the
-crossfader", C "dive into the circle". What to photograph for it: `SHOTLIST.md`.
+The scroll motion that replaces it is being chosen from four sketches: A "the hand leads",
+B "scroll is the crossfader", C "dive into the circle" (`zoom.js`), D "the record window".
+The motion lab: https://claude.ai/artifact/NGKJeiZCkebMDcwMvDyiMR
+
+All imagery is AI-generated (hands and POV only, UV purple). The prompts are in `AI-PROMPTS.md`
+and in the Google Drive folder `academy-ai` (`PROMPTS.txt`); the generated images are saved to
+that folder and pulled into the site from there.
 
 ## Scroll motion
 
