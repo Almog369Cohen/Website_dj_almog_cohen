@@ -10,7 +10,7 @@ or event photos here; Almog appears only as the teacher. Live address: **https:/
 - `scenes.js` – the eight station drawings (UV purple, drawn in code) shown in the window
 - `assets/` – the student audio recording; AI image crops for the stations go to `assets/zoom/`
 - `fonts/` – self-hosted Karantina, IBM Plex Sans Hebrew and IBM Plex Mono (OFL, from @fontsource)
-- `tools/` – `zoom-crops.py` + `zoom-scenes.json` for cropping the AI images (not deployed)
+- `tools/` – `gen-images.py` (makes the AI images), `zoom-crops.py` + `zoom-scenes.json` (crops them); not deployed
 - `AI-PROMPTS.md` – prompts for the AI images of the journey (not deployed)
 - `vendor/` – GSAP 3.15 + ScrollTrigger (scroll animations) and Lenis 1.3 (smooth scrolling),
   copied from npm so the site has no CDN dependency
@@ -31,7 +31,8 @@ own. With reduced motion, or without JS, only the static heading shows.
 
 The stations are drawn in code (`scenes.js`) until the AI images exist. To swap one in:
 
-1. Generate it with the prompts in `AI-PROMPTS.md` (also in the Drive folder `academy-ai`).
+1. Generate it with the prompts in `AI-PROMPTS.md`: `python3 tools/gen-images.py` makes all 16 with Google's
+   Gemini API (needs `GEMINI_API_KEY` in the environment), or use Codex via the Drive folder `academy-ai`.
 2. Add it to `tools/zoom-scenes.json` with its focus circle (the round thing that sits in the window)
    and run `python3 tools/zoom-crops.py`.
 3. Paste the printed `data-src-*`, `data-size-*` and `data-focus-*` attributes on the matching
