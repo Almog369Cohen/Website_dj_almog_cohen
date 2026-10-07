@@ -5,10 +5,12 @@ main site (`site/`, www.compaktt.com). The academy is its own brand: no Almog Co
 or event photos here; Almog appears only as the teacher. Live address: **https://school.compaktt.com**
 
 - `index.html` – the whole site (HTML + CSS + a small vanilla JS script, no build step)
-- `zoom.js` – the zoom-into-circles engine (motion option C); not loaded while the hero is interim
-- `assets/` – the student audio recording; journey crops go to `assets/zoom/` once the AI images exist
+- `journey.js` – the opening motion: the heading's vinyl 0 becomes a record window that plays eight
+  stations from the shoes to the booth, then opens onto the three tracks
+- `scenes.js` – the eight station drawings (UV purple, drawn in code) shown in the window
+- `assets/` – the student audio recording; AI image crops for the stations go to `assets/zoom/`
 - `fonts/` – self-hosted Karantina, IBM Plex Sans Hebrew and IBM Plex Mono (OFL, from @fontsource)
-- `tools/` – `zoom-crops.py` + `zoom-scenes.json` for making journey crops (not deployed)
+- `tools/` – `zoom-crops.py` + `zoom-scenes.json` for cropping the AI images (not deployed)
 - `AI-PROMPTS.md` – prompts for the AI images of the journey (not deployed)
 - `vendor/` – GSAP 3.15 + ScrollTrigger (scroll animations) and Lenis 1.3 (smooth scrolling),
   copied from npm so the site has no CDN dependency
@@ -20,15 +22,20 @@ When prices change, update both places.
 
 ## Opening motion
 
-The page currently opens with a static, brand-neutral hero ("מ-0 לעמדה." with the vinyl 0).
-The scroll motion that replaces it is being chosen from four sketches: A "the hand leads",
-B "scroll is the crossfader", C "dive into the circle" (`zoom.js`), D "the record window".
-The sketches (videos + pick): https://claude.ai/artifact/FkbCvgBSeyAY2T8296nEtg
-The interactive motion lab: https://claude.ai/artifact/NGKJeiZCkebMDcwMvDyiMR
+Motion D, "the record window" (`journey.js`), picked from the four sketches
+(https://claude.ai/artifact/FkbCvgBSeyAY2T8296nEtg). The vinyl 0 in "מ-0 לעמדה." grows into a
+round window; scrolling plays eight stations inside it (shoes, desk, power, headphones, jog, fader,
+EQ, booth), each sweeping in like a tonearm over a label while the record turns. At the last station
+the window opens to the full screen with the three tracks. The palette is UV purple, the academy's
+own. With reduced motion, or without JS, only the static heading shows.
 
-All imagery is AI-generated (hands and POV only, UV purple). The prompts are in `AI-PROMPTS.md`
-and in the Google Drive folder `academy-ai` (`PROMPTS.txt`); the generated images are saved to
-that folder and pulled into the site from there.
+The stations are drawn in code (`scenes.js`) until the AI images exist. To swap one in:
+
+1. Generate it with the prompts in `AI-PROMPTS.md` (also in the Drive folder `academy-ai`).
+2. Add it to `tools/zoom-scenes.json` with its focus circle (the round thing that sits in the window)
+   and run `python3 tools/zoom-crops.py`.
+3. Paste the printed `data-src-*`, `data-size-*` and `data-focus-*` attributes on the matching
+   `.jr-scene` in `index.html`. Photos never zoom past x1.5 in the window.
 
 ## Scroll motion
 

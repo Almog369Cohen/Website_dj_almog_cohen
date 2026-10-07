@@ -1,5 +1,5 @@
 {
-  "_comment": "Sources and portal circles (in source pixels) for the zoom journey (option C). Empty until the AI images arrive; see AI-PROMPTS.md. Each entry: {\"id\": \"jog\", \"src\": \"path/to/photo.jpg\", \"portal\": [x, y, r]} or {\"id\": \"crowd\", \"src\": \"...\", \"focus\": [x, y]} for the last scene. Run tools/zoom-crops.py after changing.",
+  "_comment": "AI images for the opening journey, with the round thing that sits in the record window (in source pixels). Empty until the images arrive in the Drive folder academy-ai; see AI-PROMPTS.md. Each entry: {\"id\": \"jog\", \"src\": \"path/to/05-jog-p.png\", \"focus\": [x, y, r], \"src_l\": \"path/to/05-jog-l.png\", \"focus_l\": [x, y, r]} (src_l / focus_l: the 16:9 image, optional). The id matches data-scene in index.html. Run tools/zoom-crops.py after changing and paste the printed attributes on that .jr-scene.",
   "out": "assets/zoom",
   "scenes": []
 }
