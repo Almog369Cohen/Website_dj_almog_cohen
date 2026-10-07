@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>אלמוג כהן זום</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;900&family=Heebo:wght@300;400;600&display=swap">
+<style>
+/* Layout: full-bleed dark club canvas. Two pinned scroll "zoom" scenes drive the page, everything else is quiet. */
+:root{
+  --bg:#07060c; --bg-2:#120f1f; --fg:#f4eefb; --muted:#a79bc0;
+  --violet:#8b5cf6; --cyan:#38d6f5; --glow:rgba(139,92,246,.55);
+  --display:"Rubik",system-ui,"Segoe UI",Arial,sans-serif;
+  --body:"Heebo",system-ui,"Segoe UI",Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;overflow-x:hidden}
+img,video{max-width:100%;display:block}
+a{color:inherit}
+.wrap{padding-inline:clamp(16px,5vw,64px)}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0;text-wrap:balance}
+.eyebrow{font-family:var(--display);font-size:.8rem;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;overflow:hidden}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 50% 55%,transparent 0%,var(--bg) 100%)}
+.hero .in{position:relative;z-index:1;display:grid;gap:18px;justify-items:center;padding-block:64px}
+.hero img{width:clamp(90px,16vw,150px);filter:drop-shadow(0 0 24px var(--glow))}
+.hero h1{font-size:clamp(2.6rem,9vw,6.5rem);font-weight:900;letter-spacing:-.02em}
+.hero p{max-width:34ch;color:var(--muted);margin:0;font-size:1.05rem}
+.scroll-hint{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom,0px));left:50%;translate:-50% 0;z-index:1;font-size:.8rem;color:var(--muted);display:grid;justify-items:center;gap:6px}
+.scroll-hint span{width:1px;height:38px;background:linear-gradient(var(--cyan),transparent);animation:drop 1.6s ease-in-out infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- SCENE 1: card that zooms to full screen ---------- */
+.scene{position:relative}
+.pin{position:relative;height:100svh;overflow:hidden;display:grid;place-items:center}
+.zoom-card{position:absolute;inset:0;will-change:transform;transform-origin:50% 50%}
+.zoom-card img{width:100%;height:100%;object-fit:cover}
+.zoom-card{border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08)}
+.caption{position:absolute;inset:auto 0 0 0;padding:0 clamp(16px,5vw,64px) clamp(32px,8vh,80px);z-index:2;pointer-events:none;background:linear-gradient(transparent,rgba(7,6,12,.85))}
+.caption h2{font-size:clamp(2rem,7vw,4.8rem);font-weight:900}
+.caption p{color:var(--muted);max-width:40ch;margin:.4em 0 0}
+.lead{position:absolute;top:clamp(24px,10vh,96px);inset-inline:0;text-align:center;z-index:2;pointer-events:none;padding-inline:16px}
+.lead h2{font-size:clamp(1.6rem,5vw,3rem);font-weight:700}
+
+/* ---------- SCENE 2: fly-through tunnel ---------- */
+.tunnel{position:relative;height:100svh;overflow:hidden;background:var(--bg)}
+.layer{position:absolute;inset:0;margin:0;display:grid;place-content:center;justify-items:center;gap:14px;will-change:transform,opacity}
+.layer img{width:min(78vw,520px);aspect-ratio:4/5;object-fit:cover;border-radius:20px;box-shadow:0 40px 100px rgba(0,0,0,.75)}
+.layer figcaption{text-align:center;font-family:var(--display);font-weight:700;font-size:clamp(1.3rem,4.5vw,2.4rem);text-shadow:0 2px 24px #000}
+.tunnel .vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 70% at 50% 50%,transparent 40%,var(--bg) 100%);z-index:9}
+.tunnel-title{position:absolute;top:clamp(24px,8vh,80px);inset-inline:0;text-align:center;z-index:10;pointer-events:none}
+.tunnel-title h2{font-size:clamp(1.6rem,5vw,3rem)}
+.tunnel-title p{color:var(--muted);margin:.3em 0 0}
+
+/* ---------- GALLERY with parallax ---------- */
+.gallery{padding-block:clamp(64px,12vh,140px)}
+.gallery header{display:grid;gap:8px;max-width:48ch;margin-bottom:40px}
+.gallery h2{font-size:clamp(1.8rem,5vw,3.2rem)}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,2vw,24px)}
+.col{display:grid;gap:clamp(10px,2vw,24px);align-content:start}
+.col:nth-child(2){padding-top:12vh}
+.cols img{border-radius:14px;aspect-ratio:3/4;object-fit:cover;width:100%}
+@media (max-width:640px){.cols{grid-template-columns:repeat(2,1fr)}.col:nth-child(3){display:none}}
+
+/* ---------- CTA ---------- */
+.cta{padding-block:clamp(64px,12vh,140px);text-align:center;background:linear-gradient(180deg,var(--bg),var(--bg-2))}
+.cta h2{font-size:clamp(2rem,7vw,4.5rem);font-weight:900}
+.cta p{color:var(--muted);max-width:40ch;margin:12px auto 28px}
+.btn{display:inline-block;font-family:var(--display);font-weight:700;padding:16px 34px;border-radius:999px;background:var(--violet);color:#fff;text-decoration:none;box-shadow:0 0 40px var(--glow);transition:transform .2s}
+.btn:hover,.btn:focus-visible{transform:translateY(-2px);outline:2px solid var(--cyan);outline-offset:3px}
+.phone{margin-top:18px;font-family:var(--display);letter-spacing:.06em;color:var(--muted);user-select:all}
+.note{padding-block:28px;font-size:.85rem;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,.08)}
+
+@media (prefers-reduced-motion:reduce){
+  .scroll-hint span{animation:none}
+  .zoom-card{position:relative;inset:auto;width:min(90vw,900px);aspect-ratio:16/10;border-radius:20px}
+  .pin,.tunnel{height:auto;padding-block:40px}
+  .layer{position:relative;margin-bottom:24px}
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <video autoplay muted loop playsinline poster="img/pick27-smoke-stage-wide.jpg" src="img/hero.mp4"></video>
+  <div class="in wrap">
+    <img src="img/logo-white.png" alt="לוגו AC">
+    <h1>אלמוג כהן</h1>
+    <p>DJ לחתונות ואירועים. הדמו הזה מראה את אפקט הזום בגלילה, עם התמונות שלך.</p>
+  </div>
+  <div class="scroll-hint">גלול למטה<span></span></div>
+</section>
+
+<!-- Scene 1: a small card zooms until it fills the screen -->
+<section class="scene" id="scene1">
+  <div class="pin">
+    <div class="lead"><div class="eyebrow">הרחבה</div><h2>מהרגע שהמוזיקה מתחילה</h2></div>
+    <div class="zoom-card"><img src="img/pick27-smoke-stage-wide.jpg" alt="במה עם עשן ותאורה, לוגו AC"></div>
+    <div class="caption">
+      <h2>הרחבה לא נגמרת</h2>
+      <p>חתונות, חינות, מסיבות רחוב. אלמוג על העמדה, הקהל על הרגליים.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Scene 2: fly-through tunnel of photos -->
+<section class="scene" id="scene2">
+  <div class="tunnel">
+    <div class="tunnel-title"><h2>עוברים דרך הערב</h2><p>כל תמונה מתקרבת, נפתחת, ונותנת מקום לבאה</p></div>
+    <figure class="layer"><img src="img/entrance-sparklers.jpg" alt="כניסה עם זיקוקים"><figcaption>הכניסה</figcaption></figure>
+    <figure class="layer"><img src="img/chuppah-couple.jpg" alt="חתן וכלה תחת החופה"><figcaption>החופה</figcaption></figure>
+    <figure class="layer"><img src="img/pick14-groom-shoulders-wide.jpg" alt="החתן על הכתפיים"><figcaption>הרחבה</figcaption></figure>
+    <figure class="layer"><img src="img/pick38-dancefloor-lights.jpg" alt="רוקדים מול אורות ניאון"><figcaption>הפיק</figcaption></figure>
+    <figure class="layer"><img src="img/almog-neon-booth.jpg" alt="אלמוג בעמדה עם שלט ניאון"><figcaption>אלמוג כהן</figcaption></figure>
+    <div class="vignette"></div>
+  </div>
+</section>
+
+<section class="gallery wrap">
+  <header>
+    <div class="eyebrow">גלריה</div>
+    <h2>רגעים מהאירועים</h2>
+    <p style="color:var(--muted);margin:0">העמודות זזות במהירויות שונות בזמן הגלילה. זה הפרלקסה.</p>
+  </header>
+  <div class="cols">
+    <div class="col" data-speed="0.85"><img src="img/pick07-portrait-bw.jpg" alt=""><img src="img/almog-mic.jpg" alt=""><img src="img/couple-booth-standin.jpg" alt=""></div>
+    <div class="col" data-speed="1.15"><img src="img/pick28-smoke-purple-tall.jpg" alt=""><img src="img/haniel-milena-booth.jpg" alt=""><img src="img/pick05-arms-open-bw.jpg" alt=""></div>
+    <div class="col" data-speed="0.95"><img src="img/pick09-street-party-hand-up.jpg" alt=""><img src="img/entrance-sparklers.jpg" alt=""><img src="img/pick38-dancefloor-lights.jpg" alt=""></div>
+  </div>
+</section>
+
+<section class="cta wrap">
+  <div class="eyebrow">בואו נדבר</div>
+  <h2>נסגור תאריך?</h2>
+  <p>שולחים הודעה בוואטסאפ עם התאריך והמקום, ומקבלים תשובה באותו יום.</p>
+  <a class="btn" href="https://wa.me/972500000000" target="_blank" rel="noopener">שלחו וואטסאפ</a>
+  <div class="phone">050-000-0000 (מספר לדוגמה)</div>
+</section>
+
+<div class="note">דמו בלבד. נבנה עם GSAP ScrollTrigger, אותה טכניקה שבאתרים "פרימיום" כמו של Zera.</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  if(!window.gsap||!window.ScrollTrigger){return;}
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){return;}
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* Scene 1: card starts small and rounded, zooms to full bleed; text crossfades. */
+  gsap.set('#scene1 .zoom-card',{scale:.22,borderRadius:28});
+  gsap.set('#scene1 .caption',{opacity:0,y:40});
+  gsap.timeline({
+    scrollTrigger:{trigger:'#scene1',start:'top top',end:'+=220%',scrub:.6,pin:'#scene1 .pin',anticipatePin:1}
+  })
+  .to('#scene1 .zoom-card',{scale:1,borderRadius:0,ease:'power2.inOut',duration:1})
+  .to('#scene1 .lead',{opacity:0,y:-30,duration:.35},.15)
+  .to('#scene1 .caption',{opacity:1,y:0,duration:.4},.6)
+  .to('#scene1 .zoom-card',{scale:1.15,duration:.5,ease:'none'},'>-.1');
+
+  /* Scene 2: five layers fly toward the viewer one after another (dolly / tunnel zoom). */
+  const layers=gsap.utils.toArray('#scene2 .layer');
+  gsap.set(layers,{scale:.15,opacity:0});
+  const tl=gsap.timeline({
+    scrollTrigger:{trigger:'#scene2',start:'top top',end:'+='+(layers.length*110)+'%',scrub:.8,pin:'#scene2 .tunnel',anticipatePin:1}
+  });
+  layers.forEach((el,i)=>{
+    tl.fromTo(el,{scale:.15,opacity:0},{scale:1,opacity:1,duration:1,ease:'power1.out'},i*0.9)
+      .to(el,{scale:4.2,opacity:0,duration:1,ease:'power2.in'},i*0.9+1);
+  });
+  gsap.to('#scene2 .tunnel-title',{opacity:0,scrollTrigger:{trigger:'#scene2',start:'top top',end:'+=40%',scrub:true}});
+
+  /* Gallery: each column scrolls at its own speed. */
+  gsap.utils.toArray('.col').forEach(col=>{
+    const s=parseFloat(col.dataset.speed||1);
+    gsap.to(col,{y:(1-s)*300,ease:'none',scrollTrigger:{trigger:'.gallery',start:'top bottom',end:'bottom top',scrub:true}});
+  });
+
+  /* Keep pins stable when the mobile address bar resizes the viewport. */
+  ScrollTrigger.config({ignoreMobileResize:true});
+  window.addEventListener('load',()=>ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>
