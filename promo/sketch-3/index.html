@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>אלמוג כהן · DJ לחתונות — סקיצה 3: הסיפור שלכם</title>
+<meta name="description" content="DJ אלמוג כהן – הלילה שלכם, שיר אחרי שיר. חתונות שנבנות עם הזוג.">
+<link rel="icon" href="../assets/img/icon-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141416; --paper:#1b1b1f; --ink:#f4f2ee; --muted:rgba(244,242,238,.6);
+  --blue:#059cc0; --green:#03b28c; --grad:linear-gradient(135deg,#059cc0,#03b28c);
+  --line:rgba(244,242,238,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Assistant',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{width:min(1200px,calc(100% - 40px));margin-inline:auto}
+h1,h2,h3{font-family:'Rubik',sans-serif;font-weight:700;line-height:1.1;letter-spacing:-.015em}
+.kicker{font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:#03b28c;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:6px;font-weight:700;transition:.25s;font-size:1rem}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn.primary:hover{background:#03b28c;color:#041014}
+.btn.line{border:1px solid rgba(244,242,238,.35)}
+.btn.line:hover{border-color:var(--ink)}
+.bw{filter:grayscale(1) contrast(1.08)}
+.duotone{position:relative}
+.duotone::after{content:"";position:absolute;inset:0;background:var(--grad);mix-blend-mode:color;opacity:.55;pointer-events:none}
+
+nav{position:fixed;inset-inline:0;top:0;z-index:50;padding:20px 0;background:linear-gradient(to bottom,rgba(20,20,22,.9),transparent)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between}
+nav .brand{display:flex;align-items:center;gap:12px;font-family:'Rubik',sans-serif;font-weight:500}
+nav .brand img{height:34px}
+nav ul{display:flex;gap:28px;list-style:none;font-size:.95rem;font-weight:600}
+nav ul a:hover{color:#03b28c}
+@media(max-width:800px){nav ul{display:none}}
+
+/* hero */
+.hero{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+.hero .copy{display:flex;flex-direction:column;justify-content:center;padding:140px 0 80px;padding-inline-end:40px}
+.hero h1{font-size:clamp(3rem,6.5vw,6rem);font-weight:900;margin:20px 0 24px}
+.hero h1 span{display:block;font-weight:300;font-family:'Assistant',sans-serif;font-size:.42em;letter-spacing:.02em;color:var(--muted);margin-top:14px}
+.hero p{font-size:1.2rem;color:var(--muted);max-width:44ch;margin-bottom:36px;font-weight:300}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero .photo{position:relative;overflow:hidden}
+.hero .photo img{width:100%;height:100%;object-fit:cover;object-position:center}
+.hero .photo .caption{position:absolute;bottom:26px;inset-inline:26px;display:flex;justify-content:space-between;font-size:.8rem;letter-spacing:.15em;color:rgba(255,255,255,.85);text-transform:uppercase}
+.hero .photo::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:30%;background:linear-gradient(to left,transparent,rgba(20,20,22,.9));z-index:1}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.hero .photo{min-height:60vh}.hero .copy{padding-inline-end:0;padding-top:110px}}
+
+/* big number strip */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border-block:1px solid var(--line)}
+.strip div{padding:30px 22px;border-inline-start:1px solid var(--line);text-align:center}
+.strip div:last-child{border:0}
+.strip b{display:block;font-family:'Rubik',sans-serif;font-size:2.4rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.strip span{font-size:.85rem;color:var(--muted);letter-spacing:.1em}
+@media(max-width:700px){.strip{grid-template-columns:1fr 1fr}}
+
+section{padding:120px 0}
+.sec h2{font-size:clamp(2.2rem,4.5vw,3.6rem);margin:14px 0 16px;max-width:18ch}
+.sec .lead{color:var(--muted);font-size:1.15rem;max-width:52ch;font-weight:300}
+
+/* timeline */
+.timeline{position:relative;margin-top:70px;display:grid;gap:0}
+.timeline::before{content:"";position:absolute;top:0;bottom:0;right:calc(50% - 1px);width:2px;background:linear-gradient(to bottom,#059cc0,#03b28c,transparent)}
+.tl{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;padding:40px 0;position:relative}
+.tl::after{content:attr(data-time);position:absolute;top:50%;right:50%;transform:translate(50%,-50%);background:var(--bg);border:1px solid #03b28c;color:#03b28c;font-family:'Rubik',sans-serif;font-weight:500;padding:6px 14px;border-radius:999px;font-size:.85rem;letter-spacing:.05em}
+.tl .txt{padding-inline:40px}
+.tl .txt h3{font-size:1.9rem;margin-bottom:12px}
+.tl .txt p{color:var(--muted);font-weight:300;font-size:1.05rem}
+.tl .pic{aspect-ratio:3/2;overflow:hidden;border-radius:4px}
+.tl .pic img{width:100%;height:100%;object-fit:cover;transition:filter .6s,transform .8s}
+.tl:hover .pic img{filter:grayscale(0);transform:scale(1.03)}
+.tl:nth-child(even) .txt{order:2}.tl:nth-child(even) .pic{order:1}
+@media(max-width:900px){.timeline::before{right:14px}.tl{grid-template-columns:1fr;gap:20px;padding-inline-start:40px}.tl::after{right:14px;transform:translate(50%,-50%);top:30px}.tl .txt{padding:0;order:1!important}.tl .pic{order:2!important}}
+
+/* manifesto */
+.manifesto{background:var(--paper);border-block:1px solid var(--line)}
+.manifesto .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:center}
+.manifesto h2{font-size:clamp(1.9rem,4vw,3.2rem);font-weight:500;line-height:1.3}
+.manifesto h2 mark{background:none;color:#03b28c}
+.manifesto .pic{aspect-ratio:4/5;overflow:hidden;border-radius:4px}
+.manifesto .pic img{width:100%;height:100%;object-fit:cover}
+.manifesto .sig{margin-top:28px;font-family:'Rubik',sans-serif;color:var(--muted);font-size:.95rem}
+.manifesto .sig b{display:block;color:var(--ink);font-size:1.1rem}
+@media(max-width:900px){.manifesto .grid{grid-template-columns:1fr}}
+
+/* couples */
+.couples{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.couple{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:4px}
+.couple img{width:100%;height:100%;object-fit:cover;transition:.7s}
+.couple:hover img{filter:grayscale(0);transform:scale(1.04)}
+.couple .q{position:absolute;inset:0;padding:26px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(to top,rgba(20,20,22,.95),rgba(20,20,22,.1) 60%)}
+.couple .q p{font-size:1.1rem;line-height:1.5;margin-bottom:12px;font-weight:300}
+.couple .q b{font-family:'Rubik',sans-serif;color:#03b28c;font-weight:500}
+@media(max-width:900px){.couples{grid-template-columns:1fr}}
+
+/* contact */
+.contact{border-top:1px solid var(--line)}
+.contact .grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.contact h2{font-size:clamp(2.4rem,5vw,4rem);margin:14px 0 18px}
+.contact p{color:var(--muted);font-weight:300;font-size:1.1rem;max-width:40ch}
+form{display:grid;gap:14px;background:var(--paper);padding:32px;border:1px solid var(--line);border-radius:8px}
+form label{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
+form input,form select,form textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:14px;border-radius:4px;font:inherit}
+form input:focus,form textarea:focus,form select:focus{outline:1px solid #03b28c;border-color:#03b28c}
+form .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+form button{margin-top:6px;cursor:pointer;border:0}
+.alt{margin-top:22px;display:flex;gap:18px;font-size:.95rem;color:var(--muted)}
+.alt a{color:var(--ink);border-bottom:1px solid #03b28c}
+@media(max-width:900px){.contact .grid{grid-template-columns:1fr}}
+
+footer.site{padding:36px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+footer.site .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer.site .social{display:flex;gap:20px}
+
+.float-wa{position:fixed;bottom:22px;left:22px;z-index:60;width:58px;height:58px;border-radius:50%;background:#25d366;display:grid;place-items:center;box-shadow:0 14px 30px -8px rgba(37,211,102,.6)}
+.float-wa svg{width:30px;height:30px;fill:#fff}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><img src="../assets/img/icon-white.png" alt="">אלמוג כהן</a>
+    <ul><li><a href="#night">הלילה שלכם</a></li><li><a href="#why">למה אני</a></li><li><a href="#couples">זוגות</a></li><li><a href="#contact">בדיקת תאריך</a></li></ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="copy wrap" style="margin-inline-end:0;width:auto;padding-inline-start:max(20px,calc((100vw - 1200px)/2))">
+    <span class="kicker">DJ Almog Cohen · Weddings</span>
+    <h1>הלילה שלכם.<br>שיר אחרי שיר.<span>חתונה שנבנית איתכם, לא בשבילכם.</span></h1>
+    <p>אני לא מאמין בפלייליסט אחד לכולם. לכל זוג יש סיפור, ולכל סיפור יש פסקול. בואו נכתוב אותו ביחד.</p>
+    <div class="cta"><a class="btn primary" href="#contact">בדיקת תאריך</a><a class="btn line" href="#night">איך נראה הלילה</a></div>
+  </div>
+  <div class="photo duotone"><img class="bw" src="../assets/img/entrance.jpg" alt="כניסת הזוג לאולם עם זיקוקים"><div class="caption"><span>Ofek &amp; Shirel</span><span>The Entrance</span></div></div>
+</header>
+
+<div class="strip">
+  <div><b>+1000</b><span>אירועים</span></div>
+  <div><b>12</b><span>שנות ניסיון</span></div>
+  <div><b>1</b><span>פגישה אישית לכל זוג</span></div>
+  <div><b>0</b><span>פלייליסטים ממוחזרים</span></div>
+</div>
+
+<section id="night" class="wrap sec">
+  <span class="kicker">הלילה שלכם</span>
+  <h2>ככה נראה ערב חתונה כשאני בעמדה.</h2>
+  <p class="lead">כל שלב מתוכנן מראש איתכם, כדי שביום עצמו לא תצטרכו לחשוב על כלום.</p>
+  <div class="timeline">
+    <div class="tl" data-time="19:00"><div class="txt"><h3>קבלת פנים</h3><p>סאונד רך שמלווה את האורחים בכניסה. מוזיקה שמרגישים ולא שומעים, עד שמגיע הרגע.</p></div><div class="pic"><img class="bw" src="../assets/img/traditional.jpg" alt=""></div></div>
+    <div class="tl" data-time="20:30"><div class="txt"><h3>חופה</h3><p>שיר הכניסה שלכם, הרגע של הטבעת, שבירת הכוס. הכול מתוזמן לשנייה. ואז, הפיצוץ.</p></div><div class="pic"><img class="bw" src="../assets/img/hupa-wide.jpg" alt=""></div></div>
+    <div class="tl" data-time="21:15"><div class="txt"><h3>כניסה לאולם וריקוד ראשון</h3><p>הרגע שבו כל העיניים עליכם. אנחנו בונים אותו ביחד, מהעיבוד ועד הסיום.</p></div><div class="pic"><img class="bw" src="../assets/img/moment.jpg" alt=""></div></div>
+    <div class="tl" data-time="22:00"><div class="txt"><h3>הרחבה</h3><p>מהשיר שמוריד את כולם מהכיסאות ועד השיר שאף אחד לא רוצה שייגמר. אני קורא את הרחבה, לא את הפלייליסט.</p></div><div class="pic"><img class="bw" src="../assets/img/shoulders-party.jpg" alt=""></div></div>
+    <div class="tl" data-time="01:00"><div class="txt"><h3>אפטר פארטי</h3><p>כשההורים הולכים הביתה, מתחיל הלילה האמיתי. סט שנבנה כמו מסיבה, לא כמו אירוע.</p></div><div class="pic"><img class="bw" src="../assets/img/smoke.jpg" alt=""></div></div>
+  </div>
+</section>
+
+<section id="why" class="manifesto">
+  <div class="wrap grid">
+    <div>
+      <span class="kicker">למה אני</span>
+      <h2>״אני לא מגיע כדי לנגן שירים. אני מגיע כדי לדאוג ש<mark>אף אחד לא יישב</mark> כשהשיר שלכם מתנגן.״</h2>
+      <div class="sig"><b>אלמוג כהן</b>DJ, מרצה ומייסד Compakt Academy · 12 שנים על הרחבה</div>
+    </div>
+    <div class="pic duotone"><img class="bw" src="../assets/img/portrait.jpg" alt="אלמוג כהן"></div>
+  </div>
+</section>
+
+<section id="couples" class="wrap sec">
+  <span class="kicker">זוגות מספרים</span>
+  <h2>הזוגות שכבר רקדו.</h2>
+  <div class="couples" style="margin-top:50px">
+    <div class="couple"><img class="bw" src="../assets/img/hupa.jpg" alt=""><div class="q"><p>״הרחבה לא התרוקנה לרגע, גם לא כשהאולם כבר רצה לסגור. ההורים שלנו עדיין מדברים על זה.״</p><b>אופק ושיראל</b></div></div>
+    <div class="couple"><img class="bw" src="../assets/img/wedding-2.jpg" alt=""><div class="q"><p>״הגענו עם בלגן בראש. אלמוג הפך את זה לסיפור. הריקוד הראשון היה בדיוק כמו שחלמנו.״</p><b>גל ודימה</b></div></div>
+    <div class="couple"><img class="bw" src="../assets/img/dance.jpg" alt=""><div class="q"><p>״מהסבתא ועד החברים מהצבא, כולם רקדו. הוא קרא את הרחבה כמו מקצוען אמיתי.״</p><b>הראל ואביב</b></div></div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap grid">
+    <div>
+      <span class="kicker">בדיקת תאריך</span>
+      <h2>בואו נתחיל לכתוב את הפסקול.</h2>
+      <p>ספרו לי על התאריך, האולם ועל מה שאתם אוהבים. אחזור אליכם תוך כמה שעות עם זמינות והצעה.</p>
+      <div class="alt"><span>או ישירות:</span><a href="https://wa.me/972502427616">וואטסאפ</a><a href="tel:+972502427616">050-242-7616</a></div>
+    </div>
+    <form onsubmit="event.preventDefault();location.href='https://wa.me/972502427616?text='+encodeURIComponent('היי אלמוג, אנחנו '+this.names.value+'. מתחתנים ב-'+this.date.value+' ב-'+this.venue.value+'. '+this.notes.value)">
+      <label>השמות שלכם<input name="names" placeholder="למשל: נועה ועידו" required></label>
+      <div class="two"><label>תאריך האירוע<input name="date" type="date" required></label><label>סוג האירוע<select name="type"><option>חתונה</option><option>אפטר פארטי</option><option>בר/בת מצווה</option><option>אירוע חברה</option></select></label></div>
+      <label>אולם / מיקום<input name="venue" placeholder="שם האולם או העיר"></label>
+      <label>משהו שחשוב שאדע<textarea name="notes" rows="3" placeholder="סגנון, שירים שחובה, שירים שאסור..."></textarea></label>
+      <button class="btn primary" type="submit">שלחו לי בוואטסאפ</button>
+    </form>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div>© אלמוג כהן · DJ לחתונות ואירועים</div>
+    <div class="social"><a href="https://www.instagram.com/djalmogcohen">אינסטגרם</a><a href="https://www.youtube.com/@djalmogcohen">יוטיוב</a><a href="https://www.tiktok.com/@djalmogcohen">טיקטוק</a></div>
+  </div>
+</footer>
+
+<a class="float-wa" href="https://wa.me/972502427616" aria-label="וואטסאפ"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.8.4 3.5 3.5 0 0 0-1.1 2.6c0 1.5 1.1 3 1.3 3.2s2.2 3.4 5.4 4.8c2 .9 2.8.9 3.8.8.6-.1 1.8-.7 2-1.5s.3-1.3.2-1.5-.4-.2-.7-.3zM12 2a10 10 0 0 0-8.6 15l-1.4 5 5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg></a>
+</body>
+</html>

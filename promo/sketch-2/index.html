@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>אלמוג כהן · DJ לחתונות — סקיצה 2: רחבה</title>
+<meta name="description" content="DJ אלמוג כהן – הרחבה שלא מתרוקנת. חתונות, אפטר פארטי ואירועים.">
+<link rel="icon" href="../assets/img/icon-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b0d; --bg2:#121216; --ink:#ffffff; --muted:rgba(255,255,255,.66);
+  --blue:#059cc0; --green:#03b28c; --grad:linear-gradient(135deg,#059cc0 0%,#03b28c 100%);
+  --line:rgba(255,255,255,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Heebo',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{width:min(1240px,calc(100% - 40px));margin-inline:auto}
+h1,h2,h3{font-weight:900;line-height:1.05;letter-spacing:-.02em}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:500;letter-spacing:.12em;padding:8px 14px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--grad);box-shadow:0 0 12px #03b28c}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:18px 34px;border-radius:14px;font-weight:700;font-size:1.05rem;transition:.25s;position:relative}
+.btn.primary{background:var(--grad);color:#041014;box-shadow:0 18px 40px -14px rgba(3,178,140,.7)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 24px 50px -14px rgba(5,156,192,.8)}
+.btn.outline{border:1px solid rgba(255,255,255,.3)}
+.btn.outline:hover{border-color:#03b28c;color:#03b28c}
+
+nav{position:fixed;inset-inline:0;top:0;z-index:50;padding:16px 0;mix-blend-mode:difference}
+nav .wrap{display:flex;align-items:center;justify-content:space-between}
+nav .brand img{height:38px}
+nav ul{display:flex;gap:30px;list-style:none;font-weight:500;font-size:.95rem}
+nav ul a:hover{color:#03b28c}
+@media(max-width:800px){nav ul{display:none}}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;padding:140px 0 70px;overflow:hidden}
+@media(max-width:800px){.hero{padding-top:120px}.hero h1{font-size:3.2rem}}
+.hero .bg{position:absolute;inset:0;z-index:-1}
+.hero .bg img{width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:saturate(1.15)}
+.hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#0b0b0d 10%,rgba(11,11,13,.55) 50%,rgba(11,11,13,.25));}
+.hero .bg::before{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(60% 50% at 20% 80%,rgba(3,178,140,.35),transparent 60%),radial-gradient(50% 50% at 85% 20%,rgba(5,156,192,.35),transparent 60%);mix-blend-mode:screen}
+.hero h1{font-size:clamp(3.4rem,10vw,9rem);margin:18px 0 10px;text-transform:uppercase}
+.hero h1 .line{display:block}
+.hero .sub{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:end;margin-top:30px}
+.hero .sub p{font-size:1.25rem;color:var(--muted);font-weight:300;max-width:44ch}
+.hero .sub .cta{display:flex;gap:14px;justify-content:flex-start;flex-wrap:wrap}
+@media(max-width:800px){.hero .sub{grid-template-columns:1fr}}
+.wave{display:flex;align-items:flex-end;gap:4px;height:34px;margin-bottom:10px}
+.wave i{display:block;width:4px;background:var(--grad);border-radius:3px;animation:bounce 1.2s ease-in-out infinite}
+.wave i:nth-child(2n){animation-delay:.15s}.wave i:nth-child(3n){animation-delay:.3s}.wave i:nth-child(5n){animation-delay:.45s}
+@keyframes bounce{0%,100%{height:20%}50%{height:100%}}
+
+/* ticker */
+.ticker{border-block:1px solid var(--line);background:var(--bg2);padding:16px 0;overflow:hidden;white-space:nowrap;font-weight:800;font-size:1.3rem;text-transform:uppercase}
+.ticker .track{display:inline-block;animation:slide 30s linear infinite}
+.ticker span{padding-inline:26px}
+.ticker span:nth-child(2n){-webkit-text-stroke:1px rgba(255,255,255,.6);color:transparent}
+@keyframes slide{to{transform:translateX(50%)}}
+
+section{padding:120px 0}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:54px;flex-wrap:wrap}
+.head h2{font-size:clamp(2.3rem,5vw,4.2rem);max-width:14ch;margin-top:14px}
+.head p{color:var(--muted);max-width:40ch;font-size:1.1rem;font-weight:300}
+
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:150px;gap:16px}
+.card{position:relative;border-radius:22px;overflow:hidden;background:var(--bg2);border:1px solid var(--line)}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.card:hover img{transform:scale(1.06)}
+.card .label{position:absolute;inset-inline:18px;bottom:16px;z-index:2}
+.card .label small{display:block;font-size:.75rem;letter-spacing:.2em;color:#03b28c;margin-bottom:4px}
+.card .label b{font-size:1.4rem;font-weight:800;line-height:1.1}
+.card.img::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,11,13,.9),transparent 55%)}
+.card.text{padding:30px;display:flex;flex-direction:column;justify-content:space-between}
+.card.text.accent{background:var(--grad);color:#041014;border:0}
+.card.text h3{font-size:1.7rem;margin-bottom:10px}
+.card.text p{font-size:1rem;color:inherit;opacity:.85;font-weight:400}
+.card.text .num{font-size:4.4rem;font-weight:900;line-height:1}
+.b1{grid-column:span 7;grid-row:span 3}.b2{grid-column:span 5;grid-row:span 2}.b3{grid-column:span 5;grid-row:span 1}
+.b4{grid-column:span 4;grid-row:span 2}.b5{grid-column:span 4;grid-row:span 2}.b6{grid-column:span 4;grid-row:span 2}
+@media(max-width:900px){.card.text .num{font-size:3rem}.card.text{padding:20px}.card.text h3{font-size:1.3rem}.bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:190px}.bento .card{grid-column:span 1!important;grid-row:span 1!important}.b1,.b4{grid-column:span 2!important;grid-row:span 2!important}}
+
+/* services */
+.services{background:var(--bg2);border-block:1px solid var(--line)}
+.srv{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.srv article{border:1px solid var(--line);border-radius:22px;padding:34px 30px;position:relative;overflow:hidden;background:rgba(255,255,255,.02);transition:.3s}
+.srv article:hover{border-color:rgba(3,178,140,.6);transform:translateY(-4px)}
+.srv article::before{content:"";position:absolute;inset:auto -30% -40% auto;width:200px;height:200px;background:radial-gradient(circle,rgba(5,156,192,.35),transparent 70%)}
+.srv .ico{width:52px;height:52px;border-radius:14px;background:var(--grad);display:grid;place-items:center;font-weight:900;color:#041014;font-size:1.3rem;margin-bottom:22px}
+.srv h3{font-size:1.5rem;margin-bottom:10px}
+.srv p{color:var(--muted);font-weight:300}
+.srv ul{list-style:none;margin-top:18px;display:grid;gap:8px;font-size:.95rem}
+.srv li::before{content:"—";color:#03b28c;margin-inline-end:8px}
+@media(max-width:900px){.srv{grid-template-columns:1fr}}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s}
+.steps div{padding:30px 26px;border-inline-start:1px solid var(--line)}
+.steps div::before{counter-increment:s;content:"0" counter(s);font-size:3rem;font-weight:900;display:block;margin-bottom:10px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.steps h3{font-size:1.2rem;margin-bottom:8px}
+.steps p{color:var(--muted);font-size:.95rem;font-weight:300}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+
+/* testimonials marquee */
+.quotes{display:flex;gap:20px;overflow:hidden}
+.quotes .track{display:flex;gap:20px;animation:slideq 40s linear infinite}
+@keyframes slideq{to{transform:translateX(50%)}}
+.q{flex:0 0 380px;border:1px solid var(--line);border-radius:20px;padding:28px;background:var(--bg2)}
+.q p{font-size:1.08rem;margin-bottom:18px;font-weight:300}
+.q b{font-size:.9rem;color:#03b28c}
+.q .stars{color:#f5c542;letter-spacing:2px;font-size:.9rem;margin-bottom:12px}
+
+/* cta */
+.cta{position:relative;overflow:hidden;text-align:center;padding:160px 0}
+.cta .bg{position:absolute;inset:0;z-index:-1}
+.cta .bg img{width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(.45) saturate(1.2)}
+.cta .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,rgba(11,11,13,.2),rgba(11,11,13,.85))}
+.cta h2{font-size:clamp(2.8rem,7vw,6rem);margin:16px auto 20px;max-width:14ch}
+.cta p{color:var(--muted);font-size:1.15rem;max-width:46ch;margin:0 auto 36px;font-weight:300}
+.cta .row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+footer.site{padding:40px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+footer.site .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer.site .social{display:flex;gap:20px}
+footer.site img{height:40px;opacity:.8}
+
+.float-wa{position:fixed;bottom:22px;left:22px;z-index:60;width:60px;height:60px;border-radius:50%;background:#25d366;display:grid;place-items:center;box-shadow:0 14px 30px -8px rgba(37,211,102,.6)}
+.float-wa svg{width:30px;height:30px;fill:#fff}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><img src="../assets/img/icon-white.png" alt="אלמוג כהן"></a>
+    <ul><li><a href="#moments">רגעים</a></li><li><a href="#services">מה אני עושה</a></li><li><a href="#process">איך זה עובד</a></li><li><a href="#contact">בדיקת תאריך</a></li></ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="bg"><img src="../assets/img/party.jpg" alt=""></div>
+  <div class="wrap">
+    <span class="tag">DJ · חתונות · אפטר פארטי</span>
+    <h1><span class="line">הרחבה</span><span class="line grad-text">לא מתרוקנת.</span></h1>
+    <div class="sub">
+      <div>
+        <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <p>אלמוג כהן. DJ עם יותר מאלף אירועים מאחוריו ורחבה אחת שהוא לא מוכן שתתרוקן: שלכם.</p>
+      </div>
+      <div class="cta">
+        <a class="btn primary" href="#contact">בודקים תאריך ←</a>
+        <a class="btn outline" href="#moments">תראו מה קורה אצלי</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker"><div class="track">
+  <span>חתונות</span><span>אפטר פארטי</span><span>בר/בת מצווה</span><span>אירועי חברה</span><span>הפקות ענק</span><span>חתונות</span><span>אפטר פארטי</span><span>בר/בת מצווה</span><span>אירועי חברה</span><span>הפקות ענק</span>
+  <span>חתונות</span><span>אפטר פארטי</span><span>בר/בת מצווה</span><span>אירועי חברה</span><span>הפקות ענק</span><span>חתונות</span><span>אפטר פארטי</span><span>בר/בת מצווה</span><span>אירועי חברה</span><span>הפקות ענק</span>
+</div></div>
+
+<section id="moments" class="wrap">
+  <div class="head">
+    <div><span class="tag">מהשטח</span><h2>לא צריך להאמין לי. <span class="grad-text">תראו.</span></h2></div>
+    <p>כל התמונות מאירועים אמיתיים. בלי פילטרים, בלי סטוק. ככה זה נראה כשאני בעמדה.</p>
+  </div>
+  <div class="bento">
+    <div class="card img b1"><img src="../assets/img/smoke.jpg" alt=""><div class="label"><small>אווירה</small><b>הרגע שהאולם נעלם ונשארת רק הרחבה</b></div></div>
+    <div class="card img b2"><img src="../assets/img/shoulders.jpg" alt=""><div class="label"><small>חתונה</small><b>על הכתפיים</b></div></div>
+    <div class="card text accent b3"><div class="num">+1000</div><p>אירועים. ובכל אחד מהם, רחבה שלא התרוקנה.</p></div>
+    <div class="card img b4"><img src="../assets/img/dance.jpg" alt=""><div class="label"><small>חופה</small><b>הרגע של הכניסה</b></div></div>
+    <div class="card img b5"><img src="../assets/img/vibes.jpg" alt=""><div class="label"><small>בעמדה</small><b>הזוג לידי, תמיד</b></div></div>
+    <div class="card text b6"><div><h3>המוזיקה שלכם.<br>הקריאה שלי.</h3><p>אתם בוחרים את הסאונד, אני קורא את הרחבה ויודע בדיוק מתי להרים.</p></div><a class="btn outline" href="#process" style="align-self:flex-start">איך זה עובד</a></div>
+  </div>
+</section>
+
+<section id="services" class="services">
+  <div class="wrap">
+    <div class="head"><div><span class="tag">מה אני עושה</span><h2>אירוע אחד. <span class="grad-text">בלי פשרות.</span></h2></div></div>
+    <div class="srv">
+      <article><div class="ico">♥</div><h3>חתונות</h3><p>מקבלת פנים ועד הריקוד האחרון. בניית פסקול מלא לערב, עם הזוג, לפי הטעם שלכם.</p><ul><li>פגישת היכרות + שאלון מוזיקלי</li><li>ליווי החופה והריקוד הראשון</li><li>הגברה, תאורה ואפקטים</li></ul></article>
+      <article><div class="ico">★</div><h3>אפטר פארטי</h3><p>כשההורים הולכים הביתה, מתחיל הלילה האמיתי. סט שנבנה כמו מסיבה, לא כמו אירוע.</p><ul><li>טכנו, האוס, מזרחית, היפ-הופ</li><li>סטאפ מועדוני באולם</li><li>עד השעות הקטנות</li></ul></article>
+      <article><div class="ico">◆</div><h3>אירועי חברה והפקות</h3><p>אירועים לחברות ועיריות עם אלפי משתתפים. ניסיון עם DHL, עיריית ירושלים, קריית אונו ועוד.</p><ul><li>ניהול במה והנחיה</li><li>תיאום מול הפקה</li><li>ציוד לכל גודל אירוע</li></ul></article>
+    </div>
+  </div>
+</section>
+
+<section id="process" class="wrap">
+  <div class="head"><div><span class="tag">איך זה עובד</span><h2>ארבעה צעדים <span class="grad-text">לרחבה מלאה.</span></h2></div></div>
+  <div class="steps">
+    <div><h3>שיחה קצרה</h3><p>בודקים תאריך, מדברים על האולם ועל החלום שלכם לערב.</p></div>
+    <div><h3>שאלון מוזיקלי</h3><p>אתם מסמנים מה אוהבים ומה בחיים לא. אני בונה מזה את הקו של הערב.</p></div>
+    <div><h3>בריף סופי</h3><p>שבועיים לפני: טיימליין מדויק, שירי חופה, ריקוד ראשון ורשימת "חובה".</p></div>
+    <div><h3>הערב עצמו</h3><p>אתם רוקדים. אני דואג לכל השאר.</p></div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap"><div class="head"><div><span class="tag">זוגות מספרים</span><h2>ככה זה נשמע <span class="grad-text">אחרי.</span></h2></div></div></div>
+  <div class="quotes"><div class="track">
+    <div class="q"><div class="stars">★★★★★</div><p>הרחבה לא התרוקנה לרגע, גם לא כשהאולם כבר רצה לסגור. ההורים שלנו עדיין מדברים על זה.</p><b>אופק ושיראל</b></div>
+    <div class="q"><div class="stars">★★★★★</div><p>הגענו עם בלגן בראש. אלמוג הפך את זה לסיפור. הריקוד הראשון היה בדיוק כמו שחלמנו.</p><b>גל ודימה</b></div>
+    <div class="q"><div class="stars">★★★★★</div><p>מהסבתא ועד החברים מהצבא, כולם רקדו. הוא קרא את הרחבה כמו מקצוען.</p><b>הראל ואביב</b></div>
+    <div class="q"><div class="stars">★★★★★</div><p>האפטר פארטי היה מועדון. פשוט מועדון. לא הבנו מאיפה הוא הביא את זה.</p><b>אוריאל ויעל</b></div>
+    <div class="q"><div class="stars">★★★★★</div><p>הרחבה לא התרוקנה לרגע, גם לא כשהאולם כבר רצה לסגור. ההורים שלנו עדיין מדברים על זה.</p><b>אופק ושיראל</b></div>
+    <div class="q"><div class="stars">★★★★★</div><p>הגענו עם בלגן בראש. אלמוג הפך את זה לסיפור. הריקוד הראשון היה בדיוק כמו שחלמנו.</p><b>גל ודימה</b></div>
+    <div class="q"><div class="stars">★★★★★</div><p>מהסבתא ועד החברים מהצבא, כולם רקדו. הוא קרא את הרחבה כמו מקצוען.</p><b>הראל ואביב</b></div>
+    <div class="q"><div class="stars">★★★★★</div><p>האפטר פארטי היה מועדון. פשוט מועדון. לא הבנו מאיפה הוא הביא את זה.</p><b>אוריאל ויעל</b></div>
+  </div></div>
+</section>
+
+<section id="contact" class="cta">
+  <div class="bg"><img src="../assets/img/hands-up.jpg" alt=""></div>
+  <div class="wrap">
+    <span class="tag">התאריכים נסגרים מהר</span>
+    <h2>התאריך שלכם <span class="grad-text">עדיין פנוי?</span></h2>
+    <p>שלחו הודעה עם התאריך והאולם. אם אני פנוי, נקבע שיחה קצרה ונתחיל לבנות את הערב.</p>
+    <div class="row">
+      <a class="btn primary" href="https://wa.me/972502427616?text=%D7%94%D7%99%D7%99%20%D7%90%D7%9C%D7%9E%D7%95%D7%92%2C%20%D7%A8%D7%95%D7%A6%D7%99%D7%9D%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%AA%D7%90%D7%A8%D7%99%D7%9A">וואטסאפ עכשיו</a>
+      <a class="btn outline" href="tel:+972502427616">050-242-7616</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <img src="../assets/img/icon-white.png" alt="">
+    <div>© אלמוג כהן · DJ לחתונות ואירועים</div>
+    <div class="social"><a href="https://www.instagram.com/djalmogcohen">אינסטגרם</a><a href="https://www.youtube.com/@djalmogcohen">יוטיוב</a><a href="https://www.tiktok.com/@djalmogcohen">טיקטוק</a></div>
+  </div>
+</footer>
+
+<a class="float-wa" href="https://wa.me/972502427616" aria-label="וואטסאפ"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.8.4 3.5 3.5 0 0 0-1.1 2.6c0 1.5 1.1 3 1.3 3.2s2.2 3.4 5.4 4.8c2 .9 2.8.9 3.8.8.6-.1 1.8-.7 2-1.5s.3-1.3.2-1.5-.4-.2-.7-.3zM12 2a10 10 0 0 0-8.6 15l-1.4 5 5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg></a>
+</body>
+</html>
