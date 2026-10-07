@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { hero } from "@/content/site";
@@ -27,21 +27,69 @@ function Words({ text, delay, className = "" }: { text: string; delay: number; c
   );
 }
 
+/**
+ * "Lights on" hero: the venue starts dark and the visitor's cursor (or an
+ * automatic sweeping beam on touch screens) is a stage spotlight. Scrolling
+ * or pressing the switch turns all the lights on with a flash and beam sweep.
+ */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const [i, setI] = useState(0);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const [lightsOn, setLightsOn] = useState(false);
+  const { scrollY, scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.35]);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
+  useMotionValueEvent(scrollY, "change", (v) => {
+    if (v > 60) setLightsOn(true);
+  });
 
   useEffect(() => {
     const t = setInterval(() => setI((p) => (p + 1) % hero.images.length), SLIDE_MS);
     return () => clearInterval(t);
   }, []);
 
+  // Spotlight position: pointer on desktop, automatic sweep on touch / no pointer.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const set = (x: number, yy: number) => {
+      el.style.setProperty("--mx", `${x}px`);
+      el.style.setProperty("--my", `${yy}px`);
+    };
+    let raf = 0;
+    let lastMove = 0;
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      lastMove = performance.now();
+      const r = el.getBoundingClientRect();
+      set(e.clientX - r.left, e.clientY - r.top);
+    };
+    const sweep = (t: number) => {
+      if (t - lastMove > 2500) {
+        const r = el.getBoundingClientRect();
+        const s = t / 1000;
+        set(r.width * (0.5 + 0.36 * Math.sin(s * 0.7)), r.height * (0.42 + 0.2 * Math.sin(s * 1.3 + 1)));
+      }
+      raf = requestAnimationFrame(sweep);
+    };
+    el.addEventListener("pointermove", onMove, { passive: true });
+    raf = requestAnimationFrame(sweep);
+    return () => {
+      el.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
-    <section id="top" ref={ref} className="relative h-[100svh] min-h-[640px] overflow-hidden">
+    <section
+      id="top"
+      ref={ref}
+      className="relative h-[100svh] min-h-[640px] overflow-hidden"
+      style={{ ["--mx" as string]: "50%", ["--my" as string]: "45%" }}
+    >
       <motion.div className="absolute inset-0" style={{ scale, y }}>
         <AnimatePresence initial={false}>
           <motion.div
@@ -52,19 +100,59 @@ export function Hero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.6, ease: "easeInOut" }}
           >
-            <Image
-              src={hero.images[i]}
-              alt=""
-              fill
-              priority={i === 0}
-              sizes="100vw"
-              className={`object-cover ${i % 2 === 0 ? "kb-a" : "kb-b"}`}
-            />
+            <Image src={hero.images[i]} alt="" fill priority={i === 0} sizes="100vw" className={`object-cover ${i % 2 === 0 ? "kb-a" : "kb-b"}`} />
           </motion.div>
         </AnimatePresence>
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-b from-bg/70 via-bg/30 to-bg" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(7,6,10,0.75)_100%)]" />
+
+      {/* Darkness with a spotlight hole */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[#040306] motion-reduce:hidden"
+        style={{
+          WebkitMaskImage: "radial-gradient(circle 260px at var(--mx) var(--my), transparent 0%, rgba(0,0,0,0.35) 45%, #000 100%)",
+          maskImage: "radial-gradient(circle 260px at var(--mx) var(--my), transparent 0%, rgba(0,0,0,0.35) 45%, #000 100%)",
+        }}
+        initial={{ opacity: 0.96 }}
+        animate={{ opacity: lightsOn ? 0 : 0.96 }}
+        transition={{ duration: lightsOn ? 1.4 : 0.6, ease: [0.7, 0, 0.2, 1], delay: lightsOn ? 0.15 : 0 }}
+      />
+      {/* Warm halo that follows the spotlight */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 mix-blend-screen motion-reduce:hidden"
+        style={{ background: "radial-gradient(circle 300px at var(--mx) var(--my), rgba(243,217,164,0.28), transparent 70%)" }}
+        animate={{ opacity: lightsOn ? 0 : 1 }}
+        transition={{ duration: 0.8 }}
+      />
+
+      {/* Lights-on moment: flash + sweeping beams */}
+      <AnimatePresence>
+        {lightsOn && (
+          <>
+            <motion.div
+              key="flash"
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-[5] bg-gold-hi mix-blend-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.85, 0] }}
+              transition={{ duration: 0.9, times: [0, 0.15, 1] }}
+            />
+            {[-1, 1].map((dir) => (
+              <motion.div
+                key={`beam-${dir}`}
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-[20%] left-1/2 z-[5] h-[160%] w-[18vw] min-w-40 origin-top -translate-x-1/2 bg-gradient-to-b from-gold-hi/70 via-gold/20 to-transparent blur-2xl mix-blend-screen"
+                initial={{ rotate: dir * 70, opacity: 0 }}
+                animate={{ rotate: dir * -35, opacity: [0, 1, 0] }}
+                transition={{ duration: 1.8, ease: "easeOut" }}
+              />
+            ))}
+          </>
+        )}
+      </AnimatePresence>
+
+      <div className="absolute inset-0 bg-gradient-to-b from-bg/60 via-transparent to-bg" />
 
       <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-5 pb-20 md:px-8 md:pb-28">
         <motion.p
@@ -95,50 +183,49 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.9, duration: 0.8 }}
-          className="mt-9 flex flex-wrap gap-3"
+          className="mt-9 flex flex-wrap items-center gap-3"
         >
-          <a
-            href={waLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-gold group inline-flex items-center gap-2 rounded-full px-7 py-4 font-bold transition-transform hover:scale-105"
-          >
+          <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-gold inline-flex items-center gap-2 rounded-full px-7 py-4 font-bold transition-transform hover:scale-105">
             <WhatsAppIcon />
             {hero.ctaPrimary}
           </a>
-          <a href="#gallery" className="inline-flex items-center rounded-full border border-ink/25 px-7 py-4 font-medium backdrop-blur-sm transition-colors hover:border-gold hover:text-gold-hi">
-            {hero.ctaSecondary}
-          </a>
+          <button
+            type="button"
+            onClick={() => setLightsOn((v) => !v)}
+            aria-pressed={lightsOn}
+            className="group inline-flex items-center gap-3 rounded-full border border-ink/25 px-5 py-3 font-medium backdrop-blur-sm transition-colors hover:border-gold"
+          >
+            <span className={`relative h-6 w-11 rounded-full transition-colors duration-500 ${lightsOn ? "bg-gold" : "bg-ink/20"}`}>
+              <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-ink shadow transition-all duration-500 ${lightsOn ? "right-0.5" : "right-[1.375rem]"}`} />
+            </span>
+            {lightsOn ? "האורות דולקים" : "הדליקו את האורות"}
+          </button>
         </motion.div>
 
         <div className="mt-12 flex items-center gap-3" aria-hidden="true">
           {hero.images.map((_, k) => (
             <span key={k} className="relative h-[2px] w-12 overflow-hidden bg-ink/20">
               {k === i && (
-                <motion.span
-                  key={i}
-                  className="absolute inset-y-0 right-0 bg-gold"
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: SLIDE_MS / 1000, ease: "linear" }}
-                />
+                <motion.span key={i} className="absolute inset-y-0 right-0 bg-gold" initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: SLIDE_MS / 1000, ease: "linear" }} />
               )}
             </span>
           ))}
         </div>
       </motion.div>
 
-      <motion.a
-        href="#about"
-        aria-label="גללו למטה"
-        className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 md:block"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 2 }}
-      >
-        <span className="flex h-12 w-7 justify-center rounded-full border border-ink/30 pt-2">
-          <span className="h-2 w-px bg-gold" />
-        </span>
-      </motion.a>
+      <AnimatePresence>
+        {!lightsOn && (
+          <motion.p
+            className="pointer-events-none absolute left-1/2 top-28 z-10 -translate-x-1/2 text-xs tracking-[0.3em] text-gold-hi/80"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            exit={{ opacity: 0 }}
+            transition={{ repeat: Infinity, duration: 2.4 }}
+          >
+            הזיזו את הפנס · גללו כדי להדליק
+          </motion.p>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

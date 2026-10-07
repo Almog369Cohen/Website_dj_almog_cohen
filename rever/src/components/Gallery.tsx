@@ -68,6 +68,13 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
         <motion.div className="absolute inset-0" animate={{ scale: zoom }} transition={{ type: "spring", stiffness: 180, damping: 24 }} style={{ transformOrigin: origin }}>
           <Image src={item.src} alt={item.alt} fill sizes="92vw" className="object-cover" />
         </motion.div>
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-white"
+          initial={{ opacity: 0.9 }}
+          animate={{ opacity: 0 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+        />
       </motion.div>
 
       <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-line bg-bg/80 p-1.5 backdrop-blur" onClick={(e) => e.stopPropagation()}>

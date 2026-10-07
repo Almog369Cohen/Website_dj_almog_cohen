@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { brand, contact } from "@/content/site";
 import { telLink, waLink } from "@/lib/whatsapp";
+import { goldConfetti } from "./Confetti";
 import { PhoneIcon, WhatsAppIcon } from "./Icons";
 import { Reveal, SectionKicker } from "./Reveal";
 
@@ -25,6 +26,7 @@ export function Contact() {
       d.get("guests") ? `מספר אורחים: ${d.get("guests")}` : "",
       d.get("message") ? `פרטים: ${d.get("message")}` : "",
     ].filter(Boolean);
+    goldConfetti();
     window.open(waLink(lines.join("\n")), "_blank", "noopener,noreferrer");
     setSent(true);
   };
@@ -92,7 +94,7 @@ export function Contact() {
               <WhatsAppIcon /> שליחה ובדיקת זמינות
             </motion.button>
             <p className="mt-4 text-center text-sm text-ink-dim" role="status">
-              {sent ? "פתחנו לכם את וואטסאפ עם הפרטים — רק ללחוץ שליחה ✓" : "הפרטים נשלחים ישירות אלינו בוואטסאפ. ללא התחייבות."}
+              {sent ? "בואו נחגוג! פתחנו לכם וואטסאפ עם הפרטים, נשאר רק ללחוץ שליחה ✓" : "הפרטים נשלחים ישירות אלינו בוואטסאפ. ללא התחייבות."}
             </p>
           </form>
         </Reveal>
