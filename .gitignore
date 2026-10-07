@@ -62,3 +62,7 @@ key.json
 
 # Local dev folders (not part of Compakt deploy)
 new/soundview-pro/
+
+# Python
+__pycache__/
+*.pyc
