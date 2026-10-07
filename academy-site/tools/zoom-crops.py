@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Make portrait (9:16) and landscape (16:9) crops of the AI images for the opening journey.
+"""Make the WebP crops of the AI images for the opening journey.
 
 Reads tools/zoom-scenes.json, writes WebP into assets/zoom/, and prints the data attributes
 to paste on each .jr-scene in index.html (journey.js then shows the image instead of the
 drawing). Each crop is centred on the scene's focus circle, the round thing that sits in
-the record window, so the circle survives both crops.
+the record window. Every scene gets a portrait (9:16) crop; a landscape (16:9) one only when
+the scene has its own wide image (src_l), otherwise wide screens use the portrait one.
 
 Usage (from academy-site/):  python3 tools/zoom-crops.py
 Needs ImageMagick (`convert`, `identify`).
@@ -41,9 +42,9 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     for sc in cfg["scenes"]:
         attrs = []
-        for name, aspect, max_w in (("portrait", 9 / 16, 1080), ("landscape", 16 / 9, 1920)):
-            # The prompts ask for a separate 16:9 image per station; use it for the landscape crop when given
-            wide = name == "landscape" and "src_l" in sc
+        formats = [("portrait", 9 / 16, 1080)] + ([("landscape", 16 / 9, 1920)] if "src_l" in sc else [])
+        for name, aspect, max_w in formats:
+            wide = name == "landscape"
             src = os.path.join(ROOT, sc["src_l"] if wide else sc["src"])
             px, py, pr = sc["focus_l"] if wide else sc["focus"]
             sw, sh = size(src)

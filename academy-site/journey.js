@@ -12,6 +12,7 @@
  *   data-src-p / data-src-l       portrait / landscape image
  *   data-size-p / data-size-l     its size ("w,h")
  *   data-focus-p / data-focus-l   the round thing to centre in the window ("x,y,r", normalised, r relative to width)
+ * The landscape set is optional; without it wide screens use the portrait image.
  * tools/zoom-crops.py makes the crops and prints these numbers.
  *
  * Without GSAP, or with reduced motion, the static hero stays and the stations are not shown.
@@ -82,9 +83,11 @@
 
     layout = scenes.map(function (el, k) {
       el.style.transform = "none";
-      var src = el.getAttribute("data-src-" + key);
-      var size = nums(el.getAttribute("data-size-" + key));
-      var foc = nums(el.getAttribute("data-focus-" + key));
+      // a scene without its own wide image uses the portrait one on wide screens too
+      var use = el.hasAttribute("data-src-" + key) ? key : "p";
+      var src = el.getAttribute("data-src-" + use);
+      var size = nums(el.getAttribute("data-size-" + use));
+      var foc = nums(el.getAttribute("data-focus-" + use));
       var f, r;
       if (src && size && foc) {
         // Cover the stage with the image, its round thing as close to the window as the edges allow
@@ -102,7 +105,13 @@
         img.style.left = left + "px"; img.style.top = top + "px";
         f = [left + foc[0] * dw, top + foc[1] * dh];
         r = foc[2] * dw;
-        return { f: f, k0: clamp(win.r / (2.4 * r), 1, 1.5) };   // photos never zoom past x1.5
+        // The window shows about 2.4 r around the focus, but between 0.21 and 0.31 of the image's short side,
+        // so a station frames the same part of the photo on a phone and on a wide screen
+        var side = Math.min(dw, dh);
+        var k0 = win.r / clamp(2.4 * r, 0.21 * side, 0.31 * side);
+        // and never so far out that the window runs past the photo's edge
+        var edge = Math.min(f[0] - left, left + dw - f[0], f[1] - top, top + dh - f[1]);
+        return { f: f, k0: Math.max(k0, win.r / edge) };
       }
       // Drawings cover the stage (like the final, opened window). Inside the window they show about 2.4 r
       // around their focus, but never less than their own width can fill.

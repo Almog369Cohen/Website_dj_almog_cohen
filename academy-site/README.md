@@ -29,14 +29,18 @@ EQ, booth), each sweeping in like a tonearm over a label while the record turns.
 the window opens to the full screen with the three tracks. The palette is UV purple, the academy's
 own. With reduced motion, or without JS, only the static heading shows.
 
-The stations are drawn in code (`scenes.js`) until the AI images exist. To swap one in:
+The stations are photos: eight AI images made with Codex (real DJ gear, the student's POV, UV light),
+kept in the Drive folder `academy-ai` and cropped into `assets/zoom/`. `scenes.js` draws a station in
+code only when its `.jr-scene` has no image. To swap one:
 
-1. Generate it with the prompts in `AI-PROMPTS.md`: `python3 tools/gen-images.py` makes all 16 with Google's
-   Gemini API (needs `GEMINI_API_KEY` in the environment), or use Codex via the Drive folder `academy-ai`.
-2. Add it to `tools/zoom-scenes.json` with its focus circle (the round thing that sits in the window)
-   and run `python3 tools/zoom-crops.py`.
-3. Paste the printed `data-src-*`, `data-size-*` and `data-focus-*` attributes on the matching
-   `.jr-scene` in `index.html`. Photos never zoom past x1.5 in the window.
+1. Make it with the prompts in `AI-PROMPTS.md` (Codex via the Drive folder `academy-ai`, or
+   `python3 tools/gen-images.py` with Google's Gemini API, which needs `GEMINI_API_KEY` in the environment).
+2. Download it to `../ai-images/`, set its entry in `tools/zoom-scenes.json` with its focus circle (the round
+   thing that sits in the window, in source pixels) and run `python3 tools/zoom-crops.py`.
+3. Paste the printed `data-src-p`, `data-size-p` and `data-focus-p` attributes on the matching
+   `.jr-scene` in `index.html`. Wide screens use the same portrait image unless a station also has a 16:9
+   one (`src_l` / `focus_l`). The window frames the same part of the photo on every screen size.
+   `assets/` is cached for a week, so add `?v=2` to a replaced image's `data-src-p`.
 
 ## Scroll motion
 

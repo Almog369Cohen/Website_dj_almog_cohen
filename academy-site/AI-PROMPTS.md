@@ -38,7 +38,7 @@ Horizontal files (`-l`) end with: *Horizontal 16:9, 1920x1080, the same scene wi
 
 ## Into the site
 
-1. Download the folder's images to a scratch directory and check: right size, no text, logo or face.
-2. Add each image and its circle to `tools/zoom-scenes.json` and run `python3 tools/zoom-crops.py`
-   (WebP + JPG crops into `assets/zoom/`).
-3. Fine-tune the circles with `#portal` on the local preview. The zoom engine caps the zoom at ×3.
+1. Download the folder's images to `../ai-images/` and check: no readable logo, text or face problem, no malformed hand.
+2. Set each image and its circle in `tools/zoom-scenes.json` and run `python3 tools/zoom-crops.py`
+   (WebP crops into `assets/zoom/`), then paste the printed attributes on the `.jr-scene` in `index.html`.
+3. The 16:9 versions are optional: without them wide screens use the vertical image.
