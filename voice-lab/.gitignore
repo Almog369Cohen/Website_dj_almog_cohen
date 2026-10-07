@@ -1,0 +1,11 @@
+.venv/
+models/
+sketches/
+ref/
+logs/
+__pycache__/
+manifest.jsonl
+eval.json
+calibration.json
+REPORT.md
+review.html

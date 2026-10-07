@@ -1,0 +1,7 @@
+# Voice clone lab - all free / open-source, runs locally (no API keys, no paid services)
+chatterbox-tts==0.1.7
+dicta-onnx==1.0.9
+praat-parselmouth>=0.4.3
+jiwer>=3.0
+soundfile>=0.12
+openai-whisper

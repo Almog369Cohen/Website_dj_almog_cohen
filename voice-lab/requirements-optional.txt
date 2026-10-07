@@ -1,0 +1,5 @@
+# Optional: speaker-similarity encoder (bundles its own weights, no download needed).
+# webrtcvad needs pkg_resources (setuptools<81) and a C compiler on macOS; if it fails, evaluate.py
+# falls back to Chatterbox's own voice encoder.
+setuptools<81
+resemblyzer
