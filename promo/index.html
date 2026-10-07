@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>אלמוג כהן · סקיצות לאתר תדמית</title>
+<link rel="icon" href="assets/img/icon-color.png">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Heebo',system-ui,sans-serif;background:#0f0f11;color:#fff;min-height:100vh;display:grid;place-items:center;padding:40px 20px}
+main{width:min(1100px,100%)}
+h1{font-weight:900;font-size:clamp(2rem,5vw,3.4rem);margin-bottom:10px}
+p.lead{color:rgba(255,255,255,.65);margin-bottom:40px;font-weight:300;font-size:1.1rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+a.card{display:block;border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden;background:#17171a;transition:.3s}
+a.card:hover{transform:translateY(-4px);border-color:#03b28c}
+a.card .thumb{aspect-ratio:4/3;overflow:hidden;position:relative}
+a.card .thumb img{width:100%;height:100%;object-fit:cover}
+a.card .thumb span{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,#059cc0,#03b28c);color:#041014;font-weight:900;padding:6px 12px;border-radius:999px;font-size:.85rem}
+a.card .body{padding:20px}
+a.card h2{font-size:1.3rem;margin-bottom:6px}
+a.card p{color:rgba(255,255,255,.6);font-size:.95rem;font-weight:300}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <h1>אלמוג כהן · שלוש סקיצות לאתר החדש</h1>
+  <p class="lead">שלושה כיווני עיצוב לאתר התדמית, עם דגש על חתונות, זוגות ואווירה. לחצו על סקיצה כדי לפתוח אותה.</p>
+  <div class="grid">
+    <a class="card" href="sketch-1/index.html"><div class="thumb"><img src="assets/photos/couples/couple-chuppah-lights.jpg" alt=""><span>סקיצה 1</span></div><div class="body"><h2>חופה · עדין ויוקרתי</h2><p>רקע שנהב, זהב עדין, טיפוגרפיה סריפית. מרגיש כמו הזמנה לחתונה.</p></div></a>
+    <a class="card" href="sketch-2/index.html"><div class="thumb"><img src="assets/photos/almog/almog-neon-booth.jpg" alt=""><span>סקיצה 2</span></div><div class="body"><h2>רחבה · אנרגיה וניאון</h2><p>כהה, כותרות ענק, צבעי המותג כניאון. מדבר על הרחבה ועל הפיצוץ.</p></div></a>
+    <a class="card" href="sketch-3/index.html"><div class="thumb"><img src="assets/photos/weddings/entrance-sparklers.jpg" alt=""><span>סקיצה 3</span></div><div class="body"><h2>הסיפור שלכם · קולנועי</h2><p>שחור-לבן עם דואוטון של המותג, טיימליין של הערב וטופס בדיקת תאריך.</p></div></a>
+  </div>
+</main>
+</body>
+</html>
