@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>אלמוג כהן · DJ לחתונות</title>
+<meta name="description" content="DJ אלמוג כהן. רחבה מלאה מהרגע הראשון. חתונות, חינות ואפטר פארטי בכל הארץ. 14 שנה, 1,000+ אירועים, דירוג 5 כוכבים.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:title" content="אלמוג כהן · DJ לחתונות">
+<meta property="og:description" content="רחבה מלאה מהרגע הראשון. מובטח.">
+<meta property="og:image" content="https://almog.compaktt.com/assets/img/shoulders-groom.jpg">
+<meta property="og:url" content="https://almog.compaktt.com/">
+<link rel="icon" href="../assets/img/icon-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;900&display=swap">
+<style>
+/* Sketch 3 — "הרחבה": the brand's blue→green as neon on a blue-black floor. Bento hero, a horizontal atmosphere reel, an LED energy meter for the night. */
+:root {
+  --bg: #0a0e12;
+  --surface: #11171d;
+  --surface-2: #182028;
+  --line: rgba(242,247,247,.1);
+  --fg: #f2f7f7;
+  --muted: #98a7ab;
+  --blue: #059cc0;
+  --green: #03b28c;
+  --grad: linear-gradient(100deg, #059cc0, #03b28c);
+  --on-accent: #03130f;
+  --wa: #25d366;
+  --body: "Heebo", "Segoe UI", Arial, sans-serif;
+  --gutter: max(16px, 4vw);
+  --max: 1240px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+.wrap { width: 100%; max-width: calc(var(--max) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
+h1, h2, h3 { font-weight: 900; line-height: 1; margin: 0; text-wrap: balance; letter-spacing: -.02em; }
+h2 { font-size: clamp(2.4rem, 5.5vw, 4.4rem); }
+h3 { font-size: 1.35rem; letter-spacing: -.01em; }
+p { margin: 0; }
+.grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .8125rem; font-weight: 600; letter-spacing: .06em; padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--grad); box-shadow: 0 0 12px var(--green); }
+.lede { font-size: clamp(1.0625rem, 1.5vw, 1.25rem); color: var(--muted); max-width: 34em; }
+.lede strong { color: var(--fg); font-weight: 600; }
+.section { padding-block: clamp(64px, 9vw, 120px); }
+.head { display: grid; gap: 16px; margin-bottom: clamp(28px, 4vw, 48px); justify-items: start; }
+.num { font-variant-numeric: tabular-nums; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .55em; min-height: 54px; padding: 0 26px; border-radius: 14px; border: 1px solid transparent; font: 600 1rem/1 var(--body); text-decoration: none; cursor: pointer; transition: transform .18s, box-shadow .18s, border-color .18s, background-color .18s; white-space: nowrap; }
+.btn:hover { transform: translateY(-2px); }
+.btn-grad { background: var(--grad); color: var(--on-accent); box-shadow: 0 16px 40px -16px rgba(3,178,140,.8); }
+.btn-grad:hover { box-shadow: 0 22px 48px -16px rgba(5,156,192,.9); }
+.btn-ghost { border-color: rgba(242,247,247,.25); color: var(--fg); }
+.btn-ghost:hover { border-color: var(--green); color: var(--green); }
+.btn-wa { background: var(--wa); color: #06240f; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* header */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: rgba(10,14,18,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.bar-inner { display: flex; align-items: center; gap: 24px; min-height: 66px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 900; font-size: 1.1rem; letter-spacing: -.01em; }
+.brand img { width: 30px; height: auto; }
+.nav { display: flex; gap: 22px; margin-inline-start: auto; }
+.nav a { text-decoration: none; color: var(--muted); font-size: .9375rem; font-weight: 600; }
+.nav a:hover { color: var(--fg); }
+.bar .btn { min-height: 42px; padding: 0 18px; font-size: .9375rem; }
+@media (max-width: 860px) { .nav { display: none; } .bar .btn { margin-inline-start: auto; } }
+
+/* bento hero */
+.hero { padding-block: clamp(24px, 4vw, 48px) clamp(32px, 5vw, 64px); }
+.bento { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: minmax(120px, auto); gap: 12px; }
+.tile { border-radius: 20px; overflow: hidden; position: relative; background: var(--surface); min-width: 0; }
+.tile img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; transition: transform .9s ease; }
+.tile:hover img { transform: scale(1.04); }
+.tile .tag { position: absolute; bottom: 14px; inset-inline-start: 14px; font-size: .8125rem; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(10,14,18,.7); backdrop-filter: blur(6px); }
+.t-copy { grid-column: span 7; grid-row: span 3; padding: clamp(24px, 4vw, 48px); display: grid; align-content: space-between; gap: 28px; background: radial-gradient(120% 90% at 100% 0%, rgba(5,156,192,.22), transparent 55%), radial-gradient(90% 80% at 0% 100%, rgba(3,178,140,.18), transparent 55%), var(--surface); }
+.t-copy h1 { font-size: clamp(3rem, 7vw, 6.4rem); line-height: .95; }
+.t-copy .cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.t-a { grid-column: span 5; grid-row: span 2; }
+.t-b { grid-column: span 5; grid-row: span 1; min-height: 150px; }
+.t-c { grid-column: span 4; grid-row: span 2; min-height: 240px; }
+.t-d { grid-column: span 4; grid-row: span 2; min-height: 240px; }
+.t-stat { grid-column: span 4; grid-row: span 2; padding: 24px; display: grid; align-content: end; gap: 6px; background: var(--grad); color: var(--on-accent); }
+.t-stat b { font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; line-height: 1; letter-spacing: -.03em; }
+.t-stat span { font-weight: 600; }
+.t-stat small { display: block; opacity: .8; font-size: .875rem; }
+@media (max-width: 900px) {
+  .bento { grid-auto-rows: minmax(100px, auto); }
+  .t-copy { grid-column: span 12; grid-row: span 3; }
+  .t-a { grid-column: span 12; grid-row: span 2; min-height: 240px; }
+  .t-b { grid-column: span 6; grid-row: span 1; }
+  .t-stat { grid-column: span 6; grid-row: span 1; }
+  .t-c, .t-d { grid-column: span 6; grid-row: span 2; min-height: 200px; }
+}
+
+/* ticker */
+.ticker { border-block: 1px solid var(--line); padding-block: 14px; overflow: hidden; }
+.ticker-track { display: flex; gap: 40px; width: max-content; animation: tick 36s linear infinite; font-weight: 600; font-size: 1rem; color: var(--muted); }
+.ticker-track span { display: inline-flex; align-items: center; gap: 40px; }
+.ticker-track span::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--grad); box-shadow: 0 0 8px var(--green); }
+@keyframes tick { to { transform: translateX(50%); } }
+
+/* reel */
+.reel-wrap { margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.reel-wrap::-webkit-scrollbar { display: none; }
+.reel { display: flex; gap: 12px; width: max-content; padding-bottom: 6px; }
+.reel figure { margin: 0; flex: 0 0 auto; width: min(78vw, 520px); aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; scroll-snap-align: start; position: relative; background: var(--surface); }
+.reel figure.p { width: min(62vw, 340px); aspect-ratio: 3 / 4.2; }
+.reel img { width: 100%; height: 100%; object-fit: cover; }
+.reel figcaption { position: absolute; inset-inline: 0; bottom: 0; padding: 14px 16px; font-size: .8125rem; font-weight: 600; background: linear-gradient(to top, rgba(10,14,18,.75), transparent); }
+.reel-nav { display: flex; gap: 8px; margin-inline-start: auto; }
+.reel-nav button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font-size: 1.2rem; display: grid; place-items: center; }
+.reel-nav button:hover { border-color: var(--green); color: var(--green); }
+.head.row { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; }
+.head.row > div { display: grid; gap: 14px; }
+
+/* the night as a meter */
+.night { background: var(--surface); }
+.meter { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.ch { background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 18px 16px 20px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.ch .leds { display: grid; grid-template-rows: repeat(10, 1fr); gap: 3px; height: 120px; direction: ltr; }
+.ch .leds i { display: block; border-radius: 2px; background: var(--surface-2); }
+.ch[data-level="2"] .leds i:nth-last-child(-n+2), .ch[data-level="4"] .leds i:nth-last-child(-n+4), .ch[data-level="5"] .leds i:nth-last-child(-n+5), .ch[data-level="7"] .leds i:nth-last-child(-n+7), .ch[data-level="10"] .leds i:nth-last-child(-n+10), .ch[data-level="9"] .leds i:nth-last-child(-n+9) { background: var(--green); box-shadow: 0 0 8px rgba(3,178,140,.6); }
+.ch[data-level="10"] .leds i:nth-child(-n+2), .ch[data-level="9"] .leds i:nth-child(2) { background: #ffaa00; box-shadow: 0 0 8px rgba(255,170,0,.6); }
+.ch .t { font-size: .75rem; font-weight: 600; letter-spacing: .08em; color: var(--muted); }
+.ch h3 { font-size: 1.15rem; }
+.ch p { font-size: .875rem; color: var(--muted); line-height: 1.5; }
+@media (max-width: 900px) { .meter { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .meter { grid-template-columns: repeat(2, 1fr); } .ch .leds { height: 90px; } }
+
+/* proof */
+.proof { display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; align-items: start; }
+.quotes { display: grid; gap: 12px; }
+.q { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px 22px 18px; display: grid; gap: 12px; }
+.q blockquote { margin: 0; font-size: 1.2rem; font-weight: 600; line-height: 1.4; }
+.q cite { font-style: normal; font-size: .875rem; color: var(--muted); display: flex; gap: 10px; align-items: center; }
+.q cite b { color: var(--fg); }
+.q cite::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: var(--wa); flex: none; mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>') center / contain no-repeat; -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>') center / contain no-repeat; }
+.phones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.phones img { border-radius: 18px; border: 1px solid var(--line); width: 100%; }
+@media (max-width: 900px) { .proof { grid-template-columns: 1fr; } .phones { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; scrollbar-width: thin; } .phones img { flex: 0 0 auto; width: 190px; scroll-snap-align: start; } }
+
+/* about + video */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.about-copy { background: var(--surface); border-radius: 20px; padding: clamp(24px, 4vw, 48px); display: grid; gap: 20px; align-content: center; }
+.about-copy p { color: var(--muted); max-width: 36em; }
+.about-copy p strong { color: var(--fg); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips span { font-size: .875rem; font-weight: 600; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); }
+.video { position: relative; border-radius: 20px; overflow: hidden; display: block; text-decoration: none; background: #000; min-height: 360px; }
+.video img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; opacity: .85; }
+.video .play { position: absolute; inset: 0; display: grid; place-items: center; }
+.video .play span { display: inline-flex; align-items: center; gap: 12px; padding: 12px 20px 12px 14px; border-radius: 999px; background: rgba(10,14,18,.75); border: 1px solid var(--line); backdrop-filter: blur(8px); font-weight: 600; }
+.video .play i { width: 44px; height: 44px; border-radius: 50%; background: var(--grad); display: grid; place-items: center; animation: pulse 2.4s ease-out infinite; }
+.video .play i::after { content: ""; border: 9px solid transparent; border-inline-start: 15px solid var(--on-accent); border-inline-end: 0; margin-inline-start: 4px; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(3,178,140,.6); } 100% { box-shadow: 0 0 0 22px rgba(3,178,140,0); } }
+@media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } .video { min-height: 0; aspect-ratio: 16 / 10; } }
+
+/* faq */
+.faq { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 0 20px; }
+.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 20px; align-items: center; padding: 18px 0; font-weight: 600; font-size: 1.05rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--green); font-size: 1.4rem; flex: none; transition: transform .25s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 0 18px; color: var(--muted); font-size: .9375rem; }
+@media (max-width: 760px) { .faq { grid-template-columns: 1fr; } }
+
+/* final cta */
+.cta-block { border-radius: 24px; padding: clamp(28px, 5vw, 64px); background: radial-gradient(90% 120% at 100% 100%, rgba(5,156,192,.35), transparent 60%), radial-gradient(90% 120% at 0% 0%, rgba(3,178,140,.3), transparent 60%), var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 64px); align-items: center; }
+.cta-block h2 { font-size: clamp(2.6rem, 6vw, 5rem); }
+.form { display: grid; gap: 12px; }
+.form label { display: grid; gap: 6px; font-size: .875rem; color: var(--muted); font-weight: 600; }
+.form input { width: 100%; min-height: 50px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--fg); font: 400 1rem var(--body); }
+.form input:focus { outline: 2px solid var(--green); outline-offset: 1px; }
+.form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form .btn-wa { min-height: 56px; margin-top: 4px; }
+.alt { display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--muted); font-size: .9375rem; margin-top: 16px; }
+.alt a { color: var(--fg); font-weight: 600; text-decoration: none; }
+@media (max-width: 860px) { .cta-block { grid-template-columns: 1fr; } .form .row { grid-template-columns: 1fr; } }
+
+footer { padding-block: 36px calc(36px + 72px + env(safe-area-inset-bottom, 0px)); font-size: .875rem; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 32px; justify-content: space-between; align-items: center; }
+footer a { color: var(--fg); text-decoration: none; }
+footer nav { display: flex; gap: 20px; }
+@media (min-width: 861px) { footer { padding-bottom: 36px; } }
+
+.dock { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(10,14,18,.9); backdrop-filter: blur(14px); border-top: 1px solid var(--line); display: flex; gap: 10px; }
+.dock .btn { flex: 1; min-height: 50px; }
+@media (min-width: 861px) { .dock { display: none; } }
+
+.rv { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .rv { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .js .rv.in { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .ticker-track, .video .play i { animation: none; } }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap bar-inner">
+    <a class="brand" href="#top"><img src="../assets/img/icon-white.png" alt="">אלמוג כהן</a>
+    <nav class="nav" aria-label="ניווט">
+      <a href="#reel">אווירה</a><a href="#night">הלילה</a><a href="#proof">מה אומרים</a><a href="#about">מי אני</a><a href="#faq">שאלות</a>
+    </nav>
+    <a class="btn btn-grad" href="#contact">בדיקת תאריך</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap bento">
+      <div class="tile t-copy">
+        <div style="display:grid;gap:18px">
+          <span class="eyebrow">DJ לחתונות · 14 שנה · 1,000+ אירועים</span>
+          <h1>רחבה מלאה<br><span class="grad">מהרגע הראשון.</span></h1>
+          <p class="lede"><strong>החתונה שלכם מגיעה פעם אחת.</strong> אל תסתכנו עם DJ שלא מכיר את הקהל שלכם. אני קורא את הרחבה בזמן אמת, ומחליף כיוון לפני שמישהו יושב.</p>
+        </div>
+        <div class="cta">
+          <a class="btn btn-grad" href="#contact">בדקו אם התאריך פנוי</a>
+          <a class="btn btn-ghost" href="#reel">תראו את הרחבה</a>
+        </div>
+      </div>
+      <div class="tile t-a"><img src="../assets/img/shoulders-groom.jpg" srcset="../assets/img/shoulders-groom-800.jpg 800w, ../assets/img/shoulders-groom.jpg 1600w" sizes="(max-width: 900px) 100vw, 42vw" alt="חתן על הכתפיים, כולם עם הידיים למעלה" fetchpriority="high"><span class="tag">הרחבה</span></div>
+      <div class="tile t-b"><img src="../assets/img/smoke-jets.jpg" srcset="../assets/img/smoke-jets-800.jpg 800w, ../assets/img/smoke-jets.jpg 1600w" sizes="(max-width: 900px) 50vw, 42vw" alt="עמדת ה-DJ עם תותחי עשן" loading="lazy"><span class="tag">אפטר</span></div>
+      <div class="tile t-stat"><b class="num">5★</b><span>דירוג מ-150+ זוגות</span><small>בגוגל ובוואטסאפ</small></div>
+      <div class="tile t-c"><img src="../assets/img/bride-dance-booth.jpg" srcset="../assets/img/bride-dance-booth-800.jpg 800w, ../assets/img/bride-dance-booth.jpg 1600w" sizes="(max-width: 900px) 50vw, 33vw" alt="כלה רוקדת ליד העמדה" loading="lazy"><span class="tag">הכלה בעמדה</span></div>
+      <div class="tile t-d"><img src="../assets/img/entrance.jpg" srcset="../assets/img/entrance-800.jpg 800w, ../assets/img/entrance.jpg 1600w" sizes="(max-width: 900px) 50vw, 33vw" alt="זוג נכנס בין זיקוקים קרים" loading="lazy"><span class="tag">הכניסה</span></div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>אנשים רקדו ברחבה ללא הפסקה</span><span>אלמוג יא מלך</span><span>המוזיקה פשוט החזיקה אותי ברחבה</span><span>מאות מחמאות על הרחבה</span><span>היה לי הכי כיף בעולם</span><span>כואבות להם הרגליים</span>
+      <span>אנשים רקדו ברחבה ללא הפסקה</span><span>אלמוג יא מלך</span><span>המוזיקה פשוט החזיקה אותי ברחבה</span><span>מאות מחמאות על הרחבה</span><span>היה לי הכי כיף בעולם</span><span>כואבות להם הרגליים</span>
+    </div>
+  </div>
+
+  <section class="section" id="reel">
+    <div class="wrap">
+      <div class="head row rv">
+        <div><span class="eyebrow">אווירה</span><h2>ככה זה נראה <span class="grad">מהעמדה.</span></h2></div>
+        <div class="reel-nav" aria-hidden="true"><button type="button" id="prev">›</button><button type="button" id="next">‹</button></div>
+      </div>
+      <div class="reel-wrap rv" id="reelwrap">
+        <div class="reel">
+          <figure><img src="../assets/img/stage-wide.jpg" srcset="../assets/img/stage-wide-800.jpg 800w, ../assets/img/stage-wide.jpg 1600w" sizes="(max-width: 700px) 78vw, 520px" alt="הבמה, עשן ואורות, שלט ALMOG COHEN" loading="lazy"><figcaption>שיראל ואופק, הרחבה</figcaption></figure>
+          <figure class="p"><img src="../assets/img/smoke-portrait.jpg" srcset="../assets/img/smoke-portrait-800.jpg 800w, ../assets/img/smoke-portrait.jpg 1200w" sizes="(max-width: 700px) 62vw, 340px" alt="אלמוג בעמדה בין תותחי עשן" loading="lazy"></figure>
+          <figure><img src="../assets/img/shoulders-bride.jpg" srcset="../assets/img/shoulders-bride-800.jpg 800w, ../assets/img/shoulders-bride.jpg 1600w" sizes="(max-width: 700px) 78vw, 520px" alt="כלה על הכתפיים ברחבה" loading="lazy"><figcaption>על הכתפיים</figcaption></figure>
+          <figure><img src="../assets/img/umbrellas.jpg" srcset="../assets/img/umbrellas-800.jpg 800w, ../assets/img/umbrellas.jpg 1600w" sizes="(max-width: 700px) 78vw, 520px" alt="רחבה מלאה עם שמשיות תחרה" loading="lazy"><figcaption>חינה</figcaption></figure>
+          <figure class="p"><img src="../assets/img/couple-lights.jpg" srcset="../assets/img/couple-lights-800.jpg 800w, ../assets/img/couple-lights.jpg 1200w" sizes="(max-width: 700px) 62vw, 340px" alt="זוג עם אלמוג מול וילון אורות" loading="lazy"></figure>
+          <figure><img src="../assets/img/friends-booth.jpg" srcset="../assets/img/friends-booth-800.jpg 800w, ../assets/img/friends-booth.jpg 1600w" sizes="(max-width: 700px) 78vw, 520px" alt="החברים בעמדה עם אלמוג" loading="lazy"><figcaption>העמדה פתוחה לחברים</figcaption></figure>
+          <figure><img src="../assets/img/crowd-lights.jpg" srcset="../assets/img/crowd-lights-800.jpg 800w, ../assets/img/crowd-lights.jpg 1600w" sizes="(max-width: 700px) 78vw, 520px" alt="קהל רוקד תחת אורות ניאון" loading="lazy"></figure>
+          <figure><img src="../assets/img/almog-couple-decks.jpg" srcset="../assets/img/almog-couple-decks-800.jpg 800w, ../assets/img/almog-couple-decks.jpg 1600w" sizes="(max-width: 700px) 78vw, 520px" alt="זוג מנגן עם אלמוג בעמדה" loading="lazy"><figcaption>הזוג בעמדה</figcaption></figure>
+          <figure><img src="../assets/img/stage-lights.jpg" srcset="../assets/img/stage-lights-800.jpg 800w, ../assets/img/stage-lights.jpg 1600w" sizes="(max-width: 700px) 78vw, 520px" alt="קרני אור מעל הרחבה" loading="lazy"></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section night" id="night">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="eyebrow">הלילה</span>
+        <h2>האנרגיה של הערב, <span class="grad">ערוץ אחרי ערוץ.</span></h2>
+        <p class="lede">כל רגע בחתונה צריך סאונד אחר. ככה אני מכוון אותו.</p>
+      </div>
+      <div class="meter rv">
+        <div class="ch" data-level="2"><div class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="t">CH 1</span><h3>קבלת פנים</h3><p>סאונד בגובה שיחה. מחמם, לא משתלט.</p></div>
+        <div class="ch" data-level="5"><div class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="t">CH 2</span><h3>הכניסה</h3><p>השיר שלכם, מתוזמן עם הצלם ועם האולם.</p></div>
+        <div class="ch" data-level="7"><div class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="t">CH 3</span><h3>שבירת כוס</h3><p>מהשקט של החופה לפיצוץ. מכאן הרחבה מתחילה.</p></div>
+        <div class="ch" data-level="4"><div class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="t">CH 4</span><h3>ריקוד ראשון</h3><p>רק שניכם. אחרי זה הקהל מצטרף.</p></div>
+        <div class="ch" data-level="10"><div class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="t">CH 5</span><h3>הרחבה</h3><p>ישראלי, מזרחי, שנות ה-80, טכנו. קוראים את הקהל ומחליפים כיוון.</p></div>
+        <div class="ch" data-level="9"><div class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="t">CH 6</span><h3>אפטר</h3><p>הסט שלא רוצים שייגמר.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="proof">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="eyebrow">בבוקר שאחרי</span>
+        <h2>לא צריך להאמין לי. <span class="grad">תקראו.</span></h2>
+      </div>
+      <div class="proof rv">
+        <div class="quotes">
+          <div class="q"><blockquote>אלמוג יא מלך!!! יאללה איזה אירוע עשית לנו אתמול. אני מקבל הודעות מאנשים שכואבות להם הרגליים.</blockquote><cite><b>הראל ואביב</b>חתונה, אפריל 2025</cite></div>
+          <div class="q"><blockquote>אנשים רקדו ברחבה ללא הפסקה וכולנו נהנו מהמוזיקה שלך. אין עליך, אלוף.</blockquote><cite><b>שיר ואדיר</b>חתונה, יוני 2025</cite></div>
+          <div class="q"><blockquote>קיבלנו עשרות אם לא מאות מחמאות על זה שהרחבה מפוצצת. צעירים שלא מפסיקים לרקוד שעות על גבי שעות.</blockquote><cite><b>שיראל ואופק</b>חתונה, נובמבר 2023</cite></div>
+          <div class="q"><blockquote>בחיים לא הייתי בחתונה שגם כשהייתי עייפה, המוזיקה פשוט החזיקה אותי ברחבה.</blockquote><cite><b>אוריאל ויעל</b>חתונה</cite></div>
+        </div>
+        <div class="phones" aria-label="צילומי מסך של ההודעות">
+          <img src="../assets/testimonials/wa-5.jpg" alt="הודעת וואטסאפ מהראל ואביב" loading="lazy">
+          <img src="../assets/testimonials/wa-4.jpg" alt="הודעת וואטסאפ משיר ואדיר" loading="lazy">
+          <img src="../assets/testimonials/wa-1.jpg" alt="הודעת וואטסאפ משיראל ואופק" loading="lazy">
+          <img src="../assets/testimonials/wa-2.jpg" alt="הודעת וואטסאפ מאוריאל ויעל" loading="lazy">
+          <img src="../assets/testimonials/wa-6.jpg" alt="הודעת וואטסאפ מטלי" loading="lazy">
+          <img src="../assets/testimonials/wa-8.jpg" alt="הודעת וואטסאפ מחגי ואוראל" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section night" id="about">
+    <div class="wrap about-grid">
+      <div class="about-copy rv">
+        <span class="eyebrow">מי מאחורי העמדה</span>
+        <h2>אלמוג כהן</h2>
+        <p>בגיל 14 נכנסתי לשיעור DJ ראשון. המורה אמר "תצרוב 2 דיסקים ותבוא שבוע הבא". בגיל 15 כבר הייתי על במות. היום, אחרי 14 שנה ו-1,000+ אירועים, אני עדיין על הרחבה, <strong>ומלמד את הדור הבא לעשות את אותו הדבר.</strong></p>
+        <p>בחתונה אני לא "שם מוזיקה". אני מנהל ערב: פגישה אתכם לפני, תזמון עם האולם והצלם, וקריאת קהל בזמן אמת.</p>
+        <div class="chips"><span>פגישת ייעוץ ופלייליסט</span><span>XP2 + מידי בלייב</span><span>מקבלת הפנים עד הסיום</span><span>גמישות לשינויים</span><span>חתונות · חינות · אפטר</span></div>
+        <div><a class="btn btn-grad" href="#contact">בואו נדבר על הערב שלכם</a></div>
+      </div>
+      <a class="video rv" href="https://www.youtube.com/watch?v=yarUtbqD0BI" target="_blank" rel="noopener">
+        <img src="../assets/img/almog-decks-blue.jpg" srcset="../assets/img/almog-decks-blue-800.jpg 800w, ../assets/img/almog-decks-blue.jpg 1600w" sizes="(max-width: 860px) 100vw, 50vw" alt="" loading="lazy">
+        <span class="play"><span><i aria-hidden="true"></i>60 שניות מחתונה, ביוטיוב</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="head rv"><span class="eyebrow">לפני שסוגרים</span><h2>שאלות שכולם שואלים</h2></div>
+      <div class="faq rv">
+        <details open><summary>כמה זמן לפני החתונה צריך לסגור?</summary><p>מומלץ 4 עד 6 חודשים מראש. תאריכים פופולריים בקיץ ובחגים נתפסים מהר. ככל שסוגרים מוקדם יותר, יש יותר זמן לתכנון מוזיקלי מדויק.</p></details>
+        <details><summary>מה כלול במחיר?</summary><p>פגישת ייעוץ מקדימה, בניית פלייליסט מותאם אישית, ציוד DJ מקצועי, נוכחות מהחופה ועד הסיום וגמישות מלאה במהלך הערב.</p></details>
+        <details><summary>מתאים גם לקהל מבוגר?</summary><p>בהחלט. ההתמחות שלי היא בדיוק קהל מעורב: מעברים חלקים בין להיטים ישראליים, מזרחית, שנות ה-80 וטכנו, לפי מי שעל הרחבה.</p></details>
+        <details><summary>מה קורה עם שינויים ברגע האחרון?</summary><p>גמישות זה שם המשחק. אני מגיע עם ספריית מוזיקה ענקית ויודע להתאים בזמן אמת. שינויים הם חלק מהעבודה.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta-block rv">
+        <div style="display:grid;gap:18px">
+          <span class="eyebrow">התאריכים נגמרים מהר</span>
+          <h2>מוכנים לחתונה <span class="grad">שכולם יזכרו?</span></h2>
+          <p class="lede">שלושה פרטים, ואני חוזר אליכם בוואטסאפ עם תשובה. בלי התחייבות.</p>
+          <div class="alt">
+            <span>או ישירות:</span>
+            <a href="https://wa.me/972502427616" target="_blank" rel="noopener">וואטסאפ</a>
+            <a href="tel:+972502427616" dir="ltr">050-242-7616</a>
+            <a href="https://www.instagram.com/djalmogcohen" target="_blank" rel="noopener">אינסטגרם</a>
+          </div>
+        </div>
+        <form class="form" id="form">
+          <div class="row">
+            <label>תאריך החתונה<input type="date" id="f-date" name="date"></label>
+            <label>כמות אורחים<input type="number" id="f-guests" name="guests" min="20" step="10" placeholder="300"></label>
+          </div>
+          <label>אולם או אזור<input type="text" id="f-venue" name="venue" placeholder="למשל: קיסריה, או שם האולם"></label>
+          <button class="btn btn-wa" type="submit"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>שלחו לי בוואטסאפ</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© אלמוג כהן · DJ לחתונות ואירועים בכל הארץ</span>
+    <nav><a href="https://www.instagram.com/djalmogcohen" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@djalmogcohen" target="_blank" rel="noopener">YouTube</a><a href="https://www.compaktt.com" target="_blank" rel="noopener">Compaktt</a></nav>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn btn-wa" href="https://wa.me/972502427616?text=%D7%94%D7%99%D7%99%20%D7%90%D7%9C%D7%9E%D7%95%D7%92%2C%20%D7%97%D7%AA%D7%95%D7%A0%D7%94%20%D7%91%D7%AA%D7%90%D7%A8%D7%99%D7%9A%20____.%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%96%D7%9E%D7%99%D7%A0%D7%95%D7%AA%3F" target="_blank" rel="noopener">וואטסאפ</a>
+  <a class="btn btn-grad" href="#contact">בדיקת תאריך</a>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"DJ אלמוג כהן","url":"https://almog.compaktt.com/","telephone":"+972-50-242-7616","image":"https://almog.compaktt.com/assets/img/almog-decks-blue.jpg","address":{"@type":"PostalAddress","addressCountry":"IL"},"areaServed":"Israel","aggregateRating":{"@type":"AggregateRating","ratingValue":"5","bestRating":"5","ratingCount":"150"},"sameAs":["https://www.instagram.com/djalmogcohen","https://www.youtube.com/@djalmogcohen"]}
+</script>
+<script>
+(function () {
+  document.documentElement.classList.add('js');
+  var WA = '972502427616';
+  document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = document.getElementById('f-date').value, v = document.getElementById('f-venue').value.trim(), g = document.getElementById('f-guests').value;
+    var date = d ? d.split('-').reverse().join('.') : '____';
+    var msg = 'היי אלמוג, חתונה בתאריך ' + date + '. אולם/אזור: ' + (v || '____') + '. כמות אורחים: ' + (g || '____') + '. אפשר לבדוק זמינות?';
+    window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  });
+  var reel = document.getElementById('reelwrap');
+  var step = function () { return Math.min(reel.clientWidth * .8, 540); };
+  document.getElementById('next').addEventListener('click', function () { reel.scrollBy({ left: -step(), behavior: 'smooth' }); });
+  document.getElementById('prev').addEventListener('click', function () { reel.scrollBy({ left: step(), behavior: 'smooth' }); });
+  if ('IntersectionObserver' in window) {
+    var rv = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rv.unobserve(e.target); } }); }, { threshold: .1 });
+    document.querySelectorAll('.rv').forEach(function (el) { rv.observe(el); });
+  } else { document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); }); }
+})();
+</script>
+</body>
+</html>

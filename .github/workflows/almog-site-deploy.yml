@@ -1,0 +1,63 @@
+name: Deploy Almog Cohen site (almog.compaktt.com)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'almog-site/**'
+      - '.github/workflows/almog-site-deploy.yml'
+  workflow_dispatch:
+
+env:
+  # Created once by scripts/setup-almog-subdomain.sh
+  BUCKET_NAME: almog-compaktt-com
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write  # Required for Workload Identity Federation
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud via Workload Identity
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Check that the bucket exists
+        id: bucket
+        run: |
+          if gsutil ls "gs://${BUCKET_NAME}" > /dev/null 2>&1; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::gs://${BUCKET_NAME} is missing or not accessible. Run scripts/setup-almog-subdomain.sh once (see almog-site/README.md)."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload to GCS bucket
+        if: steps.bucket.outputs.ok == 'true'
+        run: |
+          gsutil -m rsync -r -d -x '.*\.md$|^tools/.*' almog-site "gs://${BUCKET_NAME}"
+
+      - name: Set cache control headers
+        if: steps.bucket.outputs.ok == 'true'
+        run: |
+          gsutil -m setmeta -h "Cache-Control:public, max-age=0, must-revalidate" \
+            "gs://${BUCKET_NAME}/index.html" "gs://${BUCKET_NAME}/sketch-*/index.html" \
+            "gs://${BUCKET_NAME}/robots.txt" "gs://${BUCKET_NAME}/sitemap.xml"
+          gsutil -m setmeta -h "Cache-Control:public, max-age=604800" \
+            "gs://${BUCKET_NAME}/assets/**" "gs://${BUCKET_NAME}/fonts/**"
+
+      - name: Deployment complete
+        if: steps.bucket.outputs.ok == 'true'
+        run: echo "✅ Almog Cohen site deployed to https://almog.compaktt.com"

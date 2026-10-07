@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>אלמוג כהן · DJ לחתונות</title>
+<meta name="description" content="DJ אלמוג כהן. 14 שנה על העמדה, 1,000+ אירועים. הלילה שלכם, מקבלת הפנים ועד השיר האחרון, עם רחבה שלא מתרוקנת.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:title" content="אלמוג כהן · DJ לחתונות">
+<meta property="og:description" content="הלילה שלכם. הסאונד שלי. 14 שנה על העמדה, 1,000+ אירועים.">
+<meta property="og:image" content="https://almog.compaktt.com/assets/img/entrance.jpg">
+<meta property="og:url" content="https://almog.compaktt.com/">
+<link rel="icon" href="../assets/img/icon-white.png">
+<link rel="preload" href="../fonts/karantina-hebrew-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Sketch 1 — "הלילה": cinematic editorial. One warm accent (the sparkler amber from the entrance photo), everything else black and warm white. */
+@font-face { font-family: "Karantina"; font-weight: 700; font-display: swap; src: url("../fonts/karantina-hebrew-700-normal.woff2") format("woff2"); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+@font-face { font-family: "Karantina"; font-weight: 700; font-display: swap; src: url("../fonts/karantina-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-weight: 400; font-display: swap; src: url("../fonts/ibm-plex-sans-hebrew-hebrew-400-normal.woff2") format("woff2"); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-weight: 400; font-display: swap; src: url("../fonts/ibm-plex-sans-hebrew-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-weight: 500; font-display: swap; src: url("../fonts/ibm-plex-sans-hebrew-hebrew-500-normal.woff2") format("woff2"); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-weight: 500; font-display: swap; src: url("../fonts/ibm-plex-sans-hebrew-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-weight: 700; font-display: swap; src: url("../fonts/ibm-plex-sans-hebrew-hebrew-700-normal.woff2") format("woff2"); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+@font-face { font-family: "IBM Plex Sans Hebrew"; font-weight: 700; font-display: swap; src: url("../fonts/ibm-plex-sans-hebrew-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+:root {
+  --bg: #0a0a0c;
+  --bg-2: #121114;
+  --fg: #f3efe7;
+  --muted: #a69f93;
+  --dim: #5f5a52;
+  --line: rgba(243,239,231,.14);
+  --amber: #f0b35b;
+  --amber-deep: #c98a2e;
+  --on-amber: #1a1206;
+  --wa: #25d366;
+  --display: "Karantina", "Heebo", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans Hebrew", "Heebo", "Segoe UI", Arial, sans-serif;
+  --gutter: max(16px, 4.5vw);
+  --max: 1200px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 1.0625rem; line-height: 1.65; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+.wrap { width: 100%; max-width: calc(var(--max) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
+h1, h2, h3, .display { font-family: var(--display); font-weight: 700; line-height: .9; margin: 0; text-wrap: balance; letter-spacing: .005em; }
+h2 { font-size: clamp(3.4rem, 8vw, 6.5rem); }
+h3 { font-size: clamp(1.9rem, 3.2vw, 2.6rem); line-height: 1; }
+p { margin: 0; }
+.eyebrow { font-size: .8125rem; font-weight: 500; letter-spacing: .08em; color: var(--amber); text-transform: uppercase; display: flex; align-items: center; gap: .7em; }
+.eyebrow::before { content: ""; width: 2.2em; height: 1px; background: var(--amber); }
+.lede { font-size: clamp(1.0625rem, 1.5vw, 1.25rem); color: var(--muted); max-width: 34em; }
+.lede strong { color: var(--fg); font-weight: 500; }
+.section { padding-block: clamp(72px, 10vw, 136px); }
+.head { display: grid; gap: 18px; margin-bottom: clamp(32px, 5vw, 64px); }
+.num { font-variant-numeric: tabular-nums; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .55em; min-height: 54px; padding: 0 28px; border-radius: 999px; border: 1px solid transparent; font: 700 1rem/1 var(--body); text-decoration: none; cursor: pointer; transition: transform .18s ease, background-color .18s ease, border-color .18s ease, color .18s ease; white-space: nowrap; }
+.btn:hover { transform: translateY(-1px); }
+.btn-amber { background: var(--amber); color: var(--on-amber); }
+.btn-amber:hover { background: #f7c372; }
+.btn-ghost { border-color: var(--line); color: var(--fg); background: rgba(10,10,12,.35); backdrop-filter: blur(8px); }
+.btn-ghost:hover { border-color: var(--muted); }
+.btn-wa { background: var(--wa); color: #06240f; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* header */
+.bar { position: fixed; inset-inline: 0; top: 0; z-index: 30; padding-top: env(safe-area-inset-top, 0px); background: linear-gradient(to bottom, rgba(10,10,12,.85), rgba(10,10,12,0)); transition: background .3s; }
+.bar.solid { background: rgba(10,10,12,.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.bar-inner { display: flex; align-items: center; gap: 24px; min-height: 68px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand img { width: 40px; height: auto; }
+.brand b { display: block; font-family: var(--display); font-size: 1.6rem; line-height: 1; letter-spacing: .02em; }
+.nav { display: flex; gap: 26px; margin-inline-start: auto; }
+.nav a { text-decoration: none; color: var(--muted); font-size: .9375rem; }
+.nav a:hover { color: var(--fg); }
+.bar .btn { min-height: 42px; padding: 0 18px; font-size: .9375rem; }
+@media (max-width: 860px) { .nav { display: none; } .bar .btn { margin-inline-start: auto; } }
+
+/* hero */
+.hero { position: relative; min-height: 92svh; display: grid; align-items: end; overflow: hidden; isolation: isolate; }
+.hero-img { position: absolute; inset: 0; z-index: -2; }
+.hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; animation: drift 18s ease-out both; }
+@keyframes drift { from { transform: scale(1.08); } to { transform: scale(1); } }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(10,10,12,.96) 0%, rgba(10,10,12,.55) 45%, rgba(10,10,12,.15) 100%); }
+.hero-inner { padding-block: 120px clamp(40px, 6vw, 72px); display: grid; gap: 26px; }
+.hero h1 { font-size: clamp(5rem, 15.5vw, 13rem); line-height: .86; }
+.hero h1 span { display: block; }
+.hero h1 .amber { color: var(--amber); }
+.hero-row { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px 40px; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.facts { display: flex; gap: clamp(20px, 4vw, 48px); flex-wrap: wrap; }
+.fact b { display: block; font-family: var(--display); font-size: clamp(2.4rem, 4vw, 3.4rem); line-height: 1; color: var(--amber); }
+.fact span { font-size: .875rem; color: var(--muted); }
+
+/* strip */
+.strip { border-block: 1px solid var(--line); padding-block: 16px; overflow: hidden; }
+.strip-track { display: flex; gap: 48px; width: max-content; animation: ticker 40s linear infinite; font-family: var(--display); font-size: 1.5rem; color: var(--muted); letter-spacing: .02em; }
+.strip-track span::before { content: "✦"; color: var(--amber); margin-inline-end: 48px; font-size: .9em; }
+@keyframes ticker { to { transform: translateX(50%); } }
+
+/* the night: sticky image, scrolling steps */
+.night { background: var(--bg-2); }
+.night-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
+.night-stage { position: sticky; top: 84px; aspect-ratio: 4 / 5; max-height: calc(100svh - 110px); border-radius: 6px; overflow: hidden; background: #000; }
+.night-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s ease, transform 1.2s ease; transform: scale(1.04); }
+.night-stage img.on { opacity: 1; transform: scale(1); }
+.night-stage .cap { position: absolute; inset-inline: 0; bottom: 0; padding: 22px 24px; background: linear-gradient(to top, rgba(0,0,0,.75), transparent); font-size: .875rem; color: var(--muted); }
+.night-stage .cap b { color: var(--fg); font-weight: 500; }
+.steps { display: grid; gap: clamp(48px, 9vh, 120px); padding-block: 8vh; }
+.step { display: grid; gap: 14px; opacity: .45; transition: opacity .4s; }
+.step.on { opacity: 1; }
+.step .t { font-family: var(--display); font-size: 1.1rem; color: var(--amber); letter-spacing: .06em; }
+.step h3 { font-size: clamp(2.6rem, 4.5vw, 3.8rem); }
+.step p { color: var(--muted); max-width: 32em; }
+@media (max-width: 900px) {
+  .night-grid { grid-template-columns: 1fr; gap: 0; }
+  .night-stage { top: calc(68px + env(safe-area-inset-top, 0px)); aspect-ratio: auto; height: 42svh; max-height: none; border-radius: 0; margin-inline: calc(-1 * var(--gutter)); }
+  .steps { padding-block: 32px 0; gap: 56px; }
+  .step { opacity: 1; }
+}
+
+/* couples gallery */
+.couples-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 120px; gap: 10px; }
+.couples-grid figure { margin: 0; position: relative; overflow: hidden; border-radius: 4px; background: #000; }
+.couples-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
+.couples-grid figure:hover img { transform: scale(1.04); }
+.couples-grid figcaption { position: absolute; inset-inline: 0; bottom: 0; padding: 14px 16px; font-size: .8125rem; color: var(--fg); background: linear-gradient(to top, rgba(0,0,0,.7), transparent); }
+.c1 { grid-column: span 7; grid-row: span 4; } .c2 { grid-column: span 5; grid-row: span 2; } .c3 { grid-column: span 5; grid-row: span 2; }
+.c4 { grid-column: span 4; grid-row: span 3; } .c5 { grid-column: span 4; grid-row: span 3; } .c6 { grid-column: span 4; grid-row: span 3; }
+@media (max-width: 760px) { .couples-grid { grid-auto-rows: 90px; } .c1 { grid-column: span 12; grid-row: span 4; } .c2, .c3 { grid-column: span 6; grid-row: span 2; } .c4, .c5, .c6 { grid-column: span 12; grid-row: span 3; } }
+
+/* quotes */
+.quotes { background: var(--bg-2); }
+.quote-list { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); }
+.quote { background: var(--bg-2); padding: clamp(28px, 4vw, 48px) 0; display: grid; grid-template-columns: 1fr auto; gap: 18px 40px; align-items: end; }
+.quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(1.9rem, 3.6vw, 3.1rem); line-height: 1.02; max-width: 24em; }
+.quote blockquote::before { content: "״"; color: var(--amber); }
+.quote blockquote::after { content: "״"; color: var(--amber); }
+.quote cite { font-style: normal; color: var(--muted); font-size: .9375rem; white-space: nowrap; }
+.quote cite b { display: block; color: var(--fg); font-weight: 500; }
+@media (max-width: 700px) { .quote { grid-template-columns: 1fr; } }
+.phones { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-block: 8px 20px; margin-top: 40px; scrollbar-width: thin; }
+.phones img { flex: 0 0 auto; width: 210px; border-radius: 22px; border: 1px solid var(--line); scroll-snap-align: start; }
+
+/* about */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+.about-grid figure { margin: 0; position: relative; }
+.about-grid img { border-radius: 6px; aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
+.about-grid figure::after { content: ""; position: absolute; inset: auto 24px -14px auto; width: 60%; height: 1px; background: var(--amber); }
+.about-copy { display: grid; gap: 22px; }
+.about-copy p { color: var(--muted); max-width: 36em; }
+.about-copy p strong { color: var(--fg); font-weight: 500; }
+.includes { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.includes li { display: flex; gap: 12px; align-items: baseline; color: var(--fg); }
+.includes li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--amber); flex: none; transform: translateY(-2px); }
+@media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }
+
+/* video */
+.video { position: relative; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; display: block; text-decoration: none; background: #000; }
+.video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .8; }
+.video .play { position: absolute; inset: 0; display: grid; place-items: center; }
+.video .play span { display: inline-flex; align-items: center; gap: 12px; padding: 14px 22px 14px 16px; border-radius: 999px; background: rgba(10,10,12,.7); border: 1px solid var(--line); backdrop-filter: blur(8px); font-weight: 500; }
+.video .play i { width: 44px; height: 44px; border-radius: 50%; background: var(--amber); display: grid; place-items: center; }
+.video .play i::after { content: ""; border: 9px solid transparent; border-inline-start: 15px solid var(--on-amber); border-inline-end: 0; margin-inline-start: 4px; }
+
+/* faq */
+.faq { max-width: 760px; }
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-child { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 20px; align-items: center; padding: 22px 0; font-family: var(--display); font-size: 1.75rem; line-height: 1; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--amber); font-size: 1.6rem; flex: none; transition: transform .25s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 0 22px; color: var(--muted); max-width: 40em; }
+
+/* contact */
+.contact { background: var(--fg); color: var(--bg); }
+.contact .eyebrow { color: var(--amber-deep); } .contact .eyebrow::before { background: var(--amber-deep); }
+.contact-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
+.contact h2 { font-size: clamp(3.6rem, 9vw, 7rem); }
+.contact .lede { color: #4d473f; }
+.form { display: grid; gap: 14px; }
+.form label { display: grid; gap: 6px; font-size: .875rem; color: #4d473f; }
+.form input { width: 100%; min-height: 50px; padding: 0 14px; border: 1px solid rgba(10,10,12,.25); border-radius: 4px; background: #fff; color: var(--bg); font: 400 1rem var(--body); }
+.form input:focus { outline: 2px solid var(--amber-deep); outline-offset: 1px; border-color: transparent; }
+.form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form .btn-wa { min-height: 56px; margin-top: 6px; }
+.alt { display: flex; flex-wrap: wrap; gap: 8px 22px; color: #4d473f; font-size: .9375rem; margin-top: 10px; }
+.alt a { color: var(--bg); text-decoration: none; font-weight: 500; }
+@media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } .form .row { grid-template-columns: 1fr; } }
+
+/* footer */
+footer { padding-block: 40px calc(40px + 72px + env(safe-area-inset-bottom, 0px)); font-size: .875rem; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 32px; justify-content: space-between; align-items: center; }
+footer a { color: var(--fg); text-decoration: none; }
+footer nav { display: flex; gap: 20px; }
+@media (min-width: 861px) { footer { padding-bottom: 40px; } }
+
+/* mobile sticky bar */
+.dock { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(10,10,12,.9); backdrop-filter: blur(14px); border-top: 1px solid var(--line); display: flex; gap: 10px; }
+.dock .btn { flex: 1; min-height: 50px; }
+@media (min-width: 861px) { .dock { display: none; } }
+
+/* reveal */
+.rv { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .rv { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .js .rv.in { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .hero-img img, .strip-track { animation: none; } }
+</style>
+</head>
+<body>
+<header class="bar" id="bar">
+  <div class="wrap bar-inner">
+    <a class="brand" href="#top" aria-label="אלמוג כהן"><img src="../assets/img/icon-white.png" alt=""><b>אלמוג כהן</b></a>
+    <nav class="nav" aria-label="ניווט">
+      <a href="#night">הלילה</a><a href="#couples">זוגות</a><a href="#quotes">מה אומרים</a><a href="#about">מי אני</a><a href="#faq">שאלות</a>
+    </nav>
+    <a class="btn btn-amber" href="#contact">בדיקת תאריך</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-img"><img src="../assets/img/entrance.jpg" srcset="../assets/img/entrance-800.jpg 800w, ../assets/img/entrance.jpg 1600w" sizes="100vw" alt="זוג נכנס לרחבה בין זיקוקים קרים, האורחים מריעים" fetchpriority="high"></div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow">DJ לחתונות · 14 שנה על העמדה</p>
+      <h1><span>הלילה שלכם.</span><span class="amber">הסאונד שלי.</span></h1>
+      <div class="hero-row">
+        <p class="lede"><strong>מקבלת הפנים ועד השיר האחרון</strong>, ערב אחד שנבנה סביבכם: הקהל שלכם, הטעם שלכם, והרחבה שלא מתרוקנת.</p>
+        <div class="hero-cta">
+          <a class="btn btn-amber" href="#contact">בדקו אם התאריך פנוי</a>
+          <a class="btn btn-ghost" href="#night">איך נראה הלילה</a>
+        </div>
+      </div>
+      <div class="facts">
+        <div class="fact"><b class="num">1,000+</b><span>אירועים</span></div>
+        <div class="fact"><b class="num">14</b><span>שנים על העמדה</span></div>
+        <div class="fact"><b class="num">5★</b><span>דירוג, 150+ זוגות</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip" aria-hidden="true">
+    <div class="strip-track">
+      <span>אנשים רקדו ברחבה ללא הפסקה</span><span>אלמוג יא מלך</span><span>המוזיקה פשוט החזיקה אותי ברחבה</span><span>קיבלנו מאות מחמאות על הרחבה</span><span>היה לי הכי כיף בעולם</span>
+      <span>אנשים רקדו ברחבה ללא הפסקה</span><span>אלמוג יא מלך</span><span>המוזיקה פשוט החזיקה אותי ברחבה</span><span>קיבלנו מאות מחמאות על הרחבה</span><span>היה לי הכי כיף בעולם</span>
+    </div>
+  </div>
+
+  <section class="section night" id="night">
+    <div class="wrap">
+      <div class="head rv">
+        <p class="eyebrow">הלילה, רגע אחרי רגע</p>
+        <h2>ערב אחד. שישה רגעים.</h2>
+        <p class="lede">כל רגע בחתונה צריך סאונד אחר. ככה אני בונה אותו.</p>
+      </div>
+      <div class="night-grid">
+        <div class="night-stage" id="stage" aria-hidden="true">
+          <img class="on" src="../assets/img/stage-wide-800.jpg" srcset="../assets/img/stage-wide-800.jpg 800w, ../assets/img/stage-wide.jpg 1600w" sizes="(max-width: 900px) 100vw, 45vw" alt="" data-i="0">
+          <img src="../assets/img/entrance-800.jpg" srcset="../assets/img/entrance-800.jpg 800w, ../assets/img/entrance.jpg 1600w" sizes="(max-width: 900px) 100vw, 45vw" alt="" data-i="1" loading="lazy">
+          <img src="../assets/img/umbrellas-800.jpg" srcset="../assets/img/umbrellas-800.jpg 800w, ../assets/img/umbrellas.jpg 1600w" sizes="(max-width: 900px) 100vw, 45vw" alt="" data-i="2" loading="lazy">
+          <img src="../assets/img/chuppah-couple-800.jpg" srcset="../assets/img/chuppah-couple-800.jpg 800w, ../assets/img/chuppah-couple.jpg 1600w" sizes="(max-width: 900px) 100vw, 45vw" alt="" data-i="3" loading="lazy">
+          <img src="../assets/img/shoulders-bride-800.jpg" srcset="../assets/img/shoulders-bride-800.jpg 800w, ../assets/img/shoulders-bride.jpg 1600w" sizes="(max-width: 900px) 100vw, 45vw" alt="" data-i="4" loading="lazy">
+          <img src="../assets/img/smoke-jets-800.jpg" srcset="../assets/img/smoke-jets-800.jpg 800w, ../assets/img/smoke-jets.jpg 1600w" sizes="(max-width: 900px) 100vw, 45vw" alt="" data-i="5" loading="lazy">
+          <div class="cap" id="cap"><b>קבלת פנים</b> · האולם מתמלא</div>
+        </div>
+        <ol class="steps" id="steps">
+          <li class="step on" data-i="0" data-cap="קבלת פנים · האולם מתמלא"><span class="t">19:30</span><h3>קבלת פנים</h3><p>הסאונד בגובה שיחה. מוזיקה שמחממת את האולם בלי להשתלט עליו, עד שהרחבה מוכנה.</p></li>
+          <li class="step" data-i="1" data-cap="הכניסה · הרגע שכולם מחכים לו"><span class="t">20:45</span><h3>הכניסה</h3><p>השיר שבחרתם, בדיוק בזמן. אני מתזמן את הרגע עם הצלם ועם האולם, כדי שהוא יקרה פעם אחת ונכון.</p></li>
+          <li class="step" data-i="2" data-cap="החופה · שקט, ואז פיצוץ"><span class="t">21:15</span><h3>חופה ושבירת כוס</h3><p>מהשקט של החופה אל הפיצוץ של שבירת הכוס. מכאן הרחבה מתחילה, ולא עוצרת.</p></li>
+          <li class="step" data-i="3" data-cap="ריקוד ראשון · רק שניכם"><span class="t">21:40</span><h3>ריקוד ראשון</h3><p>השיר שלכם, בלי קיצורים ובלי הפתעות. אחרי זה, הקהל מצטרף.</p></li>
+          <li class="step" data-i="4" data-cap="הרחבה · על הכתפיים"><span class="t">22:00</span><h3>הרחבה</h3><p>קהל מעורב זה המגרש שלי: ישראלי, מזרחי, שנות ה-80, טכנו. אני קורא את הרחבה בזמן אמת ומחליף כיוון לפני שמישהו יושב.</p></li>
+          <li class="step" data-i="5" data-cap="אפטר · הסט שלא רוצים שייגמר"><span class="t">00:30</span><h3>אפטר פארטי</h3><p>הסט שלא רוצים שייגמר. מי שנשאר עד הסוף, זוכר את הסוף.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="couples">
+    <div class="wrap">
+      <div class="head rv">
+        <p class="eyebrow">הזוגות</p>
+        <h2>הם בחרו. הם רקדו.</h2>
+      </div>
+      <div class="couples-grid rv">
+        <figure class="c1"><img src="../assets/img/couple-garden.jpg" srcset="../assets/img/couple-garden-800.jpg 800w, ../assets/img/couple-garden.jpg 1600w" sizes="(max-width: 760px) 100vw, 60vw" alt="שיראל ואופק עם אלמוג, רגע לפני הכניסה" loading="lazy"><figcaption>שיראל ואופק</figcaption></figure>
+        <figure class="c2"><img src="../assets/img/couple-beige.jpg" srcset="../assets/img/couple-beige-800.jpg 800w, ../assets/img/couple-beige.jpg 1600w" sizes="(max-width: 760px) 50vw, 40vw" alt="זוג עם אלמוג על רקע אורות האולם" loading="lazy"></figure>
+        <figure class="c3"><img src="../assets/img/chuppah-couple.jpg" srcset="../assets/img/chuppah-couple-800.jpg 800w, ../assets/img/chuppah-couple.jpg 1600w" sizes="(max-width: 760px) 50vw, 40vw" alt="זוג עם אלמוג מתחת לחופה" loading="lazy"></figure>
+        <figure class="c4"><img src="../assets/img/couple-lights.jpg" srcset="../assets/img/couple-lights-800.jpg 800w, ../assets/img/couple-lights.jpg 1200w" sizes="(max-width: 760px) 100vw, 33vw" alt="זוג עם אלמוג מול וילון אורות" loading="lazy"></figure>
+        <figure class="c5"><img src="../assets/img/bride-shoulders-booth.jpg" srcset="../assets/img/bride-shoulders-booth-800.jpg 800w, ../assets/img/bride-shoulders-booth.jpg 1200w" sizes="(max-width: 760px) 100vw, 33vw" alt="כלה על הכתפיים ליד העמדה, אלמוג צוחק" loading="lazy"></figure>
+        <figure class="c6"><img src="../assets/img/henna-couple.jpg" srcset="../assets/img/henna-couple-800.jpg 800w, ../assets/img/henna-couple.jpg 1600w" sizes="(max-width: 760px) 100vw, 33vw" alt="זוג נכנס לחינה מתחת לשמשיות תחרה" loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section quotes" id="quotes">
+    <div class="wrap">
+      <div class="head rv">
+        <p class="eyebrow">בוקר אחרי, בוואטסאפ</p>
+        <h2>מה הזוגות כתבו</h2>
+      </div>
+      <div class="quote-list rv">
+        <div class="quote"><blockquote>אנשים רקדו ברחבה ללא הפסקה וכולנו נהנו מהמוזיקה שלך. אין עליך.</blockquote><cite><b>שיר ואדיר</b>חתונה, יוני 2025</cite></div>
+        <div class="quote"><blockquote>קיבלנו מאות מחמאות על זה שהרחבה מפוצצת. אף פעם לא היתה חתונה עם כל כך הרבה צעירים שלא מפסיקים לרקוד שעות על גבי שעות.</blockquote><cite><b>שיראל ואופק</b>חתונה, נובמבר 2023</cite></div>
+        <div class="quote"><blockquote>בחיים לא הייתי בחתונה שגם כשהייתי עייפה, המוזיקה פשוט החזיקה אותי ברחבה.</blockquote><cite><b>אוריאל ויעל</b>חתונה</cite></div>
+        <div class="quote"><blockquote>אלמוג יא מלך. אני מקבל הודעות מאנשים שכואבות להם הרגליים.</blockquote><cite><b>הראל ואביב</b>חתונה, אפריל 2025</cite></div>
+      </div>
+      <div class="phones rv" aria-label="צילומי מסך של ההודעות">
+        <img src="../assets/testimonials/wa-1.jpg" alt="הודעת וואטסאפ משיראל ואופק" loading="lazy">
+        <img src="../assets/testimonials/wa-4.jpg" alt="הודעת וואטסאפ משיר ואדיר" loading="lazy">
+        <img src="../assets/testimonials/wa-5.jpg" alt="הודעת וואטסאפ מהראל ואביב" loading="lazy">
+        <img src="../assets/testimonials/wa-2.jpg" alt="הודעת וואטסאפ מאוריאל ויעל" loading="lazy">
+        <img src="../assets/testimonials/wa-6.jpg" alt="הודעת וואטסאפ מטלי" loading="lazy">
+        <img src="../assets/testimonials/wa-8.jpg" alt="הודעת וואטסאפ מחגי ואוראל" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrap about-grid">
+      <figure class="rv"><img src="../assets/img/almog-neon.jpg" srcset="../assets/img/almog-neon-800.jpg 800w, ../assets/img/almog-neon.jpg 1600w" sizes="(max-width: 860px) 100vw, 50vw" alt="אלמוג כהן בעמדה, מאחורי שלט הניאון ALMOG COHEN" loading="lazy"></figure>
+      <div class="about-copy rv">
+        <p class="eyebrow">מי מאחורי העמדה</p>
+        <h2>אלמוג כהן</h2>
+        <p>בגיל 14 נכנסתי לשיעור DJ ראשון. המורה אמר "תצרוב 2 דיסקים ותבוא שבוע הבא". בגיל 15 כבר הייתי על במות. היום, אחרי 14 שנה ו-1,000+ אירועים, אני עדיין על הרחבה, <strong>ומלמד את הדור הבא לעשות את אותו הדבר.</strong></p>
+        <p>בחתונה אני לא "שם מוזיקה". אני מנהל ערב: פגישה אתכם לפני, תזמון עם האולם והצלם, וקריאת קהל בזמן אמת.</p>
+        <ul class="includes">
+          <li>פגישת ייעוץ לפני החתונה ובניית פלייליסט שלכם</li>
+          <li>ציוד מקצועי, XP2 ונגינת מידי בלייב</li>
+          <li>נוכחות מקבלת הפנים ועד הסיום, בלי לעבור בין אירועים</li>
+          <li>גמישות מלאה לשינויים ברגע האחרון</li>
+        </ul>
+        <div class="hero-cta"><a class="btn btn-amber" href="#contact">בואו נדבר על הערב שלכם</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="head rv"><p class="eyebrow">60 שניות</p><h2>תראו בעצמכם</h2></div>
+      <a class="video rv" href="https://www.youtube.com/watch?v=yarUtbqD0BI" target="_blank" rel="noopener">
+        <img src="../assets/img/shoulders-groom.jpg" srcset="../assets/img/shoulders-groom-800.jpg 800w, ../assets/img/shoulders-groom.jpg 1600w" sizes="(max-width: 1200px) 100vw, 1200px" alt="">
+        <span class="play"><span><i aria-hidden="true"></i>סרטון מחתונה עם אלמוג, ביוטיוב</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section quotes" id="faq">
+    <div class="wrap">
+      <div class="head rv"><p class="eyebrow">לפני שסוגרים</p><h2>שאלות שכולם שואלים</h2></div>
+      <div class="faq rv">
+        <details open><summary>כמה זמן לפני החתונה צריך לסגור?</summary><p>מומלץ 4 עד 6 חודשים מראש. תאריכים פופולריים בקיץ ובחגים נתפסים מהר. ככל שסוגרים מוקדם יותר, יש יותר זמן לתכנון מוזיקלי מדויק.</p></details>
+        <details><summary>מה כלול במחיר?</summary><p>פגישת ייעוץ מקדימה, בניית פלייליסט מותאם אישית, ציוד DJ מקצועי, נוכחות מהחופה ועד הסיום וגמישות מלאה במהלך הערב.</p></details>
+        <details><summary>מתאים גם לקהל מבוגר?</summary><p>בהחלט. ההתמחות שלי היא בדיוק קהל מעורב: מעברים חלקים בין להיטים ישראליים, מזרחית, שנות ה-80 וטכנו, לפי מי שעל הרחבה.</p></details>
+        <details><summary>מה קורה עם שינויים ברגע האחרון?</summary><p>גמישות זה שם המשחק. אני מגיע עם ספריית מוזיקה ענקית ויודע להתאים בזמן אמת. שינויים הם חלק מהעבודה.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact">
+    <div class="wrap contact-grid">
+      <div class="rv">
+        <p class="eyebrow">בדיקת תאריך</p>
+        <h2>התאריך שלכם פנוי?</h2>
+        <p class="lede" style="margin-top:18px">שלושה פרטים, ואני חוזר אליכם בוואטסאפ עם תשובה. בלי התחייבות.</p>
+        <div class="alt">
+          <span>או ישירות:</span>
+          <a href="https://wa.me/972502427616" target="_blank" rel="noopener">וואטסאפ</a>
+          <a href="tel:+972502427616" dir="ltr">050-242-7616</a>
+          <a href="https://www.instagram.com/djalmogcohen" target="_blank" rel="noopener">אינסטגרם</a>
+        </div>
+      </div>
+      <form class="form rv" id="form">
+        <div class="row">
+          <label>תאריך החתונה<input type="date" id="f-date" name="date"></label>
+          <label>כמות אורחים<input type="number" id="f-guests" name="guests" min="20" step="10" placeholder="300"></label>
+        </div>
+        <label>אולם או אזור<input type="text" id="f-venue" name="venue" placeholder="למשל: קיסריה, או שם האולם"></label>
+        <button class="btn btn-wa" type="submit"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>שלחו לי בוואטסאפ</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© אלמוג כהן · DJ לחתונות ואירועים בכל הארץ</span>
+    <nav><a href="https://www.instagram.com/djalmogcohen" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@djalmogcohen" target="_blank" rel="noopener">YouTube</a><a href="https://www.compaktt.com" target="_blank" rel="noopener">Compaktt</a></nav>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn btn-wa" href="https://wa.me/972502427616?text=%D7%94%D7%99%D7%99%20%D7%90%D7%9C%D7%9E%D7%95%D7%92%2C%20%D7%97%D7%AA%D7%95%D7%A0%D7%94%20%D7%91%D7%AA%D7%90%D7%A8%D7%99%D7%9A%20____.%20%D7%90%D7%A4%D7%A9%D7%A8%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%96%D7%9E%D7%99%D7%A0%D7%95%D7%AA%3F" target="_blank" rel="noopener">וואטסאפ</a>
+  <a class="btn btn-amber" href="#contact">בדיקת תאריך</a>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"DJ אלמוג כהן","url":"https://almog.compaktt.com/","telephone":"+972-50-242-7616","image":"https://almog.compaktt.com/assets/img/almog-neon.jpg","address":{"@type":"PostalAddress","addressCountry":"IL"},"areaServed":"Israel","sameAs":["https://www.instagram.com/djalmogcohen","https://www.youtube.com/@djalmogcohen"]}
+</script>
+<script>
+(function () {
+  document.documentElement.classList.add('js');
+  var WA = '972502427616';
+  var bar = document.getElementById('bar');
+  var onScroll = function () { bar.classList.toggle('solid', window.scrollY > 40); };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  var form = document.getElementById('form');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = document.getElementById('f-date').value, v = document.getElementById('f-venue').value.trim(), g = document.getElementById('f-guests').value;
+    var date = d ? d.split('-').reverse().join('.') : '____';
+    var msg = 'היי אלמוג, חתונה בתאריך ' + date + '. אולם/אזור: ' + (v || '____') + '. כמות אורחים: ' + (g || '____') + '. אפשר לבדוק זמינות?';
+    window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  });
+
+  var imgs = document.querySelectorAll('#stage img'), cap = document.getElementById('cap'), steps = document.querySelectorAll('.step');
+  var show = function (i, c) { imgs.forEach(function (im) { im.classList.toggle('on', im.dataset.i === i); }); steps.forEach(function (s) { s.classList.toggle('on', s.dataset.i === i); }); if (c) { var p = c.split(' · '); cap.innerHTML = '<b></b> · '; cap.firstChild.textContent = p[0]; cap.appendChild(document.createTextNode(p[1] || '')); } };
+  if ('IntersectionObserver' in window) {
+    var so = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) show(e.target.dataset.i, e.target.dataset.cap); }); }, { rootMargin: '-45% 0px -45% 0px' });
+    steps.forEach(function (s) { so.observe(s); });
+    var rv = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rv.unobserve(e.target); } }); }, { threshold: .12 });
+    document.querySelectorAll('.rv').forEach(function (el) { rv.observe(el); });
+  } else { document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); }); }
+})();
+</script>
+</body>
+</html>

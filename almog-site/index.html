@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>אלמוג כהן · סקיצות לאתר</title>
+<meta name="description" content="שלושה כיווני עיצוב לאתר התדמית החדש של DJ אלמוג כהן: הלילה, ההזמנה, הרחבה.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/img/icon-white.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;900&display=swap">
+<style>
+:root { --bg: #0c0d10; --surface: #15171c; --line: rgba(255,255,255,.12); --fg: #f4f2ee; --muted: #9a9a94; --green: #03b28c; --blue: #059cc0; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: "Heebo", "Segoe UI", Arial, sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.wrap { width: min(1180px, 100%); margin-inline: auto; padding: clamp(32px, 6vw, 72px) max(16px, 4vw) 64px; display: grid; gap: 36px; }
+header { display: grid; gap: 10px; max-width: 720px; }
+header img { width: 44px; }
+h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 900; line-height: 1.05; margin: 0; letter-spacing: -.02em; }
+header p { margin: 0; color: var(--muted); font-size: 1.1rem; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+a.card { display: grid; grid-template-rows: auto 1fr; text-decoration: none; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; transition: transform .25s, border-color .25s; min-width: 0; }
+a.card:hover { transform: translateY(-4px); border-color: var(--green); }
+.thumb { aspect-ratio: 4 / 3; position: relative; overflow: hidden; background: #000; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb span { position: absolute; top: 14px; inset-inline-start: 14px; font-weight: 900; font-size: .85rem; padding: 6px 12px; border-radius: 999px; background: linear-gradient(100deg, var(--blue), var(--green)); color: #03130f; }
+.body { padding: 18px 20px 22px; display: grid; gap: 8px; align-content: start; }
+.body h2 { margin: 0; font-size: 1.3rem; font-weight: 900; }
+.body p { margin: 0; color: var(--muted); font-size: .95rem; }
+.body small { color: var(--fg); font-size: .8rem; opacity: .7; }
+.note { color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); padding-top: 24px; max-width: 720px; }
+.note a { color: var(--fg); }
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <img src="assets/img/icon-white.png" alt="">
+    <h1>אלמוג כהן · שלוש סקיצות לאתר החדש</h1>
+    <p>שלושה כיוונים לאתר התדמית, כולם עם התמונות האמיתיות: חתונות, זוגות ואווירה. כל סקיצה היא אתר שלם בעמוד אחד, מהפתיחה ועד טופס בדיקת התאריך. פותחים בטלפון ובמחשב.</p>
+  </header>
+  <div class="grid">
+    <a class="card" href="sketch-1/"><div class="thumb"><img src="assets/img/entrance-800.jpg" alt=""><span>סקיצה 1</span></div><div class="body"><h2>הלילה · קולנועי</h2><p>שחור, לבן חם, ואקסנט ענבר אחד מהזיקוקים. כותרות ענק בקרנטינה, והלילה מסופר רגע אחרי רגע עם תמונה שמתחלפת בגלילה.</p><small>אופי: עוצר נשימה, יוקרתי, עריכתי</small></div></a>
+    <a class="card" href="sketch-2/"><div class="thumb"><img src="assets/img/couple-garden-800.jpg" alt=""><span>סקיצה 2</span></div><div class="body"><h2>ההזמנה · הזוגות קודם</h2><p>בהיר, סריף עברי, ותמונות בקשתות חופה. מרגיש כמו הזמנה לחתונה: סדר הערב, הזוגות, ומכתבי התודה שלהם.</p><small>אופי: עדין, אישי, מכוון לזוג</small></div></a>
+    <a class="card" href="sketch-3/"><div class="thumb"><img src="assets/img/shoulders-groom-800.jpg" alt=""><span>סקיצה 3</span></div><div class="body"><h2>הרחבה · אנרגיה</h2><p>צבעי המותג כניאון על רקע כהה. פתיחה ברשת תמונות, גלריית אווירה אופקית, והלילה כמד אנרגיה עם נוריות.</p><small>אופי: אנרגטי, ממיר, מובייל קודם</small></div></a>
+  </div>
+  <p class="note">הסקיצות משתמשות באותו תוכן (טקסטים מהאתר הקיים, הודעות אמיתיות מהזוגות, וואטסאפ 050-242-7616). אפשר לבחור אחת, או לשלב: למשל הפתיחה של 1 עם הזוגות של 2 והטופס של 3.</p>
+</main>
+</body>
+</html>
