@@ -1,0 +1,14 @@
+{
+  "_comment": "AI images for the opening journey, with the round thing that sits in the record window (in source pixels). The sources are the PNGs in the Drive folder academy-ai (see AI-PROMPTS.md), downloaded to ../ai-images/ (not in git). Each entry: {\"id\": \"jog\", \"src\": \"path/to/05-jog.png\", \"focus\": [x, y, r]}, plus optionally \"src_l\" / \"focus_l\" for a separate 16:9 image (without it wide screens use the portrait crop). The id matches data-scene in index.html. Run tools/zoom-crops.py after changing and paste the printed attributes on that .jr-scene.",
+  "out": "assets/zoom",
+  "scenes": [
+    { "id": "shoes",      "src": "../ai-images/01-rx3-floor.png",        "focus": [481, 1150, 200] },
+    { "id": "desk",       "src": "../ai-images/02-flx4-playing.png",     "focus": [470, 780, 280] },
+    { "id": "power",      "src": "../ai-images/03-rx3-play.png",         "focus": [370, 935, 90] },
+    { "id": "headphones", "src": "../ai-images/04-flx10-headphones.png", "focus": [491, 729, 248] },
+    { "id": "jog",        "src": "../ai-images/05-flx10-jog.png",        "focus": [376, 724, 270] },
+    { "id": "fader",      "src": "../ai-images/06-az-fader.png",         "focus": [465, 1000, 110] },
+    { "id": "eq",         "src": "../ai-images/07-a9-eq.png",            "focus": [562, 802, 91] },
+    { "id": "crowd",      "src": "../ai-images/08-cdj3000-a9-crowd.png", "focus": [440, 720, 280] }
+  ]
+}
