@@ -69,6 +69,7 @@ function start() {
   }, { passive: true });
 
   let visible = true, raf = 0, on = false, lastT = J.state.tRaw, lastAt = performance.now(), vel = 0;
+  let spin = 0, lastI = J.state.i, shockAt = -10, shock = 0;
   const times = []; let checked = false;
 
   function frame(now) {
@@ -80,8 +81,12 @@ function start() {
     vel = vel * 0.8 + 0.2 * ((s.tRaw - lastT) / dt);
     lastT = s.tRaw; lastAt = now;
     pointer.lerp(target, 0.06);
+    // the record spins with the scroll, and every station that lands sends a shockwave
+    spin += vel * dt * 2.2;
+    if (s.i !== lastI) { if (s.i > lastI) { shockAt = now; shock = 1; } lastI = s.i; }
     const beat = window.ClubAudio ? window.ClubAudio.pulse() : 0;
-    const fx = { time: now / 1000, beat, vel, pointer, winAlpha: 1, booth: null, boothAlpha: 0 };
+    const fx = { time: now / 1000, beat, vel, pointer, winAlpha: 1, booth: null, boothAlpha: 0,
+      spin, shockAge: (now - shockAt) / 1000, shock: (now - shockAt) < 1500 ? shock : 0 };
     renderer.clear();
     if (booth && s.hp < 1) {
       const b = booth.render(s, fx, W, H);

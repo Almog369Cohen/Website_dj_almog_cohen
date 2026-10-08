@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- The share image: assets/og.jpg is a 1200x630 screenshot of this page (served from academy-site/) -->
+<html lang="he" dir="rtl"><head><meta charset="utf-8">
+<style>
+@font-face { font-family: "Karantina"; font-weight: 700; src: url("../fonts/karantina-hebrew-700-normal.woff2") format("woff2"); unicode-range: U+0590-05FF, U+20AA; }
+@font-face { font-family: "Karantina"; font-weight: 700; src: url("../fonts/karantina-latin-700-normal.woff2") format("woff2"); unicode-range: U+0000-00FF; }
+@font-face { font-family: "Plex"; font-weight: 500; src: url("../fonts/ibm-plex-sans-hebrew-hebrew-500-normal.woff2") format("woff2"); unicode-range: U+0590-05FF, U+20AA; }
+@font-face { font-family: "Plex"; font-weight: 500; src: url("../fonts/ibm-plex-sans-hebrew-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF; }
+html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #0b0a12; }
+.bg { position: absolute; inset: 0; background: url("../assets/zoom/crowd-portrait.webp") center 38% / cover no-repeat; transform: scaleX(-1); filter: saturate(1.15); }
+.shade { position: absolute; inset: 0; background: linear-gradient(to left, rgba(11,10,18,.96) 0%, rgba(11,10,18,.88) 42%, rgba(11,10,18,.25) 75%, rgba(11,10,18,.1) 100%), radial-gradient(ellipse at 20% 40%, rgba(139,108,255,.35), transparent 60%); }
+.txt { position: absolute; inset-inline-start: 70px; top: 64px; bottom: 64px; display: flex; flex-direction: column; justify-content: center; gap: 14px; color: #efedf8; }
+.eyebrow { font: 500 26px/1 Plex; color: #8b6cff; display: flex; gap: 12px; align-items: center; }
+.eyebrow::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #8b6cff; box-shadow: 0 0 14px #8b6cff; }
+h1 { margin: 0; font: 700 168px/.86 Karantina; letter-spacing: -.005em; }
+h1 span { display: block; }
+.zero { display: inline-block; width: .7em; height: .7em; border-radius: 50%; vertical-align: -.02em; margin-inline: .03em; position: relative;
+  background: repeating-radial-gradient(circle, #141220 0 2px, #1c1930 2px 4px); box-shadow: 0 0 0 3px rgba(239,237,248,.45), 0 10px 40px rgba(0,0,0,.6); }
+.zero::after { content: ""; position: absolute; inset: 34%; border-radius: 50%; background: radial-gradient(circle, #0b0a12 0 10%, transparent 11%), linear-gradient(135deg, #8b6cff, #ff4fd8); }
+.sub { font: 500 34px/1.25 Plex; color: #efedf8; opacity: .92; }
+.brand { font: 500 24px/1 Plex; color: #a8a3bf; margin-top: 10px; direction: ltr; text-align: right; }
+.brand b { color: #efedf8; }
+</style></head><body>
+<div class="bg"></div><div class="shade"></div>
+<div class="txt">
+  <p class="eyebrow">קורס DJ · ירושלים והמרכז</p>
+  <h1><span>מ-<span class="zero"></span></span><span>לעמדה.</span></h1>
+  <p class="sub">שיעורים פרטיים וקורס קבוצתי, מ-1,500 ₪</p>
+  <p class="brand"><b>Compaktt School</b> · school.compaktt.com</p>
+</div>
+</body></html>

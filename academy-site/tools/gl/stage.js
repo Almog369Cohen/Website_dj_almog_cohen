@@ -16,6 +16,7 @@ uniform sampler2D uTexA, uTexB; uniform vec4 uImgA, uImgB, uXfA, uXfB; uniform v
 uniform vec4 uWin; uniform float uSweep, uWinAlpha, uOpen;
 uniform vec4 uRec; uniform float uRecRot, uRingOp;
 uniform sampler2D uBooth; uniform float uBoothAlpha;
+uniform vec2 uShock;   // seconds since the last station change, its strength
 
 const vec3 BG = vec3(0.043, 0.039, 0.071);
 const vec3 SURF2 = vec3(0.110, 0.098, 0.188);
@@ -75,21 +76,46 @@ void main() {
     vec2 dir = r > 0.5 ? d / r : vec2(0.0);
     vec2 off = dir * clamp(abs(uVel) * 2.5 + uBeat * 1.4, 0.0, 8.0) * (1.0 - 0.6 * uOpen) * smoothstep(0.0, 80.0, r);
     vec2 sb = c + (s - c) / (1.0 + 0.014 * uBeat) + uPointer * 12.0 * (1.0 - uOpen);
-    vec3 img = layerCA(uTexA, uImgA, uXfA, uTA, sb, off);
+    vec3 img;
     if (uHasB > 0.5) {
-      // the next station sweeps in clockwise from 12 o'clock, with a liquid edge and a light trail
-      float ang = atan(d.x, -d.y); if (ang < 0.0) ang += TAU;
-      float env = sin(PI * clamp(uSweep / TAU, 0.0, 1.0));
-      float edge = uSweep + (vnoise(vec2(r * 0.03, uTime * 0.7)) - 0.5) * 0.5 * env;
-      float aa = 1.5 / max(r, 1.0);
-      float m = smoothstep(edge + aa, edge - aa, ang);
-      img = mix(img, layerCA(uTexB, uImgB, uXfB, uTB, sb, off), m);
-      float trail = exp(-abs(ang - edge) * r / 5.0) * smoothstep(0.0, R * 0.3, r) * env;
-      img += mix(ACC2, vec3(1.0), 0.35) * trail * 0.9;
-      img += ACC2 * 0.16 * exp(-max(edge - ang, 0.0) * r / 40.0) * m * env;
+      // the portal: this station rushes forward into its focus with a zoom blur, while the next one opens
+      // from the centre through a liquid iris and flies in from further away
+      float e = clamp(uSweep / TAU, 0.0, 1.0), env = sin(PI * e);
+      vec2 sa = c + (sb - c) / (1.0 + 2.4 * e * e);
+      img = vec3(0.0);
+      for (int k = 0; k < 4; k++) img += layer(uTexA, uImgA, uXfA, uTA, c + (sa - c) * (1.0 - 0.045 * e * float(k)));
+      img *= 0.25;
+      float open = smoothstep(0.12, 1.0, e);
+      float ang = atan(d.y, d.x);
+      float edge = R * 1.03 * open + (vnoise(vec2(ang * 2.5 + 7.0, uTime * 0.9)) - 0.5) * 26.0 * env;
+      float m = smoothstep(edge + 1.5, edge - 1.5, r);
+      vec2 sbB = c + (sb - c) * (1.0 + 0.7 * (1.0 - open));
+      img = mix(img, layerCA(uTexB, uImgB, uXfB, uTB, sbB, off), m);
+      img += mix(ACC2, vec3(1.0), 0.3) * exp(-abs(r - edge) / 3.5) * env * 1.3 * step(1.0, edge);
+      img += ACC2 * 0.25 * exp(-max(r - edge, 0.0) / 30.0) * (1.0 - m) * env;
+      img += vec3(1.0) * 0.22 * pow(env, 8.0);
+    } else {
+      img = layerCA(uTexA, uImgA, uXfA, uTA, sb, off);
     }
     img *= 1.0 - 0.45 * exp(-max(R - r, 0.0) / 22.0) * (1.0 - uOpen);
     col = mix(col, img, inside);
+  }
+
+  // scrolling fast: light streaks rushing out of the window, like a warp
+  float sv = clamp(abs(uVel) / 2.0, 0.0, 1.0);
+  if (sv > 0.02) {
+    float ang2 = atan(d.y, d.x) / TAU + 0.5;
+    float id = floor(ang2 * 140.0);
+    float h = hash(vec2(id, 3.7));
+    float lane = smoothstep(0.86, 1.0, h) * (1.0 - smoothstep(0.0, 0.5, abs(fract(ang2 * 140.0) - 0.5) * 2.0 - 0.5));
+    float run = fract(r / (180.0 + 160.0 * h) - uTime * (0.9 + h) * sign(uVel) + h * 7.0);
+    float streak = lane * smoothstep(0.0, 0.15, run) * smoothstep(0.75, 0.25, run) * smoothstep(R * 0.5, R * 1.3, r);
+    col += mix(ACC, vec3(1.0), 0.45) * streak * sv * 0.75;
+  }
+  // a shockwave ring when a station lands
+  if (uShock.y > 0.001) {
+    float sr = R + uShock.x * 900.0;
+    col += mix(ACC2, ACC, 0.5) * exp(-abs(r - sr) / 6.0) * exp(-uShock.x * 3.5) * uShock.y * uWinAlpha;
   }
 
   // the rim, brighter on the beat
@@ -116,7 +142,7 @@ export function createStage(textures) {
     uTA: { value: new Vector2() }, uTB: { value: new Vector2() }, uHasB: { value: 0 },
     uWin: { value: new Vector4() }, uSweep: { value: 0 }, uWinAlpha: { value: 1 }, uOpen: { value: 0 },
     uRec: { value: new Vector4() }, uRecRot: { value: 0 }, uRingOp: { value: 1 },
-    uBooth: { value: null }, uBoothAlpha: { value: 0 },
+    uBooth: { value: null }, uBoothAlpha: { value: 0 }, uShock: { value: new Vector2() },
   };
   const material = new ShaderMaterial({ uniforms: u, vertexShader: vertex, fragmentShader: fragment, depthTest: false, depthWrite: false });
   const scene = new Scene();
@@ -144,7 +170,8 @@ export function createStage(textures) {
     u.uOpen.value = st.open;
     u.uWinAlpha.value = fx.winAlpha;
     u.uRec.value.set(J.win.x, J.win.y, J.recR * (1 + 0.4 * st.open), (0.35 + 0.65 * st.hp) * (1 - st.open));
-    u.uRecRot.value = st.tRaw * 50 * Math.PI / 180 + fx.time * 0.25;
+    u.uRecRot.value = st.tRaw * 50 * Math.PI / 180 + fx.time * 0.25 + (fx.spin || 0);
+    u.uShock.value.set(fx.shockAge || 0, fx.shock || 0);
     u.uRingOp.value = (1 - st.open) * Math.min(1, st.hp * 2);
     u.uBooth.value = fx.booth || null;
     u.uBoothAlpha.value = fx.booth ? fx.boothAlpha : 0;

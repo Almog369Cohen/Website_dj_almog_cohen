@@ -40,8 +40,22 @@
   var hudBar = journey.querySelector(".hud-bar i");
   var N = scenes.length;
 
-  var HERO = 1.2;          // scroll length (in stations) of the 0 growing into the window
-  var FINAL_HOLD = 0.7;    // extra length for the last station
+  // Each caption's title arrives word by word
+  var words = caps.map(function (c) {
+    var title = c.querySelector(".cap-title");
+    if (!title) return [];
+    title.innerHTML = title.textContent.trim().split(/\s+/).map(function (w) { return '<span class="w">' + w + "</span>"; }).join(" ");
+    return Array.prototype.slice.call(title.querySelectorAll(".w"));
+  });
+  // and a giant outlined station number drifts behind it
+  var ghost = document.createElement("div");
+  ghost.className = "jr-num";
+  ghost.setAttribute("aria-hidden", "true");
+  stage.insertBefore(ghost, stage.querySelector(".journey-fx"));
+
+  var HERO = 1.0;          // scroll length (in stations) of the hero diving into the window
+  var FINAL_HOLD = 0.6;    // extra length for the last station
+  var SEG_P = 0.62, SEG_L = 0.72;   // one station's scroll length, as a part of the screen height (phone, wide)
   var SWEEP_FROM = 0.3, SWEEP_TO = 0.92;   // part of each station spent sweeping in the next one
   var DOLLY = 0.08;        // each station keeps pushing in while it plays, like a camera move
 
@@ -232,7 +246,9 @@
       domRecord(tRaw, hp, open, wx, wy, wr, R, sweep);
     }
     var nr = Math.round(t);
-    flash.style.opacity = (nr >= 1 && nr <= N - 1 && tRaw > 0 ? 0.22 * Math.max(0, 1 - Math.abs(t - nr) / 0.03) : 0).toFixed(3);
+    // a white flash on each station change (the WebGL stage sends a shockwave instead)
+    var fl = nr >= 1 && nr <= N - 1 && tRaw > 0 && !journey.classList.contains("gl-on") ? 0.22 * Math.max(0, 1 - Math.abs(t - nr) / 0.03) : 0;
+    flash.style.opacity = fl.toFixed(3);
 
     caps.forEach(function (c, k) {
       var local = tRaw - k, o;
@@ -242,7 +258,19 @@
       c.style.opacity = o.toFixed(3);
       c.style.transform = "translateY(" + ((1 - o) * 16).toFixed(1) + "px)";
       c.style.visibility = o > 0.01 ? "visible" : "hidden";
+      if (o > 0.01) {
+        var ws = words[k], start = k === N - 1 ? -0.02 : 0;
+        for (var j = 0; j < ws.length; j++) {
+          var e = smooth((local - start - j * 0.025) / 0.08);
+          ws[j].style.opacity = e.toFixed(3);
+          ws[j].style.transform = "translateY(" + ((1 - e) * 0.5).toFixed(3) + "em) rotate(" + ((1 - e) * -7).toFixed(2) + "deg) scale(" + (0.86 + 0.14 * e).toFixed(3) + ")";
+        }
+      }
     });
+    var go = tRaw < -0.05 ? 0 : clamp(1 - Math.abs(p - 0.2) / 0.5, 0, 1) * (last ? 1 : 1 - sweep);
+    ghost.textContent = String(i + 1).padStart(2, "0");
+    ghost.style.opacity = (go * 0.9).toFixed(3);
+    ghost.style.transform = "translateY(" + ((0.25 - p) * 90).toFixed(1) + "px)";
 
     if (i !== lastIndex) {
       lastIndex = i;
@@ -253,9 +281,73 @@
     hudBar.style.transform = "scaleX(" + clamp((tRaw + HERO) / (N - 1 + HERO), 0, 1).toFixed(4) + ")";
   }
 
+  var segPx = 0;
   function trackHeight() {
-    var seg = H * (W / H < 0.9 ? 0.9 : 1);
-    journey.style.height = (H + (HERO + N - 1 + FINAL_HOLD) * seg) + "px";
+    segPx = H * (W / H < 0.9 ? SEG_P : SEG_L);
+    journey.style.height = (H + (HERO + N - 1 + FINAL_HOLD) * segPx) + "px";
+  }
+
+  // Snap: when the scroll comes to rest inside the journey, it settles on the nearest station in the
+  // direction it was going, so one swipe is one station (the hero, each station, the opened booth)
+  var rests = [-HERO];
+  for (var r = 0; r < N - 1; r++) rests.push(r + 0.12);
+  rests.push(N - 1 + 0.5);
+  function setupSnap() {
+    var from = 0, holding = false, snapping = false, settle = 0, aim = 0, release = 0, input = -1e9;
+    // only the reader's own scrolling snaps; a jump from a link or a script just passes through
+    var mark = function () { input = performance.now(); };
+    window.addEventListener("wheel", mark, { passive: true });
+    window.addEventListener("touchmove", mark, { passive: true });
+    window.addEventListener("keydown", function (e) {
+      if (/^(ArrowUp|ArrowDown|PageUp|PageDown|Home|End| )$/.test(e.key)) mark();
+    });
+    function top0() { return journey.getBoundingClientRect().top + window.scrollY; }
+    function tAtScroll() { return (window.scrollY - top0()) / segPx - HERO; }
+    function go(j) {
+      var y = top0() + (rests[j] + HERO) * segPx;
+      from = j;
+      if (Math.abs(window.scrollY - y) < 2) return;
+      snapping = true; aim = y;
+      var done = function () { snapping = false; clearTimeout(release); };
+      var lenis = window.AcademyLenis;
+      if (lenis) lenis.scrollTo(y, { duration: 0.6, easing: function (x) { return 1 - Math.pow(1 - x, 3); }, onComplete: done });
+      else window.scrollTo({ top: y, behavior: "smooth" });
+      clearTimeout(release);
+      release = setTimeout(done, 1600);   // in case the browser never quite gets there
+    }
+    function onRest() {
+      if (holding || snapping || performance.now() - input > 4000) return;
+      var tt = tAtScroll();
+      if (tt < -HERO - 0.02 || tt > rests[rests.length - 1] + 0.3) return;   // outside: scroll freely
+      var moved = tt - rests[from], j;
+      if (Math.abs(moved) < 0.12) j = from;
+      else if (moved > 0) { for (j = 0; j < rests.length - 1 && rests[j] < tt - 0.12; j++); }
+      else { for (j = rests.length - 1; j > 0 && rests[j] > tt + 0.12; j--); }
+      go(j);
+    }
+    var lastY = window.scrollY;
+    window.addEventListener("scroll", function () {
+      if (snapping && Math.abs(window.scrollY - aim) < 3) { snapping = false; clearTimeout(release); }
+      // the tail of a smooth scroll creeps a pixel at a time: that already counts as resting
+      if (Math.abs(window.scrollY - lastY) > 1.5) {
+        lastY = window.scrollY;
+        clearTimeout(settle);
+        settle = setTimeout(onRest, 140);
+      }
+      if (!snapping) {
+        // keep `from` on the station the reader is passing
+        var tt = tAtScroll(), best = 0;
+        for (var j = 1; j < rests.length; j++) if (Math.abs(rests[j] - tt) < Math.abs(rests[best] - tt)) best = j;
+        if (Math.abs(rests[best] - tt) < 0.06) from = best;
+      }
+    }, { passive: true });
+    var down = function () { holding = true; clearTimeout(settle); };
+    var up = function () { holding = false; clearTimeout(settle); settle = setTimeout(onRest, 160); };
+    window.addEventListener("touchstart", down, { passive: true });
+    window.addEventListener("touchend", up, { passive: true });
+    window.addEventListener("touchcancel", up, { passive: true });
+    window.addEventListener("mousedown", down);
+    window.addEventListener("mouseup", up);
   }
 
   measure();
@@ -267,7 +359,7 @@
     ease: "none",
     onUpdate: function () { render(proxy.t); },
     scrollTrigger: {
-      trigger: journey, start: "top top", end: "bottom bottom", scrub: touch ? 0.5 : 0.3,
+      trigger: journey, start: "top top", end: "bottom bottom", scrub: touch ? 0.2 : 0.25,
       onToggle: function (self) {
         document.documentElement.classList.toggle("in-journey", self.isActive);
         if (window.ClubAudio) ClubAudio.leaveJourney(!self.isActive && self.progress > 0.5);
@@ -275,6 +367,7 @@
     }
   });
   render(-HERO);
+  setupSnap();
   api.render = function () { render(proxy.t); };
   api.renderAt = function (tt) { proxy.t = tt; render(tt); };   // for recordings and tests
 

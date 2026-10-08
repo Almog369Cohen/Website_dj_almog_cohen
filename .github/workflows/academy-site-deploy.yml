@@ -54,7 +54,9 @@ jobs:
         run: |
           gsutil -m setmeta -h "Cache-Control:public, max-age=0, must-revalidate" \
             "gs://${BUCKET_NAME}/index.html" "gs://${BUCKET_NAME}/journey.js" "gs://${BUCKET_NAME}/scenes.js" \
-            "gs://${BUCKET_NAME}/club-audio.js" "gs://${BUCKET_NAME}/club-gl.js" "gs://${BUCKET_NAME}/robots.txt" "gs://${BUCKET_NAME}/sitemap.xml"
+            "gs://${BUCKET_NAME}/club-audio.js" "gs://${BUCKET_NAME}/club-gl.js" "gs://${BUCKET_NAME}/robots.txt" "gs://${BUCKET_NAME}/sitemap.xml" \
+            "gs://${BUCKET_NAME}/llms.txt"
+          gsutil -m setmeta -h "Content-Type:text/plain; charset=utf-8" "gs://${BUCKET_NAME}/llms.txt" "gs://${BUCKET_NAME}/robots.txt"
           gsutil -m setmeta -h "Cache-Control:public, max-age=604800" \
             "gs://${BUCKET_NAME}/assets/**" "gs://${BUCKET_NAME}/vendor/**" "gs://${BUCKET_NAME}/fonts/**"
 

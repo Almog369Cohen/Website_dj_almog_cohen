@@ -3,15 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Compaktt School: בית ספר ל-DJ. שיעורים פרטיים, ליווי אישי וקורס קבוצתי על ציוד מקצועי (XDJ-RX3, DDJ-1000), עם יציאה לאירועים אמיתיים. מסלולים מ-1,500 ₪.">
+<meta name="description" content="קורס DJ ושיעורי תקלוט מאפס: שיעורים פרטיים בירושלים וקורס קבוצתי במרכז, על ציוד מקצועי (XDJ-RX3, DDJ-1000), עם ליווי אישי ויציאה לאירועים אמיתיים. מסלולים מ-1,500 ₪.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0b0a12">
+<meta name="geo.region" content="IL-JM">
+<meta name="geo.placename" content="ירושלים">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="he_IL">
-<meta property="og:title" content="Compaktt School · בית ספר ל-DJ">
-<meta property="og:description" content="מאפס לעמדה מקצועית: ציוד אמיתי, ליווי אישי ואירוע אמיתי בשטח.">
+<meta property="og:site_name" content="Compaktt School">
+<meta property="og:title" content="קורס DJ בירושלים ובמרכז · Compaktt School">
+<meta property="og:description" content="מאפס לעמדה: שיעורי DJ פרטיים בירושלים וקורס קבוצתי במרכז, על ציוד מקצועי ועם יציאה לאירועים אמיתיים.">
 <meta property="og:url" content="https://school.compaktt.com/">
+<meta property="og:image" content="https://school.compaktt.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Compaktt School, קורס DJ: מ-0 לעמדה">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="קורס DJ בירושלים ובמרכז · Compaktt School">
+<meta name="twitter:description" content="מאפס לעמדה: שיעורי DJ פרטיים בירושלים וקורס קבוצתי במרכז.">
+<meta name="twitter:image" content="https://school.compaktt.com/assets/og.jpg">
 <link rel="canonical" href="https://school.compaktt.com/">
-<title>Compaktt School</title>
+<title>קורס DJ בירושלים ובמרכז | Compaktt School, בית ספר ל-DJ</title>
 <link rel="preload" href="fonts/karantina-hebrew-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 /* Self-hosted fonts (OFL, from @fontsource) */
@@ -190,6 +202,14 @@ p { margin: 0; }
 .jr-wide .fx-scrim { background: linear-gradient(to left, color-mix(in srgb, var(--bg) 85%, transparent) 0%, transparent 55%); }
 .fx-flash { background: #fff; opacity: 0; }
 .journey-caps { position: absolute; inset: 0; z-index: 6; pointer-events: none; list-style: none; margin: 0; padding: 0; }
+.jr-on .cap-title .w { display: inline-block; transform-origin: 50% 100%; }
+.jr-num {
+  display: none; position: absolute; z-index: 3; inset-inline-end: -0.04em; bottom: 4%; pointer-events: none;
+  font: 700 clamp(14rem, 62vw, 34rem)/.8 var(--display); color: transparent; letter-spacing: -.02em;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--fg) 16%, transparent); direction: ltr;
+}
+.jr-on .jr-num { display: block; }
+.jr-wide .jr-num { inset-inline-end: auto; inset-inline-start: 2%; bottom: -2%; font-size: clamp(16rem, 34vw, 36rem); }
 .jr-on .cap {
   position: absolute; inset-inline: var(--gutter); top: calc(64px + 22px + env(safe-area-inset-top, 0px));
   visibility: hidden; pointer-events: auto;
@@ -535,9 +555,9 @@ h2 .w { display: inline-block; }
         <div class="journey-fx" aria-hidden="true"><div class="fx-scrim"></div><div class="fx-flash"></div></div>
         <div class="scene scene-zero">
           <div class="zero-wrap">
-            <p class="eyebrow">בית ספר ל-DJ</p>
+            <p class="eyebrow">בית ספר ל-DJ · ירושלים והמרכז</p>
             <h1 class="zero-title"><span class="zl1">מ-<span class="zero"><span class="sr">0</span></span></span><span class="zl2">לעמדה.</span></h1>
-            <p class="zero-sub">שיעורים פרטיים, ליווי אישי וקורס קבוצתי. מהצעד הראשון ועד שאתם עומדים מול קהל.</p>
+            <p class="zero-sub">שיעורי DJ פרטיים בירושלים, ליווי אישי וקורס קבוצתי במרכז. מהצעד הראשון ועד שאתם עומדים מול קהל.</p>
             <span class="cta-row" style="justify-content:center"><a class="btn btn-primary" href="#tracks">בחרו מסלול</a><a class="btn btn-ghost" data-wa="היי, הגעתי מהאתר של Compaktt School ואשמח לשמוע על לימודי DJ" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">דברו איתנו בוואטסאפ</a></span>
             <button class="sound-btn" type="button" data-sound data-pulse aria-pressed="false">
               <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -869,6 +889,14 @@ h2 .w { display: inline-block; }
             <p>בכלל לא. היה לי תלמיד שהגיע בלי שום ניסיון על פלטה, ובשיעור השלישי כבר סגר אירוע ב-1,000 ₪. המסלולים בנויים מאפס.</p>
           </details>
           <details>
+            <summary>איפה מתקיימים השיעורים?</summary>
+            <p>השיעורים הפרטיים באולפן בירושלים, והקורס הקבוצתי במרכז. את הפרטים המדויקים ואת המועד הקרוב מתאמים איתנו בוואטסאפ.</p>
+          </details>
+          <details>
+            <summary>כמה זמן נמשך קורס DJ?</summary>
+            <p>כל מפגש נמשך 90 דקות. בחבילת בסיס יש 3 מפגשים, בהתמחות שטח 6 מפגשים ובמסלול PRO 8 מפגשים, ואחריהם ליווי של 3 חודשים עד שנה, לפי המסלול.</p>
+          </details>
+          <details>
             <summary>איזה ציוד צריך?</summary>
             <p>שום דבר. בשיעורים עובדים על XDJ-RX3, DDJ-1000, מחשבי Apple, מיקסר ורמקולים, והכול מסופק. לתרגול בבית מספיקות תוכנת DJ חינמית ואוזניות.</p>
           </details>
@@ -919,34 +947,264 @@ h2 .w { display: inline-block; }
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "EducationalOrganization",
-      "name": "Compaktt School",
-      "description": "בית ספר ל-DJ: שיעורים פרטיים, ליווי אישי וקורס קבוצתי, עם יציאה לשטח וכניסה לעולם האירועים",
+      "@type": "WebSite",
+      "@id": "https://school.compaktt.com/#website",
       "url": "https://school.compaktt.com/",
-      "founder": { "@type": "Person", "name": "אלמוג כהן" },
+      "name": "Compaktt School",
+      "inLanguage": "he-IL",
+      "publisher": {
+        "@id": "https://school.compaktt.com/#school"
+      }
+    },
+    {
+      "@type": [
+        "EducationalOrganization",
+        "LocalBusiness"
+      ],
+      "@id": "https://school.compaktt.com/#school",
+      "name": "Compaktt School",
+      "alternateName": "קומפקט סקול – בית ספר ל-DJ",
+      "description": "בית ספר ל-DJ: שיעורי DJ פרטיים בירושלים, קורס קבוצתי במרכז, ליווי אישי ויציאה לאירועים אמיתיים.",
+      "url": "https://school.compaktt.com/",
+      "image": "https://school.compaktt.com/assets/og.jpg",
       "telephone": "+972-50-242-7616",
-      "address": { "@type": "PostalAddress", "addressCountry": "IL" }
+      "priceRange": "₪1,500–₪7,000",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "ירושלים",
+        "addressRegion": "מחוז ירושלים",
+        "addressCountry": "IL"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "ירושלים"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "מחוז המרכז"
+        }
+      ],
+      "founder": {
+        "@id": "https://school.compaktt.com/#teacher"
+      },
+      "knowsAbout": [
+        "תקלוט",
+        "DJ",
+        "מיקס",
+        "Pioneer XDJ-RX3",
+        "Pioneer DDJ-1000",
+        "rekordbox",
+        "אירועים"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+972-50-242-7616",
+        "contactType": "customer service",
+        "availableLanguage": [
+          "he"
+        ]
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://school.compaktt.com/#teacher",
+      "name": "אלמוג כהן",
+      "jobTitle": "DJ ומורה ל-DJ",
+      "description": "DJ עם 14 שנים על העמדה ויותר מ-1,000 אירועים, מייסד Compaktt School.",
+      "worksFor": {
+        "@id": "https://school.compaktt.com/#school"
+      }
     },
     {
       "@type": "Course",
       "name": "חבילת בסיס: היכרות עם עולם התקלוט",
-      "description": "3 מפגשי תקלוט של 90 דקות, ציוד מקצועי, תרגילי בית וליווי ל-3 חודשים",
-      "provider": { "@type": "Organization", "name": "Compaktt School" },
-      "offers": { "@type": "Offer", "price": "1500", "priceCurrency": "ILS" }
+      "description": "3 מפגשי תקלוט של 90 דקות על ציוד מקצועי, תרגילי בית וליווי ל-3 חודשים.",
+      "inLanguage": "he",
+      "educationalLevel": "מתחילים",
+      "provider": {
+        "@id": "https://school.compaktt.com/#school"
+      },
+      "offers": {
+        "@type": "Offer",
+        "category": "Paid",
+        "price": "1500",
+        "priceCurrency": "ILS",
+        "availability": "https://schema.org/InStock",
+        "url": "https://school.compaktt.com/#tracks",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "1500",
+          "priceCurrency": "ILS",
+          "valueAddedTaxIncluded": true
+        }
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "Onsite",
+        "courseWorkload": "PT4H30M",
+        "location": [
+          {
+            "@type": "Place",
+            "name": "אולפן בירושלים",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "ירושלים",
+              "addressCountry": "IL"
+            }
+          }
+        ],
+        "instructor": {
+          "@id": "https://school.compaktt.com/#teacher"
+        }
+      }
     },
     {
       "@type": "Course",
       "name": "התמחות שטח",
-      "description": "6 מפגשי תקלוט של 90 דקות, יציאה לאירוע בשטח וליווי לחצי שנה",
-      "provider": { "@type": "Organization", "name": "Compaktt School" },
-      "offers": { "@type": "Offer", "price": "3800", "priceCurrency": "ILS" }
+      "description": "6 מפגשי תקלוט של 90 דקות, יציאה לאירוע בשטח וליווי לחצי שנה.",
+      "inLanguage": "he",
+      "educationalLevel": "מתחילים",
+      "provider": {
+        "@id": "https://school.compaktt.com/#school"
+      },
+      "offers": {
+        "@type": "Offer",
+        "category": "Paid",
+        "price": "3800",
+        "priceCurrency": "ILS",
+        "availability": "https://schema.org/InStock",
+        "url": "https://school.compaktt.com/#tracks",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "3800",
+          "priceCurrency": "ILS",
+          "valueAddedTaxIncluded": false
+        }
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "Onsite",
+        "courseWorkload": "PT9H",
+        "location": [
+          {
+            "@type": "Place",
+            "name": "אולפן בירושלים",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "ירושלים",
+              "addressCountry": "IL"
+            }
+          }
+        ],
+        "instructor": {
+          "@id": "https://school.compaktt.com/#teacher"
+        }
+      }
     },
     {
       "@type": "Course",
       "name": "מסלול PRO: כניסה מלאה לעולם האירועים",
-      "description": "8 מפגשים, 2 יציאות לשטח, ליווי באירוע, זומי תקלוט וזומים עסקיים, סשן הגברה ותאורה וליווי לשנה",
-      "provider": { "@type": "Organization", "name": "Compaktt School" },
-      "offers": { "@type": "Offer", "price": "7000", "priceCurrency": "ILS" }
+      "description": "8 מפגשים, 2 יציאות לשטח, ליווי באירוע, זומי תקלוט וזומים עסקיים, סשן הגברה ותאורה וליווי לשנה.",
+      "inLanguage": "he",
+      "educationalLevel": "מתחילים",
+      "provider": {
+        "@id": "https://school.compaktt.com/#school"
+      },
+      "offers": {
+        "@type": "Offer",
+        "category": "Paid",
+        "price": "7000",
+        "priceCurrency": "ILS",
+        "availability": "https://schema.org/InStock",
+        "url": "https://school.compaktt.com/#tracks",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "7000",
+          "priceCurrency": "ILS",
+          "valueAddedTaxIncluded": false
+        }
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "Onsite",
+        "courseWorkload": "PT12H",
+        "location": [
+          {
+            "@type": "Place",
+            "name": "אולפן בירושלים",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "ירושלים",
+              "addressCountry": "IL"
+            }
+          }
+        ],
+        "instructor": {
+          "@id": "https://school.compaktt.com/#teacher"
+        }
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "צריך ניסיון קודם?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "בכלל לא. היה לי תלמיד שהגיע בלי שום ניסיון על פלטה, ובשיעור השלישי כבר סגר אירוע ב-1,000 ₪. המסלולים בנויים מאפס."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "איפה מתקיימים השיעורים?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "השיעורים הפרטיים באולפן בירושלים, והקורס הקבוצתי במרכז. את הפרטים המדויקים ואת המועד הקרוב מתאמים איתנו בוואטסאפ."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "כמה זמן נמשך קורס DJ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "כל מפגש נמשך 90 דקות. בחבילת בסיס יש 3 מפגשים, בהתמחות שטח 6 מפגשים ובמסלול PRO 8 מפגשים, ואחריהם ליווי של 3 חודשים עד שנה, לפי המסלול."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "איזה ציוד צריך?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "שום דבר. בשיעורים עובדים על XDJ-RX3, DDJ-1000, מחשבי Apple, מיקסר ורמקולים, והכול מסופק. לתרגול בבית מספיקות תוכנת DJ חינמית ואוזניות."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "כמה זמן עד שאוכל לנגן באירועים?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "זה תלוי בכם. יש תלמידים שמתחילים לקבל הזדמנויות כבר אחרי 3 שיעורים. במסלול PRO אתם יוצאים לאירועים אמיתיים כחלק מהתוכנית."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "מה ההבדל בין המסלולים?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "חבילת בסיס (1,500 ₪): 3 מפגשים והיכרות עם תקלוט. התמחות שטח (3,800 ₪ + מע״מ): 6 מפגשים ויציאה לאירוע. מסלול PRO (7,000 ₪ + מע״מ): 8 מפגשים, יציאות לשטח, ליווי באירוע וזומים עסקיים."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "יש ליווי אחרי הלימודים?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "כן. בכל מסלול יש ליווי בטלפון ובוואטסאפ, מ-3 חודשים בבסיס ועד שנה ב-PRO. במסלול PRO יש גם זומים עסקיים-מנטליים, יציאות לשטח וליווי באירוע הראשון שלכם. אפשר להוסיף ליווי נוסף לכל מסלול."
+          }
+        }
+      ]
     }
   ]
 }
@@ -1089,6 +1347,7 @@ h2 .w { display: inline-block; }
 
     if (window.Lenis) {
       lenis = new Lenis({ lerp: 0.09 });
+      window.AcademyLenis = lenis;
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
       gsap.ticker.lagSmoothing(0);

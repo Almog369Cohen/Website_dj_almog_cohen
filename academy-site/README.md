@@ -69,6 +69,18 @@ On top of the journey, when the browser allows it:
 - **"נגנו עכשיו"**: the booth again, playable: eight pads (also keys 1–8), a jog that scratches when
   dragged, and a button for the beat. Without WebGL the HTML pads still play.
 
+## Search (Google and AI assistants)
+
+- Title, description and the hero copy name the offer and the area: "קורס DJ בירושלים ובמרכז"
+  (private lessons in a Jerusalem studio, a group course in central Israel).
+- JSON-LD in `index.html`: the school (EducationalOrganization + LocalBusiness, areaServed Jerusalem and
+  the Central District), the teacher, the three courses with prices and the FAQ. The FAQ part is built
+  from the visible FAQ, so keep them the same when one changes.
+- `llms.txt` sums the school up for AI assistants; `robots.txt` lets AI crawlers in; `sitemap.xml`.
+- `assets/og.jpg` is the share image, a 1200x630 screenshot of `tools/og.html`.
+- Still to do by hand: a Google Business Profile for Compaktt School in Jerusalem, and adding the site
+  to Google Search Console (submit `sitemap.xml`).
+
 ## Scroll motion
 
 All animation code is in `initMotion()` at the bottom of `index.html`:

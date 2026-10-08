@@ -259,7 +259,9 @@ export function createBoothHero(renderer, journey) {
   function resize(w, h, dpr) {
     W = w; H = h;
     if (rt) rt.dispose();
-    rt = new WebGLRenderTarget(Math.round(W * dpr), Math.round(H * dpr), { samples: dpr < 2 ? 4 : 2, type: floatOk ? HalfFloatType : UnsignedByteType });
+    // phones render the booth a little softer, which the camera move hides
+    const k = W < 700 ? 0.8 : 1;
+    rt = new WebGLRenderTarget(Math.round(W * dpr * k), Math.round(H * dpr * k), { samples: W < 700 ? 2 : 4, type: floatOk ? HalfFloatType : UnsignedByteType });
     rt.texture.colorSpace = NoColorSpace;
     camera.aspect = tmp.aspect = W / H;
   }
