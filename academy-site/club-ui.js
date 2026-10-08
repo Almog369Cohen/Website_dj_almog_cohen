@@ -6,6 +6,31 @@
  */
 (function () {
   "use strict";
+
+  // The track builder in the final section: three choices and a name become a ready WhatsApp message.
+  // (This part is not motion, so it runs for everyone.)
+  var form = document.getElementById("builder");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var f = new FormData(form), name = String(f.get("name") || "").trim();
+      var msg = "היי" + (name ? ", אני " + name : "") + ". הגעתי מהאתר של Compaktt School.\n" +
+        "המטרה שלי: " + f.get("goal") + ".\n" +
+        "נוח לי: " + f.get("where") + ", " + f.get("when") + ".\n" +
+        "אשמח לשמוע פרטים ולבנות מסלול.";
+      var url = "https://wa.me/972502427616?text=" + encodeURIComponent(msg);
+      var w = window.open(url, "_blank");
+      if (w) w.opener = null; else location.href = url;
+    });
+    // a goal picked in the finder above carries over
+    Array.prototype.forEach.call(document.querySelectorAll(".seg [data-goal]"), function (b) {
+      b.addEventListener("click", function () {
+        var r = form.querySelector('[data-goal-for="' + b.getAttribute("data-goal") + '"]');
+        if (r) r.checked = true;
+      });
+    });
+  }
+
   if (!window.matchMedia || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   function clamp(v, lo, hi) { return Math.min(Math.max(v, lo), hi); }
@@ -33,6 +58,8 @@
   var finalDisc = watch(document.querySelector(".final-disc"));
 
   var lastY = window.scrollY, vel = 0, last = performance.now(), spin = 0, vAngle = 0, fAngle = 0;
+  var now = document.querySelector(".now"), vu = now ? now.querySelectorAll(".now-vu i") : [], nowText = now && now.querySelector(".now-t");
+  var caps = document.querySelectorAll(".journey-caps .cap"), nowLabel = "";
 
   function frame(now) {
     var dt = Math.min(0.05, (now - last) / 1000);
@@ -66,6 +93,32 @@
     if (finalDisc && onScreen(finalDisc)) {
       fAngle += rpm * 0.35 * dt + dy * 0.2;
       finalDisc.style.rotate = (fAngle % 360).toFixed(2) + "deg";
+    }
+
+    // the now-playing pill in the header: where you are in the mix, and a VU meter
+    if (now && sound) {
+      var lv = Math.max(window.ClubAudio.level(), beat * 0.6);
+      for (var k = 0; k < vu.length; k++) {
+        var v = clamp(lv * (1.25 - Math.abs(k - 2) * 0.18) + (Math.random() - 0.5) * 0.08, 0.12, 1);
+        vu[k].style.transform = "scaleY(" + v.toFixed(3) + ")";
+      }
+      var label = "Club Mix", J = window.AcademyJourney, root = document.documentElement;
+      if (root.classList.contains("jam-on")) label = "נגנו עכשיו";
+      else if (J && J.state && root.classList.contains("in-journey")) {
+        if (J.state.tRaw < 0) label = "מבחוץ";
+        else {
+          var cap = caps[J.state.i];
+          var bb = cap && cap.querySelector(".cap-label b");
+          if (bb) label = bb.textContent + " · " + cap.querySelector(".cap-label").textContent.replace(bb.textContent, "").trim();
+        }
+      }
+      if (label !== nowLabel) {
+        nowLabel = label;
+        nowText.textContent = label + " · ";
+        var bpm = document.createElement("b");
+        bpm.textContent = "124 BPM";
+        nowText.appendChild(bpm);
+      }
     }
 
     if (light) {

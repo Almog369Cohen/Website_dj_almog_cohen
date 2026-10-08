@@ -18,6 +18,7 @@ uniform vec4 uRec; uniform float uRecRot, uRingOp;
 uniform sampler2D uBooth; uniform float uBoothAlpha;
 uniform vec2 uShock;   // seconds since the last station change, its strength
 uniform float uBeams;  // club lights sweeping from the top, strongest in the hero
+uniform float uDrop;   // the drop at the booth: lasers over the crowd and falling sparkles
 
 const vec3 BG = vec3(0.043, 0.039, 0.071);
 const vec3 SURF2 = vec3(0.110, 0.098, 0.188);
@@ -33,6 +34,29 @@ float vnoise(vec2 p) {
 }
 float angDist(float a, float b) { return abs(mod(a - b + PI, TAU) - PI); }
 
+// a fan of lasers shooting up from the booth over the crowd
+float lasers(vec2 s) {
+  float acc = 0.0;
+  vec2 o = vec2(uSize.x * 0.5, uSize.y * 1.04);
+  for (int k = 0; k < 7; k++) {
+    float fk = float(k);
+    float a = (fk - 3.0) * 0.2 + sin(uTime * 1.6 + fk * 0.9) * 0.22;
+    vec2 dir = vec2(sin(a), -cos(a));
+    vec2 v = s - o;
+    float along = dot(v, dir);
+    float across = abs(v.x * dir.y - v.y * dir.x);
+    float flick = 0.65 + 0.35 * sin(uTime * 11.0 + fk * 1.7);
+    acc += (smoothstep(1.8, 0.0, across) + 0.12 * smoothstep(16.0, 0.0, across)) * step(0.0, along) * flick;
+  }
+  return acc;
+}
+float sparkles(vec2 s) {
+  vec2 g = s / 24.0 + vec2(0.0, -uTime * 2.2);
+  vec2 id = floor(g), f = fract(g) - 0.5;
+  float h = hash(id);
+  return step(0.94, h) * smoothstep(0.16, 0.0, length(f + (hash(id + 3.1) - 0.5) * 0.4)) * (0.5 + 0.5 * sin(uTime * 7.0 + h * 50.0));
+}
+
 // three moving-head beams hanging above the stage, sweeping through haze
 float beams(vec2 s) {
   float acc = 0.0;
@@ -45,7 +69,7 @@ float beams(vec2 s) {
     float along = dot(v, dir);
     float across = abs(v.x * dir.y - v.y * dir.x);
     float width = 10.0 + along * 0.11;
-    float haze = 0.75 + 0.25 * vnoise(vec2(along * 0.01 - uTime * 0.4, fk * 5.0));
+    float haze = 0.8 + 0.2 * sin(along * 0.02 - uTime * 1.3 + fk * 2.0);
     acc += smoothstep(width, width * 0.15, across) * smoothstep(0.0, 140.0, along) * exp(-along / (uSize.y * 0.85)) * haze;
   }
   return acc;
@@ -142,7 +166,13 @@ void main() {
   col += ACC * rim * uRingOp * uWinAlpha * (0.9 + 0.8 * uBeat);
 
   // the club lights
-  if (uBeams > 0.01) col += mix(ACC, ACC2, 0.5 + 0.5 * sin(uTime * 0.37)) * beams(s) * uBeams * (0.5 + 0.9 * uBeat) * 0.32;
+  if (uBeams > 0.01 && s.y < uSize.y * 1.1) col += mix(ACC, ACC2, 0.5 + 0.5 * sin(uTime * 0.37)) * beams(s) * uBeams * (0.5 + 0.9 * uBeat) * 0.32;
+
+  // the drop
+  if (uDrop > 0.01) {
+    col += mix(ACC2, vec3(1.0), 0.25) * lasers(s) * uDrop * (0.55 + 0.6 * uBeat) * 0.85;
+    col += vec3(1.0, 0.86, 1.0) * sparkles(s) * uDrop * 0.9;
+  }
 
   // light leaks on the beat, grain, vignette
   col += ACC * 0.10 * uBeat * smoothstep(1.1, 0.0, length((s - vec2(uSize.x, 0.0)) / uSize.y));
@@ -164,7 +194,7 @@ export function createStage(textures) {
     uTA: { value: new Vector2() }, uTB: { value: new Vector2() }, uHasB: { value: 0 },
     uWin: { value: new Vector4() }, uSweep: { value: 0 }, uWinAlpha: { value: 1 }, uOpen: { value: 0 },
     uRec: { value: new Vector4() }, uRecRot: { value: 0 }, uRingOp: { value: 1 },
-    uBooth: { value: null }, uBoothAlpha: { value: 0 }, uShock: { value: new Vector2() }, uBeams: { value: 0 },
+    uBooth: { value: null }, uBoothAlpha: { value: 0 }, uShock: { value: new Vector2() }, uBeams: { value: 0 }, uDrop: { value: 0 },
   };
   const material = new ShaderMaterial({ uniforms: u, vertexShader: vertex, fragmentShader: fragment, depthTest: false, depthWrite: false });
   const scene = new Scene();
@@ -195,6 +225,8 @@ export function createStage(textures) {
     u.uRecRot.value = st.tRaw * 50 * Math.PI / 180 + fx.time * 0.25 + (fx.spin || 0);
     u.uShock.value.set(fx.shockAge || 0, fx.shock || 0);
     u.uBeams.value = 0.35 + 0.65 * (1 - st.hp) - 0.3 * st.open;
+    // strongest the moment the booth opens, then it stays a lit club
+    u.uDrop.value = st.last ? st.open * (0.55 + 0.45 * (1 - Math.min(1, st.p / 0.6))) : 0;
     u.uRingOp.value = (1 - st.open) * Math.min(1, st.hp * 2);
     u.uBooth.value = fx.booth || null;
     u.uBoothAlpha.value = fx.booth ? fx.boothAlpha : 0;
