@@ -468,6 +468,75 @@ p { margin: 0; }
 .copy { font: 500 .8125rem/1 var(--body); color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
 .copy:hover { color: var(--fg); border-color: var(--muted); }
 
+
+/* level up: marquees, the path as a timeline of record windows, the teacher's record, photos behind sections */
+.marquee { direction: ltr; overflow: hidden; padding-block: clamp(18px, 3vw, 34px); border-block: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 60%, var(--bg)); }
+.marquee-track { display: flex; align-items: center; gap: clamp(18px, 3vw, 40px); width: max-content; direction: ltr; will-change: transform; }
+.marquee span { font: 700 clamp(2.75rem, 8vw, 6rem)/1 var(--display); white-space: nowrap; letter-spacing: .005em; }
+.marquee i { flex: none; width: .5em; height: .5em; font-size: clamp(2.75rem, 8vw, 6rem); border-radius: 50%;
+  background: repeating-radial-gradient(circle, var(--surface) 0 2px, var(--surface-2) 2px 4px); box-shadow: 0 0 0 2px color-mix(in srgb, var(--acc) 55%, transparent); position: relative; }
+.marquee i::after { content: ""; position: absolute; inset: 34%; border-radius: 50%; background: linear-gradient(135deg, var(--acc), var(--acc2)); }
+.marquee-out span { color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--fg) 55%, transparent); }
+.marquee-out span:nth-of-type(3n+1) { color: var(--acc); -webkit-text-stroke: 0; }
+
+.path { position: relative; --fill: 0; }
+.path li { grid-template-columns: 76px minmax(0, 1fr) auto; align-items: center; }
+.path li::before { content: none; }
+.path::before, .path::after { content: ""; position: absolute; inset-inline-start: 37px; top: 62px; bottom: 62px; width: 2px; margin-inline-start: -1px; background: var(--line); }
+.path::after { background: linear-gradient(to bottom, var(--acc), var(--acc2)); transform-origin: top; transform: scaleY(var(--fill)); box-shadow: 0 0 14px var(--acc); }
+.disc { position: relative; z-index: 1; width: 76px; height: 76px; border-radius: 50%; background: var(--surface-2);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px color-mix(in srgb, var(--acc) 70%, transparent), 0 10px 30px -8px color-mix(in srgb, var(--acc) 60%, transparent); }
+.disc img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+.disc::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle, transparent 0 46%, rgba(11, 10, 18, .35) 47%), conic-gradient(from var(--spin, 0deg), transparent 0 20%, rgba(255, 255, 255, .22) 26%, transparent 32% 70%, rgba(255, 79, 216, .2) 76%, transparent 82%); }
+.disc b { position: absolute; z-index: 2; inset-inline-end: -2px; bottom: -2px; font: 500 .6875rem/1 var(--mono); color: var(--on-accent); background: var(--acc); border-radius: 999px; padding: 4px 6px; direction: ltr; }
+@media (max-width: 640px) {
+  .path li { grid-template-columns: 64px minmax(0, 1fr); }
+  .path li .chips { grid-column: 2; }
+  .disc { width: 64px; height: 64px; }
+  .path::before, .path::after { inset-inline-start: 31px; top: 56px; bottom: 56px; }
+}
+
+.teacher { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); }
+.teacher-deck { position: relative; aspect-ratio: 1; width: min(100%, 460px); justify-self: center; }
+.vinyl { position: absolute; inset: 4%; border-radius: 50%; --spin: 0deg; transform: rotate(var(--spin));
+  background: conic-gradient(from 0deg, transparent 0 8%, color-mix(in srgb, var(--acc) 26%, transparent) 13%, transparent 18% 55%, color-mix(in srgb, var(--acc2) 20%, transparent) 60%, transparent 65%),
+    repeating-radial-gradient(circle, #0d0b15 0 2px, var(--surface-2) 2px 3.5px);
+  box-shadow: 0 0 0 1px var(--line), 0 40px 90px -20px rgba(0, 0, 0, .8), 0 0 80px -20px color-mix(in srgb, var(--acc) 50%, transparent); }
+.vinyl-label { position: absolute; inset: 31%; border-radius: 50%; overflow: hidden; display: grid; place-items: center; text-align: center; }
+.vinyl-label img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 48%; transform: scale(1.6); filter: saturate(1.2); }
+.vinyl-label::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, var(--bg) 0 5%, transparent 6%), linear-gradient(135deg, color-mix(in srgb, var(--acc) 45%, transparent), color-mix(in srgb, var(--acc2) 40%, transparent)); }
+.vinyl-label span { position: relative; z-index: 1; font: 700 .8125rem/1.3 var(--body); color: #fff; text-shadow: 0 1px 6px rgba(0, 0, 0, .8); margin-top: 38%; direction: ltr; }
+.vinyl-label span b { display: block; font: 500 .625rem/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; opacity: .85; }
+.tonearm { position: absolute; top: -2%; inset-inline-start: 2%; width: 34%; height: 62%; pointer-events: none; transform-origin: 85% 8%; transform: rotate(-24deg); }
+.tonearm::before { content: ""; position: absolute; top: 2%; right: 8%; width: 18%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, #c9c4d8 0 35%, #4a4560 36% 60%, #1c1930 61%); box-shadow: 0 6px 18px rgba(0, 0, 0, .6); }
+.tonearm i { position: absolute; top: 10%; right: 16%; width: 5px; height: 84%; border-radius: 3px; background: linear-gradient(to bottom, #d9d5e6, #8a85a0); transform-origin: top; transform: rotate(18deg); box-shadow: 0 6px 14px rgba(0, 0, 0, .5); }
+.tonearm i::after { content: ""; position: absolute; bottom: -6px; left: -5px; width: 15px; height: 22px; border-radius: 3px; background: #2a2540; box-shadow: 0 0 10px var(--acc2); }
+@media (max-width: 860px) { .teacher { grid-template-columns: 1fr; } .teacher-deck { width: min(78vw, 360px); order: -1; } }
+
+.fit-section { position: relative; isolation: isolate; overflow: hidden; }
+.sec-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: .2; filter: saturate(1.2) blur(1px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent); }
+.fit-section .fit-col { background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+
+.final-disc { position: absolute; z-index: -1; left: 50%; top: 50%; width: min(120vw, 980px); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; opacity: .45;
+  background: conic-gradient(from var(--spin, 0deg), transparent 0 10%, color-mix(in srgb, var(--acc) 40%, transparent) 16%, transparent 22% 58%, color-mix(in srgb, var(--acc2) 32%, transparent) 64%, transparent 70%),
+    repeating-radial-gradient(circle, transparent 0 3px, color-mix(in srgb, var(--fg) 7%, transparent) 3px 4px);
+  -webkit-mask-image: radial-gradient(circle, transparent 0 22%, #000 23% 69%, transparent 70%); mask-image: radial-gradient(circle, transparent 0 22%, #000 23% 69%, transparent 70%); }
+.final::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: calc(var(--beat, 0) * .8);
+  background: radial-gradient(ellipse at 50% 45%, color-mix(in srgb, var(--acc2) 30%, transparent), transparent 60%); }
+
+/* pointer niceties on a mouse: a soft UV light, magnetic buttons, strips that tilt */
+.cursor-light { position: fixed; z-index: 30; left: 0; top: 0; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, color-mix(in srgb, var(--acc) 16%, transparent), transparent 62%); mix-blend-mode: screen; opacity: 0; transition: opacity .4s ease; }
+.has-cursor .cursor-light { opacity: 1; }
+.strips { perspective: 1200px; }
+.strip { transform-style: preserve-3d; }
+.strip::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s ease;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, .09), transparent 45%); }
+.strip:hover::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .marquee-track { transform: none !important; } .cursor-light { display: none; } }
+
 /* scroll progress, like a track playhead */
 .progress { position: absolute; inset-inline: 0; bottom: -1px; height: 2px; pointer-events: none; }
 .progress i { display: block; height: 100%; background: linear-gradient(270deg, var(--acc), var(--acc2)); transform: scaleX(0); transform-origin: right center; }
@@ -621,6 +690,8 @@ h2 .w { display: inline-block; }
       </div>
     </section>
 
+    <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>קורס DJ</span><i></i><span>ירושלים</span><i></i><span>המרכז</span><i></i><span>מ-0 לעמדה</span><i></i><span>שיעורים פרטיים</span><i></i><span>קורס קבוצתי</span><i></i><span>יציאה לאירועים</span><i></i><span>קורס DJ</span><i></i><span>ירושלים</span><i></i><span>המרכז</span><i></i><span>מ-0 לעמדה</span><i></i><span>שיעורים פרטיים</span><i></i><span>קורס קבוצתי</span><i></i><span>יציאה לאירועים</span><i></i></div></div>
+
     <!-- TRACKS -->
     <section class="section" id="tracks">
       <div class="wrap">
@@ -763,26 +834,31 @@ h2 .w { display: inline-block; }
         <ol class="path">
           <li>
             <span class="rule" aria-hidden="true"></span>
+      <span class="disc" aria-hidden="true"><img src="assets/zoom/headphones-portrait.webp" alt="" loading="lazy" decoding="async" style="object-position:52% 44%"><b>01</b></span>
             <div><h3>מדברים ובוחרים מסלול</h3><p>שולחים הודעה בוואטסאפ, מספרים מה המטרה, ויחד בוחרים את המסלול שמתאים לכם.</p></div>
             <div class="chips"><span class="chip">בסיס</span><span class="chip">שטח</span><span class="chip pro">PRO</span></div>
           </li>
           <li>
             <span class="rule" aria-hidden="true"></span>
+      <span class="disc" aria-hidden="true"><img src="assets/zoom/jog-portrait.webp" alt="" loading="lazy" decoding="async" style="object-position:40% 43%"><b>02</b></span>
             <div><h3>מפגשי תקלוט באולפן</h3><p>90 דקות על XDJ-RX3, DDJ-1000 ומחשבי Apple. אחרי כל מפגש יש תרגיל בית, ולתרגול מספיקות תוכנה חינמית ואוזניות.</p></div>
             <div class="chips"><span class="chip">בסיס</span><span class="chip">שטח</span><span class="chip pro">PRO</span></div>
           </li>
           <li>
             <span class="rule" aria-hidden="true"></span>
+      <span class="disc" aria-hidden="true"><img src="assets/zoom/crowd-portrait.webp" alt="" loading="lazy" decoding="async" style="object-position:47% 43%"><b>03</b></span>
             <div><h3>יציאה לאירוע אמיתי</h3><p>מגיעים איתי לאירוע, עומדים מאחורי העמדה ורואים איך קוראים קהל ובונים רחבה.</p></div>
             <div class="chips"><span class="chip">שטח</span><span class="chip pro">PRO</span></div>
           </li>
           <li>
             <span class="rule" aria-hidden="true"></span>
+      <span class="disc" aria-hidden="true"><img src="assets/zoom/fader-portrait.webp" alt="" loading="lazy" decoding="async" style="object-position:49% 60%"><b>04</b></span>
             <div><h3>האירוע הראשון שלכם</h3><p>אתם מנגנים באירוע אמיתי ואני עומד לידכם בעמדה. כולל סשן הגברה ותאורה כדי שתדעו להקים את הציוד לבד.</p></div>
             <div class="chips"><span class="chip pro">PRO</span></div>
           </li>
           <li>
             <span class="rule" aria-hidden="true"></span>
+      <span class="disc" aria-hidden="true"><img src="assets/zoom/desk-portrait.webp" alt="" loading="lazy" decoding="async" style="object-position:50% 47%"><b>05</b></span>
             <div><h3>בונים את העסק</h3><p>זומים של תקלוט וזומים עסקיים-מנטליים: איך להציג את עצמכם, לתמחר ולסגור אירועים.</p></div>
             <div class="chips"><span class="chip pro">PRO</span></div>
           </li>
@@ -792,7 +868,7 @@ h2 .w { display: inline-block; }
 
     <!-- TEACHER -->
     <section class="section" id="teacher" style="padding-top:0">
-      <div class="wrap teacher teacher-solo">
+      <div class="wrap teacher">
                 <div class="teacher-copy">
           <p class="eyebrow">המורה</p>
           <h2>אלמוג כהן</h2>
@@ -804,11 +880,18 @@ h2 .w { display: inline-block; }
             <div class="stat"><b>30+</b><span>תלמידים</span></div>
           </div>
         </div>
+        <div class="teacher-deck" aria-hidden="true">
+          <div class="vinyl">
+            <div class="vinyl-label"><img src="assets/zoom/eq-portrait.webp" alt="" loading="lazy" decoding="async"><span>Compaktt School<b>side A · 14 yrs</b></span></div>
+          </div>
+          <span class="tonearm"><i></i></span>
+        </div>
       </div>
     </section>
 
     <!-- FIT -->
-    <section class="section" style="padding-top:0" aria-label="למי זה מתאים">
+    <section class="section fit-section" style="padding-top:0" aria-label="למי זה מתאים">
+      <img class="sec-bg" src="assets/zoom/desk-portrait.webp" alt="" loading="lazy" decoding="async">
       <div class="wrap fit">
         <div class="fit-col yes">
           <h3>מתאים למי ש...</h3>
@@ -916,8 +999,12 @@ h2 .w { display: inline-block; }
       </div>
     </section>
 
+    <div class="marquee marquee-out" aria-hidden="true"><div class="marquee-track"><span>XDJ-RX3</span><i></i><span>DDJ-1000</span><i></i><span>rekordbox</span><i></i><span>מיקס</span><i></i><span>EQ</span><i></i><span>קריאת קהל</span><i></i><span>הגברה ותאורה</span><i></i><span>XDJ-RX3</span><i></i><span>DDJ-1000</span><i></i><span>rekordbox</span><i></i><span>מיקס</span><i></i><span>EQ</span><i></i><span>קריאת קהל</span><i></i><span>הגברה ותאורה</span><i></i></div></div>
+
     <!-- FINAL CTA -->
-    <section class="final" aria-label="יצירת קשר">
+    <section class="final" aria-label="יצירת קשר" data-pulse>
+      <img src="assets/zoom/crowd-portrait.webp" alt="" loading="lazy" decoding="async">
+      <div class="final-disc" aria-hidden="true"></div>
       <div class="wrap">
         <p class="eyebrow">ההרשמה פתוחה</p>
         <h2>מוכנים לעלות לעמדה?</h2>
@@ -1217,6 +1304,7 @@ h2 .w { display: inline-block; }
 <script src="club-audio.js"></script>
 <script src="journey.js"></script>
 <script type="module" src="club-gl.js"></script>
+<script src="club-ui.js" defer></script>
 <script>
 (function () {
   var WA = "972502427616";

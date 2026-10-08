@@ -10,6 +10,9 @@ or event photos here; Almog appears only as the teacher. Live address: **https:/
 - `scenes.js` – station drawings in code, used only for a station without a photo
 - `club-audio.js` – club mode sound: a house loop synthesised with WebAudio that the scroll builds up, and
   the pads of the playable booth
+- `club-ui.js` – the rest of the page in club mode: marquees that run with the scroll, the path's line
+  and record windows, the teacher's spinning record, and on a mouse a UV light, magnetic buttons and
+  tilting channel strips
 - `club-gl.js` – club mode WebGL, built from `tools/gl/` (three.js, tree-shaken): the stations in a shader,
   the 3D booth in the hero, and the playable booth ("נגנו עכשיו"). Do not edit it by hand: change
   `tools/gl/*.js` and run `sh tools/build-gl.sh`
