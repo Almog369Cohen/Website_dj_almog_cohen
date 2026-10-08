@@ -43,6 +43,10 @@
   var HERO = 1.2;          // scroll length (in stations) of the 0 growing into the window
   var FINAL_HOLD = 0.7;    // extra length for the last station
   var SWEEP_FROM = 0.3, SWEEP_TO = 0.92;   // part of each station spent sweeping in the next one
+  var DOLLY = 0.08;        // each station keeps pushing in while it plays, like a camera move
+
+  // stage-gl.js (club-gl.js) and club-audio.js follow the journey through this
+  var api = window.AcademyJourney = { state: null, win: null, layout: [], recR: 0, origin: null, listeners: [] };
 
   journey.classList.add("jr-on");
 
@@ -109,9 +113,9 @@
         // so a station frames the same part of the photo on a phone and on a wide screen
         var side = Math.min(dw, dh);
         var k0 = win.r / clamp(2.4 * r, 0.21 * side, 0.31 * side);
-        // and never so far out that the window runs past the photo's edge
+        // and never so far out that the window runs past the photo's edge, even pulled back by the dolly
         var edge = Math.min(f[0] - left, left + dw - f[0], f[1] - top, top + dh - f[1]);
-        return { f: f, k0: Math.max(k0, win.r / edge) };
+        return { f: f, k0: Math.max(k0, win.r / edge / (1 - DOLLY)), src: src, img: [left, top, dw, dh] };
       }
       // Drawings cover the stage (like the final, opened window). Inside the window they show about 2.4 r
       // around their focus, but never less than their own width can fill.
@@ -127,18 +131,25 @@
     rec.style.width = rec.style.height = 2 * RR + "px";
     rec.style.left = win.x - RR + "px";
     rec.style.top = win.y - RR + "px";
+    api.win = win; api.layout = layout; api.recR = RR; api.W = W; api.H = H;
   }
 
-  // Place station k so its focus sits in the window (wx, wy, radius R on screen); open = 1 is the whole,
-  // unmoved scene. sweep < 360 reveals it clockwise from 12 o'clock.
-  function place(k, open, wx, wy, R, sweep) {
-    var L = layout[k], el = scenes[k];
-    var kz = L.k0 + (1 - L.k0) * open;
-    var tx = (wx - L.f[0]) * (1 - open), ty = (wy - L.f[1]) * (1 - open);
-    el.style.transformOrigin = L.f[0].toFixed(1) + "px " + L.f[1].toFixed(1) + "px";
+  // Where station k sits: its focus in the window (wx, wy); open = 1 is the whole, unmoved scene. u is the
+  // station's own progress (-1 .. 1), which drives the dolly.
+  function xform(k, open, wx, wy, u) {
+    var L = layout[k];
+    var kz = (L.k0 + (1 - L.k0) * open) * (1 + DOLLY * u * (1 - open));
+    return { k: k, f: L.f, kz: kz, tx: (wx - L.f[0]) * (1 - open), ty: (wy - L.f[1]) * (1 - open) };
+  }
+
+  // Draw it with CSS (without WebGL): R is the window radius on screen, sweep < 360 reveals it clockwise
+  // from 12 o'clock
+  function place(X, wx, wy, R, sweep) {
+    var k = X.k, el = scenes[k], kz = X.kz, tx = X.tx, ty = X.ty, F = X.f;
+    el.style.transformOrigin = F[0].toFixed(1) + "px " + F[1].toFixed(1) + "px";
     el.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + kz.toFixed(4) + ")";
     // clip shapes are in the scene's own (untransformed) coordinates
-    var lx = L.f[0] + (wx - L.f[0] - tx) / kz, ly = L.f[1] + (wy - L.f[1] - ty) / kz;
+    var lx = F[0] + (wx - F[0] - tx) / kz, ly = F[1] + (wy - F[1] - ty) / kz;
     el.style.clipPath = "circle(" + (R / kz).toFixed(1) + "px at " + lx.toFixed(1) + "px " + ly.toFixed(1) + "px)";
     inner[k].style.clipPath = sweep < 360 ? sector(lx, ly, sweep) : "none";
   }
@@ -162,6 +173,17 @@
     scenes[k].style.visibility = on ? "visible" : "hidden";
   }
 
+  function domRecord(tRaw, hp, open, wx, wy, wr, R, sweep) {
+    rec.style.transform = "rotate(" + (tRaw * 50).toFixed(2) + "deg) scale(" + (1 + 0.4 * open).toFixed(3) + ")";
+    rec.style.opacity = ((0.35 + 0.65 * hp) * (1 - open)).toFixed(3);
+    ring.style.width = ring.style.height = 2 * R + "px";
+    ring.style.left = wx - R + "px"; ring.style.top = wy - R + "px";
+    ring.style.opacity = ((1 - open) * Math.min(1, hp * 2)).toFixed(3);
+    arm.style.left = wx + "px"; arm.style.top = wy - wr + "px"; arm.style.height = wr + "px";
+    arm.style.transform = "rotate(" + (sweep * 360).toFixed(1) + "deg)";
+    arm.style.opacity = (sweep > 0 && sweep < 1 ? Math.min(1, sweep / 0.04, (1 - sweep) / 0.04) : 0).toFixed(3);
+  }
+
   var lastIndex = -1;
   function render(tRaw) {
     var heroT = Math.min(tRaw, 0);
@@ -172,9 +194,13 @@
     var hp = smooth((heroT + HERO) / (HERO * 0.8));
     var wx = win.x, wy = win.y, wr = win.r;
     if (hp < 1) {
-      var zr = zero.getBoundingClientRect(), sr = stage.getBoundingClientRect();
-      var zx = zr.left - sr.left + zr.width / 2, zy = zr.top - sr.top + zr.height / 2, zrad = zr.width / 2;
-      wx = zx + (win.x - zx) * hp; wy = zy + (win.y - zy) * hp; wr = zrad + (win.r - zrad) * hp;
+      // from the heading's 0, or from wherever stage-gl says the window starts (the 3D jog)
+      var o = api.origin && api.origin(hp);
+      if (!o) {
+        var zr = zero.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+        o = { x: zr.left - sr.left + zr.width / 2, y: zr.top - sr.top + zr.height / 2, r: zr.width / 2 };
+      }
+      wx = o.x + (win.x - o.x) * hp; wy = o.y + (win.y - o.y) * hp; wr = o.r + (win.r - o.r) * hp;
     }
     var heroOp = clamp(1 - hp / 0.45, 0, 1);
     hero.style.opacity = heroOp.toFixed(3);
@@ -186,22 +212,25 @@
     var R = wr + (far - wr) * open;
     var sweep = last ? 0 : smooth((p - SWEEP_FROM) / (SWEEP_TO - SWEEP_FROM));
 
-    for (var k = 0; k < N; k++) show(k, k === i || (k === i + 1 && sweep > 0));
-    scenes[i].style.zIndex = 1;
-    place(i, open, wx, wy, R, 360);
-    if (!last && sweep > 0) {
-      scenes[i + 1].style.zIndex = 2;
-      place(i + 1, 0, wx, wy, R, sweep * 360);
-    }
+    var A = xform(i, open, wx, wy, t - i);
+    var B = !last && sweep > 0 ? xform(i + 1, 0, wx, wy, t - i - 1) : null;
+    api.state = {
+      tRaw: tRaw, t: t, i: i, p: p, last: last, hp: hp, open: open, sweep: sweep,
+      wx: wx, wy: wy, wr: wr, R: R, A: A, B: B, at: performance.now()
+    };
+    for (var n = 0; n < api.listeners.length; n++) api.listeners[n](api.state);
+    if (window.ClubAudio) ClubAudio.setJourney(tRaw);
 
-    rec.style.transform = "rotate(" + (tRaw * 50).toFixed(2) + "deg) scale(" + (1 + 0.4 * open).toFixed(3) + ")";
-    rec.style.opacity = ((0.35 + 0.65 * hp) * (1 - open)).toFixed(3);
-    ring.style.width = ring.style.height = 2 * R + "px";
-    ring.style.left = wx - R + "px"; ring.style.top = wy - R + "px";
-    ring.style.opacity = ((1 - open) * Math.min(1, hp * 2)).toFixed(3);
-    arm.style.left = wx + "px"; arm.style.top = wy - wr + "px"; arm.style.height = wr + "px";
-    arm.style.transform = "rotate(" + (sweep * 360).toFixed(1) + "deg)";
-    arm.style.opacity = (sweep > 0 && sweep < 1 ? Math.min(1, sweep / 0.04, (1 - sweep) / 0.04) : 0).toFixed(3);
+    if (!journey.classList.contains("gl-on")) {
+      for (var k = 0; k < N; k++) show(k, k === i || (k === i + 1 && sweep > 0));
+      scenes[i].style.zIndex = 1;
+      place(A, wx, wy, R, 360);
+      if (B) {
+        scenes[i + 1].style.zIndex = 2;
+        place(B, wx, wy, R, sweep * 360);
+      }
+      domRecord(tRaw, hp, open, wx, wy, wr, R, sweep);
+    }
     var nr = Math.round(t);
     flash.style.opacity = (nr >= 1 && nr <= N - 1 && tRaw > 0 ? 0.22 * Math.max(0, 1 - Math.abs(t - nr) / 0.03) : 0).toFixed(3);
 
@@ -239,10 +268,15 @@
     onUpdate: function () { render(proxy.t); },
     scrollTrigger: {
       trigger: journey, start: "top top", end: "bottom bottom", scrub: touch ? 0.5 : 0.3,
-      onToggle: function (self) { document.documentElement.classList.toggle("in-journey", self.isActive); }
+      onToggle: function (self) {
+        document.documentElement.classList.toggle("in-journey", self.isActive);
+        if (window.ClubAudio) ClubAudio.leaveJourney(!self.isActive && self.progress > 0.5);
+      }
     }
   });
   render(-HERO);
+  api.render = function () { render(proxy.t); };
+  api.renderAt = function (tt) { proxy.t = tt; render(tt); };   // for recordings and tests
 
   // The three doors at the last station pick that track in the finder below
   journey.querySelectorAll("[data-goal]").forEach(function (a) {

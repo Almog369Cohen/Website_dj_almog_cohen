@@ -223,6 +223,69 @@ p { margin: 0; }
 .jr-in .cable { fill: none; stroke: var(--g1); stroke-width: 12; stroke-linecap: round; }
 .jr-in .shoe-sole { fill: #cfc9bf; } .jr-in .shoe-up { fill: #f3efe8; } .jr-in .lace { stroke: #9d968b; stroke-width: 3; stroke-linecap: round; }
 .jr-in .lbl { fill: var(--muted); font-family: var(--mono); font-size: 13px; letter-spacing: .08em; }
+/* club mode: WebGL stage (club-gl.js) and sound (club-audio.js) */
+.jr-gl { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; display: block; pointer-events: none; }
+.jr-on.gl-on .jr-rec, .jr-on.gl-on .jr-layers, .jr-on.gl-on .jr-ring, .jr-on.gl-on .jr-arm { display: none; }
+.eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 14px; }
+.eq i { display: block; width: 3px; height: 100%; border-radius: 1px; background: currentColor; transform-origin: bottom; transform: scaleY(.4); }
+.eq i:nth-child(2) { transform: scaleY(.8); } .eq i:nth-child(3) { transform: scaleY(.55); } .eq i:nth-child(4) { transform: scaleY(.95); }
+.sound-on .eq i { transform: scaleY(calc(.25 + var(--beat, 0) * .75)); }
+.sound-on .eq i:nth-child(2) { transform: scaleY(calc(.45 + var(--beat, 0) * .55)); }
+.sound-on .eq i:nth-child(3) { transform: scaleY(calc(.2 + var(--beat, 0) * .5)); }
+.sound-on .eq i:nth-child(4) { transform: scaleY(calc(.35 + var(--beat, 0) * .65)); }
+.sound-btn {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 20px; margin-top: 2px;
+  font: 700 1rem/1 var(--body); color: var(--fg); cursor: pointer;
+  background: color-mix(in srgb, var(--acc) 16%, transparent); border: 1px solid color-mix(in srgb, var(--acc) 60%, transparent); border-radius: 999px;
+  box-shadow: 0 0 calc(10px + var(--beat, 0) * 30px) color-mix(in srgb, var(--acc) 45%, transparent);
+}
+.sound-btn .eq { color: var(--acc); }
+.sound-btn[aria-pressed="true"] { border-color: var(--acc2); }
+.sound-toggle {
+  display: inline-grid; place-items: center; width: 40px; height: 40px; flex: none; margin-inline-start: auto;
+  color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 50%; cursor: pointer;
+}
+.sound-toggle[aria-pressed="true"] { color: var(--acc); border-color: var(--acc); }
+.sound-toggle + .btn { margin-inline-start: 0; }
+@media (min-width: 821px) { .sound-toggle { margin-inline-start: 0; } }
+.sound-on .journey .cap-title { text-shadow: 0 0 calc(var(--beat, 0) * 26px) color-mix(in srgb, var(--acc2) 75%, transparent); }
+
+/* jam: the playable booth */
+.jam-stage {
+  position: relative; display: grid; gap: 18px; padding: clamp(16px, 3vw, 28px);
+  background: radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--acc) 14%, var(--surface)) 0%, var(--surface) 70%);
+  border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
+}
+.jam-view { display: none; position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 62vh; margin-block: -8px; }
+.jam-view.is-3d { display: block; }
+.jam-view canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+@media (max-width: 700px) { .jam-view { aspect-ratio: 4 / 3; } }
+.jam-controls { display: grid; gap: 14px; justify-items: center; }
+.jam-loop {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px;
+  font: 700 1rem/1 var(--body); color: var(--on-accent); cursor: pointer; border: 0; border-radius: 999px;
+  background: linear-gradient(90deg, var(--acc), var(--acc2));
+  box-shadow: 0 0 calc(8px + var(--beat, 0) * 34px) color-mix(in srgb, var(--acc2) 55%, transparent);
+}
+.jam-pads { direction: ltr; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; width: 100%; max-width: 560px; }
+.jam-pads button {
+  --pad: var(--acc);
+  position: relative; aspect-ratio: 1; min-height: 64px; border-radius: 12px; cursor: pointer;
+  font: 700 .9375rem/1.1 var(--body); color: var(--fg); direction: rtl;
+  background: color-mix(in srgb, var(--pad) 22%, var(--surface-2));
+  border: 1px solid color-mix(in srgb, var(--pad) 55%, transparent);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .35);
+  user-select: none; -webkit-user-select: none; touch-action: manipulation;
+}
+.jam-pads button kbd { position: absolute; top: 6px; inset-inline-start: 8px; font: 500 .6875rem/1 var(--mono); color: var(--dim); }
+.jam-pads button.hit { animation: padhit .35s ease-out; }
+@keyframes padhit {
+  0% { background: var(--pad); color: var(--on-accent); box-shadow: 0 0 34px var(--pad); transform: scale(.96); }
+  100% { background: color-mix(in srgb, var(--pad) 22%, var(--surface-2)); box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .35); transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .jam-pads button.hit { animation: none; background: var(--pad); color: var(--on-accent); } }
+.gl-on .zero-sub { text-shadow: 0 1px 14px rgba(0, 0, 0, .95), 0 0 2px rgba(0, 0, 0, .8); }
+
 /* the WhatsApp dock steps aside while the journey plays */
 .dock { transition: transform .35s ease; }
 .in-journey .dock { transform: translateY(110%); }
@@ -437,13 +500,16 @@ h2 .w { display: inline-block; }
         <a href="#teacher">המורה</a>
         <a href="#faq">שאלות</a>
       </nav>
+      <button class="sound-toggle" type="button" data-sound data-pulse aria-pressed="false" aria-label="סאונד">
+        <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      </button>
       <a class="btn btn-ghost" data-wa="היי, הגעתי מהאתר של Compaktt School ואשמח לשמוע על לימודי DJ" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">דברו איתנו</a>
     </div>
   </header>
 
   <main id="top">
     <!-- HERO + OPENING: the vinyl 0 becomes a record window that plays the way from the shoes to the booth (journey.js) -->
-    <section class="journey" id="journey" aria-label="מ-0 לעמדה">
+    <section class="journey" id="journey" aria-label="מ-0 לעמדה" data-pulse>
       <div class="journey-stage">
         <div class="jr-rec" aria-hidden="true"></div>
         <div class="jr-layers" aria-hidden="true">
@@ -473,6 +539,10 @@ h2 .w { display: inline-block; }
             <h1 class="zero-title"><span class="zl1">מ-<span class="zero"><span class="sr">0</span></span></span><span class="zl2">לעמדה.</span></h1>
             <p class="zero-sub">שיעורים פרטיים, ליווי אישי וקורס קבוצתי. מהצעד הראשון ועד שאתם עומדים מול קהל.</p>
             <span class="cta-row" style="justify-content:center"><a class="btn btn-primary" href="#tracks">בחרו מסלול</a><a class="btn btn-ghost" data-wa="היי, הגעתי מהאתר של Compaktt School ואשמח לשמוע על לימודי DJ" href="https://wa.me/972502427616" target="_blank" rel="noopener noreferrer">דברו איתנו בוואטסאפ</a></span>
+            <button class="sound-btn" type="button" data-sound data-pulse aria-pressed="false">
+              <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              <span data-sound-label data-off="להיכנס עם סאונד" data-on="הסאונד פועל, גללו">להיכנס עם סאונד</span>
+            </button>
             <span class="scroll-hint" aria-hidden="true">גללו<i></i></span>
           </div>
         </div>
@@ -629,6 +699,36 @@ h2 .w { display: inline-block; }
         <div class="extras num">
           <div class="extra"><span>שיעור בודד (90 דקות)</span><b>330 ₪ + מע״מ</b></div>
           <div class="extra"><span>תוספת לכל מסלול: חבילת תדמית ושיווק</span><b>1,000 ₪ + מע״מ</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JAM: the playable booth (club-audio.js plays the pads, club-gl.js draws the 3D booth) -->
+    <section class="section jam" id="jam" style="padding-top:0" aria-labelledby="jam-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">נסו בעצמכם</p>
+          <h2 id="jam-title">נגנו עכשיו.</h2>
+          <p class="lede">הפעילו את הביט ולחצו על הפדים, או גררו את הג'וג. ככה מרגיש המפגש הראשון על עמדה.</p>
+        </div>
+        <div class="jam-stage">
+          <div class="jam-view" aria-hidden="true"></div>
+          <div class="jam-controls">
+            <button class="jam-loop" type="button" data-jam data-pulse aria-pressed="false">
+              <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              <span data-sound-label data-off="הפעילו ביט" data-on="עצרו את הביט">הפעילו ביט</span>
+            </button>
+            <div class="jam-pads" role="group" aria-label="פדים">
+              <button type="button" data-pad="0" style="--pad:#ff4fd8">קיק<kbd>1</kbd></button>
+              <button type="button" data-pad="1" style="--pad:#8b6cff">קלאפ<kbd>2</kbd></button>
+              <button type="button" data-pad="2" style="--pad:#ffc857">היי-האט<kbd>3</kbd></button>
+              <button type="button" data-pad="3" style="--pad:#4fd1ff">אקורד<kbd>4</kbd></button>
+              <button type="button" data-pad="4" style="--pad:#8b6cff">בס<kbd>5</kbd></button>
+              <button type="button" data-pad="5" style="--pad:#ffc857">סקראץ'<kbd>6</kbd></button>
+              <button type="button" data-pad="6" style="--pad:#4fd1ff">דרופ<kbd>7</kbd></button>
+              <button type="button" data-pad="7" style="--pad:#ff4fd8">צופר<kbd>8</kbd></button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -856,7 +956,9 @@ h2 .w { display: inline-block; }
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
 <script src="scenes.js"></script>
+<script src="club-audio.js"></script>
 <script src="journey.js"></script>
+<script type="module" src="club-gl.js"></script>
 <script>
 (function () {
   var WA = "972502427616";

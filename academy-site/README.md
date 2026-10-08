@@ -7,10 +7,16 @@ or event photos here; Almog appears only as the teacher. Live address: **https:/
 - `index.html` – the whole site (HTML + CSS + a small vanilla JS script, no build step)
 - `journey.js` – the opening motion: the heading's vinyl 0 becomes a record window that plays eight
   stations from the shoes to the booth, then opens onto the three tracks
-- `scenes.js` – the eight station drawings (UV purple, drawn in code) shown in the window
+- `scenes.js` – station drawings in code, used only for a station without a photo
+- `club-audio.js` – club mode sound: a house loop synthesised with WebAudio that the scroll builds up, and
+  the pads of the playable booth
+- `club-gl.js` – club mode WebGL, built from `tools/gl/` (three.js, tree-shaken): the stations in a shader,
+  the 3D booth in the hero, and the playable booth ("נגנו עכשיו"). Do not edit it by hand: change
+  `tools/gl/*.js` and run `sh tools/build-gl.sh`
 - `assets/` – the student audio recording; AI image crops for the stations go to `assets/zoom/`
 - `fonts/` – self-hosted Karantina, IBM Plex Sans Hebrew and IBM Plex Mono (OFL, from @fontsource)
-- `tools/` – `gen-images.py` (makes the AI images), `zoom-crops.py` + `zoom-scenes.json` (crops them); not deployed
+- `tools/` – `gen-images.py` (makes the AI images), `zoom-crops.py` + `zoom-scenes.json` (crops them),
+  `gl/` + `build-gl.sh` (sources of `club-gl.js`); not deployed
 - `AI-PROMPTS.md` – prompts for the AI images of the journey (not deployed)
 - `vendor/` – GSAP 3.15 + ScrollTrigger (scroll animations) and Lenis 1.3 (smooth scrolling),
   copied from npm so the site has no CDN dependency
@@ -41,6 +47,27 @@ code only when its `.jr-scene` has no image. To swap one:
    `.jr-scene` in `index.html`. Wide screens use the same portrait image unless a station also has a 16:9
    one (`src_l` / `focus_l`). The window frames the same part of the photo on every screen size.
    `assets/` is cached for a week, so add `?v=2` to a replaced image's `data-src-p`.
+
+## Club mode
+
+On top of the journey, when the browser allows it:
+
+- **Sound** (`club-audio.js`), only after a tap on "להיכנס עם סאונד" or the header button. A 124 BPM
+  loop, synthesised (no samples, nothing licensed). The scroll builds it: a muffled pad outside, the
+  filter opening as you walk in, the kick at "לוחצים פליי", hats and the next track in the left ear at
+  the headphones, scratches on fast scrolls over the jog, bass at the fader, a high-pass build at EQ
+  and the drop with the crowd at the booth. Past the opening it keeps playing quietly until muted.
+  Hidden with reduced motion.
+- **WebGL stage** (`club-gl.js`, WebGL 2): the same journey drawn by one shader, with a liquid sweep
+  and light trail, a slow dolly in every station, chromatic split on fast scrolls, pointer and tilt
+  parallax, a push on every beat, light leaks and grain. It reads `window.AcademyJourney.state`
+  from `journey.js`; if WebGL 2 is missing, the photos don't load or the device is too slow, the CSS
+  version stays.
+- **3D booth**: a generic two-deck controller built from primitives (no model files, no brand). In the
+  hero it turns under the heading (drag to turn it); on scroll the camera dives into the left jog,
+  whose platter lands on the record window and becomes it.
+- **"נגנו עכשיו"**: the booth again, playable: eight pads (also keys 1–8), a jog that scratches when
+  dragged, and a button for the beat. Without WebGL the HTML pads still play.
 
 ## Scroll motion
 
