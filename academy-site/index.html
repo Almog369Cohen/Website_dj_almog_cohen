@@ -537,6 +537,35 @@ p { margin: 0; }
 .strip:hover::after { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .marquee-track { transform: none !important; } .cursor-light { display: none; } }
 
+
+/* next level: HUD station buttons, the crossfader picker, club beams, the title on the beat */
+.hud-nav { display: inline-flex; gap: 8px; margin-inline-start: auto; }
+.hud-nav + .hud-skip { margin-inline-start: 0; }
+.hud-nav button { width: 38px; height: 38px; display: grid; place-items: center; padding: 0; cursor: pointer; color: var(--fg); border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); background: color-mix(in srgb, var(--bg) 55%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.hud-nav button:active { transform: scale(.92); }
+.hud-nav svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+.xf { --pos: .5; position: relative; height: 44px; max-width: 420px; margin-block: 2px 4px; touch-action: none; cursor: grab; }
+.xf::before { content: ""; position: absolute; inset-inline: 22px; top: 50%; height: 6px; margin-top: -3px; border-radius: 3px; background: #07060c; box-shadow: inset 0 1px 2px rgba(0, 0, 0, .8), 0 0 0 1px var(--line); }
+.xf-ticks { position: absolute; inset-inline: 22px; top: 6px; bottom: 6px; display: flex; justify-content: space-between; pointer-events: none; }
+.xf-ticks i { width: 2px; height: 100%; background: color-mix(in srgb, var(--fg) 18%, transparent); border-radius: 1px; }
+.xf-cap { position: absolute; top: 50%; right: calc(22px + var(--pos) * (100% - 44px)); width: 30px; height: 40px; margin: -20px -15px 0 0; border-radius: 6px;
+  background: linear-gradient(to bottom, #e7e3f2, #9c97b2 48%, #6b6684 52%, #c9c4d8); box-shadow: 0 6px 16px rgba(0, 0, 0, .6), 0 0 18px color-mix(in srgb, var(--acc) 55%, transparent); }
+.xf-cap::after { content: ""; position: absolute; inset-inline: 4px; top: 50%; height: 2px; margin-top: -1px; background: var(--acc2); box-shadow: 0 0 8px var(--acc2); }
+.xf.snap .xf-cap { transition: right .35s cubic-bezier(.2, .9, .2, 1); }
+.xf.dragging { cursor: grabbing; }
+
+.beam { position: absolute; z-index: -1; top: -12%; width: 46%; height: 135%; pointer-events: none; opacity: .5; mix-blend-mode: screen; filter: blur(6px);
+  background: conic-gradient(from 168deg at 50% 0%, transparent 0deg, color-mix(in srgb, var(--acc) 55%, transparent) 10deg, color-mix(in srgb, var(--acc2) 30%, transparent) 16deg, transparent 26deg);
+  transform-origin: 50% 0%; animation: sweep 7s ease-in-out infinite alternate; }
+.beam.b1 { left: -6%; }
+.beam.b2 { right: -6%; animation-duration: 9s; animation-delay: -3s; }
+@keyframes sweep { from { transform: rotate(-24deg); } to { transform: rotate(24deg); } }
+.sound-on .final .beam { opacity: calc(.4 + var(--beat, 0) * .5); }
+.sound-on .zero-title { text-shadow: calc(var(--beat, 0) * 5px) 0 rgba(255, 79, 216, .75), calc(var(--beat, 0) * -5px) 0 rgba(79, 209, 255, .6); }
+@media (prefers-reduced-motion: reduce) { .beam { animation: none; } }
+
 /* scroll progress, like a track playhead */
 .progress { position: absolute; inset-inline: 0; bottom: -1px; height: 2px; pointer-events: none; }
 .progress i { display: block; height: 100%; background: linear-gradient(270deg, var(--acc), var(--acc2)); transform: scaleX(0); transform-origin: right center; }
@@ -685,6 +714,10 @@ h2 .w { display: inline-block; }
         <div class="journey-hud">
           <span class="hud-count num">01 / 08</span>
           <span class="hud-bar" aria-hidden="true"><i></i></span>
+          <span class="hud-nav">
+            <button type="button" data-step="-1" aria-label="לתחנה הקודמת"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+            <button type="button" data-step="1" aria-label="לתחנה הבאה"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+          </span>
           <a class="hud-skip" href="#tracks">דלגו למסלולים</a>
         </div>
       </div>
@@ -703,6 +736,7 @@ h2 .w { display: inline-block; }
 
         <div class="finder">
           <span class="finder-label" id="goal-label">מה המטרה שלכם?</span>
+          <div class="xf" aria-hidden="true" hidden><span class="xf-ticks"><i></i><i></i><i></i></span><span class="xf-cap"></span></div>
           <div class="seg" role="group" aria-labelledby="goal-label">
             <button type="button" id="goal-basic" data-goal="basic" aria-pressed="false">לבדוק אם זה בשבילי</button>
             <button type="button" id="goal-field" data-goal="field" aria-pressed="true">להתחיל לנגן באירועים</button>
@@ -1005,6 +1039,7 @@ h2 .w { display: inline-block; }
     <section class="final" aria-label="יצירת קשר" data-pulse>
       <img src="assets/zoom/crowd-portrait.webp" alt="" loading="lazy" decoding="async">
       <div class="final-disc" aria-hidden="true"></div>
+      <span class="beam b1" aria-hidden="true"></span><span class="beam b2" aria-hidden="true"></span>
       <div class="wrap">
         <p class="eyebrow">ההרשמה פתוחה</p>
         <h2>מוכנים לעלות לעמדה?</h2>

@@ -311,11 +311,15 @@ export function createBoothHero(renderer, journey) {
     yawTarget = MathUtils.clamp((e.clientX - startX) / 300, -0.8, 0.8);
   });
 
-  let spin = 0, lastHp = 0;
+  let spin = 0, lastHp = 0, born = 0;
   function render(st, fx) {
     const e = pose(st.hp, camera);
     yawDrag += (yawTarget - yawDrag) * 0.08;
-    booth.group.rotation.y = (Math.sin(fx.time * 0.35) * 0.2 + yawDrag) * (1 - e);
+    // the first time it shows, the booth rises into place, turning
+    if (!born) born = fx.time;
+    const intro = MathUtils.smootherstep(fx.time - born, 0, 1.8);
+    booth.group.position.y = -0.14 * (1 - intro);
+    booth.group.rotation.y = (Math.sin(fx.time * 0.35) * 0.2 + yawDrag) * (1 - e) + (1 - intro) * 1.1;
     spin += (st.hp - lastHp) * 6; lastHp = st.hp;
     const level = window.ClubAudio ? window.ClubAudio.level() : 0;
     booth.update(fx.time, fx.beat, level, spin);
@@ -327,7 +331,7 @@ export function createBoothHero(renderer, journey) {
     renderer.setRenderTarget(null);
     return {
       texture: rt.texture,
-      alpha: 1 - MathUtils.smoothstep(st.hp, 0.9, 1),
+      alpha: (1 - MathUtils.smoothstep(st.hp, 0.9, 1)) * MathUtils.smoothstep(fx.time - born, 0, 0.6),
       winAlpha: MathUtils.smoothstep(st.hp, 0.7, 1),
     };
   }

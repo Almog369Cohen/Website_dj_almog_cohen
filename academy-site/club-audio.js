@@ -20,6 +20,7 @@
  *   leaveJourney(bool)       true once the opening is scrolled past
  *   pad(n)                   one-shots for the playable booth: 0 kick, 1 clap, 2 hat, 3 stab, 4 bass, 5 scratch, 6 drop, 7 horn
  *   jam(bool)                the full loop at full volume under the playable booth ("נגנו עכשיו")
+ *   tick()                   a quiet click for controls (only while the sound is on)
  *   pulse()                  0..1, peaks on every beat and decays; a quiet 124 BPM clock while the sound is off
  *   level()                  0..1 loudness of the mix
  *   on, started
@@ -381,6 +382,11 @@
     document.dispatchEvent(new CustomEvent("clubpad", { detail: n }));
   };
 
+  api.tick = function () {
+    if (!api.on || !eng) return;
+    eng.hat(ctx.currentTime + 0.004, 0.035, false);
+  };
+
   api.jam = function (on) {
     if (on) {
       if (!api.on) { start(); jamStarted = true; }
@@ -455,6 +461,7 @@
     var pads = Array.prototype.slice.call(document.querySelectorAll("[data-pad]"));
     function hit(n) {
       api.pad(n);
+      if (navigator.vibrate) try { navigator.vibrate(12); } catch (e) {}
       var el = pads[n];
       if (el) { el.classList.remove("hit"); void el.offsetWidth; el.classList.add("hit"); }
     }

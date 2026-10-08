@@ -315,6 +315,19 @@
       clearTimeout(release);
       release = setTimeout(done, 1600);   // in case the browser never quite gets there
     }
+    // the HUD's ‹ › buttons: one station on or back
+    api.step = function (dir) {
+      var tt = tAtScroll(), best = 0;
+      for (var j = 1; j < rests.length; j++) if (Math.abs(rests[j] - tt) < Math.abs(rests[best] - tt)) best = j;
+      var to = best + dir;
+      if (to >= rests.length) {
+        var next = document.getElementById("tracks");
+        if (window.AcademyLenis) window.AcademyLenis.scrollTo(next, { offset: -72 });
+        else next.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+      if (to >= 0) go(to);
+    };
     function onRest() {
       if (holding || snapping || performance.now() - input > 4000) return;
       var tt = tAtScroll();
@@ -368,6 +381,19 @@
   });
   render(-HERO);
   setupSnap();
+  journey.querySelectorAll("[data-step]").forEach(function (b) {
+    b.addEventListener("click", function () { if (api.step) api.step(+b.getAttribute("data-step")); });
+  });
+
+  // The hero comes in like a deck powering up: the lines rise out of a mask, the 0 spins up to speed
+  (function intro() {
+    var lines = hero.querySelectorAll(".zl1, .zl2");
+    var rest = hero.querySelectorAll(".zero-wrap > .eyebrow, .zero-sub, .cta-row, .sound-btn, .scroll-hint");
+    gsap.timeline({ delay: 0.1 })
+      .from(lines, { yPercent: 70, autoAlpha: 0, clipPath: "inset(0 0 100% 0)", duration: 1.15, stagger: 0.14, ease: "expo.out", clearProps: "clipPath" })
+      .from(zero, { rotation: -720, scale: 0.35, duration: 1.6, ease: "power3.out" }, 0.05)
+      .from(rest, { y: 22, autoAlpha: 0, duration: 0.8, stagger: 0.07, ease: "power3.out", clearProps: "transform" }, 0.45);
+  })();
   api.render = function () { render(proxy.t); };
   api.renderAt = function (tt) { proxy.t = tt; render(tt); };   // for recordings and tests
 

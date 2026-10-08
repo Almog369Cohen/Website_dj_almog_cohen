@@ -77,6 +77,84 @@
   var raf = requestAnimationFrame(frame);
   document.addEventListener("visibilitychange", function () { if (!document.hidden && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); } });
 
+  // The crossfader picks the track: drag it (or tap a stop) and the matching goal button is pressed
+  var xf = document.querySelector(".xf");
+  var goals = Array.prototype.slice.call(document.querySelectorAll(".seg [data-goal]"));
+  if (xf && goals.length === 3) {
+    xf.hidden = false;
+    var stops = [0, 0.5, 1];   // from the right: basic, field, pro
+    var cap = xf.querySelector(".xf-cap"), dragging = false, at = -1;
+    var setPos = function (v) { xf.style.setProperty("--pos", v.toFixed(3)); };
+    var fromGoals = function () {
+      var k = goals.findIndex(function (g) { return g.getAttribute("aria-pressed") === "true"; });
+      if (k >= 0) { xf.classList.add("snap"); setPos(stops[k]); at = k; }
+    };
+    var posAt = function (e) {
+      var r = xf.getBoundingClientRect();
+      return clamp((r.right - 22 - e.clientX) / (r.width - 44), 0, 1);
+    };
+    var nearest = function (v) { return v < 0.25 ? 0 : v < 0.75 ? 1 : 2; };
+    var pick = function (k) {
+      if (k === at) return;
+      at = k;
+      goals[k].click();
+      if (window.ClubAudio) window.ClubAudio.tick();
+      if (navigator.vibrate) try { navigator.vibrate(8); } catch (e2) {}
+    };
+    fromGoals();
+    goals.forEach(function (g) { g.addEventListener("click", function () { if (!dragging) setTimeout(fromGoals, 0); }); });
+    xf.addEventListener("pointerdown", function (e) {
+      dragging = true; xf.classList.remove("snap"); xf.classList.add("dragging");
+      xf.setPointerCapture(e.pointerId);
+      var v = posAt(e); setPos(v); pick(nearest(v));
+    });
+    xf.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      var v = posAt(e); setPos(v); pick(nearest(v));
+    });
+    var drop = function () {
+      if (!dragging) return;
+      dragging = false; xf.classList.remove("dragging"); xf.classList.add("snap");
+      setPos(stops[at]);
+    };
+    xf.addEventListener("pointerup", drop);
+    xf.addEventListener("pointercancel", drop);
+  }
+
+  // Itay's recording: while it plays, the bars around the playhead dance to the sound itself
+  var rec = document.getElementById("audio"), wave = document.getElementById("wave");
+  if (rec && wave && (window.AudioContext || window.webkitAudioContext)) {
+    var actx = null, an = null, bins = null, vraf = 0, touched = [];
+    var dance = function () {
+      vraf = 0;
+      if (rec.paused) { touched.forEach(function (b) { b.style.transform = ""; }); touched = []; return; }
+      an.getByteFrequencyData(bins);
+      var bars = wave.children, lit = wave.querySelectorAll("i.on").length;
+      touched.forEach(function (b) { b.style.transform = ""; });
+      touched = [];
+      for (var j = 0; j < 16; j++) {
+        var b = bars[lit - 4 + j];
+        if (!b) continue;
+        var v = bins[2 + j * 4] / 255;
+        b.style.transform = "scaleY(" + (0.55 + v * 1.1).toFixed(3) + ")";
+        touched.push(b);
+      }
+      vraf = requestAnimationFrame(dance);
+    };
+    rec.addEventListener("play", function () {
+      try {
+        if (!actx) {
+          actx = new (window.AudioContext || window.webkitAudioContext)();
+          an = actx.createAnalyser(); an.fftSize = 256; bins = new Uint8Array(an.frequencyBinCount);
+          actx.createMediaElementSource(rec).connect(an);
+          an.connect(actx.destination);
+        }
+        if (actx.state !== "running") actx.resume();
+      } catch (e) { return; }
+      if (!vraf) vraf = requestAnimationFrame(dance);
+    });
+  }
+
   // ---- mouse only ----
   var light = null, px = -999, py = -999, lx = -999, ly = -999;
   if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;

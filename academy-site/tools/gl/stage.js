@@ -17,6 +17,7 @@ uniform vec4 uWin; uniform float uSweep, uWinAlpha, uOpen;
 uniform vec4 uRec; uniform float uRecRot, uRingOp;
 uniform sampler2D uBooth; uniform float uBoothAlpha;
 uniform vec2 uShock;   // seconds since the last station change, its strength
+uniform float uBeams;  // club lights sweeping from the top, strongest in the hero
 
 const vec3 BG = vec3(0.043, 0.039, 0.071);
 const vec3 SURF2 = vec3(0.110, 0.098, 0.188);
@@ -31,6 +32,24 @@ float vnoise(vec2 p) {
   return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
 }
 float angDist(float a, float b) { return abs(mod(a - b + PI, TAU) - PI); }
+
+// three moving-head beams hanging above the stage, sweeping through haze
+float beams(vec2 s) {
+  float acc = 0.0;
+  for (int k = 0; k < 3; k++) {
+    float fk = float(k);
+    vec2 o = vec2(uSize.x * (0.16 + 0.34 * fk), -60.0);
+    float a = sin(uTime * (0.33 + 0.11 * fk) + fk * 2.1) * 0.6;
+    vec2 dir = vec2(sin(a), cos(a));
+    vec2 v = s - o;
+    float along = dot(v, dir);
+    float across = abs(v.x * dir.y - v.y * dir.x);
+    float width = 10.0 + along * 0.11;
+    float haze = 0.75 + 0.25 * vnoise(vec2(along * 0.01 - uTime * 0.4, fk * 5.0));
+    acc += smoothstep(width, width * 0.15, across) * smoothstep(0.0, 140.0, along) * exp(-along / (uSize.y * 0.85)) * haze;
+  }
+  return acc;
+}
 
 // screen point -> the station's own pixels (the inverse of journey.js's translate + scale about the focus)
 vec3 layer(sampler2D tex, vec4 img, vec4 xf, vec2 t, vec2 s) {
@@ -122,6 +141,9 @@ void main() {
   float rim = exp(-pow((r - R) / 1.3, 2.0)) + 0.45 * exp(-max(r - R, 0.0) / (18.0 + 14.0 * uBeat)) * step(R, r);
   col += ACC * rim * uRingOp * uWinAlpha * (0.9 + 0.8 * uBeat);
 
+  // the club lights
+  if (uBeams > 0.01) col += mix(ACC, ACC2, 0.5 + 0.5 * sin(uTime * 0.37)) * beams(s) * uBeams * (0.5 + 0.9 * uBeat) * 0.32;
+
   // light leaks on the beat, grain, vignette
   col += ACC * 0.10 * uBeat * smoothstep(1.1, 0.0, length((s - vec2(uSize.x, 0.0)) / uSize.y));
   col += ACC2 * 0.06 * uBeat * smoothstep(1.0, 0.0, length((s - vec2(0.0, uSize.y)) / uSize.y));
@@ -142,7 +164,7 @@ export function createStage(textures) {
     uTA: { value: new Vector2() }, uTB: { value: new Vector2() }, uHasB: { value: 0 },
     uWin: { value: new Vector4() }, uSweep: { value: 0 }, uWinAlpha: { value: 1 }, uOpen: { value: 0 },
     uRec: { value: new Vector4() }, uRecRot: { value: 0 }, uRingOp: { value: 1 },
-    uBooth: { value: null }, uBoothAlpha: { value: 0 }, uShock: { value: new Vector2() },
+    uBooth: { value: null }, uBoothAlpha: { value: 0 }, uShock: { value: new Vector2() }, uBeams: { value: 0 },
   };
   const material = new ShaderMaterial({ uniforms: u, vertexShader: vertex, fragmentShader: fragment, depthTest: false, depthWrite: false });
   const scene = new Scene();
@@ -172,6 +194,7 @@ export function createStage(textures) {
     u.uRec.value.set(J.win.x, J.win.y, J.recR * (1 + 0.4 * st.open), (0.35 + 0.65 * st.hp) * (1 - st.open));
     u.uRecRot.value = st.tRaw * 50 * Math.PI / 180 + fx.time * 0.25 + (fx.spin || 0);
     u.uShock.value.set(fx.shockAge || 0, fx.shock || 0);
+    u.uBeams.value = 0.35 + 0.65 * (1 - st.hp) - 0.3 * st.open;
     u.uRingOp.value = (1 - st.open) * Math.min(1, st.hp * 2);
     u.uBooth.value = fx.booth || null;
     u.uBoothAlpha.value = fx.booth ? fx.boothAlpha : 0;
