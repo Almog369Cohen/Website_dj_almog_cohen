@@ -69,7 +69,7 @@ p{margin:0}
 .btn-grad .dot{background:#04110f}
 
 /* ---------- nav ---------- */
-.nav{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:0;right:0;margin-inline:auto;width:min(1180px,calc(100% - 24px));z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 8px 8px 8px;padding-inline-start:18px;border-radius:999px;background:rgba(18,22,22,.42);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border:1px solid rgba(255,255,255,.09);box-shadow:0 10px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .6s var(--ease)}
+.nav{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:0;right:0;margin-inline:auto;width:min(1180px,calc(100% - 24px));z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 8px 8px 8px;padding-inline-start:18px;border-radius:999px;background:rgba(18,22,22,.42);-webkit-backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border:1px solid rgba(255,255,255,.09);box-shadow:0 10px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .6s var(--ease)}
 .nav.hide{transform:translateY(-160%)}
 .nav .mark{display:flex;align-items:center;gap:12px}
 .nav .mark img{width:30px;height:auto}
@@ -92,6 +92,8 @@ p{margin:0}
 .knock{position:absolute;inset:0;background:#000;mix-blend-mode:multiply;display:flex;align-items:center;justify-content:center;pointer-events:none;will-change:transform,opacity;transform-origin:50% 50%}
 .kn-in{display:flex;flex-direction:column;align-items:center;gap:.02em;font-family:var(--latin);font-weight:800;font-size:min(15.4vw,27vh);line-height:.84;letter-spacing:-.045em;color:#fff;white-space:nowrap;direction:ltr}
 .kw{display:block}
+/* when WebGL draws the punched-out name itself, the DOM sheet only keeps layout */
+.stage.gm .knock{visibility:hidden}
 .halo{position:absolute;inset:0;pointer-events:none;background:radial-gradient(40% 32% at 50% 50%,rgba(5,156,192,.16),transparent 70%),radial-gradient(30% 26% at 62% 58%,rgba(3,178,140,.12),transparent 70%);mix-blend-mode:screen}
 .kicker{position:absolute;top:calc(50% - min(15.4vw,27vh)*1.02 - 34px);left:0;right:0;text-align:center;font-size:14px;letter-spacing:.32em;font-family:var(--latin);color:var(--mute);text-transform:uppercase}
 .hero-meta{position:absolute;inset-inline:var(--gut);bottom:calc(26px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;font-size:14px;color:var(--mute)}
@@ -195,7 +197,7 @@ p{margin:0}
 .sticky img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(100% 0 0 0);transition:clip-path 1s var(--ease)}
 .sticky img.on{clip-path:inset(0 0 0 0)}
 .sticky img.first{clip-path:inset(0 0 0 0)}
-.sticky .tag{position:absolute;bottom:16px;inset-inline-start:16px;z-index:2;font-size:13px;padding:6px 12px;border-radius:99px;background:rgba(10,12,12,.6);backdrop-filter:blur(8px);color:var(--paper);transition:opacity .4s}
+.sticky .tag{position:absolute;bottom:16px;inset-inline-start:16px;z-index:2;font-size:13px;padding:6px 12px;border-radius:99px;background:rgba(10,12,12,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--paper);transition:opacity .4s}
 .sticky .src{margin-top:14px;font-size:13px;color:var(--mute)}
 @media (max-width:800px){
   .quotes{grid-template-columns:1fr;margin-top:56px}
@@ -222,11 +224,12 @@ p{margin:0}
 /* ---------- TOOLS: dark glass over brand light ---------- */
 .paper{position:relative;isolation:isolate;overflow:hidden;color:var(--paper);padding-block:clamp(100px,15vh,180px)}
 .paper .orb{position:absolute;z-index:-1;border-radius:50%;filter:blur(90px);opacity:.5;pointer-events:none;will-change:transform}
+@media (pointer:coarse){.paper .orb{filter:none;will-change:auto}}
 .paper .orb.o1{width:56vw;height:56vw;max-width:780px;max-height:780px;background:radial-gradient(circle,#059cc0 0%,rgba(5,156,192,0) 68%);top:-8%;right:-14%}
 .paper .orb.o2{width:48vw;height:48vw;max-width:680px;max-height:680px;background:radial-gradient(circle,#03b28c 0%,rgba(3,178,140,0) 68%);bottom:-6%;left:-12%}
 .paper h2{font-size:clamp(40px,6vw,100px);line-height:1;max-width:15ch}
 .paper .lede{margin-top:22px;max-width:52ch;color:var(--mute);font-size:18px}
-.glass{position:relative;background:linear-gradient(160deg,rgba(255,255,255,.085),rgba(255,255,255,.02));-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3);border:1px solid rgba(255,255,255,.1);border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)}
+.glass{position:relative;background:linear-gradient(160deg,rgba(255,255,255,.085),rgba(255,255,255,.02));-webkit-backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3);border:1px solid rgba(255,255,255,.1);border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)}
 .tool{margin-top:clamp(48px,8vh,96px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.62fr);gap:clamp(20px,3vw,40px);align-items:stretch;padding:clamp(22px,3.4vw,52px)}
 .tool .tnum{font-family:var(--latin);font-size:12px;letter-spacing:.2em;color:var(--mute);margin-bottom:22px;display:block}
 .madlib{font-family:var(--serif);font-weight:300;font-size:clamp(28px,3.3vw,52px);line-height:1.6;letter-spacing:-.02em}
@@ -641,6 +644,9 @@ var $=function(s,r){return (r||document).querySelector(s)};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 var fine=window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+/* knock state: zoom, sheet opacity, per-line intro offset/opacity. WebGL draws it when it can (no giant blended layer on phones) */
+var K={z:1,a:reduce?0:1,y0:0,o0:1,y1:0,o1:1};
+var glMode=(function(){try{var t=document.createElement("canvas"),g=t.getContext("webgl");if(!g)return false;var l=g.getExtension("WEBGL_lose_context");if(l)l.loseContext();return true}catch(e){return false}})();
 
 /* ---------- Hebrew date (gematria) ---------- */
 function gem(n){
@@ -750,7 +756,7 @@ var intro=gsap.timeline({defaults:{ease:"expo.out"}});
 intro.to(cnt,{v:100,duration:1.1,ease:"power2.inOut",onUpdate:function(){$(".count",pre).textContent=String(Math.round(cnt.v)).padStart(3,"0")}})
      .to($(".bar i",pre),{scaleX:1,duration:1.1,ease:"power2.inOut"},0)
      .to(pre,{yPercent:-100,duration:1,ease:"expo.inOut"},1.2)
-     .from(".kw",{y:120,opacity:0,duration:1.5,stagger:.1},1.55)
+     .add(glMode?gsap.timeline().fromTo(K,{y0:120,o0:0},{y0:0,o0:1,duration:1.5,ease:"expo.out"},0).fromTo(K,{y1:120,o1:0},{y1:0,o1:1,duration:1.5,ease:"expo.out"},.1):gsap.from(".kw",{y:120,opacity:0,duration:1.5,stagger:.1,ease:"expo.out"}),1.55)
      .from("#kicker",{opacity:0,y:20,duration:1},1.9)
      .from(".hero-meta>*",{y:20,opacity:0,duration:1,stagger:.08},1.9)
      .from("#nav",{y:-30,opacity:0,duration:1},1.9)
@@ -760,6 +766,8 @@ setTimeout(function(){if(pre.isConnected){intro.progress(1)}},4500);
 
 /* hero dive: scale the punched-out name around the H until the video fills the screen */
 var stage=$("#stage"),media=$("#media"),knock=$("#knock"),zH=$("#zH");
+if(glMode)stage.classList.add("gm");
+function applyK(){if(!glMode)gsap.set(knock,{scale:K.z,opacity:K.a})}
 function strokePoint(){
   /* find a solid pixel of the H's crossbar so the dive lands inside the letter, not in a gap */
   var cs=getComputedStyle($("#knIn")),fsz=parseFloat(cs.fontSize);
@@ -788,8 +796,8 @@ function setOrigin(){var p=strokePoint();gsap.set(knock,{transformOrigin:p.x+"px
 setOrigin();
 gsap.set(copy,{autoAlpha:0,y:40});
 var htl=gsap.timeline({scrollTrigger:{trigger:stage,start:"top top",end:"+=160%",pin:true,scrub:1,invalidateOnRefresh:true,onRefreshInit:function(){gsap.set(knock,{scale:1});setOrigin()}}});
-htl.to(knock,{scale:46,ease:"power3.in",duration:1},0)
-   .to(knock,{opacity:0,ease:"none",duration:.25},.72)
+htl.to(K,{z:46,ease:"power3.in",duration:1,onUpdate:applyK},0)
+   .to(K,{a:0,ease:"none",duration:.25,onUpdate:applyK},.72)
    .to("#halo",{opacity:0,duration:.3},.2)
    .to("#kicker",{opacity:0,y:-30,duration:.25},0)
    .to("#heroMeta",{opacity:0,duration:.25},0)
@@ -872,11 +880,12 @@ $$(".night-head h2,.couples-head h2,.gallery-head h2,.paper h2,.faq h2,.final h2
   var c=document.createElement("canvas");c.className="gl";c.setAttribute("aria-hidden","true");
   var gl=null;
   try{gl=c.getContext("webgl",{antialias:false,alpha:false,premultipliedAlpha:false,preserveDrawingBuffer:false})}catch(e){}
-  if(!gl)return;
+  function fallback(){glMode=false;stage.classList.remove("gm");applyK()}
+  if(!gl){fallback();return}
   var vs="attribute vec2 p;varying vec2 vUv;void main(){vUv=p*.5+.5;gl_Position=vec4(p,0.,1.);}";
   var fs=[
-  "precision mediump float;",
-  "uniform sampler2D t;uniform vec2 res,tres,m,mv;uniform float time,vel;varying vec2 vUv;",
+  "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif",
+  "uniform sampler2D t,mk;uniform vec2 res,tres,m,mv,org;uniform float time,vel,zm,ka,y0,o0,y1,o1;varying vec2 vUv;",
   "vec2 cover(vec2 uv){float rs=res.x/res.y,rt=tres.x/tres.y;vec2 s=rs>rt?vec2(1.,rt/rs):vec2(rs/rt,1.);return (uv-.5)*s+.5;}",
   "void main(){",
   " vec2 asp=vec2(res.x/res.y,1.);",
@@ -899,25 +908,68 @@ $$(".night-head h2,.couples-head h2,.gallery-head h2,.paper h2,.faq h2,.final h2
   " col+=bc*fall*.10;",
   " float v=smoothstep(1.15,.3,length((vUv-.5)*asp*.85));",
   " col*=mix(.5,1.,v);",
+  " vec2 mp=org+(gl_FragCoord.xy-org)/zm;vec2 mu=vec2(mp.x/res.x,1.-mp.y/res.y);",
+  " float w=.5/max(1.,zm*.6);",
+  " float mm=max(smoothstep(.5-w,.5+w,texture2D(mk,mu-vec2(0.,y0/res.y)).r)*o0,smoothstep(.5-w,.5+w,texture2D(mk,mu-vec2(0.,y1/res.y)).g)*o1);",
+  " col*=1.-ka+ka*mm;",
   " gl_FragColor=vec4(col,1.);",
   "}"].join("\n");
   function sh(type,src){var o=gl.createShader(type);gl.shaderSource(o,src);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){throw new Error(gl.getShaderInfoLog(o))}return o}
   var pr;
-  try{pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error("link")}catch(e){return}
+  try{pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error("link")}catch(e){fallback();return}
   gl.useProgram(pr);
   var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
   var loc=gl.getAttribLocation(pr,"p");gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  var U={};["t","res","tres","m","mv","time","vel"].forEach(function(n){U[n]=gl.getUniformLocation(pr,n)});
+  var U={};["t","mk","res","tres","m","mv","org","time","vel","zm","ka","y0","o0","y1","o1"].forEach(function(n){U[n]=gl.getUniformLocation(pr,n)});
   var tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
   gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([10,12,12,255]));
+  /* mask: the name drawn white-on-black, ALMOG in red, COHEN in green, so each line can slide in on its own */
+  var mtex=gl.createTexture();gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,mtex);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,255]));
+  gl.activeTexture(gl.TEXTURE0);
+  var mc=document.createElement("canvas"),mx2=mc.getContext("2d"),ox=0,oy=0;
+  function drawMask(){
+    if(!glMode)return;
+    var W=c.width,Hh=c.height;mc.width=W;mc.height=Hh;
+    var cs=getComputedStyle($("#knIn")),fsz=parseFloat(cs.fontSize)*dpr,ls=-.045*fsz;
+    mx2.fillStyle="#000";mx2.fillRect(0,0,W,Hh);
+    mx2.font=cs.fontWeight+" "+fsz+"px "+cs.fontFamily;mx2.textBaseline="alphabetic";mx2.globalCompositeOperation="lighter";
+    var mt=mx2.measureText("H"),asc=mt.fontBoundingBoxAscent||fsz*.95,desc=mt.fontBoundingBoxDescent||fsz*.25,cap=mt.actualBoundingBoxAscent||fsz*.7;
+    var lh=.84*fsz,gap=.02*fsz,top=Hh/2-(2*lh+gap)/2,hx=W/2,hb=Hh/2;
+    ["ALMOG","COHEN"].forEach(function(str,i){
+      var ws=[],tw=0,k;for(k=0;k<str.length;k++){ws.push(mx2.measureText(str[k]).width);tw+=ws[k]+(k<str.length-1?ls:0)}
+      var x=W/2-tw/2,base=top+i*(lh+gap)+(lh-(asc+desc))/2+asc;
+      mx2.fillStyle=i?"#00ff00":"#ff0000";
+      for(k=0;k<str.length;k++){if(i===1&&k===2){hx=x+ws[k]/2;hb=base}mx2.fillText(str[k],x,base);x+=ws[k]+ls}
+    });
+    mx2.globalCompositeOperation="source-over";
+    /* dive origin: walk the H's centre column and take the solid run nearest the glyph centre (the crossbar) */
+    var col=Math.max(0,Math.min(W-1,Math.round(hx))),cy=hb-cap/2,by=cy,best=1e9,run=-1;
+    try{
+      var d=mx2.getImageData(col,0,1,Hh).data;
+      for(var yy=0;yy<=Hh;yy++){var on=yy<Hh&&d[yy*4+1]>160;if(on&&run<0)run=yy;if(!on&&run>=0){var mid=(run+yy-1)/2,dd=Math.abs(mid-cy);if(dd<best){best=dd;by=mid}run=-1}}
+    }catch(e){}
+    ox=col;oy=Hh-by;
+    gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,mtex);
+    try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,mc)}catch(e){}
+    gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex);
+  }
   var tw=16,th=9,haveFrame=false;
   var poster=new Image();poster.onload=function(){if(!haveFrame){try{gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,poster);tw=poster.naturalWidth;th=poster.naturalHeight;show()}catch(e){}}};poster.src=video.getAttribute("poster");
   var shown=false;function show(){if(shown)return;shown=true;media.insertBefore(c,$("#shade"))}
   var dpr=Math.min(window.devicePixelRatio||1,1.5);
-  function size(){var r=media.getBoundingClientRect();c.width=Math.max(2,Math.round(r.width*dpr));c.height=Math.max(2,Math.round(r.height*dpr));gl.viewport(0,0,c.width,c.height)}
+  function size(){var r=media.getBoundingClientRect(),nw=Math.max(2,Math.round(r.width*dpr)),nh=Math.max(2,Math.round(r.height*dpr));if(nw===c.width&&nh===c.height)return;c.width=nw;c.height=nh;gl.viewport(0,0,c.width,c.height);drawMask()}
   size();window.addEventListener("resize",size);
+  if(glMode){
+    show();
+    var kcs=getComputedStyle($("#knIn"));
+    if(document.fonts&&document.fonts.load){document.fonts.load(kcs.fontWeight+" 100px "+kcs.fontFamily).then(drawMask,drawMask)}
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawMask);
+  }
   var mx=.5,my=.5,tx=.5,ty=.5,vx=0,vy=0,lastMove=-9,now=0,svel=0;
   function pt(x,y){var r=media.getBoundingClientRect();tx=(x-r.left)/r.width;ty=1-(y-r.top)/r.height;lastMove=now}
   window.addEventListener("mousemove",function(e){pt(e.clientX,e.clientY)},{passive:true});
@@ -937,7 +989,8 @@ $$(".night-head h2,.couples-head h2,.gallery-head h2,.paper h2,.faq h2,.final h2
       try{gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,video);tw=video.videoWidth;th=video.videoHeight;haveFrame=true;show()}catch(e){}
     }
     if(!shown)return;
-    gl.uniform1i(U.t,0);gl.uniform2f(U.res,c.width,c.height);gl.uniform2f(U.tres,tw,th);
+    gl.uniform1i(U.t,0);gl.uniform1i(U.mk,1);gl.uniform2f(U.res,c.width,c.height);
+    gl.uniform2f(U.org,ox,oy);gl.uniform1f(U.zm,K.z);gl.uniform1f(U.ka,glMode?K.a:0);gl.uniform1f(U.y0,K.y0*dpr);gl.uniform1f(U.o0,K.o0);gl.uniform1f(U.y1,K.y1*dpr);gl.uniform1f(U.o1,K.o1);gl.uniform2f(U.tres,tw,th);
     gl.uniform2f(U.m,mx,my);gl.uniform2f(U.mv,vx,vy);gl.uniform1f(U.time,time);gl.uniform1f(U.vel,svel);
     gl.drawArrays(gl.TRIANGLES,0,6);
   });
