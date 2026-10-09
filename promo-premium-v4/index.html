@@ -252,7 +252,7 @@ p{margin:0}
 .madlib select{padding-inline-end:4px;cursor:pointer}
 .madlib input::placeholder{color:rgba(241,240,235,.32)}
 .readout{display:grid;gap:18px;background:rgba(5,8,8,.55);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:clamp(22px,2.6vw,34px)}
-.readout .k{font-family:var(--latin);font-size:11px;letter-spacing:.2em;color:var(--mute);text-transform:uppercase}
+.readout .k{font-family:var(--latin);font-size:12px;letter-spacing:.2em;color:var(--mute);text-transform:uppercase}
 .readout .heb{font-family:var(--serif);font-weight:800;font-size:clamp(30px,3vw,44px);line-height:1.1;letter-spacing:-.02em}
 .readout .greg{color:var(--mute);font-size:15px}
 .readout .days{display:flex;align-items:baseline;gap:12px;border-top:1px solid var(--line);padding-top:18px}
@@ -307,6 +307,14 @@ p{margin:0}
 .badge .core i{width:28%;height:28%;border-top:2px solid #04110f;border-left:2px solid #04110f;transform:rotate(-45deg) translate(-12%,-12%)}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media (max-width:900px){.badge{position:relative;inset:auto;margin:10px 0 0;top:auto}}
+/* phones: every control at least 44px tall, nothing under 12px, the badge centred */
+@media (max-width:900px){.badge{margin:34px auto 0}}
+@media (pointer:coarse){
+  .madlib input,.madlib select{min-height:44px}
+  .nav .mark{min-height:44px;min-width:44px}
+  .gallery-head a,.gallery a[href*="instagram"]{display:inline-flex;align-items:center;min-height:44px}
+  .foot nav a{display:inline-flex;align-items:center;min-height:44px}
+}
 .phone{display:inline-flex;align-items:center;gap:12px;height:56px;padding-inline:22px;border-radius:999px;border:1px solid var(--line);font-family:var(--latin);letter-spacing:.06em;direction:ltr;cursor:pointer;background:transparent}
 .phone:hover{border-color:var(--paper)}
 .phone small{font-family:var(--sans);letter-spacing:0;color:var(--mute);font-size:13px}
