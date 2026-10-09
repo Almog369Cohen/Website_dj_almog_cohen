@@ -420,9 +420,9 @@ footer{padding-block:0 calc(28px + env(safe-area-inset-bottom,0px))}
   <div class="stage" id="stage">
     <div class="media" id="media">
       <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/pick27-smoke-stage-wide.jpg" aria-label="וידאו מהרחבה של אלמוג כהן">
-        <source type="video/mp4">
+        <source src="assets/hero-m.mp4" type="video/mp4">
       </video>
-      <script>/* phones get a lighter, portrait-cropped cut of the hero clip */(function(v){v.querySelector("source").src=matchMedia("(max-width:800px)").matches?"assets/hero-m.mp4":"assets/hero.mp4";v.load()})(document.getElementById("heroVideo"))</script>
+      <script>/* phones keep the light portrait cut; wide screens swap to the full clip */(function(v){if(!matchMedia("(max-width:800px)").matches){v.querySelector("source").src="assets/hero.mp4";v.load()}})(document.getElementById("heroVideo"))</script>
       <div class="shade" id="shade"></div>
     </div>
     <div class="knock" id="knock" aria-hidden="true">
@@ -859,7 +859,7 @@ function strokePoint(){
 function setOrigin(){var p=strokePoint();gsap.set(knock,{transformOrigin:p.x+"px "+p.y+"px"})}
 setOrigin();
 gsap.set(copy,{autoAlpha:0,y:40});
-var htl=gsap.timeline({scrollTrigger:{trigger:stage,start:"top top",end:"+=160%",pin:true,scrub:1,invalidateOnRefresh:true,onRefreshInit:function(){gsap.set(knock,{scale:1});setOrigin()}}});
+var htl=gsap.timeline({scrollTrigger:{trigger:stage,start:"top top",end:matchMedia("(pointer:coarse)").matches?"+=260%":"+=160%",pin:true,scrub:1,invalidateOnRefresh:true,onRefreshInit:function(){gsap.set(knock,{scale:1});setOrigin()}}});
 htl.to(K,{z:46,ease:"power3.in",duration:1,onUpdate:applyK},0)
    .to(K,{a:0,ease:"none",duration:.25,onUpdate:applyK},.72)
    .to("#halo",{opacity:0,duration:.3},.2)
@@ -929,6 +929,8 @@ gsap.ticker.add(function(){
   scs.forEach(function(s,k){s.classList.remove("on");gsap.set(s,{autoAlpha:k?0:1})});
   bgs.forEach(function(b,k){b.classList.remove("on");gsap.set(b,{opacity:k?0:1})});
   load(vids[0]);load(vids[1]);
+  /* if the phone blocked autoplay (Low Power Mode), a touch on the film starts the current clip */
+  el.addEventListener("touchend",function(){var v=vids[Math.max(cur,0)];if(v&&v.paused){try{v.play().catch(function(){})}catch(e){}}},{passive:true});
   ScrollTrigger.create({trigger:el,start:"top top",end:"+="+(N*90)+"%",pin:true,scrub:true,anticipatePin:1,
     onEnter:function(){show(Math.max(cur,0));var v=vids[Math.max(cur,0)];try{v.play().catch(function(){})}catch(e){}},
     onEnterBack:function(){var v=vids[Math.max(cur,0)];try{v.play().catch(function(){})}catch(e){}},
@@ -1072,6 +1074,8 @@ $$(".night-head h2,.couples-head h2,.gallery-head h2,.paper h2,.faq h2,.final h2
   var running=true;
   ScrollTrigger.create({trigger:".hero",start:"top bottom",end:"bottom top",onToggle:function(s){running=s.isActive}});
   try{video.play().catch(function(){})}catch(e){}
+  function kick(){if(video.paused){try{video.play().catch(function(){})}catch(e){}}}
+  ["touchstart","pointerdown","scroll"].forEach(function(t){window.addEventListener(t,kick,{passive:true,once:true})});
   gsap.ticker.add(function(time){
     if(!running)return;
     now=time;
