@@ -315,6 +315,34 @@ p{margin:0}
   .gallery-head a,.gallery a[href*="instagram"]{display:inline-flex;align-items:center;min-height:44px}
   .foot nav a{display:inline-flex;align-items:center;min-height:44px}
 }
+/* ---------- thumb zone: on phones every action lives in the bottom third ---------- */
+.menu-btn{display:none}
+@media (max-width:800px){
+  :root{--dock:76px}
+  .nav{top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));padding:8px;gap:8px;justify-content:flex-start}
+  .nav.hide{transform:none}
+  .nav.away{transform:translateY(calc(100% + 30px + env(safe-area-inset-bottom,0px)))}
+  .nav .mark{display:none}
+  .nav .btn{flex:1;height:52px;justify-content:center;font-size:16px}
+  .menu-btn{display:grid;place-content:center;gap:6px;flex:none;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);cursor:pointer}
+  .menu-btn i{display:block;width:20px;height:1.5px;background:var(--paper);transition:transform .4s var(--ease)}
+  .nav.open .menu-btn i:first-child{transform:translateY(3.75px) rotate(45deg)}
+  .nav.open .menu-btn i:last-child{transform:translateY(-3.75px) rotate(-45deg)}
+  .nav ul{display:grid;gap:0;position:absolute;inset-inline:0;bottom:calc(100% + 10px);padding:8px;border-radius:24px;background:rgba(14,18,18,.985);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.09);font-size:20px;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .3s,transform .4s var(--ease),visibility 0s .4s}
+  .nav.open ul{opacity:1;visibility:visible;transform:none;transition:opacity .3s,transform .4s var(--ease)}
+  .nav ul a{display:flex;align-items:center;min-height:56px;padding-inline:18px;border-radius:16px}
+  .nav ul a::after{display:none}
+  .nav ul li+li a{border-top:1px solid rgba(255,255,255,.06);border-radius:0}
+  .hero-copy{bottom:calc(var(--dock) + 34px + env(safe-area-inset-bottom,0px))}
+  .hero-copy .row{flex-direction:column;align-items:stretch}
+  .hero-copy .row .btn{justify-content:center}
+  .hero-meta{bottom:calc(var(--dock) + 26px + env(safe-area-inset-bottom,0px))}
+  .film-copy{bottom:calc(64px + var(--dock) + env(safe-area-inset-bottom,0px))}
+  .film-steps{bottom:calc(22px + var(--dock) + env(safe-area-inset-bottom,0px))}
+  .final{justify-items:stretch}
+  .final .row{flex-direction:column;align-items:stretch}
+  .final .row .btn,.final .row .phone{justify-content:center}
+}
 .phone{display:inline-flex;align-items:center;gap:12px;height:56px;padding-inline:22px;border-radius:999px;border:1px solid var(--line);font-family:var(--latin);letter-spacing:.06em;direction:ltr;cursor:pointer;background:transparent}
 .phone:hover{border-color:var(--paper)}
 .phone small{font-family:var(--sans);letter-spacing:0;color:var(--mute);font-size:13px}
@@ -357,7 +385,8 @@ footer{padding-block:0 calc(28px + env(safe-area-inset-bottom,0px))}
 
 <header class="nav" id="nav">
   <a class="mark" href="#top" aria-label="אלמוג כהן, לראש העמוד"><img src="assets/logo-white.png" alt="" width="38" height="38"><span>ALMOG COHEN</span></a>
-  <ul>
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navList" aria-label="תפריט"><i></i><i></i></button>
+  <ul id="navList">
     <li><a href="#night">הערב</a></li>
     <li><a href="#couples">זוגות</a></li>
     <li><a href="#date">בדיקת תאריך</a></li>
@@ -718,11 +747,25 @@ $("#copyPhone").addEventListener("click",function(){
 });
 
 /* ---------- nav hide on scroll down ---------- */
-var lastY=0,nav=$("#nav");
+var lastY=0,openY=0,nav=$("#nav"),dockMQ=matchMedia("(max-width:800px)"),menuBtn=$("#menuBtn");
+function setMenu(on){nav.classList.toggle("open",on);menuBtn.setAttribute("aria-expanded",on?"true":"false");openY=window.scrollY}
+menuBtn.addEventListener("click",function(){setMenu(!nav.classList.contains("open"))});
+$$("#navList a").forEach(function(a){a.addEventListener("click",function(){setMenu(false)})});
+document.addEventListener("click",function(e){if(nav.classList.contains("open")&&!nav.contains(e.target))setMenu(false)});
+/* phones: the bar steps aside at the closing call to action and while the keyboard is up */
+var nearEnd=false,typing=false;
+function dockAway(){nav.classList.toggle("away",dockMQ.matches&&(nearEnd||typing))}
+if("IntersectionObserver" in window){
+  var endIO=new IntersectionObserver(function(es){es.forEach(function(e){e.target._in=e.isIntersecting});nearEnd=$$(".final,footer").some(function(n){return n._in});dockAway()},{threshold:.15});
+  $$(".final,footer").forEach(function(n){endIO.observe(n)});
+}
+document.addEventListener("focusin",function(e){if(e.target.matches("input,select,textarea")){typing=true;dockAway()}});
+document.addEventListener("focusout",function(){typing=false;setTimeout(dockAway,60)});
 window.addEventListener("scroll",function(){
   var y=window.scrollY;
   nav.classList.toggle("scrolled",y>40);
-  nav.classList.toggle("hide",y>lastY&&y>window.innerHeight*1.6);
+  nav.classList.toggle("hide",!dockMQ.matches&&y>lastY&&y>window.innerHeight*1.6);
+  if(nav.classList.contains("open")&&Math.abs(y-openY)>40)setMenu(false);
   lastY=y;
 },{passive:true});
 
@@ -760,7 +803,7 @@ intro.to(cnt,{v:100,duration:1.1,ease:"power2.inOut",onUpdate:function(){$(".cou
      .add(glMode?gsap.timeline().fromTo(K,{y0:120,o0:0},{y0:0,o0:1,duration:1.5,ease:"expo.out"},0).fromTo(K,{y1:120,o1:0},{y1:0,o1:1,duration:1.5,ease:"expo.out"},.1):gsap.from(".kw",{y:120,opacity:0,duration:1.5,stagger:.1,ease:"expo.out"}),1.55)
      .from("#kicker",{opacity:0,y:20,duration:1},1.9)
      .from(".hero-meta>*",{y:20,opacity:0,duration:1,stagger:.08},1.9)
-     .from("#nav",{y:-30,opacity:0,duration:1},1.9)
+     .from("#nav",{y:dockMQ.matches?30:-30,opacity:0,duration:1,clearProps:"transform,opacity"},1.9)
      .add(function(){pre.remove();if(lenis)lenis.start()});
 /* failsafe: never leave the preloader up */
 setTimeout(function(){if(pre.isConnected){intro.progress(1)}},4500);
