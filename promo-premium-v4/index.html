@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>אלמוג כהן · Wedding DJ</title>
 <meta name="description" content="דיג׳יי לחתונות אלמוג כהן. 1,000+ אירועים, 10+ שנים, דירוג 5.0. בדקו אם התאריך שלכם פנוי בוואטסאפ.">
+<meta name="theme-color" content="#0a0c0c">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:title" content="אלמוג כהן · דיג׳יי לחתונות">
+<meta property="og:description" content="הרחבה שתזכרו כל החיים. בדקו אם התאריך שלכם פנוי.">
+<meta property="og:image" content="https://raw.githubusercontent.com/Almog369Cohen/Website_dj_almog_cohen/claude/project-thread-g8bt7p/promo-premium-v4/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="icon" type="image/png" href="assets/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap">
@@ -343,6 +354,14 @@ p{margin:0}
   .final .row{flex-direction:column;align-items:stretch}
   .final .row .btn,.final .row .phone{justify-content:center}
 }
+/* short phones (iPhone SE and the like): the hero copy fits under the top edge */
+@media (max-width:800px) and (max-height:700px){
+  .hero-copy{gap:14px;bottom:calc(var(--dock) + 22px + env(safe-area-inset-bottom,0px))}
+  .hero-copy h1{font-size:42px}
+  .hero-copy p{font-size:15px;line-height:1.5}
+  .hero-copy .row{gap:8px}
+  .hero-copy .row .btn{height:48px}
+}
 .phone{display:inline-flex;align-items:center;gap:12px;height:56px;padding-inline:22px;border-radius:999px;border:1px solid var(--line);font-family:var(--latin);letter-spacing:.06em;direction:ltr;cursor:pointer;background:transparent}
 .phone:hover{border-color:var(--paper)}
 .phone small{font-family:var(--sans);letter-spacing:0;color:var(--mute);font-size:13px}
@@ -401,8 +420,9 @@ footer{padding-block:0 calc(28px + env(safe-area-inset-bottom,0px))}
   <div class="stage" id="stage">
     <div class="media" id="media">
       <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/pick27-smoke-stage-wide.jpg" aria-label="וידאו מהרחבה של אלמוג כהן">
-        <source src="assets/hero.mp4" type="video/mp4">
+        <source type="video/mp4">
       </video>
+      <script>/* phones get a lighter, portrait-cropped cut of the hero clip */(function(v){v.querySelector("source").src=matchMedia("(max-width:800px)").matches?"assets/hero-m.mp4":"assets/hero.mp4";v.load()})(document.getElementById("heroVideo"))</script>
       <div class="shade" id="shade"></div>
     </div>
     <div class="knock" id="knock" aria-hidden="true">
