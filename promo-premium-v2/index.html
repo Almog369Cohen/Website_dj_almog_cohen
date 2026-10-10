@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>אלמוג כהן · Wedding DJ v2</title>
+<meta name="description" content="דיג׳יי לחתונות אלמוג כהן. 1,000+ אירועים, 10+ שנים, דירוג 5.0. בדקו אם התאריך שלכם פנוי בוואטסאפ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap">
+<style>
+/* Layout: one night, one scroll. A dark cinematic canvas driven by pinned scenes (zoom portal, horizontal night), editorial asymmetry, type that runs off the edges. Brand gradient is light, never paint. */
+:root{
+  --ink:#0a0c0c;          /* page ground, near-black with a teal bias */
+  --ink-2:#121616;        /* raised dark surface */
+  --brand-dark:#1f1f21;   /* brand dark */
+  --paper:#f1f0eb;        /* off-white text + light section */
+  --paper-ink:#101212;    /* text on paper */
+  --mute:#93a09e;         /* secondary text on ink (7:1) */
+  --mute-paper:#55605e;   /* secondary text on paper (6:1) */
+  --line:rgba(241,240,235,.14);
+  --line-paper:rgba(16,18,18,.16);
+  --blue:#059cc0;
+  --green:#03b28c;
+  --grad:linear-gradient(135deg,#059cc0 0%,#03b28c 100%);
+
+  --serif:"Heebo","IBM Plex Sans Hebrew",system-ui,Arial,sans-serif; /* display: heavy, tight, modern */
+  --sans:"IBM Plex Sans Hebrew","Heebo",system-ui,Arial,sans-serif; /* body + UI */
+  --latin:"Syne","Arial Black",system-ui,sans-serif;       /* wordmark, numerals, labels */
+
+  --gut:clamp(16px,4.4vw,72px);
+  --ease:cubic-bezier(.2,.7,.1,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--ink);-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:17px;line-height:1.65;font-weight:300}
+.site{overflow-x:clip}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+::selection{background:var(--green);color:var(--ink)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:4px}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.035em;text-wrap:balance}
+p{margin:0}
+.wrap{padding-inline:var(--gut)}
+.eyebrow{font-family:var(--latin);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--grad)}
+.eyebrow .he{font-family:var(--sans);letter-spacing:.06em;font-size:13px;font-weight:500}
+.wm{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.wi{display:inline-block;will-change:transform}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* grain */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1s steps(4) infinite}
+@keyframes grain{0%{background-position:0 0}25%{background-position:-40px 30px}50%{background-position:30px -50px}75%{background-position:-30px -20px}100%{background-position:0 0}}
+
+/* ---------- buttons ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;gap:12px;height:56px;padding-inline:28px;border-radius:999px;font-weight:500;font-size:16px;white-space:nowrap;isolation:isolate;transition:color .4s var(--ease)}
+.btn-grad{background:var(--grad);color:#04110f}
+.btn-grad::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--paper);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);z-index:-1}
+.btn-grad:hover::after{transform:scaleX(1)}
+.btn-line{border:1px solid var(--line);color:var(--paper)}
+.btn-line:hover{border-color:var(--paper)}
+.btn .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.btn-grad .dot{background:#04110f}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;inset-inline:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:calc(18px + env(safe-area-inset-top,0px)) var(--gut) 18px;transition:transform .5s var(--ease),background .4s}
+.nav.scrolled{background:linear-gradient(rgba(10,12,12,.82),rgba(10,12,12,0))}
+.nav.hide{transform:translateY(-110%)}
+.nav .mark{display:flex;align-items:center;gap:12px}
+.nav .mark img{width:38px;height:auto}
+.nav .mark span{font-family:var(--latin);font-weight:700;font-size:13px;letter-spacing:.2em}
+.nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0;font-size:15px;font-weight:400}
+.nav ul a{position:relative;padding-block:6px}
+.nav ul a::after{content:"";position:absolute;inset-inline:0;bottom:0;height:1px;background:var(--grad);transform:scaleX(0);transition:transform .4s var(--ease)}
+.nav ul a:hover::after{transform:scaleX(1)}
+.nav .btn{height:44px;padding-inline:20px;font-size:14px}
+@media (max-width:900px){.nav ul{display:none}.nav .mark span{display:none}}
+
+/* ---------- HERO: the zoom portal ---------- */
+.hero{position:relative}
+.stage{position:relative;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
+.media{position:absolute;inset:0;clip-path:inset(34% 30% 34% 30% round 18px);will-change:clip-path}
+.media video,.media img{width:100%;height:100%;object-fit:cover}
+.media canvas.gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.media .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,12,.35) 0%,rgba(10,12,12,0) 30%,rgba(10,12,12,.25) 55%,rgba(10,12,12,.88) 100%);opacity:.6}
+.word-stack{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,1.6vh,22px);pointer-events:none;mix-blend-mode:difference}
+.hw{display:block;font-family:var(--latin);font-weight:800;line-height:.8;letter-spacing:-.045em;font-size:min(14.5vw,20vh);color:#fff;white-space:nowrap}
+.hw-in{display:inline-block}
+.slot{width:min(40vw,64vh);aspect-ratio:16/9;flex:none}
+.hero-meta{position:absolute;inset-inline:var(--gut);bottom:calc(26px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:end;gap:20px;font-size:14px;color:var(--mute)}
+.hero-meta strong{display:block;color:var(--paper);font-weight:500;font-size:15px}
+.hero-meta .live{display:inline-flex;align-items:center;gap:10px}
+.hero-meta .live i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(3,178,140,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(3,178,140,0)}100%{box-shadow:0 0 0 0 rgba(3,178,140,0)}}
+.scrollcue{display:flex;align-items:center;gap:12px;font-family:var(--latin);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+.scrollcue span{position:relative;width:1px;height:44px;background:var(--line);overflow:hidden}
+.scrollcue span::after{content:"";position:absolute;inset:0;background:var(--grad);animation:cue 1.8s var(--ease) infinite}
+@keyframes cue{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+.hero-copy{position:absolute;inset-inline:var(--gut);bottom:clamp(90px,14vh,150px);display:grid;gap:22px;max-width:980px;opacity:0;visibility:hidden}
+.hero-copy h1{font-family:var(--serif);font-weight:900;font-size:clamp(50px,8.4vw,140px);line-height:.92;letter-spacing:-.045em}
+.hero-copy h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-copy p{max-width:46ch;font-size:clamp(16px,1.35vw,19px);color:#d9dcda}
+.hero-copy .row{display:flex;gap:12px;flex-wrap:wrap}
+@media (max-width:700px){
+  .hw{font-size:14.8vw}
+  .slot{width:76vw;aspect-ratio:4/5}
+  .hero-meta .hide-m{display:none}
+}
+
+/* ---------- MANIFESTO ---------- */
+.manifesto{position:relative;padding-block:clamp(110px,18vh,220px) clamp(90px,14vh,180px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.42fr);gap:clamp(32px,6vw,110px);align-items:end}
+.manifesto .says{font-family:var(--serif);font-weight:700;font-size:clamp(30px,4.2vw,68px);line-height:1.12;letter-spacing:-.03em}
+.manifesto .says .w{display:inline-block;white-space:pre}
+.manifesto .sig{margin-top:40px;display:flex;align-items:center;gap:18px;color:var(--mute);font-size:15px}
+.manifesto .sig b{font-family:var(--latin);font-weight:700;letter-spacing:.14em;font-size:13px;color:var(--paper)}
+.manifesto figure{margin:0;position:relative;aspect-ratio:9/14;overflow:hidden;border-radius:4px}
+.manifesto figure img{width:100%;height:118%;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+.manifesto figcaption{position:absolute;bottom:14px;inset-inline-start:14px;font-family:var(--latin);font-size:11px;letter-spacing:.2em;color:var(--paper);mix-blend-mode:difference}
+@media (max-width:800px){.manifesto{grid-template-columns:1fr}.manifesto figure{width:62%;justify-self:end;aspect-ratio:4/5}}
+
+/* ---------- STATS ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat{padding:clamp(26px,4vw,52px) clamp(14px,2vw,32px);display:grid;gap:8px;border-inline-start:1px solid var(--line)}
+.stat:first-child{border-inline-start:0}
+.stat .n{font-family:var(--latin);font-weight:700;font-size:clamp(40px,6vw,96px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;direction:ltr;text-align:right}
+.stat .n sup{font-size:.42em;vertical-align:top;margin-inline-start:4px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .l{color:var(--mute);font-size:15px}
+@media (max-width:800px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-inline-start:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* ---------- MARQUEE ---------- */
+.marquee{padding-block:clamp(40px,7vh,80px);overflow:hidden;direction:ltr}
+.marquee .track{display:flex;width:max-content;will-change:transform}
+.marquee .item{display:flex;align-items:center;gap:clamp(24px,3vw,48px);padding-inline-end:clamp(24px,3vw,48px);font-family:var(--serif);font-weight:900;letter-spacing:-.04em;font-size:clamp(54px,9vw,150px);line-height:1;white-space:nowrap;direction:rtl}
+.marquee .item .o{color:transparent;-webkit-text-stroke:1px rgba(241,240,235,.45)}
+.marquee .item .star{width:clamp(20px,2.4vw,38px);height:clamp(20px,2.4vw,38px);flex:none;background:var(--grad);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
+
+/* ---------- NIGHT (horizontal) ---------- */
+.night{position:relative}
+.night-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;padding-block:clamp(60px,10vh,120px) clamp(28px,5vh,56px)}
+.night-head h2{font-family:var(--serif);font-size:clamp(38px,5.6vw,92px);line-height:1;max-width:14ch}
+.night-head p{color:var(--mute);max-width:36ch}
+.night-pin{position:relative;height:100vh;height:100svh;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.night-track{display:flex;gap:clamp(28px,5vw,96px);padding-inline:var(--gut);width:max-content;will-change:transform}
+.chap{flex:none;width:min(38vw,580px);display:grid;gap:18px;align-content:start}
+.chap:nth-child(even){padding-top:10vh}
+.chap figure{margin:0;position:relative;height:min(50vh,520px);overflow:hidden;border-radius:4px}
+.chap figure img{position:absolute;inset:0 -8%;width:116%;height:100%;object-fit:cover}
+.chap .txt{display:grid;gap:10px}
+.chap .meta{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.chap .num{font-family:var(--latin);font-weight:800;font-size:clamp(52px,5.6vw,92px);line-height:.8;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px rgba(241,240,235,.5);direction:ltr}
+.chap .time{font-family:var(--latin);font-size:13px;letter-spacing:.2em;color:var(--green);direction:ltr}
+.chap h3{font-family:var(--serif);font-size:clamp(30px,3vw,48px);line-height:1.05}
+.chap p{color:#c9cecc;max-width:40ch}
+.night-bar{position:absolute;bottom:clamp(24px,5vh,48px);inset-inline:var(--gut);height:1px;background:var(--line)}
+.night-bar i{position:absolute;inset:0;background:var(--grad);transform:scaleX(0);transform-origin:right}
+@media (max-width:800px){
+  .chap{width:76vw;gap:14px}
+  .chap:nth-child(even){padding-top:6vh}
+  .chap figure{height:42vh}
+  .chap p{font-size:16px}
+}
+
+/* ---------- COUPLES ---------- */
+.couples{padding-block:clamp(110px,16vh,200px) 0}
+.couples-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,90px);align-items:end}
+.couples-head h2{font-family:var(--serif);font-size:clamp(42px,6.4vw,108px);line-height:.98}
+.couples-head p{color:var(--mute);max-width:40ch}
+.duo{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(14px,2.4vw,36px);margin-top:clamp(48px,8vh,96px);align-items:start}
+.duo figure{margin:0;display:grid;gap:14px}
+.duo .frame{overflow:hidden;border-radius:4px;aspect-ratio:4/5}
+.duo .frame img{width:100%;height:100%;object-fit:cover}
+.duo figure:nth-child(2){margin-top:clamp(60px,16vh,200px)}
+.duo figure:nth-child(2) .frame{aspect-ratio:3/4}
+.duo figcaption{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--mute)}
+.duo figcaption b{color:var(--paper);font-weight:500}
+@media (max-width:800px){.couples-head{grid-template-columns:1fr}.duo{grid-template-columns:1fr;gap:28px}.duo figure:nth-child(2){margin-top:0;width:72%;justify-self:end}}
+
+.quotes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:clamp(28px,5vw,96px);margin-top:clamp(80px,12vh,160px)}
+.q{min-height:78vh;display:flex;flex-direction:column;justify-content:center;gap:28px;padding-block:40px}
+.q blockquote{margin:0;font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.1vw,50px);line-height:1.18;letter-spacing:-.025em}
+.q blockquote::before{content:"״";display:block;font-family:var(--latin);font-size:1.6em;line-height:.6;height:.42em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.q .who{display:flex;align-items:center;gap:14px;color:var(--mute);font-size:15px}
+.q .who b{color:var(--paper);font-weight:500}
+.q .who::before{content:"";width:28px;height:1px;background:var(--line)}
+.q .mimg{display:none}
+.sticky{position:sticky;top:12vh;height:76vh;align-self:start}
+.sticky .stack{position:relative;height:100%;overflow:hidden;border-radius:4px;background:var(--ink-2)}
+.sticky img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(100% 0 0 0);transition:clip-path 1s var(--ease)}
+.sticky img.on{clip-path:inset(0 0 0 0)}
+.sticky img.first{clip-path:inset(0 0 0 0)}
+.sticky .tag{position:absolute;bottom:16px;inset-inline-start:16px;z-index:2;font-size:13px;padding:6px 12px;border-radius:99px;background:rgba(10,12,12,.6);backdrop-filter:blur(8px);color:var(--paper);transition:opacity .4s}
+.sticky .src{margin-top:14px;font-size:13px;color:var(--mute)}
+@media (max-width:800px){
+  .quotes{grid-template-columns:1fr;margin-top:56px}
+  .sticky{display:none}
+  .q{min-height:0;padding-block:28px;border-top:1px solid var(--line)}
+  .q .mimg{display:block;aspect-ratio:4/3;width:100%;height:auto;object-fit:cover;border-radius:4px}
+}
+
+/* ---------- GALLERY ---------- */
+.gallery{padding-block:clamp(110px,16vh,200px) clamp(40px,8vh,90px);overflow:hidden}
+.gallery-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(40px,7vh,80px)}
+.gallery-head h2{font-family:var(--serif);font-size:clamp(42px,6.4vw,108px);line-height:.98}
+.gallery-head a{color:var(--mute);font-size:15px;border-bottom:1px solid var(--line);padding-bottom:4px}
+.gallery-head a:hover{color:var(--paper)}
+.ring-stage{position:relative;height:min(74vh,700px);perspective:1500px;perspective-origin:50% 46%;overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.ring-stage:active{cursor:grabbing}
+.ring{position:absolute;top:48%;left:50%;width:0;height:0;transform-style:preserve-3d;will-change:transform}
+.card{--cw:clamp(170px,21vw,330px);position:absolute;margin:0;width:var(--cw);height:calc(var(--cw)*1.32);left:calc(var(--cw)/-2);top:calc(var(--cw)*-.66);border-radius:6px;overflow:hidden;transform-style:preserve-3d;backface-visibility:visible;background:var(--ink-2);box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.card img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.card::after{content:"";position:absolute;inset:0;background:var(--ink);opacity:var(--dim,0);pointer-events:none}
+.ring-hint{position:absolute;bottom:clamp(14px,4vh,36px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;font-size:13px;color:var(--mute);white-space:nowrap}
+.ring-hint span{width:40px;height:1px;background:var(--grad)}
+@media (max-width:700px){.card{--cw:52vw}.ring-stage{height:70vh;perspective:900px}}
+/* ---------- PAPER: entry tools ---------- */
+.paper{position:relative;z-index:2;background:var(--paper);color:var(--paper-ink);border-radius:clamp(24px,3vw,44px) clamp(24px,3vw,44px) 0 0;padding-block:clamp(90px,14vh,170px)}
+.paper ::selection{background:var(--blue);color:#fff}
+.paper .eyebrow{color:var(--mute-paper)}
+.paper h2{font-family:var(--serif);font-size:clamp(40px,6vw,100px);line-height:.98;max-width:15ch}
+.paper .lede{margin-top:22px;max-width:52ch;color:var(--mute-paper);font-size:18px}
+.tool{margin-top:clamp(56px,9vh,110px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.62fr);gap:clamp(28px,5vw,90px);align-items:start;border-top:1px solid var(--line-paper);padding-top:clamp(36px,6vh,64px)}
+.tool .tnum{font-family:var(--latin);font-size:12px;letter-spacing:.2em;color:var(--mute-paper);margin-bottom:22px;display:block}
+.madlib{font-family:var(--serif);font-weight:300;font-size:clamp(28px,3.4vw,54px);line-height:1.55;letter-spacing:-.02em}
+.madlib label{display:inline}
+.madlib input,.madlib select{font-family:var(--serif);font-weight:700;font-size:1em;line-height:1.1;color:var(--paper-ink);background:transparent;border:0;border-bottom:2px solid var(--paper-ink);border-radius:0;padding:0 4px 2px;margin-inline:4px;outline:0;-webkit-appearance:none;appearance:none;vertical-align:baseline;transition:border-color .3s}
+.madlib input:focus,.madlib select:focus{border-bottom-color:var(--blue)}
+.madlib input[type=date]{width:7.4em;color-scheme:light}
+.madlib #venue{width:6.6em}
+.madlib select{padding-inline-end:4px;cursor:pointer}
+.madlib input::placeholder{color:rgba(16,18,18,.32)}
+.readout{display:grid;gap:18px;background:var(--paper-ink);color:var(--paper);border-radius:6px;padding:clamp(24px,3vw,40px)}
+.readout .k{font-family:var(--latin);font-size:11px;letter-spacing:.2em;color:var(--mute);text-transform:uppercase}
+.readout .heb{font-family:var(--serif);font-weight:700;font-size:clamp(30px,3vw,44px);line-height:1.1}
+.readout .greg{color:var(--mute);font-size:15px}
+.readout .days{display:flex;align-items:baseline;gap:12px;border-top:1px solid var(--line);padding-top:18px}
+.readout .days b{font-family:var(--latin);font-weight:700;font-size:clamp(44px,4.6vw,72px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.readout .tip{font-size:15px;color:#d5d9d7;min-height:3.2em}
+.readout .btn{justify-content:center}
+.guide{display:grid;gap:22px}
+.guide h3{font-family:var(--serif);font-size:clamp(30px,3.4vw,54px);line-height:1.05}
+.guide p{color:var(--mute-paper);max-width:46ch}
+.guide ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.guide li{display:flex;gap:12px;align-items:baseline}
+.guide li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--grad);flex:none;transform:translateY(-3px)}
+.lead{display:grid;gap:14px;background:#e6e5df;border-radius:6px;padding:clamp(22px,3vw,36px)}
+.field{display:grid;gap:6px}
+.field label{font-size:14px;font-weight:500}
+.field input{height:54px;border:1px solid var(--line-paper);border-radius:4px;background:var(--paper);padding-inline:16px;color:var(--paper-ink);font-size:17px}
+.field input:focus{outline:2px solid var(--blue);outline-offset:0;border-color:transparent}
+.lead .err{color:#a1281b;font-size:14px;min-height:1.4em}
+.lead .btn{justify-content:center;border:0;cursor:pointer}
+.lead .done{display:grid;gap:14px}
+.lead .done strong{font-family:var(--serif);font-weight:800;font-size:28px;line-height:1.15}
+@media (max-width:900px){.tool{grid-template-columns:1fr}}
+
+/* ---------- FAQ ---------- */
+.faq{padding-block:clamp(100px,15vh,190px);display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1fr);gap:clamp(28px,6vw,110px);align-items:start}
+.faq h2{font-family:var(--serif);font-size:clamp(40px,5.4vw,88px);line-height:1;position:sticky;top:14vh}
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding-block:28px;font-size:clamp(19px,1.7vw,24px);font-weight:400}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary i{position:relative;width:18px;height:18px;flex:none}
+.faq summary i::before,.faq summary i::after{content:"";position:absolute;inset:50% 0 auto;height:1px;background:var(--paper);transition:transform .4s var(--ease)}
+.faq summary i::after{transform:rotate(90deg)}
+.faq details[open] summary i::after{transform:rotate(0)}
+.faq details p{padding-bottom:28px;color:#c9cecc;max-width:58ch}
+@media (max-width:800px){.faq{grid-template-columns:1fr}.faq h2{position:static}}
+
+/* ---------- FINAL ---------- */
+.final{position:relative;min-height:92vh;display:grid;align-content:center;justify-items:start;gap:30px;padding-block:120px;overflow:hidden;isolation:isolate}
+.final .bg{position:absolute;inset:0;z-index:-1}
+.final .bg img{width:100%;height:120%;object-fit:cover;opacity:.42}
+.final .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--ink) 0%,rgba(10,12,12,.45) 40%,var(--ink) 100%)}
+.final h2{font-family:var(--serif);font-size:clamp(52px,9vw,160px);line-height:.95;max-width:11ch}
+.final p{max-width:44ch;color:#d5d9d7;font-size:18px}
+.final .row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.phone{display:inline-flex;align-items:center;gap:12px;height:56px;padding-inline:22px;border-radius:999px;border:1px solid var(--line);font-family:var(--latin);letter-spacing:.06em;direction:ltr;cursor:pointer;background:transparent}
+.phone:hover{border-color:var(--paper)}
+.phone small{font-family:var(--sans);letter-spacing:0;color:var(--mute);font-size:13px}
+
+footer{padding-block:0 calc(28px + env(safe-area-inset-bottom,0px))}
+.bigmark{font-family:var(--latin);font-weight:800;font-size:7.9vw;line-height:.78;letter-spacing:-.05em;white-space:nowrap;direction:ltr;text-align:center;color:transparent;-webkit-text-stroke:1px rgba(241,240,235,.28);margin-inline:calc(var(--gut) * -1);padding-top:20px;user-select:none}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:28px;padding-top:22px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+.foot nav{display:flex;gap:22px}
+.foot a:hover{color:var(--paper)}
+
+/* ---------- cursor ---------- */
+.cursor{position:fixed;top:0;left:0;z-index:95;pointer-events:none;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--paper);mix-blend-mode:difference;display:grid;place-items:center;transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease);opacity:0}
+.cursor span{font-family:var(--latin);font-size:11px;font-weight:700;letter-spacing:.14em;color:#000;opacity:0;transition:opacity .2s}
+.cursor.big{width:86px;height:86px;margin:-43px 0 0 -43px}
+.cursor.big span{opacity:1}
+@media (hover:none),(pointer:coarse){.cursor{display:none}}
+
+/* ---------- preloader ---------- */
+.pre{position:fixed;inset:0;z-index:100;background:var(--ink);display:grid;place-items:center}
+.pre .in{display:grid;justify-items:center;gap:22px}
+.pre img{width:64px}
+.pre .count{font-family:var(--latin);font-weight:700;font-size:13px;letter-spacing:.3em;color:var(--mute);font-variant-numeric:tabular-nums}
+.pre .bar{width:160px;height:1px;background:var(--line);overflow:hidden}
+.pre .bar i{display:block;height:100%;background:var(--grad);transform:scaleX(0);transform-origin:right}
+
+@media (prefers-reduced-motion:reduce){
+  .grain,.scrollcue span::after,.hero-meta .live i{animation:none}
+  .media{clip-path:none!important}
+  .word-stack{display:none}
+  .hero-copy{opacity:1;visibility:visible}
+  .sticky img{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="site" dir="rtl" lang="he">
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><span>VIEW</span></div>
+
+<header class="nav" id="nav">
+  <a class="mark" href="#top" aria-label="אלמוג כהן, לראש העמוד"><img src="assets/logo-white.png" alt="" width="38" height="38"><span>ALMOG COHEN</span></a>
+  <ul>
+    <li><a href="#night">הערב</a></li>
+    <li><a href="#couples">זוגות</a></li>
+    <li><a href="#date">בדיקת תאריך</a></li>
+    <li><a href="#faq">שאלות</a></li>
+  </ul>
+  <a class="btn btn-grad magnetic" href="https://wa.me/972502427616?text=%D7%94%D7%99%D7%99%20%D7%90%D7%9C%D7%9E%D7%95%D7%92%2C%20%D7%90%D7%A0%D7%97%D7%A0%D7%95%20%D7%96%D7%95%D7%92%20%D7%A9%D7%9E%D7%AA%D7%97%D7%AA%D7%9F%20%D7%95%D7%A8%D7%95%D7%A6%D7%99%D7%9D%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D" target="_blank" rel="noopener"><span class="dot"></span>וואטסאפ</a>
+</header>
+
+<main>
+<!-- HERO: the video sits in a window between the two words; scrolling opens it to full screen -->
+<section class="hero" id="top">
+  <div class="stage" id="stage">
+    <div class="media" id="media">
+      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/pick27-smoke-stage-wide.jpg" aria-label="וידאו מהרחבה של אלמוג כהן">
+        <source src="assets/hero.mp4" type="video/mp4">
+      </video>
+      <div class="shade" id="shade"></div>
+    </div>
+    <div class="word-stack" aria-hidden="true">
+      <span class="hw hw1"><span class="hw-in">ALMOG</span></span>
+      <span class="slot" id="slot"></span>
+      <span class="hw hw2"><span class="hw-in">COHEN</span></span>
+    </div>
+    <div class="hero-copy" id="heroCopy">
+      <div class="eyebrow"><span class="he">דיג׳יי לחתונות</span></div>
+      <h1>הרחבה שתזכרו<br><em>כל החיים.</em></h1>
+      <p>אני קורא את הקהל שלכם ובונה ערב אחד רציף, מהכניסה לחופה ועד השיר האחרון שאף אחד לא רוצה שייגמר.</p>
+      <div class="row">
+        <a class="btn btn-grad magnetic" href="#date"><span class="dot"></span>בדקו אם התאריך פנוי</a>
+        <a class="btn btn-line" href="#couples">מה הזוגות אומרים</a>
+      </div>
+    </div>
+    <div class="hero-meta" id="heroMeta">
+      <div class="live"><i></i><div><strong>דיג׳יי לחתונות</strong>אלמוג כהן · מאז 2014</div></div>
+      <div class="hide-m">1,000+ אירועים · דירוג 5.0</div>
+      <div class="scrollcue" aria-hidden="true">Scroll<span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto wrap" aria-labelledby="mTitle">
+  <div>
+    <div class="eyebrow" id="mTitle"><span class="he">איך אני עובד</span></div>
+    <p class="says" id="says" style="margin-top:34px">אני לא מגיע עם רשימת שירים. אני מגיע להכיר אתכם, את המשפחה ואת החברים, ובערב עצמו קורא את הרחבה רגע אחרי רגע. זה ההבדל בין חתונה טובה לחתונה שמדברים עליה שנים.</p>
+    <div class="sig"><b>ALMOG COHEN</b><span>דיג׳יי ומפיק מוזיקלי</span></div>
+  </div>
+  <figure data-cursor="VIEW">
+    <img class="par" src="assets/pick07-portrait-bw.jpg" alt="אלמוג כהן, פורטרט בשחור-לבן" width="898" height="1600" loading="lazy">
+    <figcaption>ON THE DECKS SINCE 2014</figcaption>
+  </figure>
+</section>
+
+<section class="wrap" aria-label="מספרים">
+  <div class="stats">
+    <div class="stat"><div class="n"><span class="count" data-to="1000">1000</span><sup>+</sup></div><div class="l">אירועים על העמדה</div></div>
+    <div class="stat"><div class="n"><span class="count" data-to="10">10</span><sup>+</sup></div><div class="l">שנים של רחבות מלאות</div></div>
+    <div class="stat"><div class="n"><span class="count" data-to="5" data-dec="1">5.0</span><sup>★</sup></div><div class="l">דירוג ממוצע של זוגות</div></div>
+    <div class="stat"><div class="n"><span class="count" data-to="150">150</span></div><div class="l">ביקורות של זוגות</div></div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="track" id="marquee">
+    <div class="item"><span>חתונות</span><i class="star"></i><span class="o">חינות</span><i class="star"></i><span>מסיבות רחוב</span><i class="star"></i><span class="o">אפטר פארטי</span><i class="star"></i></div>
+    <div class="item"><span>חתונות</span><i class="star"></i><span class="o">חינות</span><i class="star"></i><span>מסיבות רחוב</span><i class="star"></i><span class="o">אפטר פארטי</span><i class="star"></i></div>
+  </div>
+</div>
+
+<!-- THE NIGHT: horizontal scroll -->
+<section class="night" id="night" aria-labelledby="nTitle">
+  <div class="night-head wrap">
+    <div>
+      <div class="eyebrow"><span class="he">הערב שלכם</span></div>
+      <h2 id="nTitle" style="margin-top:22px">חמישה רגעים. ערב אחד רציף.</h2>
+    </div>
+    <p>כל רגע מקבל מוזיקה משלו, והמעברים ביניהם מתוכננים מראש איתכם. השעות כאן הן לוח זמנים לדוגמה.</p>
+  </div>
+  <div class="night-pin" id="nightPin">
+    <div class="night-track" id="nightTrack">
+      <article class="chap">
+        <div class="meta"><span class="num">01</span><span class="time">19:30</span></div>
+        <figure data-cursor="VIEW"><img src="assets/almog-laptop-outdoor.jpg" alt="אלמוג בעמדה בשעת שקיעה" width="898" height="1600" loading="lazy"></figure>
+        <div class="txt"><h3>קבלת פנים</h3><p>מוזיקה שבונה אווירה בלי להשתלט על השיחות. האורחים נכנסים ומרגישים שהערב כבר התחיל.</p></div>
+      </article>
+      <article class="chap">
+        <div class="meta"><span class="num">02</span><span class="time">20:30</span></div>
+        <figure data-cursor="VIEW"><img src="assets/entrance-sparklers.jpg" alt="כניסת חתן וכלה לחופה בין זיקוקים" width="1600" height="1068" loading="lazy"></figure>
+        <div class="txt"><h3>כניסה לחופה</h3><p>השיר שבחרתם, בתזמון מדויק לצעד הראשון. מתאמים אותו מראש עם הצלם ועם המקום.</p></div>
+      </article>
+      <article class="chap">
+        <div class="meta"><span class="num">03</span><span class="time">21:00</span></div>
+        <figure data-cursor="VIEW"><img src="assets/chuppah-couple.jpg" alt="חתן וכלה תחת החופה" width="1600" height="1067" loading="lazy"></figure>
+        <div class="txt"><h3>שבירת הכוס</h3><p>שנייה של שקט ואז פיצוץ. השיר הראשון אחרי הכוס קובע את הטון של כל הערב.</p></div>
+      </article>
+      <article class="chap">
+        <div class="meta"><span class="num">04</span><span class="time">22:00</span></div>
+        <figure data-cursor="VIEW"><img src="assets/groom-on-shoulders.jpg" alt="החתן מורם על הכתפיים באמצע הרחבה" width="1600" height="1067" loading="lazy"></figure>
+        <div class="txt"><h3>הרחבה</h3><p>להיטים ישראליים, מזרחית, שנות ה-80 וטכנו באותו ערב. אני עובר ביניהם לפי מה שהרחבה מבקשת.</p></div>
+      </article>
+      <article class="chap">
+        <div class="meta"><span class="num">05</span><span class="time">00:30</span></div>
+        <figure data-cursor="VIEW"><img src="assets/pick38-dancefloor-lights.jpg" alt="חברים רוקדים מול אורות ניאון" width="1600" height="1067" loading="lazy"></figure>
+        <div class="txt"><h3>אפטר</h3><p>כשנשארים החברים הכי קרובים, מעלים הילוך. זה החלק שכולם מעלים לסטורי.</p></div>
+      </article>
+    </div>
+    <div class="night-bar" aria-hidden="true"><i id="nightBar"></i></div>
+  </div>
+</section>
+
+<!-- COUPLES -->
+<section class="couples wrap" id="couples" aria-labelledby="cTitle">
+  <div class="couples-head">
+    <div>
+      <div class="eyebrow"><span class="he">זוגות</span></div>
+      <h2 id="cTitle" style="margin-top:22px">ההודעות שמגיעות למחרת.</h2>
+    </div>
+    <p>כל ציטוט כאן הגיע מזוג אמיתי, בוואטסאפ, בבוקר שאחרי החתונה. העתקנו אותם כמו שהם.</p>
+  </div>
+
+  <div class="duo">
+    <figure>
+      <div class="frame reveal" data-cursor="VIEW"><img src="assets/haniel-milena-booth.jpg" alt="חניאל ומילנה עם אלמוג בעמדה, מתחת לשלט הניאון" width="1080" height="1350" loading="lazy"></div>
+      <figcaption><b>חניאל ומילנה</b><span>ליד העמדה</span></figcaption>
+    </figure>
+    <figure>
+      <!-- TODO: replace with Liran & Amit booth photo -->
+      <div class="frame reveal" data-cursor="VIEW"><img src="assets/couple-booth-standin.jpg" alt="זוג עם אלמוג בעמדה באורות סגולים" width="1600" height="1067" loading="lazy"></div>
+      <figcaption><b>ליד העמדה</b><span>אחרי החופה</span></figcaption>
+    </figure>
+  </div>
+
+  <div class="quotes">
+    <div class="qs">
+      <div class="q" data-i="0">
+        <img class="mimg" src="assets/pick14-groom-shoulders-wide.jpg" alt="החתן של שיראל ואופק על הכתפיים ברחבה" width="1600" height="1066" loading="lazy">
+        <blockquote>קיבלנו עשרות אם לא מאות מחמאות שהרחבה מפוצצת! זכינו בך, באנרגיות, בטעם המוזיקלי ובקליעה בול לזוג שאנחנו.</blockquote>
+        <div class="who"><b>שיראל ואופק</b><span>חתונה</span></div>
+      </div>
+      <div class="q" data-i="1">
+        <img class="mimg" src="assets/pick28-smoke-purple-tall.jpg" alt="עמדת הדיג׳יי בעשן סגול" width="1068" height="1600" loading="lazy">
+        <blockquote>בחיים לא הייתי בחתונה שגם כשהייתי עייפה, המוזיקה פשוט החזיקה אותי ברחבה.</blockquote>
+        <div class="who"><b>אוריאל ויעל</b><span>חתונה</span></div>
+      </div>
+      <div class="q" data-i="2">
+        <img class="mimg" src="assets/pick05-arms-open-bw.jpg" alt="אלמוג עם ידיים פתוחות מול קהל ענק" width="1600" height="898" loading="lazy">
+        <blockquote>אנשים רקדו ברחבה ללא הפסקה וכולנו נהנינו מהמוזיקה שלך. אין עליך!</blockquote>
+        <div class="who"><b>שיר ואדיר</b><span>חתונה</span></div>
+      </div>
+      <div class="q" data-i="3">
+        <img class="mimg" src="assets/pick09-street-party-hand-up.jpg" alt="אלמוג מרים יד בעמדה באורות כחולים" width="1600" height="898" loading="lazy">
+        <blockquote>היה לנו מושלם, ואתה בעצמך מושלם.</blockquote>
+        <div class="who"><b>הראל ואביב</b><span>חתונה</span></div>
+      </div>
+    </div>
+    <div class="sticky" aria-hidden="true">
+      <div class="stack" id="stack">
+        <img class="first on" src="assets/pick14-groom-shoulders-wide.jpg" alt="" data-tag="מהחתונה של שיראל ואופק" loading="lazy">
+        <img src="assets/pick28-smoke-purple-tall.jpg" alt="" data-tag="" loading="lazy">
+        <img src="assets/pick05-arms-open-bw.jpg" alt="" data-tag="" loading="lazy">
+        <img src="assets/pick09-street-party-hand-up.jpg" alt="" data-tag="" loading="lazy">
+        <span class="tag" id="stackTag">מהחתונה של שיראל ואופק</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY: 3D ring you can drag -->
+<section class="gallery" aria-labelledby="gTitle">
+  <div class="gallery-head wrap">
+    <div>
+      <div class="eyebrow"><span class="he">מהרחבה</span></div>
+      <h2 id="gTitle" style="margin-top:22px">ככה זה נראה מבפנים.</h2>
+    </div>
+    <a href="https://instagram.com/dj_almog_cohen" target="_blank" rel="noopener">עוד באינסטגרם dj_almog_cohen</a>
+  </div>
+  <div class="ring-stage" id="ringStage" data-cursor="DRAG">
+    <div class="ring" id="ring">
+      <figure class="card"><img src="assets/almog-neon-hands-head.jpg" alt="אלמוג בעמדה מתחת לשלט ALMOG COHEN" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/couple-chuppah-tall.jpg" alt="זוג עם אלמוג ליד החופה" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/henna-umbrellas.jpg" alt="חינה עם מטריות לבנות" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/smoke-stage-tall.jpg" alt="עמדה בעשן ותאורה" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/couple-shoulders-singing.jpg" alt="חתן וכלה על הכתפיים ואלמוג שר" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/almog-arms-out-color.jpg" alt="אלמוג פותח ידיים מאחורי הקונסולה" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/lights-crowd-colorful.jpg" alt="קהל ואורות צבעוניים" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/pick27-smoke-stage-wide.jpg" alt="במה עם עשן ולוגו AC" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/almog-mic.jpg" alt="אלמוג שר במיקרופון" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/stage-lights-crowd.jpg" alt="קהל מול אורות במה" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/couple-dancing-booth.jpg" alt="כלה רוקדת ליד העמדה" loading="lazy" draggable="false"></figure>
+      <figure class="card"><img src="assets/booth-smoke-purple.jpg" alt="עמדה עם עשן סגול וקהל" loading="lazy" draggable="false"></figure>
+    </div>
+    <div class="ring-hint" aria-hidden="true"><span></span>גררו כדי לסובב<span></span></div>
+  </div>
+</section>
+
+<!-- PAPER: entry products -->
+<section class="paper wrap" id="date" aria-labelledby="pTitle">
+  <div class="eyebrow"><span class="he">לפני שמדברים</span></div>
+  <h2 id="pTitle" style="margin-top:22px">שני דברים שאפשר לעשות כבר עכשיו.</h2>
+  <p class="lede">בלי טפסים ארוכים ובלי התחייבות. בודקים תאריך, מקבלים רשימה, וממשיכים לשיחה בוואטסאפ רק אם מתאים לכם.</p>
+
+  <form class="tool" id="dateTool" novalidate>
+    <div>
+      <span class="tnum">01 · בדיקת תאריך</span>
+      <p class="madlib">
+        אנחנו מתחתנים ב-<label class="sr" for="wdate">תאריך החתונה</label><input id="wdate" type="date" required>,
+        ב<label class="sr" for="venue">מקום האירוע</label><input id="venue" type="text" placeholder="שם האולם" autocomplete="off">,
+        עם בערך <label class="sr" for="guests">מספר אורחים</label><select id="guests"><option>עד 200</option><option selected>300</option><option>400</option><option>500+</option></select> אורחים.
+      </p>
+    </div>
+    <div class="readout" aria-live="polite">
+      <span class="k">התאריך שלכם</span>
+      <div class="heb" id="heb">—</div>
+      <div class="greg" id="greg">בחרו תאריך</div>
+      <div class="days"><b id="days">0</b><span>ימים עד החתונה</span></div>
+      <p class="tip" id="tip">רוב הזוגות סוגרים דיג׳יי 4 עד 6 חודשים לפני.</p>
+      <a class="btn btn-grad" id="dateGo" href="https://wa.me/972502427616" target="_blank" rel="noopener"><span class="dot"></span>בדקו זמינות בוואטסאפ</a>
+    </div>
+  </form>
+
+  <div class="tool">
+    <div class="guide">
+      <span class="tnum">02 · מתנה לזוגות</span>
+      <h3>20 שירים לכניסה לחופה</h3>
+      <p>הרשימה שאני שולח לזוגות לפני פגישת ההיכרות. שירים שעובדים בכניסה, מסודרים לפי אווירה, כדי שתגיעו לפגישה עם כיוון.</p>
+      <ul>
+        <li>מרגש וקלאסי, לכניסה עם דמעות</li>
+        <li>ישראלי ושמח, לכניסה עם חיוך</li>
+        <li>מפתיע, לזוגות שרוצים רגע שידברו עליו</li>
+      </ul>
+    </div>
+    <form class="lead" id="leadForm" novalidate>
+      <div class="field"><label for="lname">שם</label><input id="lname" type="text" autocomplete="name" placeholder="שיראל ואופק"></div>
+      <div class="field"><label for="lphone">טלפון</label><input id="lphone" type="tel" inputmode="tel" autocomplete="tel" placeholder="050-000-0000" dir="ltr" style="text-align:right"></div>
+      <div class="err" id="lerr" role="alert"></div>
+      <button class="btn btn-grad" type="submit"><span class="dot"></span>שלחו לי את הרשימה</button>
+      <div class="done" id="ldone" hidden>
+        <strong>מעולה. נשאר צעד אחד.</strong>
+        <p>הרשימה נשלחת בוואטסאפ. לחצו כדי לשלוח לאלמוג את הבקשה, והיא תגיע אליכם.</p>
+        <a class="btn btn-grad" id="leadGo" href="https://wa.me/972502427616" target="_blank" rel="noopener"><span class="dot"></span>קבלו בוואטסאפ</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq wrap" id="faq" aria-labelledby="fTitle">
+  <h2 id="fTitle">שאלות שזוגות שואלים.</h2>
+  <div>
+    <details open><summary>כמה זמן מראש סוגרים דיג׳יי?<i></i></summary><p>רוב הזוגות סוגרים 4 עד 6 חודשים לפני החתונה. בעונת החתונות תאריכים נתפסים מוקדם יותר, אז שווה לבדוק כבר עכשיו.</p></details>
+    <details><summary>מה כלול במחיר?<i></i></summary><p>פגישת היכרות, בניית פלייליסט אישי, ציוד מקצועי, נוכחות מהחופה ועד השיר האחרון, וגמישות מלאה בערב עצמו.</p></details>
+    <details><summary>הקהל שלנו מעורב. זה מסתדר?<i></i></summary><p>זה בדיוק התחום שלי. להיטים ישראליים, מזרחית, שנות ה-80 וטכנו באותו ערב, עם מעברים שמחזיקים את כולם ברחבה.</p></details>
+    <details><summary>ומה אם נרצה לשנות משהו ברגע האחרון?<i></i></summary><p>שינויים של הרגע האחרון הם חלק מהעבודה, גם בערב עצמו.</p></details>
+    <details><summary>איך מתחילים?<i></i></summary><p>שולחים הודעה בוואטסאפ עם התאריך והמקום. אם התאריך פנוי, קובעים פגישת היכרות.</p></details>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="final wrap" aria-labelledby="zTitle">
+  <div class="bg" aria-hidden="true"><img class="par" src="assets/almog-neon-booth.jpg" alt="" loading="lazy"></div>
+  <div class="eyebrow"><span class="he">בואו נדבר</span></div>
+  <h2 id="zTitle">התאריך שלכם עוד פנוי?</h2>
+  <p>שלחו את התאריך והמקום בוואטסאפ. אם הוא פנוי, נקבע פגישת היכרות ונתחיל לבנות את הערב שלכם.</p>
+  <div class="row">
+    <a class="btn btn-grad magnetic" href="https://wa.me/972502427616?text=%D7%94%D7%99%D7%99%20%D7%90%D7%9C%D7%9E%D7%95%D7%92%2C%20%D7%90%D7%A0%D7%97%D7%A0%D7%95%20%D7%96%D7%95%D7%92%20%D7%A9%D7%9E%D7%AA%D7%97%D7%AA%D7%9F%20%D7%95%D7%A8%D7%95%D7%A6%D7%99%D7%9D%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D" target="_blank" rel="noopener"><span class="dot"></span>שלחו הודעה בוואטסאפ</a>
+    <button class="phone" id="copyPhone" type="button" aria-label="העתקת מספר הטלפון 050-242-7616">050-242-7616 <small id="copyMsg">העתקה</small></button>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <div class="bigmark" aria-hidden="true">ALMOG COHEN</div>
+  <div class="foot">
+    <span>© 2026 אלמוג כהן · דיג׳יי לחתונות ואירועים</span>
+    <nav aria-label="רשתות"><a href="https://instagram.com/dj_almog_cohen" target="_blank" rel="noopener">Instagram</a><a href="https://youtube.com/@djalmogcohen" target="_blank" rel="noopener">YouTube</a><a href="https://wa.me/972502427616" target="_blank" rel="noopener">WhatsApp</a></nav>
+  </div>
+</footer>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"LocalBusiness","name":"DJ אלמוג כהן","alternateName":"Almog Cohen DJ","description":"דיג׳יי לחתונות ואירועים בישראל","telephone":"+972-50-242-7616","areaServed":"IL","priceRange":"₪₪₪","sameAs":["https://instagram.com/dj_almog_cohen","https://youtube.com/@djalmogcohen"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"150"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"כמה זמן מראש סוגרים דיג׳יי?","acceptedAnswer":{"@type":"Answer","text":"רוב הזוגות סוגרים 4 עד 6 חודשים לפני החתונה."}},
+{"@type":"Question","name":"מה כלול במחיר?","acceptedAnswer":{"@type":"Answer","text":"פגישת היכרות, בניית פלייליסט אישי, ציוד מקצועי, נוכחות מהחופה ועד השיר האחרון, וגמישות מלאה בערב עצמו."}},
+{"@type":"Question","name":"הקהל שלנו מעורב. זה מסתדר?","acceptedAnswer":{"@type":"Answer","text":"להיטים ישראליים, מזרחית, שנות ה-80 וטכנו באותו ערב, עם מעברים שמחזיקים את כולם ברחבה."}}
+]}]}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.min.js"></script>
+<script>
+(function(){
+"use strict";
+var WA="https://wa.me/972502427616?text=";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var fine=window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+
+/* ---------- Hebrew date (gematria) ---------- */
+function gem(n){
+  var out="",H=[[400,"ת"],[300,"ש"],[200,"ר"],[100,"ק"]],T=["","י","כ","ל","מ","נ","ס","ע","פ","צ"],U=["","א","ב","ג","ד","ה","ו","ז","ח","ט"];
+  n=n%1000;
+  for(var i=0;i<H.length;i++){while(n>=H[i][0]){out+=H[i][1];n-=H[i][0];}}
+  if(n===15){out+="טו";}else if(n===16){out+="טז";}else{out+=T[Math.floor(n/10)]+U[n%10];}
+  return out.length===1?out+"׳":out.slice(0,-1)+"״"+out.slice(-1);
+}
+function hebDate(d){
+  try{
+    var p=new Intl.DateTimeFormat("he-IL-u-ca-hebrew",{day:"numeric",month:"long",year:"numeric"}).formatToParts(d);
+    var o={};p.forEach(function(x){o[x.type]=x.value});
+    var day=parseInt(o.day,10),yr=parseInt(o.year,10);
+    if(isNaN(day)||isNaN(yr))return new Intl.DateTimeFormat("he-IL-u-ca-hebrew",{day:"numeric",month:"long",year:"numeric"}).format(d);
+    return gem(day)+" ב"+o.month+" "+gem(yr);
+  }catch(e){return ""}
+}
+var wdate=$("#wdate"),venue=$("#venue"),guests=$("#guests");
+function pad(n){return (n<10?"0":"")+n}
+(function initDate(){
+  var d=new Date();d.setDate(d.getDate()+240);
+  while(d.getDay()!==4)d.setDate(d.getDate()+1); // a Thursday, the classic wedding night
+  wdate.value=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  var t=new Date();wdate.min=t.getFullYear()+"-"+pad(t.getMonth()+1)+"-"+pad(t.getDate());
+})();
+function updateDate(){
+  var v=wdate.value,heb=$("#heb"),greg=$("#greg"),days=$("#days"),tip=$("#tip"),go=$("#dateGo");
+  if(!v){heb.textContent="—";greg.textContent="בחרו תאריך";days.textContent="0";tip.textContent="רוב הזוגות סוגרים דיג׳יי 4 עד 6 חודשים לפני.";go.href=WA+encodeURIComponent("היי אלמוג, אנחנו מתחתנים ורוצים לבדוק זמינות.");return;}
+  var a=v.split("-"),d=new Date(+a[0],+a[1]-1,+a[2]);
+  var today=new Date();today.setHours(0,0,0,0);
+  var n=Math.round((d-today)/864e5);
+  var wd=new Intl.DateTimeFormat("he-IL",{weekday:"long"}).format(d);
+  var g=a[2]+"."+a[1]+"."+a[0];
+  heb.textContent=hebDate(d);
+  greg.textContent=wd+", "+g;
+  days.textContent=n<0?"0":String(n);
+  if(n<0)tip.textContent="התאריך הזה כבר עבר. בחרו תאריך עתידי.";
+  else if(n<60)tip.textContent="זה ממש קרוב. שווה לבדוק זמינות עוד היום.";
+  else if(n<=200)tip.textContent="זה בדיוק הזמן שבו רוב הזוגות סוגרים דיג׳יי.";
+  else tip.textContent="יש זמן, אבל תאריכים טובים נתפסים מוקדם. שווה לשריין.";
+  var place=venue.value.trim();
+  var msg="היי אלמוג, אנחנו מתחתנים ב-"+g+" ("+heb.textContent+")"+(place?" ב"+place:"")+", עם בערך "+guests.value+" אורחים. התאריך פנוי?";
+  go.href=WA+encodeURIComponent(msg);
+}
+[wdate,venue,guests].forEach(function(el){el.addEventListener("input",updateDate);el.addEventListener("change",updateDate)});
+$("#dateTool").addEventListener("submit",function(e){e.preventDefault()});
+updateDate();
+
+/* ---------- lead form ---------- */
+$("#leadForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var name=$("#lname").value.trim(),ph=$("#lphone").value.replace(/[^\d+]/g,""),err=$("#lerr");
+  if(name.length<2){err.textContent="כתבו את השם שלכם כדי שנדע למי לשלוח.";$("#lname").focus();return;}
+  if(!/^(\+?972|0)5\d{8}$/.test(ph)){err.textContent="מספר הנייד לא נראה תקין. נסו בפורמט 050-0000000.";$("#lphone").focus();return;}
+  err.textContent="";
+  $("#leadGo").href=WA+encodeURIComponent("היי אלמוג, כאן "+name+". אשמח לקבל את רשימת 20 השירים לכניסה לחופה.");
+  $$(".field,.lead>.btn,#lerr",this).forEach(function(x){x.hidden=true});
+  $("#ldone").hidden=false;
+});
+
+/* ---------- copy phone ---------- */
+$("#copyPhone").addEventListener("click",function(){
+  var m=$("#copyMsg");
+  function ok(){m.textContent="הועתק";setTimeout(function(){m.textContent="העתקה"},1800)}
+  try{navigator.clipboard.writeText("050-242-7616").then(ok,function(){sel()})}catch(e){sel()}
+  function sel(){var r=document.createRange();r.selectNodeContents(this||$("#copyPhone"));var s=getSelection();s.removeAllRanges();s.addRange(r);m.textContent="סמנו והעתיקו"}
+});
+
+/* ---------- nav hide on scroll down ---------- */
+var lastY=0,nav=$("#nav");
+window.addEventListener("scroll",function(){
+  var y=window.scrollY;
+  nav.classList.toggle("scrolled",y>40);
+  nav.classList.toggle("hide",y>lastY&&y>window.innerHeight*1.6);
+  lastY=y;
+},{passive:true});
+
+/* ---------- motion ---------- */
+var hasG=!!(window.gsap&&window.ScrollTrigger);
+var copy=$("#heroCopy");
+if(reduce||!hasG){
+  copy.style.opacity=1;copy.style.visibility="visible";
+  $("#media").style.clipPath="none";
+  var ws=$(".word-stack");if(ws)ws.style.display="none";
+  return;
+}
+gsap.registerPlugin(ScrollTrigger);
+
+/* smooth scroll */
+var lenis=null;
+if(window.Lenis){
+  lenis=new Lenis({lerp:.09,smoothWheel:true});
+  lenis.on("scroll",ScrollTrigger.update);
+  gsap.ticker.add(function(t){lenis.raf(t*1000)});
+  gsap.ticker.lagSmoothing(0);
+  $$('a[href^="#"]').forEach(function(a){a.addEventListener("click",function(e){var id=a.getAttribute("href");if(id.length<2)return;var t=$(id);if(!t)return;e.preventDefault();lenis.scrollTo(t,{offset:id==="#top"?0:-20,duration:1.4})})});
+}
+
+/* preloader (JS-only, short) */
+var pre=document.createElement("div");pre.className="pre";pre.setAttribute("aria-hidden","true");
+pre.innerHTML='<div class="in"><img src="assets/logo-white.png" alt=""><div class="bar"><i></i></div><div class="count">000</div></div>';
+document.body.appendChild(pre);
+if(lenis)lenis.stop();
+var cnt={v:0};
+var intro=gsap.timeline({defaults:{ease:"expo.out"}});
+intro.to(cnt,{v:100,duration:1.1,ease:"power2.inOut",onUpdate:function(){$(".count",pre).textContent=String(Math.round(cnt.v)).padStart(3,"0")}})
+     .to($(".bar i",pre),{scaleX:1,duration:1.1,ease:"power2.inOut"},0)
+     .to(pre,{yPercent:-100,duration:1,ease:"expo.inOut"},1.2)
+     .from(".hw-in",{yPercent:110,duration:1.4,stagger:.08},1.6)
+     .from("#media",{scale:.8,duration:1.6},1.55)
+     .from(".hero-meta>*",{y:20,opacity:0,duration:1,stagger:.08},1.9)
+     .from("#nav",{y:-30,opacity:0,duration:1},1.9)
+     .add(function(){pre.remove();if(lenis)lenis.start()});
+/* failsafe: never leave the preloader up */
+setTimeout(function(){if(pre.isConnected){intro.progress(1)}},4500);
+
+/* hero zoom portal */
+var stage=$("#stage"),slot=$("#slot"),media=$("#media");
+function slotInset(){
+  var s=stage.getBoundingClientRect(),r=slot.getBoundingClientRect();
+  return "inset("+(r.top-s.top)+"px "+(s.right-r.right)+"px "+(s.bottom-r.bottom)+"px "+(r.left-s.left)+"px round 18px)";
+}
+gsap.set(media,{clipPath:slotInset()});
+gsap.set(copy,{autoAlpha:0,y:40});
+var htl=gsap.timeline({scrollTrigger:{trigger:stage,start:"top top",end:"+=140%",pin:true,scrub:1,invalidateOnRefresh:true}});
+htl.fromTo(media,{clipPath:function(){return slotInset()}},{clipPath:"inset(0px 0px 0px 0px round 0px)",ease:"power2.inOut",duration:1},0)
+   .to(".hw1",{yPercent:-160,ease:"power2.in",duration:.8},0)
+   .to(".hw2",{yPercent:160,ease:"power2.in",duration:.8},0)
+   .to(".hw",{opacity:0,duration:.3},.5)
+   .to("#shade",{opacity:1,duration:.6},.4)
+   .to("#heroMeta",{opacity:0,duration:.3},0)
+   .to(copy,{autoAlpha:1,y:0,duration:.5,ease:"power2.out"},.75)
+   .to({},{duration:.35});
+window.addEventListener("load",function(){ScrollTrigger.refresh()});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){ScrollTrigger.refresh()});
+
+/* manifesto: word-by-word light-up */
+var says=$("#says");
+says.innerHTML=says.textContent.trim().split(/\s+/).map(function(w){return '<span class="w">'+w+' </span>'}).join("");
+gsap.fromTo($$(".w",says),{opacity:.16},{opacity:1,stagger:.05,ease:"none",scrollTrigger:{trigger:says,start:"top 78%",end:"bottom 45%",scrub:true}});
+
+/* parallax images */
+$$(".par").forEach(function(img){
+  gsap.fromTo(img,{yPercent:-8},{yPercent:4,ease:"none",scrollTrigger:{trigger:img.parentElement,start:"top bottom",end:"bottom top",scrub:true}});
+});
+
+/* counters */
+$$(".count").forEach(function(el){
+  var to=+el.dataset.to,dec=el.dataset.dec?1:0,o={v:0};
+  ScrollTrigger.create({trigger:el,start:"top 88%",once:true,onEnter:function(){
+    gsap.to(o,{v:to,duration:2,ease:"power3.out",onUpdate:function(){el.textContent=dec?o.v.toFixed(1):Math.round(o.v).toLocaleString("en-US")}});
+  }});
+});
+
+/* marquee: drifts, speeds up with scroll velocity */
+var mq=$("#marquee"),mx=0,boost=0;
+ScrollTrigger.create({onUpdate:function(self){boost=Math.min(Math.abs(self.getVelocity())/180,14)}});
+gsap.ticker.add(function(){
+  var half=mq.scrollWidth/2;if(!half)return;
+  mx-= (0.6+boost);boost*=.92;
+  if(mx<=-half)mx+=half;
+  mq.style.transform="translate3d("+mx+"px,0,0)";
+});
+
+/* the night: vertical scroll drives a horizontal track (RTL: moves right) */
+var track=$("#nightTrack");
+function dist(){return Math.max(0,track.scrollWidth-window.innerWidth)}
+var ntw=gsap.to(track,{x:function(){return dist()},ease:"none",scrollTrigger:{trigger:"#nightPin",start:"top top",end:function(){return "+="+dist()},pin:true,scrub:.8,invalidateOnRefresh:true,anticipatePin:1,
+  onUpdate:function(s){gsap.set("#nightBar",{scaleX:s.progress})}}});
+$$(".chap").forEach(function(ch){
+  var img=$("img",ch);
+  gsap.fromTo(img,{xPercent:6},{xPercent:-6,ease:"none",scrollTrigger:{trigger:ch,containerAnimation:ntw,start:"left right",end:"right left",scrub:true}});
+});
+
+/* couples: clip reveals + sticky image swap */
+$$(".reveal").forEach(function(f){
+  gsap.fromTo(f,{clipPath:"inset(18% 10% 18% 10%)"},{clipPath:"inset(0% 0% 0% 0%)",ease:"power2.out",scrollTrigger:{trigger:f,start:"top 90%",end:"top 35%",scrub:true}});
+  gsap.fromTo($("img",f),{scale:1.25},{scale:1,ease:"power2.out",scrollTrigger:{trigger:f,start:"top 90%",end:"top 35%",scrub:true}});
+});
+var imgs=$$("#stack img"),tag=$("#stackTag");
+$$(".q").forEach(function(q){
+  var i=+q.dataset.i;
+  ScrollTrigger.create({trigger:q,start:"top 55%",end:"bottom 55%",onToggle:function(s){
+    if(!s.isActive)return;
+    imgs.forEach(function(im,k){im.classList.toggle("on",k<=i);im.style.zIndex=k});
+    var t=imgs[i].dataset.tag||"";tag.textContent=t;tag.style.opacity=t?1:0;
+  }});
+  gsap.from($$("blockquote,.who",q),{y:50,opacity:0,duration:1.2,ease:"expo.out",stagger:.1,scrollTrigger:{trigger:q,start:"top 75%"}});
+});
+
+/* headings: each word slides up out of its own mask */
+$$(".night-head h2,.couples-head h2,.gallery-head h2,.paper h2,.faq h2,.final h2,.guide h3").forEach(function(h){
+  h.setAttribute("aria-label",h.textContent.trim());
+  h.innerHTML=h.textContent.trim().split(/\s+/).map(function(w){return '<span class="wm" aria-hidden="true"><span class="wi">'+w+'</span></span>'}).join(" ");
+  gsap.from($$(".wi",h),{yPercent:115,rotate:4,duration:1.3,ease:"expo.out",stagger:.07,scrollTrigger:{trigger:h,start:"top 88%"}});
+});
+
+/* hero WebGL: the dance-floor video as a liquid surface with stage beams */
+(function heroGL(){
+  var video=$("#heroVideo");
+  var c=document.createElement("canvas");c.className="gl";c.setAttribute("aria-hidden","true");
+  var gl=null;
+  try{gl=c.getContext("webgl",{antialias:false,alpha:false,premultipliedAlpha:false,preserveDrawingBuffer:false})}catch(e){}
+  if(!gl)return;
+  var vs="attribute vec2 p;varying vec2 vUv;void main(){vUv=p*.5+.5;gl_Position=vec4(p,0.,1.);}";
+  var fs=[
+  "precision mediump float;",
+  "uniform sampler2D t;uniform vec2 res,tres,m,mv;uniform float time,vel;varying vec2 vUv;",
+  "vec2 cover(vec2 uv){float rs=res.x/res.y,rt=tres.x/tres.y;vec2 s=rs>rt?vec2(1.,rt/rs):vec2(rs/rt,1.);return (uv-.5)*s+.5;}",
+  "void main(){",
+  " vec2 asp=vec2(res.x/res.y,1.);",
+  " vec2 uv=vUv;",
+  " vec2 d=(uv-m)*asp;float dist=length(d);",
+  " float fall=smoothstep(.42,0.,dist);",
+  " uv-=mv*fall*.9;",
+  " uv+=normalize(d+1e-5)/asp*sin(dist*42.-time*5.)*.005*fall;",
+  " uv-=d/asp*fall*.07;",
+  " uv.y+=sin(uv.x*6.+time*.8)*.0025*abs(vel);",
+  " vec2 tuv=cover(uv);tuv.y=1.-tuv.y;",
+  " float sp=.0025+min(abs(vel),1.)*.018+length(mv)*1.2*fall;",
+  " vec2 dir=vec2(sp,sp*.35);",
+  " vec3 col=vec3(texture2D(t,tuv+dir).r,texture2D(t,tuv).g,texture2D(t,tuv-dir).b);",
+  " vec2 o=vec2(.5+.3*sin(time*.23),1.2);vec2 q=(vUv-o)*asp;float ang=atan(q.x,-q.y);",
+  " float beams=pow(max(0.,sin(ang*9.+time*.55)),40.)+pow(max(0.,sin(ang*6.-time*.4+1.7)),48.);",
+  " float fade=smoothstep(1.6,.15,length(q));",
+  " vec3 bc=mix(vec3(.02,.61,.75),vec3(.01,.70,.55),.5+.5*sin(ang*2.5+time*.7));",
+  " col+=bc*beams*fade*.42;",
+  " col+=bc*fall*.10;",
+  " float v=smoothstep(1.15,.3,length((vUv-.5)*asp*.85));",
+  " col*=mix(.5,1.,v);",
+  " gl_FragColor=vec4(col,1.);",
+  "}"].join("\n");
+  function sh(type,src){var o=gl.createShader(type);gl.shaderSource(o,src);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){throw new Error(gl.getShaderInfoLog(o))}return o}
+  var pr;
+  try{pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error("link")}catch(e){return}
+  gl.useProgram(pr);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+  var loc=gl.getAttribLocation(pr,"p");gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  var U={};["t","res","tres","m","mv","time","vel"].forEach(function(n){U[n]=gl.getUniformLocation(pr,n)});
+  var tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([10,12,12,255]));
+  var tw=16,th=9,haveFrame=false;
+  var poster=new Image();poster.onload=function(){if(!haveFrame){try{gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,poster);tw=poster.naturalWidth;th=poster.naturalHeight;show()}catch(e){}}};poster.src=video.getAttribute("poster");
+  var shown=false;function show(){if(shown)return;shown=true;media.insertBefore(c,$("#shade"))}
+  var dpr=Math.min(window.devicePixelRatio||1,1.5);
+  function size(){var r=media.getBoundingClientRect();c.width=Math.max(2,Math.round(r.width*dpr));c.height=Math.max(2,Math.round(r.height*dpr));gl.viewport(0,0,c.width,c.height)}
+  size();window.addEventListener("resize",size);
+  var mx=.5,my=.5,tx=.5,ty=.5,vx=0,vy=0,lastMove=-9,now=0,svel=0;
+  function pt(x,y){var r=media.getBoundingClientRect();tx=(x-r.left)/r.width;ty=1-(y-r.top)/r.height;lastMove=now}
+  window.addEventListener("mousemove",function(e){pt(e.clientX,e.clientY)},{passive:true});
+  window.addEventListener("touchmove",function(e){if(e.touches[0])pt(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+  ScrollTrigger.create({trigger:"#stage",start:"top top",end:"+=240%",onUpdate:function(s){svel=s.getVelocity()/2500}});
+  var running=true;
+  ScrollTrigger.create({trigger:".hero",start:"top bottom",end:"bottom top",onToggle:function(s){running=s.isActive}});
+  try{video.play().catch(function(){})}catch(e){}
+  gsap.ticker.add(function(time){
+    if(!running)return;
+    now=time;
+    if(now-lastMove>2.2){tx=.5+.28*Math.sin(now*.45);ty=.5+.2*Math.cos(now*.33)}
+    var nx=mx+(tx-mx)*.08,ny=my+(ty-my)*.08;
+    vx=vx*.85+(nx-mx)*.6;vy=vy*.85+(ny-my)*.6;mx=nx;my=ny;
+    svel*=.93;
+    if(video.readyState>=2&&video.videoWidth){
+      try{gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,video);tw=video.videoWidth;th=video.videoHeight;haveFrame=true;show()}catch(e){}
+    }
+    if(!shown)return;
+    gl.uniform1i(U.t,0);gl.uniform2f(U.res,c.width,c.height);gl.uniform2f(U.tres,tw,th);
+    gl.uniform2f(U.m,mx,my);gl.uniform2f(U.mv,vx,vy);gl.uniform1f(U.time,time);gl.uniform1f(U.vel,svel);
+    gl.drawArrays(gl.TRIANGLES,0,6);
+  });
+})();
+
+/* 3D ring gallery: drag, inertia, scroll adds spin */
+(function ring(){
+  var stageEl=$("#ringStage"),ringEl=$("#ring"),cards=$$(".card",ringEl),n=cards.length;
+  if(!n)return;
+  var step=360/n,rot=0,v=-.06,R=600,dragging=false,lx=0,auto=-.06;
+  function layout(){
+    var w=cards[0].getBoundingClientRect().width||cards[0].offsetWidth;
+    R=Math.round((w/2)/Math.tan(Math.PI/n)*1.06);
+    cards.forEach(function(cd,i){cd.style.transform="rotateY("+(i*step)+"deg) translateZ("+(-R)+"px)"});
+  }
+  layout();window.addEventListener("resize",layout);
+  stageEl.addEventListener("pointerdown",function(e){dragging=true;lx=e.clientX;v=0;stageEl.setPointerCapture(e.pointerId)});
+  stageEl.addEventListener("pointermove",function(e){if(!dragging)return;var dx=e.clientX-lx;lx=e.clientX;var d=dx*.18;rot+=d;v=d});
+  function up(){dragging=false}
+  stageEl.addEventListener("pointerup",up);stageEl.addEventListener("pointercancel",up);
+  ScrollTrigger.create({trigger:stageEl,start:"top bottom",end:"bottom top",onUpdate:function(s){if(!dragging)v+=s.getVelocity()/9000}});
+  var vis=false;ScrollTrigger.create({trigger:stageEl,start:"top bottom",end:"bottom top",onToggle:function(s){vis=s.isActive}});
+  gsap.ticker.add(function(){
+    if(!vis)return;
+    if(!dragging){v+=(auto-v)*.03;rot+=v}
+    ringEl.style.transform="translateZ("+(R-Math.round(R*.16))+"px) rotateX(-4deg) rotateY("+rot+"deg)";
+    for(var i=0;i<n;i++){
+      var a=((i*step+rot)%360+360)%360;var f=Math.cos(a*Math.PI/180);
+      cards[i].style.visibility=f<-.05?"hidden":"visible";
+      cards[i].style.setProperty("--dim",Math.min(.85,(1-f)*.7).toFixed(3));
+    }
+  });
+})();
+
+/* footer wordmark */
+gsap.fromTo(".bigmark",{yPercent:40},{yPercent:0,ease:"none",scrollTrigger:{trigger:"footer",start:"top bottom",end:"bottom bottom",scrub:true}});
+
+/* cursor + magnetic buttons (desktop only) */
+if(fine){
+  var cur=$(".cursor"),cl=$("span",cur);
+  var qx=gsap.quickTo(cur,"x",{duration:.35,ease:"power3"}),qy=gsap.quickTo(cur,"y",{duration:.35,ease:"power3"});
+  window.addEventListener("mousemove",function(e){cur.style.opacity=1;qx(e.clientX);qy(e.clientY)});
+  $$("[data-cursor]").forEach(function(el){
+    el.addEventListener("mouseenter",function(){cl.textContent=el.dataset.cursor;cur.classList.add("big")});
+    el.addEventListener("mouseleave",function(){cur.classList.remove("big")});
+  });
+  $$(".magnetic").forEach(function(b){
+    b.addEventListener("mousemove",function(e){var r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.25,y:(e.clientY-r.top-r.height/2)*.35,duration:.5,ease:"power3.out"})});
+    b.addEventListener("mouseleave",function(){gsap.to(b,{x:0,y:0,duration:.8,ease:"elastic.out(1,.4)"})});
+  });
+}
+})();
+</script>
+</body>
+</html>
