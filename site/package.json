@@ -20,13 +20,15 @@
     "framer-motion": "^12.23.24",
     "gsap": "^3.13.0",
     "howler": "^2.2.4",
+    "lamejs": "^1.2.1",
     "lottie-react": "^2.4.1",
     "next": "^16.0.3",
     "next-themes": "^0.4.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "three": "^0.181.2",
-    "tone": "^15.1.22"
+    "tone": "^15.1.22",
+    "wavesurfer.js": "^7.12.12"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
