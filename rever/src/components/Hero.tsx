@@ -73,7 +73,7 @@ export function Hero() {
           autoPlay={!reduce}
           aria-hidden="true"
           preload={desktop ? "auto" : "metadata"}
-          className="h-full w-full object-cover object-[50%_30%] saturate-[.9]"
+          className="h-full w-full object-cover object-[50%_30%]"
         >
           <source src={webm} type="video/webm" />
           <source src={mp4} type="video/mp4" />
@@ -88,7 +88,7 @@ export function Hero() {
       </div>
 
       {/* warm light spilling from the bottom, the dawn that the next section opens into */}
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[#2a1a0c]" />
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[#14100a]" />
 
       <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto flex h-full max-w-7xl items-end px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-24 md:items-center md:justify-end md:px-10 md:pb-0">
         <motion.div
@@ -97,12 +97,12 @@ export function Hero() {
           transition={{ duration: 0.9, delay: 1.4, ease }}
           className="hero-card w-full md:mr-[6%] md:max-w-[34rem] md:rounded-[24px] md:p-10"
         >
-          <p className="mb-5 hidden text-xs font-medium tracking-[0.24em] text-[#e8cfa0] md:block [@media(max-height:560px)]:hidden" dir="ltr">
+          <p className="mb-5 hidden text-xs font-medium tracking-[0.24em] text-[#f0d68a] md:block [@media(max-height:560px)]:hidden" dir="ltr">
             {hero.eyebrow}
           </p>
           <h1 className="font-display text-[clamp(1.75rem,7.2vw,2.25rem)] font-medium leading-[1.12] tracking-[-0.01em] text-[#f6f0e6] [text-wrap:balance] md:text-[clamp(2.4rem,3.8vw,3.7rem)]">
             {hero.titleTop}
-            <span className="block text-[#e3bf7c]">{hero.titleBottom}</span>
+            <span className="block gold-text">{hero.titleBottom}</span>
           </h1>
           <div className="hairline my-5 hidden w-20 md:block [@media(max-height:560px)]:hidden" />
           {/* REVER's own line, right under the headline */}
@@ -119,7 +119,7 @@ export function Hero() {
               <WhatsAppIcon className="h-4 w-4" />
               {hero.ctaPrimary}
             </a>
-            <a href="#gallery" className="inline-flex min-h-11 items-center justify-center text-[15px] text-[#e8cfa0] underline-offset-[6px] hover:underline">
+            <a href="#gallery" className="inline-flex min-h-11 items-center justify-center text-[15px] text-[#f0d68a] underline-offset-[6px] hover:underline">
               {hero.ctaSecondary}
             </a>
           </div>

@@ -41,7 +41,7 @@ export function Header() {
 
   return (
     <>
-      <motion.div className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-right bg-[#b08d57]" style={{ scaleX: scrollYProgress }} />
+      <motion.div className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-right gold-metal-bg" style={{ scaleX: scrollYProgress }} />
       <header
         className={`fixed inset-x-0 top-0 z-50 pt-[env(safe-area-inset-top)] transition-[background,padding] duration-500 ${
           scrolled && !open ? `${light ? "glass-ivory" : "glass-dark"} !rounded-none !border-x-0 !border-t-0 !shadow-none` : ""
@@ -55,7 +55,7 @@ export function Header() {
             {nav.map((n) => (
               <a key={n.id} href={`#${n.id}`} className={`group relative py-2 text-[14px] transition-colors ${onLight ? "text-[#2a2118]/80 hover:text-[#2a2118]" : "text-[#f6f0e6]/80 hover:text-[#f6f0e6]"}`}>
                 {n.label}
-                <span className="absolute bottom-0 right-0 h-px w-0 bg-[#b08d57] transition-all duration-300 group-hover:w-full" />
+                <span className="absolute bottom-0 right-0 h-px w-0 gold-metal-bg transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
           </nav>
@@ -120,11 +120,11 @@ export function Header() {
                 <WhatsAppIcon className="h-5 w-5" /> שלחו הודעה בוואטסאפ
               </a>
               <div className="grid grid-cols-2 gap-3">
-                <a href={telLink} onClick={() => track("click_call", { location: "menu" })} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#e8cfa0]/40 text-[15px]">
-                  <PhoneIcon className="h-4 w-4 text-[#d9b26f]" /> התקשרו
+                <a href={telLink} onClick={() => track("click_call", { location: "menu" })} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#e3c066]/45 text-[15px]">
+                  <PhoneIcon className="h-4 w-4 text-[#e3c066]" /> התקשרו
                 </a>
-                <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#e8cfa0]/40 text-[15px]">
-                  <InstagramIcon className="h-4 w-4 text-[#d9b26f]" /> אינסטגרם
+                <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#e3c066]/45 text-[15px]">
+                  <InstagramIcon className="h-4 w-4 text-[#e3c066]" /> אינסטגרם
                 </a>
               </div>
             </div>

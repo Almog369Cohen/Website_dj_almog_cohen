@@ -22,7 +22,7 @@ export function Reveal({ delay = 0, y = 24, children, ...rest }: Props) {
 export function SectionKicker({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-4 inline-flex items-center gap-3 text-[13px] font-medium tracking-[0.04em] text-gold">
-      <span className="h-px w-10 bg-[#b08d57]/60" />
+      <span className="h-px w-10 gold-metal-bg" />
       {children}
     </div>
   );

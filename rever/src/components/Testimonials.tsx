@@ -18,8 +18,12 @@ export function Testimonials() {
         <div className="mt-8 grid gap-4 md:mt-14 md:grid-cols-3 md:gap-6">
           {QUOTES.map((q, i) => (
             <Reveal key={q} delay={i * 0.08}>
-              <figure className="glass-ivory lit flex h-full flex-col rounded-[22px] p-6 md:p-8" style={{ "--glow": "rgba(240,150,70,.5)" } as React.CSSProperties}>
-                <span aria-hidden="true" className="font-display text-5xl leading-none text-[#b08d57]">”</span>
+              <figure className="glass-ivory lit flex h-full flex-col rounded-[22px] p-6 md:p-8" style={{ "--glow": "rgba(212,175,55,.5)" } as React.CSSProperties}>
+                <p className="text-[13px] font-medium text-[#6b4e1b]">מה היה הכי קשה לפני שפניתם אלינו?</p>
+                <p className="mt-2 text-[16px] leading-[1.6]">
+                  <Todo>התשובה האמיתית של הזוג</Todo>
+                </p>
+                <span aria-hidden="true" className="mt-5 font-display text-5xl leading-none gold-text">”</span>
                 <blockquote className="mt-2 flex-1 text-[17px] leading-[1.75]">
                   <Todo>ציטוט אמיתי מזוג: להשלים</Todo>
                 </blockquote>

@@ -1,5 +1,6 @@
 import { Consent } from "@/components/Consent";
 import { Contact } from "@/components/Contact";
+import { DayStory } from "@/components/DayStory";
 import { Dialogs } from "@/components/Dialogs";
 import { Evening } from "@/components/Evening";
 import { FloatingActions } from "@/components/FloatingActions";
@@ -23,6 +24,7 @@ export default function Home() {
         <Hero />
         <Evening />
         <LightSwitch />
+        <DayStory />
         <Services />
         <Team />
         <div className="theme-ivory">

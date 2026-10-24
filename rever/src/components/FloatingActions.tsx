@@ -64,7 +64,7 @@ export function FloatingActions() {
             >
               <WhatsAppIcon className="h-5 w-5" /> שלחו הודעה בוואטסאפ
             </a>
-            <a href={telLink} onClick={() => track("click_call", { location: "bottom_bar" })} aria-label="התקשרו אלינו" className={`flex min-h-12 w-12 shrink-0 items-center justify-center rounded-full border ${darkBelow ? "border-[#e8cfa0]/40 text-[#d9b26f]" : "border-[#2a2118]/20 text-[#6b4e1b]"}`}>
+            <a href={telLink} onClick={() => track("click_call", { location: "bottom_bar" })} aria-label="התקשרו אלינו" className={`flex min-h-12 w-12 shrink-0 items-center justify-center rounded-full border ${darkBelow ? "border-[#e3c066]/45 text-[#e3c066]" : "border-[#2a2118]/20 text-[#6b4e1b]"}`}>
               <PhoneIcon className="h-5 w-5" />
             </a>
           </motion.div>

@@ -82,7 +82,7 @@ export function Contact() {
         <p className="-mb-4 text-center text-[13px] text-ink-dim md:hidden">או השאירו פרטים ונחזור אליכם:</p>
 
         <Reveal delay={0.1} className="md:col-start-2 md:row-span-2 md:row-start-1">
-          <form onSubmit={onSubmit} className="glass-ivory lit rounded-[24px] p-5 md:p-9" style={{ "--glow": "rgba(243,166,88,.6)" } as React.CSSProperties}>
+          <form onSubmit={onSubmit} className="glass-ivory lit rounded-[24px] p-5 md:p-9" style={{ "--glow": "rgba(212,175,55,.6)" } as React.CSSProperties}>
             <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 opacity-0" />
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
@@ -116,7 +116,7 @@ export function Contact() {
                     {contact.when.map((w) => (
                       <label key={w} className="cursor-pointer">
                         <input type="radio" name="when" value={w} className="peer sr-only" />
-                        <span className="inline-flex min-h-10 items-center rounded-full border border-[#2a2118]/20 bg-white/50 px-4 text-[14px] peer-checked:border-[#b08d57] peer-checked:bg-[#f2b866]/30 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-[#b08d57]">
+                        <span className="inline-flex min-h-10 items-center rounded-full border border-[#2a2118]/20 bg-white/50 px-4 text-[14px] peer-checked:border-[#b8902a] peer-checked:bg-[#e0b94a]/30 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-[#b08d57]">
                           {w}
                         </span>
                       </label>

@@ -5,9 +5,11 @@
   --bg-soft: #0f0d12;
   --ink: #f6f1e7;
   --ink-dim: rgba(246, 241, 231, 0.72);
-  --gold: #d9b26f;
-  --gold-hi: #f3d9a4;
-  --gold-lo: #a67c3d;
+  --gold: #e3c066;
+  --gold-hi: #fff0a8;
+  --gold-lo: #b8902a;
+  /* shiny gold: deep, gold, bright highlight, gold, deep. Used for fills, lines and (on dark) accent text. */
+  --gold-metal: linear-gradient(115deg, #8a6414 0%, #c9a227 20%, #fff0a8 40%, #e0b94a 58%, #a67c14 80%, #e8c95a 100%);
   --line: rgba(246, 241, 231, 0.12);
 }
 
@@ -48,10 +50,27 @@ body {
 }
 
 .btn-gold {
-  background: linear-gradient(120deg, #a67c3d, #f3d9a4 50%, #d9b26f);
-  color: #120e08;
-  box-shadow: 0 10px 40px -10px rgba(217, 178, 111, 0.6);
+  background: linear-gradient(115deg, #a67c14 0%, #d4af37 18%, #fff0a8 38%, #e0b94a 52%, #b8902a 75%, #e8c95a 100%);
+  background-size: 220% 100%;
+  background-position: 0 0;
+  color: #1a1206;
+  border: 1px solid rgba(255, 240, 168, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -2px 5px rgba(122, 90, 16, 0.35), 0 12px 36px -12px rgba(212, 175, 55, 0.7);
+  transition: background-position 0.9s ease, box-shadow 0.4s ease;
 }
+/* the sheen moves only when someone touches the button, never on its own */
+.btn-gold:hover { background-position: 100% 0; }
+
+.gold-metal-bg { background: var(--gold-metal); }
+/* shiny accent text, for dark backgrounds */
+.gold-text {
+  background: var(--gold-metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* on ivory the highlight would vanish: a deep, still metallic gold that keeps 4.5:1 */
+.theme-ivory .gold-text { background-image: linear-gradient(110deg, #6b4e1b, #8f6a12 50%, #6b4e1b); }
 
 /* Ivory sections, matching the cream of the real Rever logo. Every colour utility reads these tokens. */
 .theme-ivory {
@@ -63,6 +82,7 @@ body {
   --gold: #6b4e1b;
   --gold-hi: #8d6b2c;
   --gold-lo: #5f4519;
+  --gold-metal: linear-gradient(115deg, #8a6414 0%, #c9a227 25%, #f0d060 45%, #c9a227 62%, #8a6414 100%);
   color: var(--ink);
 }
 
@@ -112,19 +132,19 @@ body {
   background: rgba(14, 12, 10, 0.38);
   -webkit-backdrop-filter: blur(24px) saturate(140%);
   backdrop-filter: blur(24px) saturate(140%);
-  border: 1px solid rgba(232, 207, 160, 0.26);
+  border: 1px solid rgba(227, 192, 102, 0.32);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 30px 80px -30px rgba(0, 0, 0, 0.6);
 }
 .glass-ivory {
   background: rgba(251, 248, 242, 0.62);
   -webkit-backdrop-filter: blur(18px) saturate(130%);
   backdrop-filter: blur(18px) saturate(130%);
-  border: 1px solid rgba(176, 141, 87, 0.35);
+  border: 1px solid rgba(201, 162, 39, 0.4);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 30px 60px -35px rgba(60, 42, 20, 0.35);
 }
 .hairline {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #b08d57, transparent);
+  background: linear-gradient(90deg, transparent, #d4af37, #fff0a8 50%, #d4af37, transparent);
 }
 .arch { border-radius: 999px 999px 6px 6px; }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -164,9 +184,9 @@ body {
 }
 /* the new light fades in over the previous one, held fully lit underneath: light to light, never grey */
 .scene-in { animation: light-in 0.9s cubic-bezier(0.4, 0, 0.2, 1) both; }
-.scene-dawn   { --base: #fbf3e8; --a: rgba(240, 160, 64, 0.75); --b: rgba(232, 150, 128, 0.62); --c: rgba(255, 250, 240, 0.9); }
-.scene-day    { --base: #f4f1e4; --a: rgba(170, 190, 130, 0.55); --b: rgba(242, 184, 102, 0.45); --c: rgba(236, 196, 178, 0.45); }
-.scene-golden { --base: #fbf0e3; --a: rgba(240, 140, 60, 0.75); --b: rgba(230, 136, 120, 0.55); --c: rgba(255, 238, 210, 0.9); }
+.scene-dawn   { --base: #fbf5e4; --a: rgba(224, 185, 74, 0.55); --b: rgba(255, 236, 170, 0.7);  --c: rgba(255, 252, 240, 0.9); }
+.scene-day    { --base: #f8f2de; --a: rgba(212, 175, 55, 0.38); --b: rgba(255, 240, 180, 0.6);  --c: rgba(255, 250, 235, 0.85); }
+.scene-golden { --base: #fbf3d9; --a: rgba(212, 175, 55, 0.6);  --b: rgba(240, 208, 110, 0.5);  --c: rgba(255, 245, 200, 0.9); }
 
 .orb {
   position: absolute;
@@ -196,7 +216,7 @@ body {
   background:
     radial-gradient(60% 40% at 85% 30%, rgba(196, 72, 140, 0.32), transparent 70%),
     radial-gradient(55% 40% at 10% 70%, rgba(63, 198, 214, 0.22), transparent 70%),
-    radial-gradient(50% 35% at 50% 100%, rgba(242, 170, 90, 0.2), transparent 70%),
+    radial-gradient(50% 35% at 50% 100%, rgba(224, 185, 74, 0.2), transparent 70%),
     #0d0a17;
   -webkit-mask-image: linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
   mask-image: linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
@@ -218,7 +238,7 @@ body {
 }
 .beam-1 { --beam: rgba(214, 92, 160, 0.42); right: -20vmax; transform: rotate(-9deg); }
 .beam-2 { --beam: rgba(90, 210, 222, 0.32); right: 5vmax; transform: rotate(7deg); }
-.beam-3 { --beam: rgba(255, 200, 130, 0.3); left: -25vmax; transform: rotate(11deg); }
+.beam-3 { --beam: rgba(255, 236, 170, 0.3); left: -25vmax; transform: rotate(11deg); }
 
 /* Luminous form fields on light scenes. */
 .field-light {
@@ -226,9 +246,9 @@ body {
   border: 1px solid rgba(42, 33, 24, 0.2);
 }
 .field-light:focus {
-  border-color: #b08d57;
+  border-color: #c9a227;
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(242, 184, 102, 0.25);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.3);
 }
 
 /* Desktop hero copy on dark glass; on phones it sits straight on the night. */
@@ -237,7 +257,7 @@ body {
     background: rgba(14, 12, 10, 0.38);
     -webkit-backdrop-filter: blur(24px) saturate(140%);
     backdrop-filter: blur(24px) saturate(140%);
-    border: 1px solid rgba(232, 207, 160, 0.26);
+    border: 1px solid rgba(227, 192, 102, 0.32);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 30px 80px -30px rgba(0, 0, 0, 0.6);
   }
 }
@@ -245,5 +265,5 @@ body {
 .consent-open .action-bar { bottom: 8.5rem; }
 
 .bulb-halo {
-  background: radial-gradient(circle, rgba(255, 211, 145, 0.95) 0, rgba(242, 184, 102, 0.42) 32%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 246, 205, 0.95) 0, rgba(230, 195, 92, 0.45) 32%, transparent 70%);
 }

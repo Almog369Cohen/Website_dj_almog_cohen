@@ -23,7 +23,7 @@ export function Team() {
           {team.people.map((p, i) => (
             <Reveal key={p.src} delay={i * 0.08}>
               <figure>
-                <LitImage src={p.src} alt={p.alt} fill sizes="(min-width:768px) 30vw, 100vw" glow={i === 1 ? "rgba(170,190,130,.7)" : "rgba(240,160,64,.7)"} className="aspect-[4/5] rounded-[22px]" imgPosition={p.pos} />
+                <LitImage src={p.src} alt={p.alt} fill sizes="(min-width:768px) 30vw, 100vw" glow={i === 1 ? "rgba(224,185,74,.65)" : "rgba(212,175,55,.65)"} className="aspect-[4/5] rounded-[22px]" imgPosition={p.pos} />
                 <figcaption className="mt-4">
                   <p className="text-[18px] font-medium">
                     <Todo>שם</Todo> · <Todo>תפקיד</Todo>

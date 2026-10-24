@@ -2,7 +2,7 @@ import { services, servicesIntro } from "@/content/site";
 import { LitImage } from "./LitImage";
 import { Reveal, SectionKicker } from "./Reveal";
 
-const GLOWS = ["rgba(233,170,150,.75)", "rgba(170,190,130,.75)", "rgba(240,160,64,.7)", "rgba(240,160,64,.7)"];
+const GLOWS = ["rgba(232,200,110,.7)", "rgba(212,175,55,.65)", "rgba(224,185,74,.7)", "rgba(212,175,55,.65)"];
 
 /** How it works: the four services in the order a couple lives them, as steps on a line. */
 export function Services() {
@@ -19,13 +19,17 @@ export function Services() {
           <span aria-hidden="true" className="absolute bottom-6 right-[11px] top-2 w-px bg-[#2a2118]/25 md:right-[15px]" />
           {services.map((s, i) => (
             <li key={s.id} className="relative pb-14 pr-12 last:pb-0 md:grid md:grid-cols-12 md:gap-10 md:pb-24 md:pr-16">
-              <span aria-hidden="true" className="absolute right-0 top-1 h-6 w-6 rounded-full border border-[#b08d57] bg-[#fff1d6] shadow-[0_0_0_5px_rgba(240,160,64,.18)] md:h-8 md:w-8" />
+              <span aria-hidden="true" className="absolute right-0 top-1 h-6 w-6 rounded-full border border-[#b8902a] gold-metal-bg shadow-[0_0_0_5px_rgba(212,175,55,.22)] md:h-8 md:w-8" />
               <Reveal className="md:col-span-6">
-                <p className="text-[13px] font-medium tracking-[0.12em] text-[#8d6b2c]">
+                <p className="text-[13px] font-medium tracking-[0.12em] text-[#6b4e1b]">
                   שלב {i + 1} · {s.step}
                 </p>
                 <h3 className="mt-2 font-display text-[clamp(1.6rem,2.8vw,2.4rem)] font-medium leading-[1.12] [text-wrap:balance]">{s.title}</h3>
                 <p className="mt-4 text-[16px] leading-[1.8] text-ink-dim md:text-[17px]">{s.text}</p>
+                <dl className="mt-5 grid gap-2 text-[15px] leading-[1.6]">
+                  <div className="flex gap-3"><dt className="w-[6.6rem] shrink-0 font-medium text-[#6b4e1b]">על השולחן שלכם</dt><dd className="text-ink-dim">{s.yours}</dd></div>
+                  <div className="flex gap-3"><dt className="w-[6.6rem] shrink-0 font-medium text-[#6b4e1b]">אצלנו</dt><dd>{s.ours}</dd></div>
+                </dl>
               </Reveal>
               <Reveal delay={0.1} className="mt-6 md:col-span-6 md:mt-0">
                 <LitImage src={s.image} alt="" fill sizes="(min-width:768px) 45vw, 85vw" glow={GLOWS[i]} className="aspect-[3/2] rounded-[20px]" />
