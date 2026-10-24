@@ -6,7 +6,7 @@ import { brand, nav } from "@/content/site";
 import { track } from "@/lib/analytics";
 import { lockScroll, unlockScroll } from "@/lib/scroll-lock";
 import { useDarkAt } from "@/lib/use-tone";
-import { telLink, waLink } from "@/lib/whatsapp";
+import { telLink, waLink, waContext } from "@/lib/whatsapp";
 import { InstagramIcon, PhoneIcon, WhatsAppIcon } from "./Icons";
 import { Logo } from "./Logo";
 
@@ -64,7 +64,7 @@ export function Header() {
               href={waLink()}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track("click_whatsapp", { location: "header" })}
+              onClick={(e) => { waContext(e); track("click_whatsapp", { location: "header" }); }}
               className={`hidden min-h-11 items-center gap-2 rounded-full px-5 text-sm transition-colors lg:inline-flex ${onLight ? "bg-[#2a2118] text-[#f6f0e6] hover:bg-[#3a2e22]" : "btn-gold"}`}
             >
               <WhatsAppIcon className="h-4 w-4" />
@@ -116,7 +116,7 @@ export function Header() {
               ))}
             </nav>
             <div className="flex flex-col gap-3">
-              <a href={waLink()} target="_blank" rel="noopener noreferrer" onClick={() => track("click_whatsapp", { location: "menu" })} className="btn-gold inline-flex min-h-14 items-center justify-center gap-2 rounded-full text-[16px] font-medium">
+              <a href={waLink()} target="_blank" rel="noopener noreferrer" onClick={(e) => { waContext(e); track("click_whatsapp", { location: "menu" }); }} className="btn-gold inline-flex min-h-14 items-center justify-center gap-2 rounded-full text-[16px] font-medium">
                 <WhatsAppIcon className="h-5 w-5" /> שלחו הודעה בוואטסאפ
               </a>
               <div className="grid grid-cols-2 gap-3">

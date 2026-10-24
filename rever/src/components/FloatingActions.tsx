@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useDarkAt } from "@/lib/use-tone";
-import { telLink, waLink } from "@/lib/whatsapp";
+import { telLink, waLink, waContext } from "@/lib/whatsapp";
 import { PhoneIcon, WhatsAppIcon } from "./Icons";
 
 /**
@@ -59,7 +59,7 @@ export function FloatingActions() {
               href={waLink()}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track("click_whatsapp", { location: "bottom_bar" })}
+              onClick={(e) => { waContext(e); track("click_whatsapp", { location: "bottom_bar" }); }}
               className="btn-gold flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full text-[15px] font-medium"
             >
               <WhatsAppIcon className="h-5 w-5" /> שלחו הודעה בוואטסאפ
@@ -73,7 +73,7 @@ export function FloatingActions() {
             href={waLink()}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track("click_whatsapp", { location: "fab" })}
+            onClick={(e) => { waContext(e); track("click_whatsapp", { location: "fab" }); }}
             aria-label="שלחו לנו הודעה בוואטסאפ"
             className="btn-gold fixed bottom-6 left-6 z-50 hidden h-14 w-14 items-center justify-center rounded-full ring-2 ring-white/70 shadow-[0_12px_30px_-10px_rgba(0,0,0,0.55)] md:flex"
             initial={{ scale: 0 }}

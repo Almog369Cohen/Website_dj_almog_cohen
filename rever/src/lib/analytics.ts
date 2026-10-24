@@ -5,6 +5,9 @@
  *   NEXT_PUBLIC_LEAD_ENDPOINT    URL that receives form leads as JSON (Formspree, Make, Apps Script)
  * Tracking scripts load only after the visitor accepts the consent bar.
  */
+import { getSource } from "./source";
+import { waContextText } from "./whatsapp";
+
 type Win = Window & { gtag?: (...a: unknown[]) => void; fbq?: (...a: unknown[]) => void };
 
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
@@ -22,12 +25,12 @@ export function track(event: "click_whatsapp" | "click_call" | "generate_lead" |
 }
 
 export async function sendLead(data: Record<string, string>) {
-  if (!LEAD_ENDPOINT) return;
+  if (!LEAD_ENDPOINT || data.website) return; // `website` is the hidden honeypot field: a human never fills it
   try {
     await fetch(LEAD_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ ...data, source: "rever-site", page: location.href }),
+      body: JSON.stringify({ ...data, source: getSource(), context: waContextText(), page: location.href }),
       keepalive: true,
     });
   } catch {

@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { hero } from "@/content/site";
 import { track } from "@/lib/analytics";
 import { useMedia } from "@/lib/use-media";
-import { waLink } from "@/lib/whatsapp";
+import { waLink, waContext } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "./Icons";
 import { StringLights } from "./StringLights";
 
@@ -50,7 +50,7 @@ export function Hero() {
   const webm = desktop ? hero.videoWebm : hero.videoMobileWebm;
 
   return (
-    <section id="top" ref={ref} className="relative h-[100svh] min-h-[600px] overflow-hidden bg-[#0e0c0a] md:min-h-[520px]">
+    <section id="top" ref={ref} data-wa="הגעתי מהאתר" className="relative h-[100svh] min-h-[600px] overflow-hidden bg-[#0e0c0a] md:min-h-[520px]">
       {desktop && (
         // ambient light from the poster, blurred once (no second video decode)
         // eslint-disable-next-line @next/next/no-img-element
@@ -104,15 +104,16 @@ export function Hero() {
             {hero.titleTop}
             <span className="block text-[#e3bf7c]">{hero.titleBottom}</span>
           </h1>
-          <div className="hairline my-6 hidden w-20 md:block [@media(max-height:560px)]:hidden" />
-          <p className="mt-3 text-[15px] leading-[1.6] text-[#f6f0e6]/85 md:hidden">{hero.subtitleShort}</p>
-          <p className="hidden max-w-md text-[17px] leading-[1.75] text-[#f6f0e6]/90 md:block [@media(max-height:560px)]:hidden">{hero.subtitle}</p>
+          <div className="hairline my-5 hidden w-20 md:block [@media(max-height:560px)]:hidden" />
+          {/* REVER's own line, right under the headline */}
+          <p className="mt-3 text-[16px] leading-[1.6] text-[#f6f0e6]/90 md:mt-0 md:text-[17px]">{hero.tagline}</p>
+          <p className="mt-3 hidden max-w-md text-[15px] leading-[1.7] text-[#f6f0e6]/75 md:block [@media(max-height:560px)]:hidden">{hero.subtitle}</p>
           <div className="mt-5 flex flex-col items-stretch gap-2 md:mt-8 md:flex-row md:items-center md:gap-5">
             <a
               href={waLink()}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track("click_whatsapp", { location: "hero" })}
+              onClick={(e) => { waContext(e); track("click_whatsapp", { location: "hero" }); }}
               className="btn-gold inline-flex min-h-13 items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 text-[16px] font-medium transition-transform hover:scale-[1.03]"
             >
               <WhatsAppIcon className="h-4 w-4" />

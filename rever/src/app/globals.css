@@ -179,26 +179,16 @@ body {
 .orb-b { bottom: -45vmax; left: -35vmax; background: radial-gradient(circle, var(--b) 0, transparent 62%); }
 .orb-c { top: 20%; left: 15%; width: 60vmax; height: 60vmax; background: radial-gradient(circle, var(--c) 0, transparent 60%); }
 
-@keyframes drift-a { to { transform: translate3d(-8vmax, 6vmax, 0) scale(1.08); } }
-@keyframes drift-b { to { transform: translate3d(10vmax, -6vmax, 0) scale(0.94); } }
-@keyframes drift-c { to { transform: translate3d(6vmax, 8vmax, 0); } }
-/* transform-only drift: cheap enough for phones too */
-.orb-a { animation: drift-a 30s ease-in-out infinite alternate; }
-.orb-b { animation: drift-b 38s ease-in-out infinite alternate; }
-.orb-c { animation: drift-c 26s ease-in-out infinite alternate; }
+/* The light colours are still; the only movement on the page is the light coming on. */
 /* Portrait phones: bigger lights, pulled on screen so the colour is actually seen. */
 @media (max-width: 767px) {
   .orb-a { width: 120vmax; height: 120vmax; top: -30vmax; right: -50vmax; }
   .orb-b { width: 120vmax; height: 120vmax; bottom: -40vmax; left: -50vmax; }
 }
 
-/* A lit photograph: soft coloured light under it, and a single warm sweep on entry. */
+/* A lit photograph: soft coloured light in its own colour beneath it. */
 .lit {
   box-shadow: 0 40px 90px -40px var(--glow), 0 0 0 1px rgba(255, 255, 255, 0.35) inset;
-}
-.light-sweep {
-  background: linear-gradient(100deg, transparent 0%, rgba(255, 236, 200, 0) 20%, rgba(255, 240, 214, 0.55) 50%, rgba(255, 236, 200, 0) 80%, transparent 100%);
-  mix-blend-mode: soft-light;
 }
 
 /* The dance floor: its own dark stage with soft-edged light cones (no hard shapes). */
@@ -226,14 +216,9 @@ body {
   mask-image: linear-gradient(#000, transparent 80%);
   mix-blend-mode: screen;
 }
-@keyframes sway { from { transform: rotate(-12deg); } to { transform: rotate(12deg); } }
-@media (max-width: 767px) {
-  /* static beams on phones: no endless blended animation on page-height layers */
-  .beam { animation: none !important; }
-}
-.beam-1 { --beam: rgba(214, 92, 160, 0.42); right: -20vmax; animation: sway 10s ease-in-out infinite alternate; }
-.beam-2 { --beam: rgba(90, 210, 222, 0.32); right: 5vmax; animation: sway 13s ease-in-out -4s infinite alternate-reverse; }
-.beam-3 { --beam: rgba(255, 200, 130, 0.3); left: -25vmax; animation: sway 15s ease-in-out -2s infinite alternate; }
+.beam-1 { --beam: rgba(214, 92, 160, 0.42); right: -20vmax; transform: rotate(-9deg); }
+.beam-2 { --beam: rgba(90, 210, 222, 0.32); right: 5vmax; transform: rotate(7deg); }
+.beam-3 { --beam: rgba(255, 200, 130, 0.3); left: -25vmax; transform: rotate(11deg); }
 
 /* Luminous form fields on light scenes. */
 .field-light {

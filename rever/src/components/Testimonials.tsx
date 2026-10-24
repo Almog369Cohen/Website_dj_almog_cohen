@@ -9,7 +9,7 @@ const QUOTES = [1, 2, 3];
 
 export function Testimonials() {
   return (
-    <section id="words" data-scene="golden" className="theme-ivory px-4 py-16 md:px-10 md:py-28">
+    <section id="words" data-scene="golden" data-wa="קראתי באתר מה זוגות אומרים" className="theme-ivory px-4 py-16 md:px-10 md:py-28">
       <div className="mx-auto max-w-6xl">
         <Reveal className="max-w-2xl">
           <SectionKicker>מה אומרים עלינו</SectionKicker>
@@ -24,7 +24,7 @@ export function Testimonials() {
                   <Todo>ציטוט אמיתי מזוג: להשלים</Todo>
                 </blockquote>
                 <figcaption className="mt-5 text-[14px] text-ink-dim">
-                  <Todo>שמות, מקום האירוע ותאריך</Todo>
+                  <Todo>שם הזוג</Todo> · <Todo>מקום</Todo> · <Todo>חודש</Todo>
                 </figcaption>
               </figure>
             </Reveal>

@@ -3,48 +3,52 @@ import { LitImage } from "./LitImage";
 import { Reveal, SectionKicker } from "./Reveal";
 import { Todo } from "./Todo";
 
-/** The people behind the night: the founders, the team at work, the team with a couple at the end. */
+/** Can we trust them: the people (name, role and face per person), the one confirmed number, and who they are. */
 export function Team() {
   return (
-    <section id="about" data-scene="dawn" className="theme-ivory px-4 py-16 md:px-10 md:py-28">
-      <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-12 md:gap-14">
-        <Reveal className="md:col-span-5">
-          <figure>
-            <LitImage src={team.founders.src} alt={team.founders.alt} fill sizes="(min-width:768px) 40vw, 100vw" glow="rgba(240,160,64,.7)" className="arch aspect-[4/5] [&_img]:object-[50%_30%]" />
-            <figcaption className="mt-4 text-center text-[15px]">
-              <Todo>שמות ותפקידים: להשלים</Todo>
-            </figcaption>
-          </figure>
+    <section id="about" data-scene="dawn" data-wa="ראיתי באתר את הצוות" className="theme-ivory px-4 py-16 md:px-10 md:py-28">
+      <div className="mx-auto max-w-6xl">
+        <Reveal className="max-w-2xl">
+          <SectionKicker>{team.kicker}</SectionKicker>
+          <h2 className="font-display text-[clamp(2.1rem,5vw,4.2rem)] font-medium leading-[1.05] [text-wrap:balance]">{team.title}</h2>
+          <p className="mt-4 font-display text-[1.35rem] text-gold">{about.title}</p>
+          {about.paragraphs.map((p, i) => (
+            <p key={i} className="mt-4 text-[17px] leading-[1.8] text-ink-dim">
+              {p}
+            </p>
+          ))}
         </Reveal>
 
-        <div className="md:col-span-7 md:pt-6">
-          <Reveal>
-            <SectionKicker>{team.kicker}</SectionKicker>
-            <h2 className="font-display text-[clamp(2.1rem,5vw,4.2rem)] font-medium leading-[1.05] [text-wrap:balance]">{team.title}</h2>
-            <p className="mt-3 font-display text-[1.35rem] text-gold">{about.title}</p>
-            <div className="hairline my-6 w-24" />
-            {about.paragraphs.map((p, i) => (
-              <p key={i} className="mt-4 text-[17px] leading-[1.8] text-ink-dim">
-                {p}
-              </p>
-            ))}
-          </Reveal>
-
-          <div className="mt-10 grid grid-cols-2 gap-3 md:gap-5">
-            <Reveal>
+        <div className="mt-10 grid gap-8 md:mt-16 md:grid-cols-3 md:gap-8">
+          {team.people.map((p, i) => (
+            <Reveal key={p.src} delay={i * 0.08}>
               <figure>
-                <LitImage src={team.day.src} alt={team.day.alt} fill sizes="(min-width:768px) 28vw, 48vw" glow="rgba(170,190,130,.7)" className="aspect-[4/5] rounded-[18px] [&_img]:object-[78%_40%]" />
-                <figcaption className="mt-2 text-[14px] text-ink-dim">ביום האירוע, ליד הזוג</figcaption>
+                <LitImage src={p.src} alt={p.alt} fill sizes="(min-width:768px) 30vw, 100vw" glow={i === 1 ? "rgba(170,190,130,.7)" : "rgba(240,160,64,.7)"} className="aspect-[4/5] rounded-[22px]" imgPosition={p.pos} />
+                <figcaption className="mt-4">
+                  <p className="text-[18px] font-medium">
+                    <Todo>שם</Todo> · <Todo>תפקיד</Todo>
+                  </p>
+                  <p className="mt-1 text-[14px] text-ink-dim">{p.caption}</p>
+                </figcaption>
               </figure>
             </Reveal>
-            <Reveal delay={0.08}>
-              <figure>
-                <LitImage src={team.group.src} alt={team.group.alt} fill sizes="(min-width:768px) 28vw, 48vw" glow="rgba(240,160,64,.7)" className="aspect-[4/5] rounded-[18px] [&_img]:object-[55%_40%]" />
-                <figcaption className="mt-2 text-[14px] text-ink-dim">בסוף הערב, עם הזוג</figcaption>
-              </figure>
-            </Reveal>
-          </div>
+          ))}
         </div>
+
+        <Reveal className="mt-12 grid grid-cols-3 border-y border-line md:mt-20">
+          {team.stats.map((s, i) => (
+            <div key={s.label} className={`flex flex-col items-center px-2 py-6 text-center md:py-9 ${i ? "border-r border-line" : ""}`}>
+              {s.verified ? (
+                <span className="font-display text-[2.6rem] leading-none text-gold md:text-[4rem]">{s.n}</span>
+              ) : (
+                <span className="flex h-[2.6rem] items-center text-[13px] md:h-[4rem] md:text-[15px]">
+                  <Todo>{s.n}</Todo>
+                </span>
+              )}
+              <span className="mt-2 text-[13px] leading-snug text-ink-dim md:text-[15px]">{s.label}</span>
+            </div>
+          ))}
+        </Reveal>
       </div>
     </section>
   );

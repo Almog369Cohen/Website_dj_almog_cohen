@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { brand, contact } from "@/content/site";
 import { openWhatsApp, sendLead, track } from "@/lib/analytics";
-import { telLink, waLink } from "@/lib/whatsapp";
+import { telLink, waLink, waContext } from "@/lib/whatsapp";
 import { InstagramIcon, PhoneIcon, PinIcon, WhatsAppIcon } from "./Icons";
 import { openDialog } from "./Dialogs";
 import { Reveal, SectionKicker } from "./Reveal";
@@ -19,6 +19,7 @@ export function Contact() {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const d = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
+    if (d.website) return; // honeypot: only a bot fills it
     const lines = [
       "היי REVER, השארתי פרטים באתר.",
       `שם: ${d.name}`,
@@ -35,7 +36,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" data-scene="golden" className="theme-ivory relative overflow-hidden px-4 pb-20 pt-12 md:px-10 md:py-32">
+    <section id="contact" data-scene="golden" data-wa="הגעתי לטופס באתר" className="theme-ivory relative overflow-hidden px-4 pb-20 pt-12 md:px-10 md:py-32">
       <div className="relative mx-auto grid max-w-7xl items-end gap-8 md:grid-cols-2 md:gap-x-16 md:gap-y-8">
         <Reveal>
           <SectionKicker>{contact.kicker}</SectionKicker>
@@ -49,7 +50,7 @@ export function Contact() {
         <Reveal className="order-last md:order-none md:col-start-1 md:row-start-2 md:self-start">
           <ul className="flex flex-col text-[16px]">
             <li>
-              <a href={waLink()} target="_blank" rel="noopener noreferrer" onClick={() => track("click_whatsapp", { location: "contact" })} className="inline-flex min-h-11 items-center gap-3 hover:text-gold">
+              <a href={waLink()} target="_blank" rel="noopener noreferrer" onClick={(e) => { waContext(e); track("click_whatsapp", { location: "contact" }); }} className="inline-flex min-h-11 items-center gap-3 hover:text-gold">
                 <WhatsAppIcon className="h-5 w-5 text-gold" /> שלחו לנו הודעה בוואטסאפ
               </a>
             </li>
@@ -71,7 +72,7 @@ export function Contact() {
 
         {/* phones: one tap before any form friction */}
         <div className="-mt-2 flex gap-2 md:hidden">
-          <a href={waLink()} target="_blank" rel="noopener noreferrer" onClick={() => track("click_whatsapp", { location: "contact_quick" })} className="btn-gold flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full text-[15px] font-medium">
+          <a href={waLink()} target="_blank" rel="noopener noreferrer" onClick={(e) => { waContext(e); track("click_whatsapp", { location: "contact_quick" }); }} className="btn-gold flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full text-[15px] font-medium">
             <WhatsAppIcon className="h-4 w-4" /> וואטסאפ
           </a>
           <a href={telLink} onClick={() => track("click_call", { location: "contact_quick" })} className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border border-[#2a2118]/25 bg-white/50 text-[15px]">
@@ -82,6 +83,7 @@ export function Contact() {
 
         <Reveal delay={0.1} className="md:col-start-2 md:row-span-2 md:row-start-1">
           <form onSubmit={onSubmit} className="glass-ivory lit rounded-[24px] p-5 md:p-9" style={{ "--glow": "rgba(243,166,88,.6)" } as React.CSSProperties}>
+            <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 opacity-0" />
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className={label} htmlFor="c-name">שם מלא *</label>

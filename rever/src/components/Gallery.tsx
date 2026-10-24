@@ -161,7 +161,7 @@ export function Gallery() {
   const close = useCallback(() => setOpen(null), []);
 
   return (
-    <section id="gallery" data-scene="day" className="relative px-4 pb-10 pt-16 md:px-10 md:py-28">
+    <section id="gallery" data-scene="day" data-wa={`ראיתי באתר את ${event.title}`} className="relative px-4 pb-10 pt-16 md:px-10 md:py-28">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mb-6 md:mb-10">
           <SectionKicker>אירועים</SectionKicker>

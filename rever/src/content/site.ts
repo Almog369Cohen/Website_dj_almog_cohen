@@ -21,9 +21,9 @@ export const brand = {
 };
 
 export const nav = [
-  { id: "value", label: "למה REVER" },
-  { id: "about", label: "הצוות" },
+  { id: "evening", label: "הערב שלכם" },
   { id: "services", label: "איך זה עובד" },
+  { id: "about", label: "הצוות" },
   { id: "gallery", label: "אירועים" },
   { id: "contact", label: "דברו איתנו" },
 ];
@@ -35,53 +35,66 @@ export const hero = {
   videoMobileWebm: "/video/hero-m.webm",
   poster: "/images/hero-poster-1080.webp",
   eyebrow: "REVER PRODUCTIONS",
-  titleTop: "אתם מתרגשים מהאירוע,",
-  titleBottom: "אנחנו דואגים לכל מה שמסביב.",
+  titleTop: "מקבלת הפנים בגן",
+  titleBottom: "ועד השיר האחרון על הרחבה",
+  tagline: "אתם מתרגשים מהאירוע, אנחנו דואגים לכל מה שמסביב.",
   subtitle: "הפקת חתונות ואירועים מהרעיון הראשון ועד השיר האחרון: לוקיישן, ספקים, עיצוב וניהול מלא של יום האירוע.",
-  subtitleShort: "חתונות ואירועים: לוקיישן, ספקים, עיצוב וניהול מלא של היום.",
   ctaPrimary: "דברו איתנו בוואטסאפ",
   ctaSecondary: "לרגעים שהפקנו",
 };
 
-/** What a couple actually gets. Every line comes from REVER's own service copy. */
-export const value = {
-  kicker: "למה REVER",
-  title: "מה אתם מקבלים כשאנחנו מפיקים",
-  items: [
-    { icon: "one", title: "כתובת אחת לכל הספקים", text: "במקום עשרות שיחות והודעות, יש לכם איש קשר אחד. אנחנו מדברים עם האולם, הצלמים, ה־DJ והמעצבים." },
-    { icon: "budget", title: "תקציב ברור שנשמר", text: "בונים איתכם תקציב בהתחלה, ושומרים עליו לאורך כל הדרך." },
-    { icon: "star", title: "תנאים מועדפים אצל הספקים", text: "ספקים מובילים שאנחנו עובדים איתם, בתנאים מועדפים ללקוחות REVER." },
-    { icon: "calm", title: "ביום עצמו, אתם רק נהנים", text: "אנחנו מנהלים את הלו״ז, הספקים, ההושבה והרזרבות. הטלפון שלכם נשאר בכיס." },
-  ],
+/** The light switch: what a couple runs alone, and what changes with one contact person. Every line comes from REVER's own copy. */
+export const contrast = {
+  kicker: "ההבדל",
+  title: "הדליקו את האור",
+  hint: "לחצו על המתג",
+  phoneNote: "המחשה",
+  vendors: ["האולם", "הצלם", "ה־DJ", "העיצוב"],
+  off: {
+    label: "בלי הפקה, את הכול מנהלים לבד",
+    items: [
+      "לוקיישן: איתור וסבב התרשמות",
+      "ספקים: אולם, צלמים, DJ ועיצוב, כל אחד בנפרד",
+      "חוזים: קריאה והשוואה",
+      "תקציב: לבנות אותו ולשמור עליו",
+      "ביום האירוע: לו״ז, הושבה ורזרבות, בזמן אמת",
+    ],
+  },
+  on: {
+    label: "עם REVER, איש קשר אחד",
+    items: [
+      "אנחנו מדברים עם כל הספקים, אתם איתנו",
+      "אנחנו עוברים איתכם על החוזים",
+      "תקציב ברור שנשמר לאורך כל הדרך",
+      "ביום עצמו: הלו״ז, ההושבה והרזרבות אצלנו",
+    ],
+  },
+  onPhone: "REVER · אנחנו על זה",
+};
+
+export const team = {
+  kicker: "הצוות",
+  title: "האנשים שמאחורי הערב",
   // only "6" is confirmed; the rest stay green until REVER sends numbers
   stats: [
     { n: "6", label: "שנים של הפקות", verified: true },
     { n: "להשלים", label: "אירועים שהפקנו", verified: false },
     { n: "להשלים", label: "ספקים בנבחרת שלנו", verified: false },
   ],
+  people: [
+    { src: "/images/team-founders.jpg", alt: "שני אנשי REVER ליד הבר באירוע", pos: "50% 30%", caption: "לאשר: האם אלה המייסדים?" },
+    { src: "/images/team-day.jpg", alt: "מפיק REVER עם תג צוות ליד הזוג ביום האירוע", pos: "78% 40%", caption: "ביום האירוע, ליד הזוג" },
+    { src: "/images/team-group.jpg", alt: "צוות REVER עם הזוג בסוף הערב", pos: "55% 40%", caption: "בסוף הערב, עם הזוג" },
+  ],
 };
 
-/** The light switch: the same event, without and with a producer. */
-export const contrast = {
-  kicker: "ההבדל",
-  title: "הדליקו את האור",
-  hint: "לחצו על המתג",
-  off: {
-    label: "בלי הפקה",
-    items: ["עשרות שיחות והודעות עם ספקים", "חוזים שאתם קוראים לבד בלילה", "תקציב שזולג בדרך", "ביום עצמו: אתם עונים לטלפונים"],
-  },
-  on: {
-    label: "עם REVER",
-    items: ["כתובת אחת לכל הספקים", "אנחנו עוברים איתכם על החוזים", "תקציב ברור שנשמר עד הסוף", "ביום עצמו: אתם רוקדים"],
-  },
-};
-
-export const team = {
-  kicker: "הצוות",
-  title: "האנשים שמאחורי הערב",
-  founders: { src: "/images/team-founders.jpg", alt: "מייסדי REVER" },
-  day: { src: "/images/team-day.jpg", alt: "מפיק REVER עם הזוג ביום האירוע" },
-  group: { src: "/images/team-group.jpg", alt: "צוות REVER עם הזוג בסוף הערב" },
+/** One evening, two worlds: the hand-over from the light of the reception to the dark of the dance floor. */
+export const evening = {
+  kicker: "הערב שלכם",
+  title: "שני עולמות, ערב אחד",
+  lead: "קבלת פנים באור, ואחריה רחבה בחושך. אצלנו זה אותו צוות, מההתחלה ועד השיר האחרון.",
+  reception: { src: "/images/ev-court-1.jpg", alt: "פינות ישיבה בין העצים תחת שרשראות אור", title: "קבלת פנים", text: "שולחנות, מנורות ופרחים בסגנון שלכם, בין עצים ושרשראות אור." },
+  moment: { src: "/images/ev-couple-1.jpg", alt: "הזוג הולך בשביל בין ניצוצות", title: "הרגע שלכם", text: "אנחנו מחזיקים את הלו״ז, הספקים וההושבה. אתם רק נכנסים." },
 };
 
 export const about = {
