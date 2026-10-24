@@ -19,9 +19,16 @@ for p in [dst / "rever.html", *dst.rglob("*.js"), *dst.rglob("*.css")]:
     s = p.read_text(encoding="utf-8")
     o = s
     s = s.replace("/_next/", "next/").replace("_next/", "next/")
+    # (a backtick counts too: template-string paths like `/images/${name}.jpg` are built in the browser)
     # every absolute /images/, /video/ or /icon.svg reference (src, srcset lists, RSC payload)
-    s = re.sub(r'(?<=[\s"\',])/(images/|video/|icon\.svg)', r'\1', s)
+    s = re.sub(r'(?<=[\s"\',`])/(images/|video/|icon\.svg)', r'\1', s)
     s = s.replace('"\ufffd"', '"\\ufffd"')
     if s != o:
         p.write_text(s, encoding="utf-8")
+# fail loudly if any absolute asset path is left: it would point at the host root and show a broken image
+LEFTOVER = re.compile(r'(?<![\w.])/(images/|video/|icon\.svg)')
+for p in [dst / "rever.html", *dst.rglob("*.js"), *dst.rglob("*.css")]:
+    m = LEFTOVER.search(p.read_text(encoding="utf-8"))
+    if m:
+        sys.exit(f"absolute path left in {p.relative_to(dst)}: ...{p.read_text(encoding='utf-8')[max(0, m.start() - 20):m.end() + 25]}")
 print("\n".join(sorted(str(f.relative_to(dst)) for f in dst.rglob("*") if f.is_file() and f.name != "rever.html")))
