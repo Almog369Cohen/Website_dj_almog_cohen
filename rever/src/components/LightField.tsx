@@ -3,33 +3,41 @@
 import { useEffect, useState } from "react";
 
 /**
- * The page's light. Each section declares a scene (data-scene); the scene whose
- * section crosses the middle of the screen spreads in from the top, like light
- * spilling from the string lights. Colours come from Rever's own
- * photos: candle and string-light amber, blush, olive-tree sage, the lotus turquoise.
- * Only opacity and transform animate, so it stays smooth on phones.
+ * The page's light, behind every light section. The scene of the section that has
+ * reached 60% of the screen height spreads in from the top, like light spilling
+ * from the string lights. Colours come from Rever's own photos. Dark sections
+ * (the opening and the dance floor) carry their own opaque background, so dark
+ * text can never land on a dark light.
+ * Position is measured on scroll, not with IntersectionObserver margins, which
+ * browsers ignore inside cross-origin iframes (previews, embeds).
  */
-const SCENES = ["night", "dawn", "day", "party", "golden"] as const;
+const SCENES = ["night", "dawn", "day", "golden"] as const;
 type Scene = (typeof SCENES)[number];
 
 export function LightField() {
-  // The previous scene stays fully lit underneath while the new one fades in over it,
-  // so a change never dips through a dim, muddy mix of the two.
   const [[scene, prev], setScenes] = useState<[Scene, Scene]>(["night", "night"]);
 
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          const next = (e.target as HTMLElement).dataset.scene as Scene;
-          setScenes(([cur]) => (cur === next ? [cur, cur] : [next, cur]));
-        }
-      },
-      { rootMargin: "-50% 0px -50% 0px" },
-    );
-    document.querySelectorAll("[data-scene]").forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-scene]"));
+    let raf = 0;
+    const measure = () => {
+      raf = 0;
+      const line = window.innerHeight * 0.6;
+      let next: Scene = "night";
+      for (const el of els) if (el.getBoundingClientRect().top < line) next = el.dataset.scene as Scene;
+      setScenes(([cur, old]) => (cur === next ? [cur, old] : [next, cur]));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (

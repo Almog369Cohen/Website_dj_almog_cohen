@@ -7,8 +7,9 @@ import { StringLights } from "./StringLights";
 export function Night() {
   const [a, b, c, d] = night.images;
   return (
-    <section id="night" data-scene="party" className="relative overflow-hidden px-4 py-20 text-[#f6f0e6] md:px-10 md:py-32">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+    <section id="night" className="relative overflow-hidden px-4 pb-24 pt-32 text-[#f6f0e6] md:px-10 md:pb-32 md:pt-44">
+      {/* Own dark stage, fading in and out at the edges, so the page light never turns dark under light-section text. */}
+      <div aria-hidden="true" className="party-stage pointer-events-none absolute inset-0">
         <span className="beam beam-1" />
         <span className="beam beam-2" />
         <span className="beam beam-3" />

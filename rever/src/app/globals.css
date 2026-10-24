@@ -166,7 +166,6 @@ body {
 .scene-night  { --base: #0b0a0c; --a: rgba(63, 198, 214, 0.2);  --b: rgba(217, 178, 111, 0.18); --c: rgba(120, 70, 150, 0.14); }
 .scene-dawn   { --base: #fbf5ec; --a: rgba(242, 184, 102, 0.5); --b: rgba(233, 184, 164, 0.45); --c: rgba(255, 252, 245, 0.9); }
 .scene-day    { --base: #f8f1e6; --a: rgba(196, 201, 160, 0.45); --b: rgba(242, 184, 102, 0.38); --c: rgba(236, 196, 178, 0.4); }
-.scene-party  { --base: #0d0a17; --a: rgba(196, 72, 140, 0.38); --b: rgba(63, 198, 214, 0.3);  --c: rgba(242, 170, 90, 0.26); }
 .scene-golden { --base: #fbf0e3; --a: rgba(243, 166, 88, 0.55); --b: rgba(232, 160, 146, 0.45); --c: rgba(255, 238, 210, 0.9); }
 
 .orb {
@@ -198,22 +197,31 @@ body {
   mix-blend-mode: soft-light;
 }
 
-/* Stage light beams for the party section. */
+/* The dance floor: its own dark stage with soft-edged light cones (no hard shapes). */
+.party-stage {
+  background:
+    radial-gradient(60% 40% at 85% 30%, rgba(196, 72, 140, 0.32), transparent 70%),
+    radial-gradient(55% 40% at 10% 70%, rgba(63, 198, 214, 0.22), transparent 70%),
+    radial-gradient(50% 35% at 50% 100%, rgba(242, 170, 90, 0.2), transparent 70%),
+    #0d0a17;
+  -webkit-mask-image: linear-gradient(transparent, #000 96px, #000 calc(100% - 96px), transparent);
+  mask-image: linear-gradient(transparent, #000 96px, #000 calc(100% - 96px), transparent);
+}
 .beam {
   position: absolute;
-  top: -10%;
-  width: 46vmax;
-  height: 120%;
+  top: 0;
+  width: 70vmax;
+  height: 110%;
   transform-origin: 50% 0;
-  background: linear-gradient(180deg, var(--beam) 0%, transparent 75%);
-  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
-  opacity: 0.55;
+  background: conic-gradient(from 165deg at 50% 0%, transparent 0deg, var(--beam) 15deg, transparent 30deg);
+  -webkit-mask-image: linear-gradient(#000, transparent 80%);
+  mask-image: linear-gradient(#000, transparent 80%);
   mix-blend-mode: screen;
 }
-@keyframes sway { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
-.beam-1 { --beam: rgba(196, 72, 140, 0.55); right: 4%; animation: sway 9s ease-in-out infinite alternate; }
-.beam-2 { --beam: rgba(63, 198, 214, 0.45); right: 38%; animation: sway 11s ease-in-out -4s infinite alternate-reverse; }
-.beam-3 { --beam: rgba(255, 196, 120, 0.45); left: 2%; animation: sway 13s ease-in-out -2s infinite alternate; }
+@keyframes sway { from { transform: rotate(-12deg); } to { transform: rotate(12deg); } }
+.beam-1 { --beam: rgba(214, 92, 160, 0.42); right: -20vmax; animation: sway 10s ease-in-out infinite alternate; }
+.beam-2 { --beam: rgba(90, 210, 222, 0.32); right: 5vmax; animation: sway 13s ease-in-out -4s infinite alternate-reverse; }
+.beam-3 { --beam: rgba(255, 200, 130, 0.3); left: -25vmax; animation: sway 15s ease-in-out -2s infinite alternate; }
 
 /* Luminous form fields on light scenes. */
 .field-light {
