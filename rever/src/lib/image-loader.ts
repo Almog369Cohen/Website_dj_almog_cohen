@@ -3,7 +3,7 @@
  * /images/<name>.jpg as <name>-<width>.webp; this picks the closest size.
  * Other sources (svg, external, posters) are returned unchanged.
  */
-const WIDTHS = [640, 1080, 1600, 2400];
+const WIDTHS = [640, 1080, 1280, 1600, 2400];
 
 export default function imageLoader({ src, width }: { src: string; width: number }) {
   const m = src.match(/^(.*images\/)([^/]+)\.jpg$/);

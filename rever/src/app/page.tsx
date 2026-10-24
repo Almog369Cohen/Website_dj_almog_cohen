@@ -1,18 +1,18 @@
 import { About } from "@/components/About";
+import { Consent } from "@/components/Consent";
 import { Contact } from "@/components/Contact";
+import { Dialogs } from "@/components/Dialogs";
 import { FloatingActions } from "@/components/FloatingActions";
 import { Footer } from "@/components/Footer";
 import { Gallery } from "@/components/Gallery";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Night } from "@/components/Night";
-import { Preloader } from "@/components/Preloader";
 import { Services } from "@/components/Services";
 
 export default function Home() {
   return (
     <>
-      <Preloader />
       <Header />
       <main id="main">
         <Hero />
@@ -28,6 +28,8 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingActions />
+      <Dialogs />
+      <Consent />
     </>
   );
 }

@@ -1,65 +1,36 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { brand, nav } from "@/content/site";
 import { telLink, waLink } from "@/lib/whatsapp";
+import { openDialog } from "./Dialogs";
+import { InstagramIcon, PhoneIcon, WhatsAppIcon } from "./Icons";
 import { Logo } from "./Logo";
 import { Todo } from "./Todo";
 
 export function Footer() {
-  const dialog = useRef<HTMLDialogElement>(null);
-
-  useEffect(() => {
-    const d = dialog.current;
-    if (!d) return;
-    const onClick = (e: MouseEvent) => e.target === d && d.close();
-    d.addEventListener("click", onClick);
-    return () => d.removeEventListener("click", onClick);
-  }, []);
-
   return (
-    <footer className="theme-ivory relative pt-20 pb-28 md:pb-12">
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <div className="grid gap-10 md:grid-cols-3">
-          <div>
-            <Logo className="h-24" />
-            <p className="mt-4 max-w-xs text-sm text-ink-dim">הפקת אירועים וחתונות, עם ליווי מלא מהרעיון הראשון ועד הרגע האחרון.</p>
-          </div>
-          <nav aria-label="ניווט תחתון" className="grid grid-cols-2 gap-3 text-sm">
-            {nav.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className="text-ink-dim hover:text-gold">
-                {n.label}
-              </a>
-            ))}
-          </nav>
-          <div className="flex flex-col gap-3 text-sm">
-            <a href={telLink} className="w-fit"><Todo dir="ltr">{brand.phoneDisplay}</Todo></a>
-            <Todo>{brand.addressPlaceholder}</Todo>
-            <a href={waLink()} target="_blank" rel="noopener noreferrer" className="hover:text-gold">וואטסאפ</a>
-            <button type="button" onClick={() => dialog.current?.showModal()} className="w-fit text-ink-dim underline-offset-4 hover:text-gold hover:underline">
-              הצהרת נגישות
-            </button>
-          </div>
+    <footer className="theme-ivory relative px-4 pb-28 pt-16 md:px-8 md:pb-12 md:pt-24">
+      <div className="mx-auto flex max-w-7xl flex-col items-center text-center">
+        <Logo className="h-28 md:h-36" />
+        <p className="mt-4 max-w-sm text-[15px] text-ink-dim">הפקת חתונות ואירועים, מהרעיון הראשון ועד השיר האחרון.</p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[15px]">
+          <a href={waLink()} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 hover:text-gold"><WhatsAppIcon className="h-4 w-4 text-gold" /> וואטסאפ</a>
+          <a href={telLink} className="inline-flex min-h-11 items-center gap-2"><PhoneIcon className="h-4 w-4 text-gold" /> <Todo dir="ltr">{brand.phoneDisplay}</Todo></a>
+          <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 hover:text-gold"><InstagramIcon className="h-4 w-4 text-gold" /> <span dir="ltr">{brand.instagramHandle}</span></a>
         </div>
-        <div className="mt-14 flex flex-col justify-between gap-3 border-t border-line pt-6 text-xs text-ink-dim md:flex-row">
+        <nav aria-label="ניווט תחתון" className="mt-6 flex flex-wrap justify-center gap-x-6 text-[14px] text-ink-dim">
+          {nav.map((n) => (
+            <a key={n.id} href={`#${n.id}`} className="inline-flex min-h-11 items-center hover:text-gold">{n.label}</a>
+          ))}
+        </nav>
+        <div className="mt-8 w-full border-t border-line pt-6 text-[13px] text-ink-dim md:flex md:items-center md:justify-between">
           <span>© {new Date().getFullYear()} {brand.fullName}. כל הזכויות שמורות.</span>
-          
+          <span className="mt-3 flex justify-center gap-5 md:mt-0">
+            <button type="button" onClick={() => openDialog("privacy")} className="min-h-11 underline-offset-4 hover:underline">מדיניות פרטיות</button>
+            <button type="button" onClick={() => openDialog("a11y")} className="min-h-11 underline-offset-4 hover:underline">הצהרת נגישות</button>
+          </span>
         </div>
       </div>
-
-      <dialog ref={dialog} className="m-auto max-w-lg rounded-3xl border border-line bg-bg-soft p-0 text-ink backdrop:bg-bg/80 backdrop:backdrop-blur" aria-labelledby="a11y-title">
-        <div className="p-8">
-          <h2 id="a11y-title" className="font-display text-2xl font-bold text-gold">הצהרת נגישות</h2>
-          <div className="mt-4 space-y-3 text-sm leading-relaxed text-ink-dim">
-            <p>{brand.fullName} רואה חשיבות רבה בהנגשת האתר לכלל הגולשים, כולל אנשים עם מוגבלות.</p>
-            <p>האתר נבנה מתוך שאיפה לעמוד בהנחיות WCAG 2.1 ברמה AA ובתקן הישראלי 5568: ניווט מלא במקלדת, תמיכה בקוראי מסך, ניגודיות צבעים גבוהה, טקסט חלופי לתמונות וכיבוד העדפת &quot;הפחתת תנועה&quot; של מערכת ההפעלה.</p>
-            <p>נתקלתם ברכיב שאינו נגיש? נשמח לשמוע ולתקן: <a href={telLink}><Todo dir="ltr">{brand.phoneDisplay}</Todo></a></p>
-          </div>
-          <form method="dialog">
-            <button className="btn-gold mt-6 rounded-full px-6 py-3 font-bold">סגירה</button>
-          </form>
-        </div>
-      </dialog>
     </footer>
   );
 }

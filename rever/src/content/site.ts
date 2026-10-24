@@ -12,8 +12,11 @@ export const brand = {
   phoneDisplay: "054-664-6923",
   phoneIntl: "972546646923",
   whatsappMessage: "היי REVER, הגעתי מהאתר ואשמח לשמוע על הפקת האירוע שלנו.",
-  url: "https://rever-events.co.il",
-  logo: "/images/logo.png",
+  // לאמת שהדומיין שלהם לפני עלייה לאוויר, או להגדיר NEXT_PUBLIC_SITE_URL
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://rever-events.co.il",
+  instagram: "https://www.instagram.com/rever_production/",
+  instagramHandle: "@rever_production",
+  logo: "/images/logo.webp",
   logoSize: { width: 907, height: 524 },
 };
 
@@ -28,11 +31,13 @@ export const nav = [
 export const hero = {
   video: "/video/hero.mp4",
   videoWebm: "/video/hero.webm",
+  videoMobile: "/video/hero-m.mp4",
+  videoMobileWebm: "/video/hero-m.webm",
   poster: "/images/hero-poster-1080.webp",
   eyebrow: "REVER · DREAM PRODUCTIONS",
   titleTop: "אתם מתרגשים מהאירוע,",
   titleBottom: "אנחנו דואגים לכל מה שמסביב.",
-  subtitle: "אנחנו כאן כדי לקחת את כל מה שדמיינתם, לחבר את כל החלקים ולהפוך אותם לאירוע אחד מדויק, מרגש ובלתי נשכח.",
+  subtitle: "הפקת חתונות ואירועים מהרעיון הראשון ועד השיר האחרון: לוקיישן, ספקים, עיצוב וניהול מלא של יום האירוע.",
   ctaPrimary: "בואו נתכנן את האירוע שלכם",
   ctaSecondary: "לגלריה",
 };
@@ -57,19 +62,19 @@ export const services = [
   {
     id: "location-vendors",
     title: "לוקיישן וספקים בהתאמה אישית",
-    text: "איתור לוקיישן מדויק לסגנון ולאופי הזוג, כולל סבב התרשמות בלוקיישנים המותאמים עבורכם יחד איתנו. בחירת ספקים מובילים, מאולם וצלמים ועד DJ ועיצוב, במחירים אטרקטיביים ללקוחות REVER.",
+    text: "איתור לוקיישן מדויק לסגנון ולאופי הזוג, כולל סבב התרשמות בלוקיישנים המותאמים עבורכם יחד איתנו. בחירת ספקים מובילים, מאולם וצלמים ועד DJ ועיצוב, בתנאים מועדפים ללקוחות REVER.",
     image: "/images/service-location.jpg",
   },
   {
     id: "planning",
     title: "תכנון וניהול מוקדם",
-    text: "בניית תקציב מסודר וברור, בק אופיס וניהול כלכלי חכם עם בקרה לאורך כל הדרך. לו״ז וגאנטים לכל הספקים, איגוד המסמכים, מעבר על החוזים ואישורם, וליווי ההפקה עד יום החתונה עצמו.",
+    text: "אנחנו בונים איתכם תקציב ברור ושומרים עליו לאורך כל הדרך. מכינים לו״ז לכל הספקים, מרכזים את המסמכים, עוברים על החוזים, ומלווים את ההפקה עד יום החתונה עצמו.",
     image: "/images/service-planning.jpg",
   },
   {
     id: "day-of",
     title: "ניהול מלא של יום האירוע",
-    text: "חברת ההפקה מנהלת את יום החתונה: הלו״ז, הפיקוח על הספקים, ההושבה והבקרה על הרזרבות, עם מענה לכל צורך בזמן אמת.",
+    text: "ביום החתונה אנחנו מנהלים הכול: הלו״ז, הספקים, ההושבה והרזרבות, ועונים לכל צורך בזמן אמת.",
     image: "/images/service-day.jpg",
   },
   {
@@ -82,10 +87,10 @@ export const services = [
 
 /** The party, done with restraint: their own night photos in an editorial collage. */
 export const night = {
-  kicker: "01:30 · על הרחבה",
+  kicker: "על הרחבה",
   title: "כשהאורות כבים,",
   titleAccent: "הרחבה שלכם מתחילה.",
-  text: "מוזיקה, ריקודים ואנרגיה עד השיר האחרון. אנחנו מנהלים את הלו״ז, הספקים והרזרבות מאחורי הקלעים, ואתם רק רוקדים.",
+  text: "מוזיקה, ריקודים ואנרגיה עד השיר האחרון. ואתם? רק רוקדים.",
   images: [
     { src: "/images/night-1.jpg", alt: "הזוג רוקד ליד עמדת התקליטן" },
     { src: "/images/night-2.jpg", alt: "כניסת הזוג לרחבה" },
@@ -99,7 +104,6 @@ export const gallery = [
   { src: "/images/g02.jpg", w: 1366, h: 2048, alt: "מבט מלמעלה על מתחם האירוע" },
   { src: "/images/g03.jpg", w: 1366, h: 2048, alt: "שולחן ארוך עם מנורות ופרחים" },
   { src: "/images/g04.jpg", w: 2400, h: 3600, alt: "מגדל שמפניה בחתונת גן" },
-  { src: "/images/g05.jpg", w: 1066, h: 1600, alt: "שלט קבלת פנים מעוצב" },
   { src: "/images/g06.jpg", w: 1600, h: 1067, alt: "הזוג בחיבוק בין הקשתות" },
   { src: "/images/g07.jpg", w: 2400, h: 3600, alt: "שמלת הכלה" },
   { src: "/images/g08.jpg", w: 1366, h: 2048, alt: "שולחנות ערוכים בחצר האבן" },
@@ -116,4 +120,5 @@ export const contact = {
   subtitle: "REVER, ליווי מלא ומקצועי משלב התכנון ועד רגע השיא ביום האירוע. השאירו פרטים ונחזור אליכם.",
   image: "/images/contact-bg.jpg",
   eventTypes: ["חתונה", "בר / בת מצווה", "אירוע חברה", "אירוע פרטי", "אחר"],
+  when: ["בחודשים הקרובים", "בעוד חצי שנה", "בעוד שנה", "יותר משנה", "עוד לא יודעים"],
 };

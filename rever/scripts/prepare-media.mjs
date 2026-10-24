@@ -13,7 +13,7 @@ import { existsSync, mkdirSync, readdirSync, statSync } from "node:fs";
 import { basename, extname, join, resolve } from "node:path";
 import sharp from "sharp";
 
-export const WIDTHS = [640, 1080, 1600, 2400];
+export const WIDTHS = [640, 1080, 1280, 1600, 2400];
 const root = resolve(import.meta.dirname, "..");
 const imgDir = join(root, "public/images");
 const vidDir = join(root, "public/video");
@@ -32,7 +32,7 @@ async function processImage(input, name) {
     await img.clone().resize({ width: 2400, withoutEnlargement: true }).jpeg({ quality: 84, mozjpeg: true, progressive: true }).toFile(master);
   }
   for (const w of WIDTHS) {
-    await sharp(master).resize({ width: w, withoutEnlargement: true }).webp({ quality: 80, effort: 5 }).toFile(join(imgDir, `${name}-${w}.webp`));
+    await sharp(master).resize({ width: w, withoutEnlargement: true }).webp({ quality: w <= 640 ? 72 : w <= 1280 ? 76 : 80, effort: 5 }).toFile(join(imgDir, `${name}-${w}.webp`));
   }
   console.log("image", name);
 }

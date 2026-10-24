@@ -62,3 +62,21 @@ npm run media                            # מעבד מחדש את כל התמו�
 | `logo.png` | הלוגו האמיתי, זהב על שקוף |
 
 הסרטונים (15 קבצים, עד 200MB) לא נכנסו: הם כבדים מדי לגיט. להכנת סרטון פתיחה: `npm run media -- <תיקייה עם הסרטון>`, ואז לאחסן בשירות סרטונים.
+
+## Settings for going live
+
+Set these in the host's environment before `npm run build`:
+
+| Variable | What it does |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | The real domain, used for canonical links, Open Graph and structured data |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 id. Loads only after the visitor accepts the cookie bar |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta Pixel id. Same consent rule |
+| `NEXT_PUBLIC_LEAD_ENDPOINT` | Optional URL (Formspree, Make, a Google Apps Script) that receives each form submission as JSON, so leads are kept even if the visitor never presses send in WhatsApp |
+
+With no tracking ids set, the cookie bar does not appear.
+
+## Before launch
+
+- Anything shown in green on the site is unverified (phone, address, accessibility coordinator, contact email). Replace it in `src/content/site.ts` and `src/components/Dialogs.tsx`.
+- Confirm that the couples in the photos agreed to appear on the site.

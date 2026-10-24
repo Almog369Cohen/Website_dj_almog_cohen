@@ -6,24 +6,24 @@ import "./globals.css";
 const frank = Frank_Ruhl_Libre({
   variable: "--font-frank",
   subsets: ["hebrew", "latin"],
-  weight: ["400", "500", "700", "900"],
+  weight: ["400", "500"],
 });
 
 const heebo = Heebo({
   variable: "--font-heebo",
   subsets: ["hebrew", "latin"],
-  weight: ["300", "400", "500", "700", "800"],
+  weight: ["300", "400", "500"],
 });
 
-const title = `${brand.fullName} | הפקת אירועים וחתונות`;
+const title = "ריבר הפקות | הפקת חתונות ואירועים | REVER";
 const description =
-  "REVER PRODUCTIONS: 6 שנים של הפקת אירועים עם התמחות בחתונות. לוקיישן וספקים בהתאמה אישית, תכנון וניהול מוקדם, ניהול מלא של יום האירוע ועיצוב ואפיון, מהרעיון הראשון ועד הרגע האחרון.";
+  "REVER מפיקה חתונות ואירועים כבר 6 שנים: לוקיישן וספקים, תכנון ותקציב, עיצוב וניהול מלא של יום האירוע. השאירו פרטים ונחזור אליכם.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(brand.url),
   title,
   description,
-  keywords: ["הפקת אירועים", "הפקות אירועים רמת גן", "מפיק אירועים", "הפקת חתונה", "הפקת בר מצווה", "הפקת אירועי חברה", "REVER PRODUCTIONS", "ריבר הפקות"],
+  keywords: ["הפקת אירועים", "מפיק אירועים", "הפקת חתונה", "הפקת בר מצווה", "הפקת אירועי חברה", "REVER PRODUCTIONS", "ריבר הפקות"],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -39,9 +39,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07060a",
+  themeColor: "#0e0c0a",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 const jsonLd = {
@@ -52,6 +53,8 @@ const jsonLd = {
   url: brand.url,
   telephone: `+${brand.phoneIntl}`,
   image: `${brand.url}/images/og.jpg`,
+  logo: `${brand.url}/images/logo.png`,
+  sameAs: [brand.instagram],
   areaServed: "IL",
 };
 
