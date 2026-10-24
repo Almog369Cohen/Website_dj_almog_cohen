@@ -48,7 +48,7 @@ export function Hero() {
   const common = { poster: hero.poster, muted: true, loop: true, playsInline: true, autoPlay: !reduce, "aria-hidden": true } as const;
 
   return (
-    <section id="top" ref={ref} className="relative h-[100svh] min-h-[560px] overflow-hidden bg-[#0e0c0a] md:min-h-[640px]">
+    <section id="top" ref={ref} data-scene="night" className="relative h-[100svh] min-h-[560px] overflow-hidden bg-[#0e0c0a] md:min-h-[640px]">
       {desktop && (
         <>
           <video key="ambient" {...common} preload="metadata" className="absolute inset-0 h-full w-full scale-125 object-cover opacity-55 blur-2xl saturate-[.8]">

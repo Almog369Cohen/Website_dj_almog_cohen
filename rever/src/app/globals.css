@@ -26,12 +26,12 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--bg);
+  background: #0b0a0c;
 }
 
 body {
   -webkit-tap-highlight-color: transparent;
-  background: var(--bg);
+  background: transparent;
   color: var(--ink);
   font-family: var(--font-heebo), system-ui, sans-serif;
   overflow-x: hidden;
@@ -60,10 +60,9 @@ body {
   --ink: #2a2118;
   --ink-dim: rgba(42, 33, 24, 0.74);
   --line: rgba(42, 33, 24, 0.18);
-  --gold: #7a5a20;
+  --gold: #6b4e1b;
   --gold-hi: #8d6b2c;
   --gold-lo: #5f4519;
-  background: var(--bg);
   color: var(--ink);
 }
 
@@ -147,4 +146,82 @@ body {
     backdrop-filter: blur(12px);
   }
 }
+}
+
+/* ========== Light ==========
+   Scenes are stacked, fixed layers. A new scene spreads in over the previous one
+   (clip-path), so the colours never mix into grey mid-change.
+   Palette sampled from Rever's photos. Rules: 60% luminous base, 30% photography,
+   10% light accents; text never sits on a raw orb without a base under it. */
+.scene {
+  position: absolute;
+  inset: 0;
+  background: var(--base);
+}
+@keyframes light-in {
+  from { clip-path: circle(0% at 50% 0%); }
+  to { clip-path: circle(150% at 50% 0%); }
+}
+.scene-in { animation: light-in 1.5s cubic-bezier(0.5, 0, 0.2, 1) both; }
+.scene-night  { --base: #0b0a0c; --a: rgba(63, 198, 214, 0.2);  --b: rgba(217, 178, 111, 0.18); --c: rgba(120, 70, 150, 0.14); }
+.scene-dawn   { --base: #fbf5ec; --a: rgba(242, 184, 102, 0.5); --b: rgba(233, 184, 164, 0.45); --c: rgba(255, 252, 245, 0.9); }
+.scene-day    { --base: #f8f1e6; --a: rgba(196, 201, 160, 0.45); --b: rgba(242, 184, 102, 0.38); --c: rgba(236, 196, 178, 0.4); }
+.scene-party  { --base: #0d0a17; --a: rgba(196, 72, 140, 0.38); --b: rgba(63, 198, 214, 0.3);  --c: rgba(242, 170, 90, 0.26); }
+.scene-golden { --base: #fbf0e3; --a: rgba(243, 166, 88, 0.55); --b: rgba(232, 160, 146, 0.45); --c: rgba(255, 238, 210, 0.9); }
+
+.orb {
+  position: absolute;
+  width: 90vmax;
+  height: 90vmax;
+  border-radius: 50%;
+  will-change: transform;
+}
+.orb-a { top: -40vmax; right: -30vmax; background: radial-gradient(circle, var(--a) 0, transparent 62%); }
+.orb-b { bottom: -45vmax; left: -35vmax; background: radial-gradient(circle, var(--b) 0, transparent 62%); }
+.orb-c { top: 20%; left: 15%; width: 60vmax; height: 60vmax; background: radial-gradient(circle, var(--c) 0, transparent 60%); }
+
+@keyframes drift-a { to { transform: translate3d(-8vmax, 6vmax, 0) scale(1.08); } }
+@keyframes drift-b { to { transform: translate3d(10vmax, -6vmax, 0) scale(0.94); } }
+@keyframes drift-c { to { transform: translate3d(6vmax, 8vmax, 0); } }
+@media (min-width: 768px) {
+  .orb-a { animation: drift-a 26s ease-in-out infinite alternate; }
+  .orb-b { animation: drift-b 32s ease-in-out infinite alternate; }
+  .orb-c { animation: drift-c 22s ease-in-out infinite alternate; }
+}
+
+/* A lit photograph: soft coloured light under it, and a single warm sweep on entry. */
+.lit {
+  box-shadow: 0 40px 90px -40px var(--glow), 0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+}
+.light-sweep {
+  background: linear-gradient(100deg, transparent 0%, rgba(255, 236, 200, 0) 20%, rgba(255, 240, 214, 0.55) 50%, rgba(255, 236, 200, 0) 80%, transparent 100%);
+  mix-blend-mode: soft-light;
+}
+
+/* Stage light beams for the party section. */
+.beam {
+  position: absolute;
+  top: -10%;
+  width: 46vmax;
+  height: 120%;
+  transform-origin: 50% 0;
+  background: linear-gradient(180deg, var(--beam) 0%, transparent 75%);
+  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+@keyframes sway { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+.beam-1 { --beam: rgba(196, 72, 140, 0.55); right: 4%; animation: sway 9s ease-in-out infinite alternate; }
+.beam-2 { --beam: rgba(63, 198, 214, 0.45); right: 38%; animation: sway 11s ease-in-out -4s infinite alternate-reverse; }
+.beam-3 { --beam: rgba(255, 196, 120, 0.45); left: 2%; animation: sway 13s ease-in-out -2s infinite alternate; }
+
+/* Luminous form fields on light scenes. */
+.field-light {
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(42, 33, 24, 0.2);
+}
+.field-light:focus {
+  border-color: #b08d57;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(242, 184, 102, 0.25);
 }

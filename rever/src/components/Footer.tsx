@@ -9,7 +9,7 @@ import { Todo } from "./Todo";
 
 export function Footer() {
   return (
-    <footer className="theme-ivory relative px-4 pb-28 pt-16 md:px-8 md:pb-12 md:pt-24">
+    <footer data-scene="golden" className="theme-ivory relative px-4 pb-28 pt-16 md:px-8 md:pb-12 md:pt-24">
       <div className="mx-auto flex max-w-7xl flex-col items-center text-center">
         <Logo className="h-28 md:h-36" />
         <p className="mt-4 max-w-sm text-[15px] text-ink-dim">הפקת חתונות ואירועים, מהרעיון הראשון ועד השיר האחרון.</p>

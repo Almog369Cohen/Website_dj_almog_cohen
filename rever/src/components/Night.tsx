@@ -1,41 +1,44 @@
-import Image from "next/image";
 import { night } from "@/content/site";
+import { LitImage } from "./LitImage";
 import { Reveal, SectionKicker } from "./Reveal";
+import { StringLights } from "./StringLights";
 
-/** The party, kept elegant: their night photos in an editorial collage. */
+/** The party: the light goes down, stage beams in the colours of their own dance floors. */
 export function Night() {
   const [a, b, c, d] = night.images;
-  const tile = "zoom-img group relative overflow-hidden rounded-[6px]";
   return (
-    <section id="night" className="relative bg-[#0e0c0a] px-4 py-20 text-[#f6f0e6] md:px-10 md:py-32">
-      <div className="mx-auto max-w-7xl">
+    <section id="night" data-scene="party" className="relative overflow-hidden px-4 py-20 text-[#f6f0e6] md:px-10 md:py-32">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <span className="beam beam-1" />
+        <span className="beam beam-2" />
+        <span className="beam beam-3" />
+      </div>
+      <div className="relative mx-auto max-w-7xl">
         <Reveal className="mb-10 max-w-2xl md:mb-16">
           <SectionKicker>{night.kicker}</SectionKicker>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,4rem)] font-medium leading-[1.08] [text-wrap:balance]">
+          <h2 className="font-display text-[clamp(2.1rem,5vw,4.4rem)] font-medium leading-[1.05] [text-wrap:balance]">
             {night.title}
-            <span className="block text-[#d9b26f]">{night.titleAccent}</span>
+            <span className="block bg-gradient-to-l from-[#f3d9a4] via-[#e9a6c4] to-[#8fe0ea] bg-clip-text text-transparent">{night.titleAccent}</span>
           </h2>
-          <p className="mt-5 text-[17px] leading-[1.75] text-[#f6f0e6]/90 md:hidden">{night.text}</p>
+          <p className="mt-5 max-w-md text-[17px] leading-[1.75] text-[#f6f0e6]/90">{night.text}</p>
         </Reveal>
 
-        <div className="grid grid-cols-2 gap-2.5 md:grid-cols-12 md:grid-rows-[repeat(3,minmax(0,13rem))] md:gap-4">
-          <Reveal className={`${tile} col-span-2 aspect-[3/2] md:col-span-7 md:row-span-2 md:aspect-auto`}>
-            <Image src={a.src} alt={a.alt} fill sizes="(min-width:768px) 58vw, 100vw" className="object-cover" />
-            <div className="glass-dark absolute bottom-5 right-5 hidden max-w-sm rounded-2xl px-5 py-4 md:block">
-              <p className="text-[16px] leading-[1.7] text-[#f6f0e6]">{night.text}</p>
-            </div>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-12 md:grid-rows-[repeat(3,minmax(0,13rem))] md:gap-5">
+          <Reveal className="col-span-2 md:col-span-7 md:row-span-2">
+            <LitImage src={a.src} alt={a.alt} fill sizes="(min-width:768px) 58vw, 100vw" glow="rgba(196,72,140,.6)" className="aspect-[3/2] h-full rounded-[18px] md:aspect-auto" />
           </Reveal>
-          <Reveal delay={0.1} className={`${tile} aspect-[4/5] md:col-span-5 md:row-span-3 md:aspect-auto`}>
-            <Image src={b.src} alt={b.alt} fill sizes="(min-width:768px) 40vw, 50vw" className="object-cover object-[50%_20%]" />
+          <Reveal delay={0.1} className="md:col-span-5 md:row-span-3">
+            <LitImage src={b.src} alt={b.alt} fill sizes="(min-width:768px) 40vw, 50vw" glow="rgba(63,198,214,.55)" className="aspect-[4/5] h-full rounded-[18px] md:aspect-auto [&_img]:object-[50%_20%]" />
           </Reveal>
-          <Reveal delay={0.15} className={`${tile} aspect-[4/5] md:col-span-3 md:aspect-auto`}>
-            <Image src={d.src} alt={d.alt} fill sizes="(min-width:768px) 25vw, 50vw" className="object-cover object-top" />
+          <Reveal delay={0.15} className="md:col-span-3">
+            <LitImage src={d.src} alt={d.alt} fill sizes="(min-width:768px) 25vw, 50vw" glow="rgba(232,160,146,.6)" className="aspect-[4/5] h-full rounded-[18px] md:aspect-auto [&_img]:object-top" />
           </Reveal>
-          <Reveal delay={0.2} className={`${tile} col-span-2 aspect-[3/2] md:col-span-4 md:aspect-auto`}>
-            <Image src={c.src} alt={c.alt} fill sizes="(min-width:768px) 33vw, 100vw" className="object-cover" />
+          <Reveal delay={0.2} className="col-span-2 md:col-span-4">
+            <LitImage src={c.src} alt={c.alt} fill sizes="(min-width:768px) 33vw, 100vw" glow="rgba(242,170,90,.6)" className="aspect-[3/2] h-full rounded-[18px] md:aspect-auto" />
           </Reveal>
         </div>
       </div>
+      <StringLights dark className="relative mt-16 md:mt-24" />
     </section>
   );
 }

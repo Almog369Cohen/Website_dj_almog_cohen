@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import { about } from "@/content/site";
 import { Reveal, SectionKicker } from "./Reveal";
+import { StringLights } from "./StringLights";
 
 export function About() {
   const ref = useRef<HTMLDivElement>(null);
@@ -12,10 +13,11 @@ export function About() {
   const y = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
 
   return (
-    <section id="about" className="relative py-24 md:py-36">
+    <section id="about" data-scene="dawn" className="relative pb-24 md:pb-36">
+      <StringLights className="mb-10 md:mb-16" />
       <div ref={ref} className="relative mx-auto grid max-w-7xl items-center gap-0 px-4 md:grid-cols-12 md:px-10">
         <div className="relative md:col-span-6 md:col-start-7 md:row-start-1">
-          <div className="arch relative mx-auto aspect-[3/4] w-full max-w-[520px] overflow-hidden">
+          <div className="lit arch relative mx-auto aspect-[3/4] w-full max-w-[520px] overflow-hidden" style={{ "--glow": "rgba(242,184,102,.7)" } as React.CSSProperties}>
             <motion.div style={{ y }} className="absolute -inset-y-[6%] inset-x-0">
               <Image src={about.image} alt="כלה בשמלה ארוכה בין קשתות לבנות" fill sizes="(min-width:768px) 40vw, 100vw" className="object-cover" />
             </motion.div>

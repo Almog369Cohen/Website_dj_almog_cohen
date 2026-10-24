@@ -7,12 +7,14 @@ import { Footer } from "@/components/Footer";
 import { Gallery } from "@/components/Gallery";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { LightField } from "@/components/LightField";
 import { Night } from "@/components/Night";
 import { Services } from "@/components/Services";
 
 export default function Home() {
   return (
     <>
+      <LightField />
       <Header />
       <main id="main">
         <Hero />

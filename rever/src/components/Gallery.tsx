@@ -155,23 +155,23 @@ export function Gallery() {
   const close = useCallback(() => setOpen(null), []);
 
   return (
-    <section id="gallery" className="relative px-4 py-20 md:px-10 md:py-32">
+    <section id="gallery" data-scene="day" className="relative px-4 py-20 md:px-10 md:py-32">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mb-10 md:mb-16">
           <SectionKicker>גלריה</SectionKicker>
           <h2 className="font-display text-[clamp(2rem,4.5vw,4rem)] font-medium leading-[1.08]">רגעים שהפקנו</h2>
         </Reveal>
 
-        <div className="columns-2 gap-2.5 md:columns-3 md:gap-5">
+        <div className="columns-2 gap-3 md:columns-3 md:gap-6">
           {gallery.map((g, i) => (
-            <div key={g.src} className={`mb-2.5 break-inside-avoid md:mb-5 ${!expanded && i >= MOBILE_COUNT ? "hidden md:block" : ""}`}>
+            <div key={g.src} className={`mb-3 break-inside-avoid md:mb-6 ${!expanded && i >= MOBILE_COUNT ? "hidden md:block" : ""}`}>
               <button
                 type="button"
                 onClick={() => {
                   setOpen(i);
                   track("open_gallery", { photo: g.alt });
                 }}
-                className="zoom-img group relative block w-full cursor-zoom-in overflow-hidden rounded-[6px]"
+                className="zoom-img lit group relative block w-full cursor-zoom-in overflow-hidden rounded-[14px]"
                 aria-label={`הגדלת תמונה: ${g.alt}`}
               >
                 <Image src={g.src} alt={g.alt} width={g.w} height={g.h} sizes="(min-width:768px) 31vw, 48vw" className="h-auto w-full" />
