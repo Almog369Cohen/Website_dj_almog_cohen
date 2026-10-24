@@ -85,3 +85,9 @@ scene("stage", 1600, 1200, 9, [(6, 6, 8), (26, 18, 10)], 16, GOLD, bokeh=50)
 scene("about", 1600, 2000, 10, [(10, 8, 8), (34, 22, 14)], 7, WARM, bokeh=100)
 scene("zoom-feature", 2400, 1500, 11, [(8, 6, 6), (36, 22, 12)], 13, GOLD, bokeh=120)
 scene("og", 1200, 630, 12, [(8, 6, 10), (30, 18, 10)], 9, GOLD)
+
+# Lit "reception" set for the hero lights-on state
+CHAMP = [(255, 236, 200), (255, 214, 160), (250, 240, 225)]
+scene("reception-1", 2400, 1350, 21, [(70, 52, 36), (140, 108, 74)], 3, CHAMP, crowd=False, bokeh=260, horizon=0.8)
+scene("reception-2", 2400, 1350, 22, [(80, 62, 46), (150, 120, 88)], 2, CHAMP, crowd=False, bokeh=320, horizon=0.75)
+scene("reception-3", 2400, 1350, 23, [(60, 46, 34), (128, 100, 70)], 4, CHAMP, crowd=False, bokeh=200, horizon=0.85)

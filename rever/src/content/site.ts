@@ -24,12 +24,26 @@ export const nav = [
 ];
 
 export const hero = {
-  eyebrow: "REVER PRODUCTIONS · הפקת אירועים וחתונות",
-  titleTop: "אתם מתרגשים מהאירוע,",
-  titleBottom: "אנחנו דואגים לכל מה שמסביב.",
-  subtitle: "כבר 6 שנים ש-REVER יוצרת ומפיקה אירועים מכל הסוגים, עם התמחות בעולם החתונות וליווי מלא מהרעיון הראשון ועד הרגע האחרון.",
   ctaPrimary: "בואו נתכנן את האירוע שלכם",
-  images: ["/images/hero-1.jpg", "/images/hero-2.jpg", "/images/hero-3.jpg"],
+  /** Lights off: the dance floor. Visitor's cursor is a spotlight, coloured party beams sweep. */
+  party: {
+    eyebrow: "01:30 · על הרחבה",
+    titleTop: "כשהאורות כבים,",
+    titleBottom: "הרחבה שלכם מתחילה.",
+    subtitle: "מוזיקה, ריקודים ואנרגיה עד השיר האחרון. אנחנו מנהלים את הלו״ז, הספקים והרזרבות מאחורי הקלעים, ואתם רק רוקדים.",
+    toggle: "הדליקו את האור",
+    hint: "הזיזו את הפנס על הרחבה",
+    images: ["/images/bar-mitzvah.jpg", "/images/hero-3.jpg", "/images/hero-2.jpg"],
+  },
+  /** Lights on: the reception. Warm, designed, classy. */
+  reception: {
+    eyebrow: "19:00 · קבלת הפנים",
+    titleTop: "וכשהאור נדלק,",
+    titleBottom: "כל פרט כבר במקום.",
+    subtitle: "לוקיישן, עיצוב, ספקים ותקציב, מתוכננים מהרעיון הראשון ועד הרגע האחרון. כבר 6 שנים ש-REVER מפיקה חתונות, ולכם נשאר רק ליהנות.",
+    toggle: "חזרה לרחבה",
+    images: ["/images/reception-1.jpg", "/images/reception-2.jpg", "/images/reception-3.jpg"],
+  },
 };
 
 export const marquee = ["חתונות", "הפקת אירועים", "לוקיישנים וספקים", "ניהול יום האירוע", "עיצוב ואפיון", "ליווי מלא"];
