@@ -8,7 +8,8 @@ export const brand = {
   nameHe: "ריבר",
   tagline: "הפקות אירועים",
   fullName: "REVER PRODUCTIONS",
-  // לאימות מול הלקוח לפני עלייה לאוויר
+  // לא מאומתים: באתר הם מוצגים בירוק עד שהלקוח מאשר
+  addressPlaceholder: "כתובת: להשלים",
   phoneDisplay: "054-664-6923",
   phoneIntl: "972546646923",
   whatsappMessage: "היי REVER! הגעתי מהאתר ואשמח לשמוע על הפקת האירוע שלי 🎉",

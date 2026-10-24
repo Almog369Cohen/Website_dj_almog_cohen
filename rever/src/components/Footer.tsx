@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { brand, nav } from "@/content/site";
 import { telLink, waLink } from "@/lib/whatsapp";
 import { Logo } from "./Logo";
+import { Todo } from "./Todo";
 
 export function Footer() {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -35,7 +36,8 @@ export function Footer() {
             ))}
           </nav>
           <div className="flex flex-col gap-3 text-sm">
-            <a href={telLink} className="hover:text-gold" dir="ltr">{brand.phoneDisplay}</a>
+            <a href={telLink} className="w-fit"><Todo dir="ltr">{brand.phoneDisplay}</Todo></a>
+            <Todo>{brand.addressPlaceholder}</Todo>
             <a href={waLink()} target="_blank" rel="noopener noreferrer" className="hover:text-gold">וואטסאפ</a>
             <button type="button" onClick={() => dialog.current?.showModal()} className="w-fit text-ink-dim underline-offset-4 hover:text-gold hover:underline">
               הצהרת נגישות
@@ -54,7 +56,7 @@ export function Footer() {
           <div className="mt-4 space-y-3 text-sm leading-relaxed text-ink-dim">
             <p>{brand.fullName} רואה חשיבות רבה בהנגשת האתר לכלל הגולשים, כולל אנשים עם מוגבלות.</p>
             <p>האתר נבנה בהתאם להנחיות WCAG 2.1 ברמה AA ותקן ישראלי 5568: ניווט מלא במקלדת, תמיכה בקוראי מסך, ניגודיות צבעים גבוהה, טקסט חלופי לתמונות וכיבוד העדפת &quot;הפחתת תנועה&quot; של מערכת ההפעלה.</p>
-            <p>נתקלתם ברכיב שאינו נגיש? נשמח לשמוע ולתקן: <a href={telLink} className="text-gold" dir="ltr">{brand.phoneDisplay}</a></p>
+            <p>נתקלתם ברכיב שאינו נגיש? נשמח לשמוע ולתקן: <a href={telLink}><Todo dir="ltr">{brand.phoneDisplay}</Todo></a></p>
           </div>
           <form method="dialog">
             <button className="btn-gold mt-6 rounded-full px-6 py-3 font-bold">סגירה</button>

@@ -7,6 +7,7 @@ import { telLink, waLink } from "@/lib/whatsapp";
 import { goldConfetti } from "./Confetti";
 import { PhoneIcon, WhatsAppIcon } from "./Icons";
 import { Reveal, SectionKicker } from "./Reveal";
+import { Todo } from "./Todo";
 
 const field =
   "w-full rounded-2xl border border-line bg-bg/60 px-5 py-4 text-ink placeholder:text-ink-dim/70 outline-none transition-colors focus:border-gold";
@@ -58,9 +59,16 @@ export function Contact() {
               </span>
               <span>
                 <span className="block text-sm text-ink-dim">התקשרו אלינו</span>
-                <span className="text-xl font-bold" dir="ltr">{brand.phoneDisplay}</span>
+                <span className="text-xl font-bold"><Todo dir="ltr">{brand.phoneDisplay}</Todo></span>
               </span>
             </a>
+            <div className="flex items-center gap-4 rounded-3xl border border-line bg-bg-soft p-5">
+              <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/15 text-gold" aria-hidden="true">⌖</span>
+              <span>
+                <span className="block text-sm text-ink-dim">כתובת</span>
+                <span className="text-xl font-bold"><Todo>{brand.addressPlaceholder}</Todo></span>
+              </span>
+            </div>
           </div>
         </Reveal>
 
