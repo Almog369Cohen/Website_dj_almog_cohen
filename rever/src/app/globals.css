@@ -125,3 +125,61 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ========== LED stage ========== */
+@keyframes beat-glow {
+  0% { box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 0 90px -10px rgba(255, 70, 190, 0.75), 0 0 180px -40px rgba(90, 150, 255, 0.6); }
+  100% { box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 0 50px -20px rgba(255, 70, 190, 0.35), 0 0 120px -60px rgba(90, 150, 255, 0.3); }
+}
+.led-panel {
+  position: relative;
+  overflow: hidden;
+  background: #050308;
+  border: 6px solid #111014;
+  border-radius: 6px;
+  animation: beat-glow 0.484s ease-out infinite; /* 124 BPM */
+}
+.led-panel::after {
+  /* the LED pixel grid */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image: radial-gradient(circle at center, transparent 0 1px, rgba(0, 0, 0, 0.55) 1.6px);
+  background-size: 4px 4px;
+}
+.led-panel::before {
+  /* refresh scan band */
+  content: "";
+  position: absolute;
+  inset: -20% 0 auto 0;
+  height: 20%;
+  pointer-events: none;
+  z-index: 4;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.06), transparent);
+  animation: scan 3.2s linear infinite;
+}
+@keyframes scan { to { transform: translateY(700%); } }
+
+.led-text { text-shadow: 0 0 18px rgba(255, 120, 220, 0.45); }
+
+.led-pillar-track { animation: pillar 14s linear infinite; }
+@keyframes pillar { to { transform: translateY(-50%); } }
+
+.eq span { animation: eq 0.484s ease-in-out infinite alternate; }
+@keyframes eq { from { transform: scaleY(0.2); } to { transform: scaleY(1); } }
+
+.led-ticker { position: relative; }
+.led-ticker::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at center, transparent 0 1px, rgba(0, 0, 0, 0.6) 1.6px);
+  background-size: 3px 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .led-panel, .led-panel::before, .led-pillar-track, .eq span { animation: none !important; }
+}

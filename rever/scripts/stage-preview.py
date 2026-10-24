@@ -17,8 +17,8 @@ for p in [dst / "rever.html", *dst.rglob("*.js"), *dst.rglob("*.css")]:
     s = p.read_text(encoding="utf-8")
     o = s
     s = s.replace("/_next/", "next/").replace("_next/", "next/")
-    for a in ("images/", "icon.svg"):
-        s = s.replace('"/' + a, '"' + a).replace('\\"/' + a, '\\"' + a)
+    # every absolute /images/, /video/ or /icon.svg reference (src, srcset lists, RSC payload)
+    s = re.sub(r'(?<=[\s"\',])/(images/|video/|icon\.svg)', r'\1', s)
     s = s.replace('"\ufffd"', '"\\ufffd"')
     if s != o:
         p.write_text(s, encoding="utf-8")

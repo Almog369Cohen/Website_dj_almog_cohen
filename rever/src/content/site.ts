@@ -25,14 +25,16 @@ export const nav = [
 
 export const hero = {
   ctaPrimary: "בואו נתכנן את האירוע שלכם",
-  /** Lights off: the dance floor. Visitor's cursor is a spotlight, coloured party beams sweep. */
+  /** Lights off: the dance floor. Laser show, moving heads and an LED wall that carries the headline. */
   party: {
     eyebrow: "01:30 · על הרחבה",
     titleTop: "כשהאורות כבים,",
     titleBottom: "הרחבה שלכם מתחילה.",
     subtitle: "מוזיקה, ריקודים ואנרגיה עד השיר האחרון. אנחנו מנהלים את הלו״ז, הספקים והרזרבות מאחורי הקלעים, ואתם רק רוקדים.",
     toggle: "הדליקו את האור",
-    hint: "הזיזו את הפנס על הרחבה",
+    hint: "כוונו את הלייזרים עם העכבר או בנגיעה",
+    /** Words that scroll on the LED pillars beside the main wall */
+    pillars: ["לוקיישן", "ספקים", "תקציב", "לו״ז", "עיצוב", "הושבה", "רזרבות", "ניהול יום האירוע"],
     images: ["/images/bar-mitzvah.jpg", "/images/hero-3.jpg", "/images/hero-2.jpg"],
   },
   /** Lights on: the reception. Warm, designed, classy. */
