@@ -10,6 +10,7 @@ import { Hero } from "@/components/Hero";
 import { LightField } from "@/components/LightField";
 import { Night } from "@/components/Night";
 import { Services } from "@/components/Services";
+import { Testimonials } from "@/components/Testimonials";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <div className="theme-ivory">
           <Gallery />
         </div>
+        <Testimonials />
         <Contact />
       </main>
       <Footer />

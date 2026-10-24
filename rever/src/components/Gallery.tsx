@@ -155,7 +155,7 @@ export function Gallery() {
   const close = useCallback(() => setOpen(null), []);
 
   return (
-    <section id="gallery" data-scene="day" className="relative px-4 py-20 md:px-10 md:py-32">
+    <section id="gallery" data-scene="day" className="relative px-4 pb-10 pt-20 md:px-10 md:py-32">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mb-10 md:mb-16">
           <SectionKicker>גלריה</SectionKicker>

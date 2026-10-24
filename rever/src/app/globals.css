@@ -26,7 +26,7 @@
 
 html {
   scroll-behavior: smooth;
-  background: #0b0a0c;
+  background: #fbf3e8;
 }
 
 body {
@@ -141,16 +141,16 @@ body {
     backdrop-filter: blur(12px);
   }
   .glass-ivory {
-    background: rgba(251, 248, 242, 0.8);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
+    background: rgba(251, 246, 236, 0.94);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }
 }
 
 /* ========== Light ==========
-   Scenes are stacked, fixed layers. A new scene spreads in over the previous one
-   (clip-path), so the colours never mix into grey mid-change.
+   Scenes are stacked, fixed layers, light only. A new scene fades in over the previous
+   one, which stays fully lit underneath.
    Palette sampled from Rever's photos. Rules: 60% luminous base, 30% photography,
    10% light accents; text never sits on a raw orb without a base under it. */
 .scene {
@@ -159,14 +159,14 @@ body {
   background: var(--base);
 }
 @keyframes light-in {
-  from { clip-path: circle(0% at 50% 0%); }
-  to { clip-path: circle(150% at 50% 0%); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-.scene-in { animation: light-in 1.5s cubic-bezier(0.5, 0, 0.2, 1) both; }
-.scene-night  { --base: #0b0a0c; --a: rgba(63, 198, 214, 0.2);  --b: rgba(217, 178, 111, 0.18); --c: rgba(120, 70, 150, 0.14); }
-.scene-dawn   { --base: #fbf5ec; --a: rgba(242, 184, 102, 0.5); --b: rgba(233, 184, 164, 0.45); --c: rgba(255, 252, 245, 0.9); }
-.scene-day    { --base: #f8f1e6; --a: rgba(196, 201, 160, 0.45); --b: rgba(242, 184, 102, 0.38); --c: rgba(236, 196, 178, 0.4); }
-.scene-golden { --base: #fbf0e3; --a: rgba(243, 166, 88, 0.55); --b: rgba(232, 160, 146, 0.45); --c: rgba(255, 238, 210, 0.9); }
+/* the new light fades in over the previous one, held fully lit underneath: light to light, never grey */
+.scene-in { animation: light-in 0.9s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.scene-dawn   { --base: #fbf3e8; --a: rgba(240, 160, 64, 0.75); --b: rgba(232, 150, 128, 0.62); --c: rgba(255, 250, 240, 0.9); }
+.scene-day    { --base: #f4f1e4; --a: rgba(170, 190, 130, 0.55); --b: rgba(242, 184, 102, 0.45); --c: rgba(236, 196, 178, 0.45); }
+.scene-golden { --base: #fbf0e3; --a: rgba(240, 140, 60, 0.75); --b: rgba(230, 136, 120, 0.55); --c: rgba(255, 238, 210, 0.9); }
 
 .orb {
   position: absolute;
@@ -182,10 +182,14 @@ body {
 @keyframes drift-a { to { transform: translate3d(-8vmax, 6vmax, 0) scale(1.08); } }
 @keyframes drift-b { to { transform: translate3d(10vmax, -6vmax, 0) scale(0.94); } }
 @keyframes drift-c { to { transform: translate3d(6vmax, 8vmax, 0); } }
-@media (min-width: 768px) {
-  .orb-a { animation: drift-a 26s ease-in-out infinite alternate; }
-  .orb-b { animation: drift-b 32s ease-in-out infinite alternate; }
-  .orb-c { animation: drift-c 22s ease-in-out infinite alternate; }
+/* transform-only drift: cheap enough for phones too */
+.orb-a { animation: drift-a 30s ease-in-out infinite alternate; }
+.orb-b { animation: drift-b 38s ease-in-out infinite alternate; }
+.orb-c { animation: drift-c 26s ease-in-out infinite alternate; }
+/* Portrait phones: bigger lights, pulled on screen so the colour is actually seen. */
+@media (max-width: 767px) {
+  .orb-a { width: 120vmax; height: 120vmax; top: -30vmax; right: -50vmax; }
+  .orb-b { width: 120vmax; height: 120vmax; bottom: -40vmax; left: -50vmax; }
 }
 
 /* A lit photograph: soft coloured light under it, and a single warm sweep on entry. */
@@ -204,8 +208,12 @@ body {
     radial-gradient(55% 40% at 10% 70%, rgba(63, 198, 214, 0.22), transparent 70%),
     radial-gradient(50% 35% at 50% 100%, rgba(242, 170, 90, 0.2), transparent 70%),
     #0d0a17;
-  -webkit-mask-image: linear-gradient(transparent, #000 96px, #000 calc(100% - 96px), transparent);
-  mask-image: linear-gradient(transparent, #000 96px, #000 calc(100% - 96px), transparent);
+  -webkit-mask-image: linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  mask-image: linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
+}
+.beams {
+  -webkit-mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
+  mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
 }
 .beam {
   position: absolute;
@@ -219,6 +227,10 @@ body {
   mix-blend-mode: screen;
 }
 @keyframes sway { from { transform: rotate(-12deg); } to { transform: rotate(12deg); } }
+@media (max-width: 767px) {
+  /* static beams on phones: no endless blended animation on page-height layers */
+  .beam { animation: none !important; }
+}
 .beam-1 { --beam: rgba(214, 92, 160, 0.42); right: -20vmax; animation: sway 10s ease-in-out infinite alternate; }
 .beam-2 { --beam: rgba(90, 210, 222, 0.32); right: 5vmax; animation: sway 13s ease-in-out -4s infinite alternate-reverse; }
 .beam-3 { --beam: rgba(255, 200, 130, 0.3); left: -25vmax; animation: sway 15s ease-in-out -2s infinite alternate; }
@@ -232,4 +244,21 @@ body {
   border-color: #b08d57;
   background: #fff;
   box-shadow: 0 0 0 4px rgba(242, 184, 102, 0.25);
+}
+
+/* Desktop hero copy on dark glass; on phones it sits straight on the night. */
+@media (min-width: 768px) {
+  .hero-card {
+    background: rgba(14, 12, 10, 0.38);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid rgba(232, 207, 160, 0.26);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 30px 80px -30px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.consent-open .action-bar { bottom: 8.5rem; }
+
+.bulb-halo {
+  background: radial-gradient(circle, rgba(255, 211, 145, 0.95) 0, rgba(242, 184, 102, 0.42) 32%, transparent 70%);
 }

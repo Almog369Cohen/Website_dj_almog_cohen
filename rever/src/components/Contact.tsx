@@ -35,7 +35,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" data-scene="golden" className="theme-ivory relative overflow-hidden px-4 py-20 md:px-10 md:py-32">
+    <section id="contact" data-scene="golden" className="theme-ivory relative overflow-hidden px-4 pb-20 pt-12 md:px-10 md:py-32">
       <div className="relative mx-auto grid max-w-7xl items-end gap-8 md:grid-cols-2 md:gap-x-16 md:gap-y-8">
         <Reveal>
           <SectionKicker>{contact.kicker}</SectionKicker>
@@ -68,6 +68,17 @@ export function Contact() {
             </li>
           </ul>
         </Reveal>
+
+        {/* phones: one tap before any form friction */}
+        <div className="-mt-2 flex gap-2 md:hidden">
+          <a href={waLink()} target="_blank" rel="noopener noreferrer" onClick={() => track("click_whatsapp", { location: "contact_quick" })} className="btn-gold flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full text-[15px] font-medium">
+            <WhatsAppIcon className="h-4 w-4" /> וואטסאפ
+          </a>
+          <a href={telLink} onClick={() => track("click_call", { location: "contact_quick" })} className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border border-[#2a2118]/25 bg-white/50 text-[15px]">
+            <PhoneIcon className="h-4 w-4 text-gold" /> התקשרו
+          </a>
+        </div>
+        <p className="-mb-4 text-center text-[13px] text-ink-dim md:hidden">או השאירו פרטים ונחזור אליכם:</p>
 
         <Reveal delay={0.1} className="md:col-start-2 md:row-span-2 md:row-start-1">
           <form onSubmit={onSubmit} className="glass-ivory lit rounded-[24px] p-5 md:p-9" style={{ "--glow": "rgba(243,166,88,.6)" } as React.CSSProperties}>

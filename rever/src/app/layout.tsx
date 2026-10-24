@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Frank_Ruhl_Libre, Heebo } from "next/font/google";
 import { brand } from "@/content/site";
+import { Providers } from "@/components/Providers";
 import "./globals.css";
 
 const frank = Frank_Ruhl_Libre({
@@ -65,7 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:right-3 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-bg">
           דלג לתוכן
         </a>
-        {children}
+        <Providers>{children}</Providers>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </body>
     </html>

@@ -2,14 +2,17 @@ import { night } from "@/content/site";
 import { LitImage } from "./LitImage";
 import { Reveal, SectionKicker } from "./Reveal";
 import { StringLights } from "./StringLights";
+import { NightCta } from "./NightCta";
 
 /** The party: the light goes down, stage beams in the colours of their own dance floors. */
 export function Night() {
   const [a, b, c, d] = night.images;
   return (
-    <section id="night" className="relative overflow-hidden px-4 pb-24 pt-32 text-[#f6f0e6] md:px-10 md:pb-32 md:pt-44">
+    <section id="night" className="relative overflow-hidden px-4 pb-28 pt-32 text-[#f6f0e6] md:px-10 md:pb-36 md:pt-44">
       {/* Own dark stage, fading in and out at the edges, so the page light never turns dark under light-section text. */}
-      <div aria-hidden="true" className="party-stage pointer-events-none absolute inset-0">
+      <div aria-hidden="true" className="party-stage pointer-events-none absolute inset-0" />
+      {/* beams live inside the fully dark part only, so they never smear over the light edges */}
+      <div aria-hidden="true" className="beams pointer-events-none absolute inset-x-0 bottom-24 top-24 overflow-hidden">
         <span className="beam beam-1" />
         <span className="beam beam-2" />
         <span className="beam beam-3" />
@@ -39,7 +42,8 @@ export function Night() {
           </Reveal>
         </div>
       </div>
-      <StringLights dark className="relative mt-16 md:mt-24" />
+      <NightCta />
+      <StringLights dark className="relative mt-12 md:mt-20" />
     </section>
   );
 }

@@ -3,28 +3,35 @@
 import { useEffect, useState } from "react";
 
 /**
- * The page's light, behind every light section. The scene of the section that has
- * reached 60% of the screen height spreads in from the top, like light spilling
- * from the string lights. Colours come from Rever's own photos. Dark sections
+ * The page's light, behind every light section. When a section reaches the middle
+ * of the screen its scene fades in over the previous one. Colours come from Rever's own photos. Dark sections
  * (the opening and the dance floor) carry their own opaque background, so dark
  * text can never land on a dark light.
  * Position is measured on scroll, not with IntersectionObserver margins, which
  * browsers ignore inside cross-origin iframes (previews, embeds).
  */
-const SCENES = ["night", "dawn", "day", "golden"] as const;
+// Light scenes only. Dark sections paint their own background, so a scene change is
+// always light to light and dark text can never meet a dark layer, even after a jump.
+const SCENES = ["dawn", "day", "golden"] as const;
 type Scene = (typeof SCENES)[number];
 
 export function LightField() {
-  const [[scene, prev], setScenes] = useState<[Scene, Scene]>(["night", "night"]);
+  const [[scene, prev], setScenes] = useState<[Scene, Scene]>(["dawn", "dawn"]);
 
   useEffect(() => {
     const els = Array.from(document.querySelectorAll<HTMLElement>("[data-scene]"));
     let raf = 0;
     const measure = () => {
       raf = 0;
-      const line = window.innerHeight * 0.6;
-      let next: Scene = "night";
-      for (const el of els) if (el.getBoundingClientRect().top < line) next = el.dataset.scene as Scene;
+      // Two lines (52% and 68% of the screen) must agree before the light changes, so
+      // hovering around a section boundary does not flicker it back and forth.
+      const pick = (line: number) => {
+        let s: Scene = "dawn";
+        for (const el of els) if (el.getBoundingClientRect().top < line) s = el.dataset.scene as Scene;
+        return s;
+      };
+      const next = pick(window.innerHeight * 0.52);
+      if (next !== pick(window.innerHeight * 0.68)) return;
       setScenes(([cur, old]) => (cur === next ? [cur, old] : [next, cur]));
     };
     const onScroll = () => {
@@ -33,7 +40,11 @@ export function LightField() {
     measure();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    window.addEventListener("hashchange", onScroll);
+    window.addEventListener("load", onScroll);
     return () => {
+      window.removeEventListener("hashchange", onScroll);
+      window.removeEventListener("load", onScroll);
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);

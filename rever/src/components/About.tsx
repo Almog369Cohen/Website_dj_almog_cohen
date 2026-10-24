@@ -1,20 +1,21 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 import { about } from "@/content/site";
 import { Reveal, SectionKicker } from "./Reveal";
-import { StringLights } from "./StringLights";
 
 export function About() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
+  const reduce = useReducedMotion();
+  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-4%", "4%"]);
 
   return (
-    <section id="about" data-scene="dawn" className="relative pb-24 md:pb-36">
-      <StringLights className="mb-10 md:mb-16" />
+    <section id="about" data-scene="dawn" className="relative pb-14 md:pb-36">
+      {/* the night warming into dawn: continues the hero's bottom glow onto the light */}
+      <div aria-hidden="true" className="mb-6 h-32 bg-gradient-to-b from-[#2a1a0c] via-[#c98a4a]/25 to-transparent md:mb-12 md:h-44" />
       <div ref={ref} className="relative mx-auto grid max-w-7xl items-center gap-0 px-4 md:grid-cols-12 md:px-10">
         <div className="relative md:col-span-6 md:col-start-7 md:row-start-1">
           <div className="lit arch relative mx-auto aspect-[3/4] w-full max-w-[520px] overflow-hidden" style={{ "--glow": "rgba(242,184,102,.7)" } as React.CSSProperties}>

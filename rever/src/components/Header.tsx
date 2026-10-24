@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { brand, nav } from "@/content/site";
 import { track } from "@/lib/analytics";
 import { lockScroll, unlockScroll } from "@/lib/scroll-lock";
+import { useDarkAt } from "@/lib/use-tone";
 import { telLink, waLink } from "@/lib/whatsapp";
 import { InstagramIcon, PhoneIcon, WhatsAppIcon } from "./Icons";
 import { Logo } from "./Logo";
@@ -12,27 +13,16 @@ import { Logo } from "./Logo";
 export function Header() {
   const { scrollY, scrollYProgress } = useScroll();
   const [scrolled, setScrolled] = useState(false);
-  const [light, setLight] = useState(false);
   const [open, setOpen] = useState(false);
   const burger = useRef<HTMLButtonElement>(null);
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 40));
 
-  // Which theme sits under the header: watch the ivory sections in a thin band at the top of the screen.
+  // Which tone sits under the header bar (measured, so it also works inside an iframe preview).
+  const light = !useDarkAt(() => 60);
   useEffect(() => {
-    const visible = new Set<Element>();
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
-        const isLight = visible.size > 0;
-        setLight(isLight);
-        document.querySelector('meta[name="theme-color"]')?.setAttribute("content", isLight ? "#f6f0e6" : "#0e0c0a");
-      },
-      { rootMargin: "-60px 0px -92% 0px" },
-    );
-    document.querySelectorAll(".theme-ivory").forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", light ? "#f6f0e6" : "#0e0c0a");
+  }, [light]);
 
   useEffect(() => {
     if (!open) return;
@@ -59,7 +49,7 @@ export function Header() {
       >
         <div className={`mx-auto flex max-w-7xl items-center justify-between px-4 transition-[padding] duration-500 md:px-8 ${scrolled ? "py-2" : "py-4 md:py-5"}`}>
           <a href="#top" aria-label="REVER PRODUCTIONS, לראש הדף" className="inline-flex min-h-11 items-center">
-            <Logo className="h-11 md:h-14" priority />
+            <Logo className={`h-11 transition-[filter] duration-500 md:h-14 ${onLight ? "brightness-[.62] saturate-[1.3]" : ""}`} priority />
           </a>
           <nav className="hidden items-center gap-8 lg:flex" aria-label="ניווט ראשי">
             {nav.map((n) => (

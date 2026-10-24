@@ -1,7 +1,7 @@
 "use client";
 
 import Script from "next/script";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { GA_ID, PIXEL_ID, trackingConfigured } from "@/lib/analytics";
 import { openDialog } from "./Dialogs";
 
@@ -21,6 +21,12 @@ export function Consent() {
   const stored = useSyncExternalStore(() => () => {}, read, () => "pending");
   const [picked, setPicked] = useState<string | null>(null);
   const choice = picked ?? stored;
+
+  const asking = trackingConfigured && choice === null;
+  // lift the phone action bar above the cookie bar while it is shown
+  useEffect(() => {
+    document.body.classList.toggle("consent-open", asking);
+  }, [asking]);
 
   if (!trackingConfigured) return null;
   const decide = (v: "yes" | "no") => {

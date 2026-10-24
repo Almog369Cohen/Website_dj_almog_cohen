@@ -2,12 +2,16 @@ import { services, servicesIntro } from "@/content/site";
 import { LitImage } from "./LitImage";
 import { Reveal, SectionKicker } from "./Reveal";
 
-/** Each service is its own scene: a lit photograph and the copy beside it, alternating sides. */
-const GLOWS = ["rgba(196,201,160,.7)", "rgba(242,184,102,.65)", "rgba(236,180,160,.7)", "rgba(242,184,102,.65)"];
+/**
+ * Each service is its own lit scene. Phones: a tall photo with an ivory caption card
+ * overlapping it, alternating sides and crops. Desktop: photo and copy side by side, alternating.
+ */
+const GLOWS = ["rgba(170,190,130,.75)", "rgba(242,170,80,.7)", "rgba(233,170,150,.75)", "rgba(242,170,80,.7)"];
+const CROPS = ["aspect-[4/5]", "aspect-[3/2]", "aspect-[4/5]", "aspect-[3/2]"];
 
 export function Services() {
   return (
-    <section id="services" data-scene="day" className="theme-ivory px-4 py-20 md:px-10 md:py-36">
+    <section id="services" data-scene="day" className="theme-ivory px-4 pb-16 pt-10 md:px-10 md:py-36">
       <div className="mx-auto max-w-6xl">
         <Reveal className="max-w-2xl">
           <SectionKicker>{servicesIntro.kicker}</SectionKicker>
@@ -15,22 +19,25 @@ export function Services() {
           <p className="mt-5 max-w-md text-[17px] leading-[1.75] text-ink-dim">{servicesIntro.text}</p>
         </Reveal>
 
-        <ol className="mt-14 flex flex-col gap-16 md:mt-24 md:gap-32">
-          {services.map((s, i) => (
-            <li key={s.id} className="grid items-center gap-7 md:grid-cols-12 md:gap-12">
-              <Reveal className={`md:col-span-7 ${i % 2 ? "md:order-2" : ""}`}>
-                <LitImage src={s.image} alt="" fill sizes="(min-width:768px) 55vw, 100vw" glow={GLOWS[i]} className="aspect-[4/3] rounded-[22px] md:aspect-[5/4] md:rounded-[28px]" />
-              </Reveal>
-              <Reveal delay={0.1} className="md:col-span-5">
-                <p className="font-display text-[3.5rem] font-normal leading-none text-[#b08d57]/70 md:text-[5rem]" dir="ltr" aria-hidden="true">
-                  0{i + 1}
-                </p>
-                <h3 className="mt-3 font-display text-[clamp(1.7rem,2.8vw,2.5rem)] font-medium leading-[1.12] [text-wrap:balance]">{s.title}</h3>
-                <div className="hairline my-5 w-20" />
-                <p className="text-[17px] leading-[1.8] text-ink-dim">{s.text}</p>
-              </Reveal>
-            </li>
-          ))}
+        <ol className="mt-10 flex flex-col gap-14 md:mt-24 md:gap-32">
+          {services.map((s, i) => {
+            const flip = i % 2 === 1;
+            return (
+              <li key={s.id} className="md:grid md:grid-cols-12 md:items-center md:gap-12">
+                <Reveal className={`md:col-span-7 ${flip ? "md:order-2 ml-6 md:ml-0" : "mr-6 md:mr-0"}`}>
+                  <LitImage src={s.image} alt="" fill sizes="(min-width:768px) 55vw, 90vw" glow={GLOWS[i]} className={`${CROPS[i]} rounded-[22px] md:aspect-[5/4] md:rounded-[28px]`} />
+                </Reveal>
+                <Reveal delay={0.1} className={`relative z-10 -mt-16 md:col-span-5 md:mt-0 ${flip ? "mr-6 md:mr-0" : "ml-6 md:ml-0"}`}>
+                  <div className="glass-ivory rounded-[20px] p-6 md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
+                    <p className="text-[13px] font-medium tracking-[0.2em] text-[#8d6b2c]">0{i + 1} ·</p>
+                    <h3 className="mt-2 font-display text-[clamp(1.6rem,2.8vw,2.5rem)] font-medium leading-[1.12] [text-wrap:balance]">{s.title}</h3>
+                    <div className="hairline my-4 w-20 md:my-5" />
+                    <p className="text-[16px] leading-[1.8] text-ink-dim md:text-[17px]">{s.text}</p>
+                  </div>
+                </Reveal>
+              </li>
+            );
+          })}
         </ol>
       </div>
     </section>

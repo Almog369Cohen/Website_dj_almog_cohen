@@ -12,7 +12,7 @@ export function Footer() {
     <footer data-scene="golden" className="theme-ivory relative px-4 pb-28 pt-16 md:px-8 md:pb-12 md:pt-24">
       <div className="mx-auto flex max-w-7xl flex-col items-center text-center">
         <Logo className="h-28 md:h-36" />
-        <p className="mt-4 max-w-sm text-[15px] text-ink-dim">הפקת חתונות ואירועים, מהרעיון הראשון ועד השיר האחרון.</p>
+        <p className="mt-4 max-w-sm text-[15px] text-ink-dim">הפקת חתונות ואירועים בליווי מלא.</p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[15px]">
           <a href={waLink()} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 hover:text-gold"><WhatsAppIcon className="h-4 w-4 text-gold" /> וואטסאפ</a>
           <a href={telLink} className="inline-flex min-h-11 items-center gap-2"><PhoneIcon className="h-4 w-4 text-gold" /> <Todo dir="ltr">{brand.phoneDisplay}</Todo></a>
