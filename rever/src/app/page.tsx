@@ -1,4 +1,3 @@
-import { About } from "@/components/About";
 import { Consent } from "@/components/Consent";
 import { Contact } from "@/components/Contact";
 import { Dialogs } from "@/components/Dialogs";
@@ -8,9 +7,12 @@ import { Gallery } from "@/components/Gallery";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { LightField } from "@/components/LightField";
+import { LightSwitch } from "@/components/LightSwitch";
 import { Night } from "@/components/Night";
 import { Services } from "@/components/Services";
+import { Team } from "@/components/Team";
 import { Testimonials } from "@/components/Testimonials";
+import { Value } from "@/components/Value";
 
 export default function Home() {
   return (
@@ -19,9 +21,9 @@ export default function Home() {
       <Header />
       <main id="main">
         <Hero />
-        <div className="theme-ivory">
-          <About />
-        </div>
+        <Value />
+        <Team />
+        <LightSwitch />
         <Services />
         <Night />
         <div className="theme-ivory">

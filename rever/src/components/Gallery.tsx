@@ -3,17 +3,19 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { gallery } from "@/content/site";
+import { events } from "@/content/site";
 import { track } from "@/lib/analytics";
 import { lockScroll, unlockScroll } from "@/lib/scroll-lock";
 import { useMedia } from "@/lib/use-media";
 import { waLink } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "./Icons";
 import { Reveal, SectionKicker } from "./Reveal";
+import { Todo } from "./Todo";
 
 const MOBILE_COUNT = 6;
+type Photo = (typeof events)[number]["photos"][number];
 
-function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => void; onNav: (d: number) => void }) {
+function Lightbox({ list, index, onClose, onNav }: { list: Photo[]; index: number; onClose: () => void; onNav: (d: number) => void }) {
   const [zoom, setZoom] = useState(1);
   const [origin, setOrigin] = useState("50% 50%");
   const [shown, setShown] = useState(index);
@@ -21,7 +23,7 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
     setShown(index);
     setZoom(1);
   }
-  const item = gallery[index];
+  const item = list[index];
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const touch = useMedia("(pointer: coarse)");
@@ -29,11 +31,11 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
   // preload the neighbours so swiping feels instant
   useEffect(() => {
     [1, -1].forEach((d) => {
-      const n = gallery[(index + d + gallery.length) % gallery.length];
+      const n = list[(index + d + list.length) % list.length];
       const img = new window.Image();
       img.src = n.src.replace(/\.jpg$/, "-1600.webp");
     });
-  }, [index]);
+  }, [index, list]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -129,7 +131,7 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
             </>
           )}
           <span className="min-w-14 text-center text-[13px] tabular-nums text-[#f6f0e6]/85" dir="ltr">
-            {index + 1} / {gallery.length}
+            {index + 1} / {list.length}
           </span>
           <button type="button" className="h-11 w-11 rounded-full hover:bg-white/10" onClick={() => onNav(1)} aria-label="התמונה הבאה">←</button>
           <button type="button" className="h-11 w-11 rounded-full hover:bg-white/10 md:hidden" onClick={onClose} aria-label="סגירה">✕</button>
@@ -148,46 +150,83 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
   );
 }
 
+/** The events we produced: REVER's photos grouped by the real event they come from. */
 export function Gallery() {
+  const [ev, setEv] = useState(0);
   const [open, setOpen] = useState<number | null>(null);
   const [expanded, setExpanded] = useState(false);
-  const nav = useCallback((d: number) => setOpen((o) => (o === null ? o : (o + d + gallery.length) % gallery.length)), []);
+  const event = events[ev];
+  const list = event.photos;
+  const nav = useCallback((d: number) => setOpen((o) => (o === null ? o : (o + d + list.length) % list.length)), [list.length]);
   const close = useCallback(() => setOpen(null), []);
 
   return (
-    <section id="gallery" data-scene="day" className="relative px-4 pb-10 pt-20 md:px-10 md:py-32">
+    <section id="gallery" data-scene="day" className="relative px-4 pb-10 pt-16 md:px-10 md:py-28">
       <div className="mx-auto max-w-7xl">
-        <Reveal className="mb-10 md:mb-16">
-          <SectionKicker>גלריה</SectionKicker>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,4rem)] font-medium leading-[1.08]">רגעים שהפקנו</h2>
+        <Reveal className="mb-6 md:mb-10">
+          <SectionKicker>אירועים</SectionKicker>
+          <h2 className="font-display text-[clamp(2rem,4.5vw,4rem)] font-medium leading-[1.08]">אירועים שהפקנו</h2>
         </Reveal>
 
-        <div className="columns-2 gap-3 md:columns-3 md:gap-6">
-          {gallery.map((g, i) => (
-            <div key={g.src} className={`mb-3 break-inside-avoid md:mb-6 ${!expanded && i >= MOBILE_COUNT ? "hidden md:block" : ""}`}>
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(i);
-                  track("open_gallery", { photo: g.alt });
-                }}
-                className="zoom-img lit group relative block w-full cursor-zoom-in overflow-hidden rounded-[14px]"
-                aria-label={`הגדלת תמונה: ${g.alt}`}
-              >
-                <Image src={g.src} alt={g.alt} width={g.w} height={g.h} sizes="(min-width:768px) 31vw, 48vw" className="h-auto w-full" />
-              </button>
-            </div>
+        <div role="tablist" aria-label="בחרו אירוע" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] md:mx-0 md:flex-wrap md:px-0 [&::-webkit-scrollbar]:hidden">
+          {events.map((e, i) => (
+            <button
+              key={e.id}
+              type="button"
+              role="tab"
+              aria-selected={i === ev}
+              aria-controls="event-panel"
+              onClick={() => {
+                setEv(i);
+                setExpanded(false);
+                track("open_gallery", { event: e.id });
+              }}
+              className={`min-h-11 shrink-0 rounded-full border px-5 text-[15px] transition-colors ${
+                i === ev ? "border-[#2a2118] bg-[#2a2118] text-[#f6f0e6]" : "border-[#2a2118]/25 bg-white/50 hover:border-[#2a2118]/60"
+              }`}
+            >
+              {e.tab}
+            </button>
           ))}
         </div>
-        {!expanded && gallery.length > MOBILE_COUNT && (
-          <div className="mt-6 text-center md:hidden">
-            <button type="button" onClick={() => setExpanded(true)} className="inline-flex min-h-12 items-center rounded-full border border-[#2a2118]/30 px-6 text-[15px]">
-              עוד רגעים ({gallery.length - MOBILE_COUNT})
-            </button>
-          </div>
-        )}
+
+        <AnimatePresence mode="wait">
+          <motion.div key={event.id} id="event-panel" role="tabpanel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
+            <div className="mb-6 mt-6 max-w-2xl md:mb-10 md:mt-8">
+              <h3 className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] font-medium leading-[1.15]">{event.title}</h3>
+              <p className="mt-2 text-[16px] leading-[1.7] text-ink-dim">{event.text}</p>
+              <p className="mt-2 text-[14px]">
+                <Todo>מקום ותאריך: להשלים</Todo>
+              </p>
+            </div>
+            <div className="columns-2 gap-3 md:columns-3 md:gap-6">
+              {list.map((g, i) => (
+                <div key={g.src} className={`mb-3 break-inside-avoid md:mb-6 ${!expanded && i >= MOBILE_COUNT ? "hidden md:block" : ""}`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(i);
+                      track("open_gallery", { photo: g.alt });
+                    }}
+                    className="zoom-img lit group relative block w-full cursor-zoom-in overflow-hidden rounded-[14px]"
+                    aria-label={`הגדלת תמונה: ${g.alt}`}
+                  >
+                    <Image src={g.src} alt={g.alt} width={g.w} height={g.h} sizes="(min-width:768px) 31vw, 48vw" className="h-auto w-full" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            {!expanded && list.length > MOBILE_COUNT && (
+              <div className="mt-4 text-center md:hidden">
+                <button type="button" onClick={() => setExpanded(true)} className="inline-flex min-h-12 items-center rounded-full border border-[#2a2118]/30 px-6 text-[15px]">
+                  עוד מהאירוע ({list.length - MOBILE_COUNT})
+                </button>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
-      <AnimatePresence>{open !== null && <Lightbox index={open} onClose={close} onNav={nav} />}</AnimatePresence>
+      <AnimatePresence>{open !== null && <Lightbox list={list} index={open} onClose={close} onNav={nav} />}</AnimatePresence>
     </section>
   );
 }

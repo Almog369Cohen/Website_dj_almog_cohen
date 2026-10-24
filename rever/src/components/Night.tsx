@@ -42,6 +42,12 @@ export function Night() {
           </Reveal>
         </div>
       </div>
+      <Reveal className="relative mx-auto mt-3 max-w-7xl md:mt-5">
+        <figure>
+          <LitImage src={night.stage.src} alt={night.stage.alt} fill sizes="(min-width:768px) 90vw, 100vw" glow="rgba(196,72,140,.6)" className="aspect-[4/3] rounded-[18px] md:aspect-[21/9]" />
+          <figcaption className="mt-3 text-center text-[15px] text-[#f6f0e6]/85">{night.stageCaption}</figcaption>
+        </figure>
+      </Reveal>
       <NightCta />
       <StringLights dark className="relative mt-12 md:mt-20" />
     </section>
