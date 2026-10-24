@@ -19,12 +19,12 @@ export function Header() {
       <motion.div className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-right bg-gradient-to-l from-gold-lo via-gold-hi to-gold" style={{ scaleX: scrollYProgress }} />
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-          scrolled ? "border-b border-line bg-bg/70 py-3 backdrop-blur-xl" : "py-6"
+          scrolled ? "border-b border-white/10 bg-[#07060a]/93 py-2 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl" : "py-5"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-8">
           <a href="#top" aria-label="REVER PRODUCTIONS — לראש הדף">
-            <Logo />
+            <Logo className="h-12 md:h-14" priority />
           </a>
           <nav className="hidden items-center gap-8 lg:flex" aria-label="ניווט ראשי">
             {nav.map((n) => (

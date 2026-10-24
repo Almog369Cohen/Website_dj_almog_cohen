@@ -56,9 +56,23 @@ body {
 }
 
 .btn-gold {
-  background: linear-gradient(120deg, var(--gold-lo), var(--gold-hi) 50%, var(--gold));
+  background: linear-gradient(120deg, #a67c3d, #f3d9a4 50%, #d9b26f);
   color: #120e08;
   box-shadow: 0 10px 40px -10px rgba(217, 178, 111, 0.6);
+}
+
+/* Ivory sections, matching the cream of the real Rever logo. Every colour utility reads these tokens. */
+.theme-ivory {
+  --bg: #f6efe3;
+  --bg-soft: #fbf6ec;
+  --ink: #2a2118;
+  --ink-dim: rgba(42, 33, 24, 0.74);
+  --line: rgba(42, 33, 24, 0.18);
+  --gold: #8d6b2c;
+  --gold-hi: #a67c3d;
+  --gold-lo: #6f5222;
+  background: var(--bg);
+  color: var(--ink);
 }
 
 .grain::after {

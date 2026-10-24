@@ -1,8 +1,16 @@
-export function Logo({ className = "" }: { className?: string }) {
+import Image from "next/image";
+import { brand } from "@/content/site";
+
+/** The real REVER script logo (gold on transparent). */
+export function Logo({ className = "h-12", priority = false }: { className?: string; priority?: boolean }) {
   return (
-    <span className={`inline-flex flex-col items-start leading-none ${className}`} dir="ltr">
-      <span className="font-display text-2xl font-bold tracking-[0.35em] text-gold-grad">REVER</span>
-      <span className="mt-1 text-[0.6rem] tracking-[0.42em] text-ink-dim" dir="rtl">הפקות אירועים</span>
-    </span>
+    <Image
+      src={brand.logo}
+      alt="REVER Dream Productions"
+      width={brand.logoSize.width}
+      height={brand.logoSize.height}
+      priority={priority}
+      className={`w-auto ${className}`}
+    />
   );
 }

@@ -120,7 +120,7 @@ function PartyScene({ delay, onSwitch }: { delay: number; onSwitch: () => void }
                 <Image src={p.images[i]} alt="" fill sizes="(min-width:1024px) 64rem, 100vw" className={`object-cover ${i % 2 ? "kb-b" : "kb-a"}`} />
               </motion.div>
             </AnimatePresence>
-            <div className="absolute inset-0 z-[1] bg-gradient-to-l from-[#12051f]/90 via-[#12051f]/60 to-[#12051f]/20" />
+            <div className="absolute inset-0 z-[1] bg-[#12051f]/55 bg-gradient-to-l from-[#12051f]/60 via-[#12051f]/30 to-transparent" />
             <div className="relative z-[2] flex w-full flex-col items-start gap-4 p-6 md:p-12">
               <motion.p
                 initial={{ opacity: 0, y: 10 }}

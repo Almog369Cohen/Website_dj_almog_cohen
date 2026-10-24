@@ -2,12 +2,13 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Logo } from "./Logo";
 
 export function Preloader() {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
-    const t = setTimeout(() => setShow(false), 1700);
+    const t = setTimeout(() => setShow(false), 1500);
     return () => clearTimeout(t);
   }, []);
 
@@ -20,27 +21,9 @@ export function Preloader() {
           transition={{ duration: 0.9, ease: [0.7, 0, 0.2, 1] }}
           aria-hidden="true"
         >
-          <div className="flex flex-col items-center" dir="ltr">
-            <div className="flex overflow-hidden">
-              {"REVER".split("").map((c, i) => (
-                <motion.span
-                  key={i}
-                  className="font-display text-6xl font-bold tracking-[0.3em] text-gold-grad md:text-8xl"
-                  initial={{ y: "110%" }}
-                  animate={{ y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.08, duration: 0.7, ease: [0.2, 0.7, 0.1, 1] }}
-                >
-                  {c}
-                </motion.span>
-              ))}
-            </div>
-            <motion.div
-              className="mt-6 h-px bg-gradient-to-r from-transparent via-gold to-transparent"
-              initial={{ width: 0 }}
-              animate={{ width: 260 }}
-              transition={{ delay: 0.5, duration: 1, ease: "easeInOut" }}
-            />
-          </div>
+          <motion.div initial={{ opacity: 0, scale: 0.92, filter: "blur(10px)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }} transition={{ duration: 1.1, ease: [0.2, 0.7, 0.1, 1] }}>
+            <Logo className="h-44 md:h-60" priority />
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

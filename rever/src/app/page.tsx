@@ -18,11 +18,17 @@ export default function Home() {
       <main id="main">
         <Hero />
         <Marquee />
-        <About />
+        <div className="theme-ivory">
+          <About />
+        </div>
         <ZoomReveal />
-        <Services />
+        <div className="theme-ivory">
+          <Services />
+        </div>
         <Gallery />
-        <Contact />
+        <div className="theme-ivory">
+          <Contact />
+        </div>
       </main>
       <Footer />
       <FloatingActions />

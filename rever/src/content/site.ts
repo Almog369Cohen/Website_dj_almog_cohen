@@ -14,6 +14,8 @@ export const brand = {
   phoneIntl: "972546646923",
   whatsappMessage: "היי REVER! הגעתי מהאתר ואשמח לשמוע על הפקת האירוע שלי 🎉",
   url: "https://rever-events.co.il",
+  logo: "/images/logo.png",
+  logoSize: { width: 907, height: 524 },
 };
 
 export const nav = [
@@ -35,7 +37,7 @@ export const hero = {
     hint: "כוונו את הלייזרים עם העכבר או בנגיעה",
     /** Words that scroll on the LED pillars beside the main wall */
     pillars: ["לוקיישן", "ספקים", "תקציב", "לו״ז", "עיצוב", "הושבה", "רזרבות", "ניהול יום האירוע"],
-    images: ["/images/bar-mitzvah.jpg", "/images/hero-3.jpg", "/images/hero-2.jpg"],
+    images: ["/images/party-1.jpg", "/images/party-2.jpg", "/images/party-3.jpg"],
   },
   /** Lights on: the reception. Warm, designed, classy. */
   reception: {
@@ -85,41 +87,47 @@ export const services = [
     id: "location-vendors",
     title: "לוקיישן וספקים בהתאמה אישית",
     text: "איתור לוקיישן מדויק לסגנון ולאופי הזוג, כולל סבב התרשמות בלוקיישנים המותאמים עבורכם יחד איתנו. בחירת ספקים מובילים (אולם, צלמים, DJ, עיצוב וכל הספקים הדרושים) במחירים אטרקטיביים ללקוחות REVER, מתחת לגובה השוק.",
-    image: "/images/weddings.jpg",
+    image: "/images/service-location.jpg",
     tags: ["אולם", "צלמים", "DJ", "עיצוב"],
   },
   {
     id: "planning",
     title: "תכנון וניהול מוקדם",
     text: "בניית תקציב מסודר וברור, בק אופיס ניהול כלכלי חכם ובקרה לאורך כל הדרך. יצירת לו״ז וגאנטים לכל הספקים באירוע, איגוד כל המסמכים הדרושים, מעבר על החוזים ואישורם וליווי תהליך ההפקה ליום החתונה עצמו.",
-    image: "/images/corporate.jpg",
+    image: "/images/service-planning.jpg",
     tags: ["תקציב", "לו״ז וגאנטים", "חוזים"],
   },
   {
     id: "day-of",
     title: "ניהול מלא של יום האירוע",
     text: "ניהול חברת ההפקה ביום החתונה: ניהול מלא של הלו״ז, פיקוח על הספקים, ניהול הושבה ובקרה על הרזרבות, תוך חיסכון כספי ומענה לכל צורך בזמן אמת.",
-    image: "/images/bar-mitzvah.jpg",
+    image: "/images/service-day.jpg",
     tags: ["לו״ז", "פיקוח ספקים", "הושבה", "רזרבות"],
   },
   {
     id: "design",
     title: "עיצוב ואפיון האירוע",
     text: "תהליך שמתחיל מהרגע הראשון שהכרנו. אנחנו לומדים להכיר את הזוג לעומק, את החלומות ואת הסגנון, ומתרגמים אותם לתוכנית עבודה מסוגרת ומדויקת שמלווה את החתונה משלב הרעיונות והסיפור ועד הביצוע ביום האירוע עצמו.",
-    image: "/images/design.jpg",
+    image: "/images/service-design.jpg",
     tags: ["הכרות", "סיפור וסגנון", "תוכנית עבודה"],
   },
 ];
 
 export const gallery = [
-  { src: "/images/stage.jpg", alt: "במה מוארת באירוע", span: "wide" },
-  { src: "/images/weddings.jpg", alt: "חתונה בהפקת REVER", span: "tall" },
-  { src: "/images/design.jpg", alt: "עיצוב ותאורת אווירה", span: "" },
-  { src: "/images/bar-mitzvah.jpg", alt: "רחבת ריקודים", span: "" },
-  { src: "/images/corporate.jpg", alt: "במה ומסכים", span: "wide" },
-  { src: "/images/private.jpg", alt: "אירוע פרטי", span: "" },
-  { src: "/images/hero-2.jpg", alt: "קהל מול הבמה", span: "tall" },
-  { src: "/images/hero-3.jpg", alt: "תאורת במה", span: "" },
+  { src: "/images/g01.jpg", alt: "זוג חוגג על הבמה עם זיקוקים", span: "wide" },
+  { src: "/images/g02.jpg", alt: "מגדל שמפניה בחתונת גן", span: "tall" },
+  { src: "/images/g03.jpg", alt: "מתחם אירוח מוצל עם אורות ומנורות", span: "" },
+  { src: "/images/g04.jpg", alt: "שולחן אירוח עם פרחים", span: "" },
+  { src: "/images/g05.jpg", alt: "במה מעוצבת עם כדורי דיסקו וצמחייה", span: "wide" },
+  { src: "/images/g06.jpg", alt: "זוג מתחבק בין קשתות לבנות", span: "tall" },
+  { src: "/images/g07.jpg", alt: "כניסת הזוג בין זיקוקים", span: "" },
+  { src: "/images/g08.jpg", alt: "תקליטן ומוזיקה חיה על הבמה", span: "" },
+  { src: "/images/g09.jpg", alt: "מבט מלמעלה על מתחם הישיבה", span: "wide" },
+  { src: "/images/g10.jpg", alt: "שלט קבלת פנים מעוצב", span: "tall" },
+  { src: "/images/g11.jpg", alt: "פינות ישיבה בין העצים", span: "" },
+  { src: "/images/g12.jpg", alt: "שמפניה על הבמה", span: "" },
+  { src: "/images/g13.jpg", alt: "שולחנות בחתונת גן בשעת שקיעה", span: "" },
+  { src: "/images/g14.jpg", alt: "זוג בחיבוק", span: "" },
 ] as const;
 
 export const contact = {

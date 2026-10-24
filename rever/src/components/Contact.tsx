@@ -87,7 +87,7 @@ export function Contact() {
                 ))}
               </select>
               <label className="sr-only" htmlFor="c-date">תאריך משוער</label>
-              <input id="c-date" name="date" type="date" className={`${field} [color-scheme:dark]`} aria-label="תאריך משוער" />
+              <input id="c-date" name="date" type="date" className={`${field} [color-scheme:light]`} aria-label="תאריך משוער" />
               <label className="sr-only" htmlFor="c-guests">מספר אורחים</label>
               <input id="c-guests" name="guests" type="number" min={1} inputMode="numeric" placeholder="מספר אורחים משוער" className={`${field} sm:col-span-2`} />
               <label className="sr-only" htmlFor="c-msg">ספרו לנו על האירוע</label>
