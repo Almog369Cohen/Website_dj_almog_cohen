@@ -40,13 +40,13 @@ export function About() {
         <div ref={ref} className="relative">
           <motion.div style={{ clipPath: clip }} className="relative aspect-[4/5] overflow-hidden">
             <motion.div style={{ scale }} className="absolute inset-0">
-              <Image src={about.image} alt="צוות Rever בהפקת אירוע" fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover" />
+              <Image src={about.image} alt="הפקה של REVER" fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover" />
             </motion.div>
             <div className="absolute inset-0 bg-gradient-to-t from-bg/70 to-transparent" />
           </motion.div>
           <div className="absolute -bottom-8 -right-4 rounded-3xl border border-gold/30 bg-bg/80 px-6 py-5 backdrop-blur-xl md:-right-10">
-            <div className="font-display text-4xl font-bold text-gold-grad">A–Z</div>
-            <div className="text-sm text-ink-dim">הפקה מקצה לקצה</div>
+            <div className="font-display text-5xl font-bold text-gold-grad">{about.badgeValue}</div>
+            <div className="text-sm text-ink-dim">{about.badgeLabel}</div>
           </div>
         </div>
       </div>

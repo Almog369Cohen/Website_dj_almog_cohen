@@ -23,7 +23,7 @@ export function Header() {
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-8">
-          <a href="#top" aria-label="Rever הפקות אירועים — לראש הדף">
+          <a href="#top" aria-label="REVER PRODUCTIONS — לראש הדף">
             <Logo />
           </a>
           <nav className="hidden items-center gap-8 lg:flex" aria-label="ניווט ראשי">

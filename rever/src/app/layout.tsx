@@ -15,15 +15,15 @@ const heebo = Heebo({
   weight: ["300", "400", "500", "700", "800"],
 });
 
-const title = `${brand.fullName} | ניהול והפקת אירועים מקצה לקצה`;
+const title = `${brand.fullName} | הפקת אירועים וחתונות`;
 const description =
-  "Rever הפקות אירועים — ניהול והפקה של חתונות, בר/בת מצווה, אירועי חברה ואירועים פרטיים. קונספט, סאונד, תאורה, מסכים, עיצוב וצוות שטח תחת קורת גג אחת.";
+  "REVER PRODUCTIONS: 6 שנים של הפקת אירועים עם התמחות בחתונות. לוקיישן וספקים בהתאמה אישית, תכנון וניהול מוקדם, ניהול מלא של יום האירוע ועיצוב ואפיון, מהרעיון הראשון ועד הרגע האחרון.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(brand.url),
   title,
   description,
-  keywords: ["הפקת אירועים", "הפקות אירועים רמת גן", "מפיק אירועים", "הפקת חתונה", "הפקת בר מצווה", "הפקת אירועי חברה", "Rever", "ריבר הפקות"],
+  keywords: ["הפקת אירועים", "הפקות אירועים רמת גן", "מפיק אירועים", "הפקת חתונה", "הפקת בר מצווה", "הפקת אירועי חברה", "REVER PRODUCTIONS", "ריבר הפקות"],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -52,7 +52,6 @@ const jsonLd = {
   url: brand.url,
   telephone: `+${brand.phoneIntl}`,
   image: `${brand.url}/images/og.jpg`,
-  address: { "@type": "PostalAddress", addressLocality: brand.city, addressCountry: "IL" },
   areaServed: "IL",
 };
 

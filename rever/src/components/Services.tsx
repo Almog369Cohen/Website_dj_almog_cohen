@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
-import { services } from "@/content/site";
+import { services, servicesIntro } from "@/content/site";
 import { waLink } from "@/lib/whatsapp";
 import { ArrowIcon } from "./Icons";
 import { Reveal, SectionKicker } from "./Reveal";
@@ -41,7 +41,7 @@ function Card({ s, index, total, progress }: { s: Service; index: number; total:
               ))}
             </div>
             <a
-              href={waLink(`היי Rever! אשמח לשמוע על הפקת ${s.title} 🎉`)}
+              href={waLink(`היי REVER! אשמח לשמוע על: ${s.title}`)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-8 inline-flex items-center gap-2 font-bold text-gold transition-all hover:gap-4"
@@ -64,14 +64,14 @@ export function Services() {
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <Reveal className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <SectionKicker>מה אנחנו מפיקים</SectionKicker>
+            <SectionKicker>מה אנחנו עושים</SectionKicker>
             <h2 className="font-display text-4xl font-bold leading-tight md:text-6xl">
-              כל אירוע.
+              {servicesIntro.title}
               <br />
-              <span className="text-gold-grad">אותה רמת הפקה.</span>
+              <span className="text-gold-grad">{servicesIntro.titleAccent}</span>
             </h2>
           </div>
-          <p className="max-w-sm text-ink-dim">מחתונה של 600 אורחים ועד ערב אינטימי בגינה — אנחנו בונים את ההפקה סביבכם.</p>
+          <p className="max-w-sm text-ink-dim">{servicesIntro.text}</p>
         </Reveal>
         <div ref={ref} className="relative">
           {services.map((s, i) => (

@@ -25,7 +25,7 @@ export function Footer() {
         <div className="mt-12 grid gap-10 md:grid-cols-3">
           <div>
             <Logo />
-            <p className="mt-4 max-w-xs text-sm text-ink-dim">ניהול והפקת אירועים מקצה לקצה. {brand.city}, ובכל הארץ.</p>
+            <p className="mt-4 max-w-xs text-sm text-ink-dim">הפקת אירועים וחתונות, עם ליווי מלא מהרעיון הראשון ועד הרגע האחרון.</p>
           </div>
           <nav aria-label="ניווט תחתון" className="grid grid-cols-2 gap-3 text-sm">
             {nav.map((n) => (

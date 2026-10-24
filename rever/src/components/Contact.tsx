@@ -18,7 +18,7 @@ export function Contact() {
     e.preventDefault();
     const d = new FormData(e.currentTarget);
     const lines = [
-      "היי Rever! השארתי פרטים באתר 🎉",
+      "היי REVER! השארתי פרטים באתר 🎉",
       `שם: ${d.get("name")}`,
       `טלפון: ${d.get("phone")}`,
       `סוג אירוע: ${d.get("type")}`,
