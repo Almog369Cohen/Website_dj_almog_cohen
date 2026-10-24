@@ -6,6 +6,8 @@ if dst.exists():
 dst.mkdir(parents=True)
 shutil.copytree(src / "_next", dst / "next")
 shutil.copytree(src / "images", dst / "images")
+if (src / "video").exists():
+    shutil.copytree(src / "video", dst / "video")
 shutil.copy(src / "icon.svg", dst / "icon.svg")
 for f in (dst / "next" / "static").glob("*/_*"):
     f.unlink()

@@ -18,14 +18,11 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="relative border-t border-line pt-20 pb-28 md:pb-12">
+    <footer className="theme-ivory relative pt-20 pb-28 md:pb-12">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <p className="select-none text-center font-display text-[22vw] font-bold leading-none tracking-[0.1em] text-transparent [-webkit-text-stroke:1px_rgba(217,178,111,0.25)] md:text-[16vw]" dir="ltr" aria-hidden="true">
-          REVER
-        </p>
-        <div className="mt-12 grid gap-10 md:grid-cols-3">
+        <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <Logo className="h-28" />
+            <Logo className="h-24" />
             <p className="mt-4 max-w-xs text-sm text-ink-dim">הפקת אירועים וחתונות, עם ליווי מלא מהרעיון הראשון ועד הרגע האחרון.</p>
           </div>
           <nav aria-label="ניווט תחתון" className="grid grid-cols-2 gap-3 text-sm">
@@ -46,7 +43,7 @@ export function Footer() {
         </div>
         <div className="mt-14 flex flex-col justify-between gap-3 border-t border-line pt-6 text-xs text-ink-dim md:flex-row">
           <span>© {new Date().getFullYear()} {brand.fullName}. כל הזכויות שמורות.</span>
-          <span>עוצב ונבנה באהבה ✦</span>
+          
         </div>
       </div>
 

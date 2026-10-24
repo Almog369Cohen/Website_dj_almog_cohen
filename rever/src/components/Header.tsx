@@ -10,9 +10,15 @@ import { WhatsAppIcon } from "./Icons";
 export function Header() {
   const { scrollY, scrollYProgress } = useScroll();
   const [scrolled, setScrolled] = useState(false);
+  const [light, setLight] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 40));
+  useMotionValueEvent(scrollY, "change", (v) => {
+    setScrolled(v > 40);
+    // match the section under the header: ivory glass over light sections, dark glass over dark ones
+    const under = document.elementsFromPoint(innerWidth / 2, 72).find((el) => !el.closest("header"));
+    setLight(!!under?.closest(".theme-ivory"));
+  });
 
   useEffect(() => {
     if (!open) return;
@@ -30,7 +36,7 @@ export function Header() {
       <motion.div className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-right bg-gradient-to-l from-gold-lo via-gold-hi to-gold" style={{ scaleX: scrollYProgress }} />
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-          scrolled ? "border-b border-white/10 bg-[#07060a]/93 py-2 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl" : "py-5"
+          scrolled ? `${light ? "glass-ivory" : "glass-dark"} !border-x-0 !border-t-0 py-2` : "py-5"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-8">
@@ -39,7 +45,7 @@ export function Header() {
           </a>
           <nav className="hidden items-center gap-8 lg:flex" aria-label="ניווט ראשי">
             {nav.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className="group relative text-sm text-ink-dim transition-colors hover:text-ink">
+              <a key={n.id} href={`#${n.id}`} className={`group relative text-[14px] transition-colors ${scrolled && light ? "text-[#2a2118]/80 hover:text-[#2a2118]" : "text-[#f6f0e6]/80 hover:text-[#f6f0e6]"}`}>
                 {n.label}
                 <span className="absolute -bottom-1 right-0 h-px w-0 bg-gold transition-all duration-300 group-hover:w-full" />
               </a>
@@ -50,7 +56,7 @@ export function Header() {
               href={waLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-gold hidden items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-transform hover:scale-105 sm:inline-flex"
+              className="btn-gold hidden items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-transform hover:scale-105 sm:inline-flex"
             >
               <WhatsAppIcon className="h-4 w-4" />
               דברו איתנו
@@ -58,7 +64,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setOpen((o) => !o)}
-              className="relative flex h-11 w-11 items-center justify-center rounded-full border border-line lg:hidden"
+              className={`relative flex h-11 w-11 items-center justify-center rounded-full border lg:hidden ${scrolled && light ? "border-[#2a2118]/25 [&>span]:bg-[#2a2118]" : "border-white/25"}`}
               aria-label={open ? "סגירת תפריט" : "פתיחת תפריט"}
               aria-expanded={open}
             >

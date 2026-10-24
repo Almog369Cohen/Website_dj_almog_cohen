@@ -43,16 +43,7 @@ body {
 }
 
 .text-gold-grad {
-  background: linear-gradient(100deg, var(--gold-lo) 0%, var(--gold-hi) 35%, var(--gold) 55%, var(--gold-hi) 75%, var(--gold-lo) 100%);
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shine 6s linear infinite;
-}
-
-@keyframes shine {
-  to { background-position: -250% 0; }
+  color: var(--gold);
 }
 
 .btn-gold {
@@ -63,7 +54,7 @@ body {
 
 /* Ivory sections, matching the cream of the real Rever logo. Every colour utility reads these tokens. */
 .theme-ivory {
-  --bg: #f6efe3;
+  --bg: #f6f0e6;
   --bg-soft: #fbf6ec;
   --ink: #2a2118;
   --ink-dim: rgba(42, 33, 24, 0.74);
@@ -75,25 +66,6 @@ body {
   color: var(--ink);
 }
 
-.grain::after {
-  content: "";
-  position: fixed;
-  inset: -50%;
-  pointer-events: none;
-  z-index: 60;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  animation: grain 1.2s steps(6) infinite;
-}
-
-@keyframes grain {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-3%, 2%); }
-  40% { transform: translate(2%, -3%); }
-  60% { transform: translate(-2%, -1%); }
-  80% { transform: translate(3%, 3%); }
-  100% { transform: translate(0, 0); }
-}
 
 /* Ken Burns zoom — the core image formula */
 @keyframes kenburns-a {
@@ -107,15 +79,6 @@ body {
 .kb-a { animation: kenburns-a 9s ease-out both; }
 .kb-b { animation: kenburns-b 9s ease-out both; }
 
-.marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 32s linear infinite;
-}
-.marquee-rev { animation-direction: reverse; }
-@keyframes marquee {
-  to { transform: translateX(50%); }
-}
 
 .zoom-img img {
   transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.1, 1), filter 1.2s ease;
@@ -140,62 +103,28 @@ body {
   }
 }
 
-/* ========== LED stage ========== */
-@keyframes beat-glow {
-  0% { box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 0 90px -10px rgba(255, 70, 190, 0.75), 0 0 180px -40px rgba(90, 150, 255, 0.6); }
-  100% { box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 0 50px -20px rgba(255, 70, 190, 0.35), 0 0 120px -60px rgba(90, 150, 255, 0.3); }
-}
-.led-panel {
-  position: relative;
-  overflow: hidden;
-  background: #050308;
-  border: 6px solid #111014;
-  border-radius: 6px;
-}
-@media (min-width: 768px) {
-  .led-panel { animation: beat-glow 0.484s ease-out infinite; /* 124 BPM */ }
-}
-.led-panel::after {
-  /* the LED pixel grid */
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-  background-image: radial-gradient(circle at center, transparent 0 1px, rgba(0, 0, 0, 0.55) 1.6px);
-  background-size: 4px 4px;
-}
-.led-panel::before {
-  /* refresh scan band */
-  content: "";
-  position: absolute;
-  inset: -20% 0 auto 0;
-  height: 20%;
-  pointer-events: none;
-  z-index: 4;
-  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.06), transparent);
-  animation: scan 3.2s linear infinite;
-}
-@keyframes scan { to { transform: translateY(700%); } }
 
-.led-text { text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85), 0 0 18px rgba(255, 120, 220, 0.4); }
-
-.led-pillar-track { animation: pillar 14s linear infinite; }
-@keyframes pillar { to { transform: translateY(-50%); } }
-
-.eq span { animation: eq 0.484s ease-in-out infinite alternate; }
-@keyframes eq { from { transform: scaleY(0.2); } to { transform: scaleY(1); } }
-
-.led-ticker { position: relative; }
-.led-ticker::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: radial-gradient(circle at center, transparent 0 1px, rgba(0, 0, 0, 0.6) 1.6px);
-  background-size: 3px 3px;
+/* ========== Glass ========== */
+.glass-dark {
+  background: rgba(14, 12, 10, 0.38);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(232, 207, 160, 0.26);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 30px 80px -30px rgba(0, 0, 0, 0.6);
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .led-panel, .led-panel::before, .led-pillar-track, .eq span { animation: none !important; }
+.glass-ivory {
+  background: rgba(251, 248, 242, 0.62);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(176, 141, 87, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 30px 60px -35px rgba(60, 42, 20, 0.35);
+}
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b08d57, transparent);
+}
+.arch { border-radius: 999px 999px 6px 6px; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-dark { background: rgba(14, 12, 10, 0.82); }
+  .glass-ivory { background: rgba(251, 248, 242, 0.94); }
 }

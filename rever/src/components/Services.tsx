@@ -1,82 +1,68 @@
 "use client";
 
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { services, servicesIntro } from "@/content/site";
-import { waLink } from "@/lib/whatsapp";
-import { ArrowIcon } from "./Icons";
 import { Reveal, SectionKicker } from "./Reveal";
 
-type Service = (typeof services)[number];
+const ease = [0.2, 0.7, 0.1, 1] as const;
 
-function Card({ s, index, total, progress }: { s: Service; index: number; total: number; progress: MotionValue<number> }) {
-  const start = index / total;
-  const scale = useTransform(progress, [start, 1], [1, 1 - (total - index) * 0.04]);
-  const brightness = useTransform(progress, [start, 1], [1, 0.55 + index * 0.1]);
-  const filter = useTransform(brightness, (b) => `brightness(${b})`);
-
-  return (
-    <div className="sticky top-20 flex min-h-[78svh] items-start justify-center md:top-28 md:h-[78vh] md:min-h-[520px]" style={{ paddingTop: index * 18 }}>
-      <motion.article
-        style={{ scale, filter }}
-        className="zoom-img group relative grid min-h-full w-full origin-top overflow-hidden rounded-[2rem] border border-line bg-bg-soft md:h-full md:grid-cols-2"
-      >
-        <div className="relative h-40 overflow-hidden sm:h-56 md:order-2 md:h-full">
-          <Image src={s.image} alt={s.title} fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-bg-soft via-transparent to-transparent md:bg-gradient-to-l" />
-        </div>
-        <div className="relative flex flex-col justify-between p-7 md:p-12">
-          <div>
-            <span className="font-display text-6xl font-bold text-transparent [-webkit-text-stroke:1px_var(--gold)] md:text-8xl">0{index + 1}</span>
-            <h3 className="mt-4 font-display text-3xl font-bold md:text-5xl">{s.title}</h3>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-ink-dim md:text-lg">{s.text}</p>
-          </div>
-          <div>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {s.tags.map((t) => (
-                <span key={t} className="rounded-full border border-gold/30 px-3 py-1 text-xs text-gold-hi">
-                  {t}
-                </span>
-              ))}
-            </div>
-            <a
-              href={waLink(`היי REVER! אשמח לשמוע על: ${s.title}`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 font-bold text-gold transition-all hover:gap-4"
-            >
-              לבדיקת זמינות <ArrowIcon />
-            </a>
-          </div>
-        </div>
-      </motion.article>
-    </div>
-  );
-}
-
+/** One sticky full-screen photo that crossfades per service, with a single glass card. */
 export function Services() {
   const ref = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  useMotionValueEvent(scrollYProgress, "change", (v) => setActive(Math.min(services.length - 1, Math.max(0, Math.floor(v * services.length)))));
+  const s = services[active];
 
   return (
-    <section id="services" className="relative py-28 md:py-36">
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <Reveal className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+    <section id="services">
+      <div className="theme-ivory px-4 pb-16 pt-24 md:px-10 md:pt-32">
+        <Reveal className="mx-auto max-w-7xl md:flex md:items-end md:justify-between md:gap-10">
           <div>
-            <SectionKicker>מה אנחנו עושים</SectionKicker>
-            <h2 className="font-display text-4xl font-bold leading-tight md:text-6xl">
-              {servicesIntro.title}
-              <br />
-              <span className="text-gold-grad">{servicesIntro.titleAccent}</span>
-            </h2>
+            <SectionKicker>{servicesIntro.kicker}</SectionKicker>
+            <h2 className="font-display text-[clamp(2rem,4.5vw,4rem)] font-medium leading-[1.08]">{servicesIntro.title}</h2>
           </div>
-          <p className="max-w-sm text-ink-dim">{servicesIntro.text}</p>
+          <p className="mt-6 max-w-md text-[17px] font-light leading-[1.8] text-ink-dim md:mt-0">{servicesIntro.text}</p>
         </Reveal>
-        <div ref={ref} className="relative">
-          {services.map((s, i) => (
-            <Card key={s.id} s={s} index={i} total={services.length} progress={scrollYProgress} />
+      </div>
+
+      <div ref={ref} className="relative" style={{ height: `${services.length * 100}svh` }}>
+        <div className="sticky top-0 h-[100svh] overflow-hidden bg-[#0e0c0a]">
+          {services.map((sv, i) => (
+            <motion.div
+              key={sv.id}
+              className="absolute inset-0"
+              initial={false}
+              animate={{ opacity: i === active ? 1 : 0, scale: i === active ? 1 : 1.06 }}
+              transition={{ duration: 1.2, ease }}
+            >
+              <Image src={sv.image} alt="" fill sizes="100vw" className="object-cover" />
+            </motion.div>
           ))}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0e0c0a]/80 via-[#0e0c0a]/20 to-[#0e0c0a]/40" />
+
+          <div className="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-8 md:items-center md:px-10 md:pb-0">
+            <div className="glass-dark w-full max-w-md rounded-[28px] p-7 md:p-10" aria-live="polite">
+              <div className="mb-6 flex items-center gap-3 text-xs tracking-[0.3em] text-[#e8cfa0]" dir="ltr">
+                <span>0{active + 1}</span>
+                <span className="h-px w-10 bg-[#b08d57]/60" />
+                <span className="text-[#f6f0e6]/50">0{services.length}</span>
+              </div>
+              <AnimatePresence mode="wait">
+                <motion.div key={s.id} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.5, ease }}>
+                  <h3 className="font-display text-[clamp(1.7rem,3vw,2.6rem)] font-medium leading-[1.12] text-[#f6f0e6]">{s.title}</h3>
+                  <p className="mt-5 text-[15px] font-light leading-[1.8] text-[#f6f0e6]/85 md:text-[16px]">{s.text}</p>
+                </motion.div>
+              </AnimatePresence>
+              <div className="mt-8 flex gap-2" aria-hidden="true">
+                {services.map((_, i) => (
+                  <span key={i} className={`h-px flex-1 transition-colors duration-700 ${i <= active ? "bg-[#d9b26f]" : "bg-[#f6f0e6]/20"}`} />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

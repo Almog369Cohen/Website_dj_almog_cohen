@@ -58,7 +58,7 @@ const jsonLd = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="he" dir="rtl">
-      <body className={`${frank.variable} ${heebo.variable} grain antialiased`}>
+      <body className={`${frank.variable} ${heebo.variable} antialiased`}>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:right-3 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-bg">
           דלג לתוכן
         </a>

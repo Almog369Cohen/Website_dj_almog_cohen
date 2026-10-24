@@ -1,14 +1,13 @@
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
-import { CursorGlow, FloatingActions } from "@/components/FloatingActions";
+import { FloatingActions } from "@/components/FloatingActions";
 import { Footer } from "@/components/Footer";
 import { Gallery } from "@/components/Gallery";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { Marquee } from "@/components/Marquee";
+import { Night } from "@/components/Night";
 import { Preloader } from "@/components/Preloader";
 import { Services } from "@/components/Services";
-import { ZoomReveal } from "@/components/ZoomReveal";
 
 export default function Home() {
   return (
@@ -17,22 +16,18 @@ export default function Home() {
       <Header />
       <main id="main">
         <Hero />
-        <Marquee />
         <div className="theme-ivory">
           <About />
         </div>
-        <ZoomReveal />
+        <Services />
+        <Night />
         <div className="theme-ivory">
-          <Services />
+          <Gallery />
         </div>
-        <Gallery />
-        <div className="theme-ivory">
-          <Contact />
-        </div>
+        <Contact />
       </main>
       <Footer />
       <FloatingActions />
-      <CursorGlow />
     </>
   );
 }

@@ -6,12 +6,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { gallery } from "@/content/site";
 import { Reveal, SectionKicker } from "./Reveal";
 
-const spanClass: Record<string, string> = {
-  wide: "md:col-span-2",
-  tall: "md:row-span-2",
-  "": "",
-};
-
 function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => void; onNav: (d: number) => void }) {
   const [zoom, setZoom] = useState(1);
   const [origin, setOrigin] = useState("50% 50%");
@@ -56,7 +50,7 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
 
   return (
     <motion.div
-      className="fixed inset-0 z-[80] flex items-center justify-center bg-bg/95 backdrop-blur-xl"
+      className="fixed inset-0 z-[80] flex items-center justify-center bg-[#0e0c0a]/95 backdrop-blur-xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -68,8 +62,7 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
     >
       <motion.div
         key={index}
-        layoutId={`g-${index}`}
-        className={`relative h-[78vh] w-[92vw] max-w-6xl overflow-hidden rounded-3xl ${zoom > 1 ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+                className={`relative h-[78vh] w-[92vw] max-w-6xl overflow-hidden rounded-3xl ${zoom > 1 ? "cursor-zoom-out" : "cursor-zoom-in"}`}
         onClick={(e) => {
           e.stopPropagation();
           toggleZoom(e);
@@ -93,7 +86,7 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
         />
       </motion.div>
 
-      <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-line bg-bg/80 p-1.5 backdrop-blur" onClick={(e) => e.stopPropagation()}>
+      <div className="glass-dark absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full p-1.5 text-[#f6f0e6]" onClick={(e) => e.stopPropagation()}>
         <button type="button" className="h-10 w-10 rounded-full hover:bg-ink/10" onClick={() => onNav(-1)} aria-label="התמונה הקודמת">→</button>
         <button type="button" className="h-10 w-10 rounded-full hover:bg-ink/10" onClick={() => setZoom((z) => Math.max(z - 0.5, 1))} aria-label="הקטנה">−</button>
         <span className="min-w-14 text-center text-sm tabular-nums text-ink-dim" dir="ltr">{Math.round(zoom * 100)}%</span>
@@ -116,37 +109,30 @@ export function Gallery() {
   const close = useCallback(() => setOpen(null), []);
 
   return (
-    <section id="gallery" className="relative py-28 md:py-36">
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <Reveal className="mb-14 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+    <section id="gallery" className="relative px-4 py-24 md:px-10 md:py-36">
+      <div className="mx-auto max-w-7xl">
+        <Reveal className="mb-12 md:mb-16 md:flex md:items-end md:justify-between">
           <div>
             <SectionKicker>גלריה</SectionKicker>
-            <h2 className="font-display text-4xl font-bold md:text-6xl">
-              רגעים <span className="text-gold-grad">שהפקנו</span>
-            </h2>
+            <h2 className="font-display text-[clamp(2rem,4.5vw,4rem)] font-medium leading-[1.08]">רגעים שהפקנו</h2>
           </div>
-          <p className="text-ink-dim">לחצו על תמונה כדי להגדיל ⤢</p>
+          <p className="mt-4 text-[15px] text-ink-dim md:mt-0">לחצו על תמונה כדי לראות אותה בגדול</p>
         </Reveal>
 
-        <div className="grid grid-flow-dense auto-rows-[220px] grid-cols-2 gap-3 md:auto-rows-[260px] md:grid-cols-4 md:gap-4">
+        <div className="columns-2 gap-3 md:columns-3 md:gap-5">
           {gallery.map((g, i) => (
-            <Reveal key={i} delay={(i % 4) * 0.08} y={60} className={`${spanClass[g.span]} ${i === 0 ? "col-span-2" : ""}`}>
-              <motion.button
+            <Reveal key={g.src} delay={(i % 3) * 0.08} className="mb-3 break-inside-avoid md:mb-5">
+              <button
                 type="button"
-                layoutId={`g-${i}`}
                 onClick={() => setOpen(i)}
-                className="zoom-img group relative block h-full w-full cursor-zoom-in overflow-hidden rounded-3xl border border-line"
+                className="zoom-img group relative block w-full cursor-zoom-in overflow-hidden rounded-[6px]"
                 aria-label={`הגדלת תמונה: ${g.alt}`}
               >
-                <Image src={g.src} alt={g.alt} fill sizes="(min-width:768px) 25vw, 50vw" className="object-cover" />
-                <span className="absolute inset-0 bg-gradient-to-t from-bg/80 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <span className="absolute bottom-4 right-4 translate-y-4 text-sm font-medium opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                <Image src={g.src} alt={g.alt} width={g.w} height={g.h} sizes="(min-width:768px) 31vw, 48vw" className="h-auto w-full" />
+                <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-4 pb-3 pt-10 text-right text-[13px] text-white opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100">
                   {g.alt}
                 </span>
-                <span className="absolute left-4 top-4 flex h-10 w-10 scale-50 items-center justify-center rounded-full bg-gold text-bg opacity-0 transition-all duration-500 group-hover:scale-100 group-hover:opacity-100">
-                  ⤢
-                </span>
-              </motion.button>
+              </button>
             </Reveal>
           ))}
         </div>
