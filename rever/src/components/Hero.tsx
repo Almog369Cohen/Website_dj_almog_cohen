@@ -105,22 +105,22 @@ function PartyScene({ delay, onSwitch }: { delay: number; onSwitch: () => void }
       </div>
       <LightShow active />
 
-      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-center gap-6 px-4 pb-24 pt-24 md:px-8 md:pb-32">
+      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-start gap-5 px-4 pb-16 pt-24 md:justify-center md:gap-6 md:px-8 md:pb-32">
         <div className="flex w-full items-stretch justify-center gap-5" style={{ perspective: "1400px" }}>
           <Pillar side="left" />
           <motion.div
-            className="led-panel flex min-h-[44vh] w-full max-w-5xl items-center"
+            className="led-panel flex w-full max-w-5xl items-center md:min-h-[44vh]"
             initial={{ scaleY: 0.02, opacity: 0 }}
             animate={{ scaleY: 1, opacity: 1 }}
             exit={{ scaleY: 0.01, opacity: 0, transition: { duration: 0.35 } }}
-            transition={{ delay: delay > 1 ? 1.6 : 0, duration: 0.7, ease: [0.7, 0, 0.2, 1] }}
+            transition={{ delay: delay > 0.5 ? 0.6 : 0, duration: 0.7, ease: [0.7, 0, 0.2, 1] }}
           >
             <AnimatePresence initial={false}>
               <motion.div key={i} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.2 }}>
                 <Image src={p.images[i]} alt="" fill sizes="(min-width:1024px) 64rem, 100vw" className={`object-cover ${i % 2 ? "kb-b" : "kb-a"}`} />
               </motion.div>
             </AnimatePresence>
-            <div className="absolute inset-0 z-[1] bg-[#12051f]/55 bg-gradient-to-l from-[#12051f]/60 via-[#12051f]/30 to-transparent" />
+            <div className="absolute inset-0 z-[1] bg-[#12051f]/70 bg-gradient-to-l from-[#12051f]/60 via-[#12051f]/30 to-transparent" />
             <div className="relative z-[2] flex w-full flex-col items-start gap-4 p-6 md:p-12">
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
@@ -153,7 +153,7 @@ function PartyScene({ delay, onSwitch }: { delay: number; onSwitch: () => void }
           <Switch on={false} label={p.toggle} onClick={onSwitch} />
         </motion.div>
         <motion.p
-          className="text-center text-sm tracking-[0.15em] text-[#ffb3e6]"
+          className="hidden text-center text-sm tracking-[0.15em] text-[#ffd0f0] md:block"
           initial={{ opacity: 0 }}
           animate={{ opacity: [0.55, 1, 0.55] }}
           transition={{ delay: delay + 1, repeat: Infinity, duration: 2.4 }}
@@ -222,7 +222,7 @@ export function Hero() {
     setSwitched(true);
   };
   useMotionValueEvent(scrollY, "change", (v) => {
-    if (v > 60 && !lightsOn) toggle(true);
+    if (v > 220 && !lightsOn) toggle(true);
   });
 
   return (
@@ -232,7 +232,7 @@ export function Hero() {
           {on ? (
             <ReceptionScene key="reception" onSwitch={() => toggle(false)} showSwitch={!reduce} />
           ) : (
-            <PartyScene key="party" delay={switched ? 0.15 : 1.9} onSwitch={() => toggle(true)} />
+            <PartyScene key="party" delay={switched ? 0.15 : 1.0} onSwitch={() => toggle(true)} />
           )}
         </AnimatePresence>
       </motion.div>

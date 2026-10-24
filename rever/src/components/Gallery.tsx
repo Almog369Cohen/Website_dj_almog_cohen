@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { gallery } from "@/content/site";
 import { Reveal, SectionKicker } from "./Reveal";
 
@@ -16,6 +16,8 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
   const [zoom, setZoom] = useState(1);
   const [origin, setOrigin] = useState("50% 50%");
   const item = gallery[index];
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -25,11 +27,24 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
       if (e.key === "+" || e.key === "=") setZoom((z) => Math.min(z + 0.5, 3));
       if (e.key === "-") setZoom((z) => Math.max(z - 0.5, 1));
     };
+    const onTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const els = [...dialogRef.current.querySelectorAll<HTMLElement>("button")];
+      if (!els.length) return;
+      const first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    const opener = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
     document.addEventListener("keydown", onKey);
+    document.addEventListener("keydown", onTab);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKey);
+      document.removeEventListener("keydown", onTab);
       document.body.style.overflow = "";
+      opener?.focus?.();
     };
   }, [onClose, onNav]);
 
@@ -45,6 +60,7 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label={item.alt}
@@ -66,7 +82,7 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
         }}
       >
         <motion.div className="absolute inset-0" animate={{ scale: zoom }} transition={{ type: "spring", stiffness: 180, damping: 24 }} style={{ transformOrigin: origin }}>
-          <Image src={item.src} alt={item.alt} fill sizes="92vw" className="object-cover" />
+          <Image src={item.src} alt={item.alt} fill sizes="(min-width:1280px) 1100px, 92vw" className="object-contain" />
         </motion.div>
         <motion.div
           aria-hidden="true"
@@ -84,7 +100,7 @@ function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => voi
         <button type="button" className="h-10 w-10 rounded-full hover:bg-ink/10" onClick={() => setZoom((z) => Math.min(z + 0.5, 3))} aria-label="הגדלה">+</button>
         <button type="button" className="h-10 w-10 rounded-full hover:bg-ink/10" onClick={() => onNav(1)} aria-label="התמונה הבאה">←</button>
       </div>
-      <button type="button" className="absolute left-5 top-5 h-12 w-12 rounded-full border border-line bg-bg/70 text-xl" onClick={onClose} aria-label="סגירה">
+      <button ref={closeRef} type="button" className="absolute left-5 top-5 h-12 w-12 rounded-full border border-white/20 bg-black/60 text-xl text-white" onClick={onClose} aria-label="סגירה">
         ✕
       </button>
       <div className="absolute right-6 top-7 text-sm text-ink-dim" dir="ltr">

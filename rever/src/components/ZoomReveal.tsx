@@ -21,7 +21,7 @@ export function ZoomReveal() {
   const outlineOpacity = useTransform(scrollYProgress, [0, 0.22], [1, 0]);
 
   return (
-    <section ref={ref} className="relative h-[260vh]" aria-label={`${zoomFeature.lineTop} ${zoomFeature.lineBottom}`}>
+    <section ref={ref} className="relative h-[180vh] md:h-[260vh]" aria-label={`${zoomFeature.lineTop} ${zoomFeature.lineBottom}`}>
       <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
         <motion.div style={{ clipPath: clip }} className="absolute inset-0">
           <motion.div style={{ scale: imgScale }} className="absolute inset-0">

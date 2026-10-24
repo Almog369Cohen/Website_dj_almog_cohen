@@ -68,9 +68,9 @@ body {
   --ink: #2a2118;
   --ink-dim: rgba(42, 33, 24, 0.74);
   --line: rgba(42, 33, 24, 0.18);
-  --gold: #8d6b2c;
-  --gold-hi: #a67c3d;
-  --gold-lo: #6f5222;
+  --gold: #7a5a20;
+  --gold-hi: #8d6b2c;
+  --gold-lo: #5f4519;
   background: var(--bg);
   color: var(--ink);
 }
@@ -151,7 +151,9 @@ body {
   background: #050308;
   border: 6px solid #111014;
   border-radius: 6px;
-  animation: beat-glow 0.484s ease-out infinite; /* 124 BPM */
+}
+@media (min-width: 768px) {
+  .led-panel { animation: beat-glow 0.484s ease-out infinite; /* 124 BPM */ }
 }
 .led-panel::after {
   /* the LED pixel grid */
@@ -176,7 +178,7 @@ body {
 }
 @keyframes scan { to { transform: translateY(700%); } }
 
-.led-text { text-shadow: 0 0 18px rgba(255, 120, 220, 0.45); }
+.led-text { text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85), 0 0 18px rgba(255, 120, 220, 0.4); }
 
 .led-pillar-track { animation: pillar 14s linear infinite; }
 @keyframes pillar { to { transform: translateY(-50%); } }

@@ -17,18 +17,18 @@ function Card({ s, index, total, progress }: { s: Service; index: number; total:
   const filter = useTransform(brightness, (b) => `brightness(${b})`);
 
   return (
-    <div className="sticky top-24 flex h-[78vh] min-h-[520px] items-start justify-center md:top-28" style={{ paddingTop: index * 18 }}>
+    <div className="sticky top-20 flex min-h-[78svh] items-start justify-center md:top-28 md:h-[78vh] md:min-h-[520px]" style={{ paddingTop: index * 18 }}>
       <motion.article
         style={{ scale, filter }}
-        className="zoom-img group relative grid h-full w-full origin-top overflow-hidden rounded-[2rem] border border-line bg-bg-soft md:grid-cols-2"
+        className="zoom-img group relative grid min-h-full w-full origin-top overflow-hidden rounded-[2rem] border border-line bg-bg-soft md:h-full md:grid-cols-2"
       >
-        <div className="relative h-56 overflow-hidden md:order-2 md:h-full">
+        <div className="relative h-40 overflow-hidden sm:h-56 md:order-2 md:h-full">
           <Image src={s.image} alt={s.title} fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-bg-soft via-transparent to-transparent md:bg-gradient-to-l" />
         </div>
         <div className="relative flex flex-col justify-between p-7 md:p-12">
           <div>
-            <span className="font-display text-7xl font-bold text-transparent [-webkit-text-stroke:1px_var(--gold)] md:text-8xl">0{index + 1}</span>
+            <span className="font-display text-6xl font-bold text-transparent [-webkit-text-stroke:1px_var(--gold)] md:text-8xl">0{index + 1}</span>
             <h3 className="mt-4 font-display text-3xl font-bold md:text-5xl">{s.title}</h3>
             <p className="mt-5 max-w-md text-base leading-relaxed text-ink-dim md:text-lg">{s.text}</p>
           </div>

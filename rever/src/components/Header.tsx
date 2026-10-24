@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { nav } from "@/content/site";
 import { waLink } from "@/lib/whatsapp";
 import { Logo } from "./Logo";
@@ -13,6 +13,17 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 40));
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
     <>

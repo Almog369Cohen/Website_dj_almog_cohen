@@ -55,7 +55,7 @@ export function Footer() {
           <h2 id="a11y-title" className="font-display text-2xl font-bold text-gold">הצהרת נגישות</h2>
           <div className="mt-4 space-y-3 text-sm leading-relaxed text-ink-dim">
             <p>{brand.fullName} רואה חשיבות רבה בהנגשת האתר לכלל הגולשים, כולל אנשים עם מוגבלות.</p>
-            <p>האתר נבנה בהתאם להנחיות WCAG 2.1 ברמה AA ותקן ישראלי 5568: ניווט מלא במקלדת, תמיכה בקוראי מסך, ניגודיות צבעים גבוהה, טקסט חלופי לתמונות וכיבוד העדפת &quot;הפחתת תנועה&quot; של מערכת ההפעלה.</p>
+            <p>האתר נבנה מתוך שאיפה לעמוד בהנחיות WCAG 2.1 ברמה AA ובתקן הישראלי 5568: ניווט מלא במקלדת, תמיכה בקוראי מסך, ניגודיות צבעים גבוהה, טקסט חלופי לתמונות וכיבוד העדפת &quot;הפחתת תנועה&quot; של מערכת ההפעלה.</p>
             <p>נתקלתם ברכיב שאינו נגיש? נשמח לשמוע ולתקן: <a href={telLink}><Todo dir="ltr">{brand.phoneDisplay}</Todo></a></p>
           </div>
           <form method="dialog">

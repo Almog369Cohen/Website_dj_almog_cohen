@@ -29,7 +29,8 @@ export function LightShow({ active }: { active: boolean }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let w = 0, h = 0, dpr = 1, raf = 0, visible = true;
+    let w = 0, h = 0, dpr = 1, raf = 0, visible = true, last = 0;
+    const mobile = innerWidth < 768;
     const aim = { x: 0, y: 0, t: -10 };
     let crowd: { x: number; r: number; phase: number; hands: number }[] = [];
 
@@ -63,8 +64,21 @@ export function LightShow({ active }: { active: boolean }) {
     };
     host.addEventListener("pointermove", onPointer, { passive: true });
     host.addEventListener("pointerdown", onPointer, { passive: true });
-    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
+    const start = () => {
+      if (!raf && visible && !document.hidden) raf = requestAnimationFrame(draw);
+    };
+    const stop = () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible) start();
+      else stop();
+    });
     io.observe(host);
+    const onVis = () => (document.hidden ? stop() : start());
+    document.addEventListener("visibilitychange", onVis);
 
     const rgba = (c: RGB, a: number) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
 
@@ -84,8 +98,10 @@ export function LightShow({ active }: { active: boolean }) {
     };
 
     const draw = (ms: number) => {
+      if (!raf) return;
       raf = requestAnimationFrame(draw);
-      if (!visible || document.hidden) return;
+      if (mobile && ms - last < 33) return; // 30 fps on phones
+      last = ms;
       const t = ms / 1000;
       const beatPos = (t % BEAT) / BEAT;
       const kick = Math.exp(-beatPos * 5);
@@ -180,10 +196,11 @@ export function LightShow({ active }: { active: boolean }) {
         }
       }
     };
-    raf = requestAnimationFrame(draw);
+    start();
 
     return () => {
-      cancelAnimationFrame(raf);
+      stop();
+      document.removeEventListener("visibilitychange", onVis);
       ro.disconnect();
       io.disconnect();
       host.removeEventListener("pointermove", onPointer);
