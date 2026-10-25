@@ -1,73 +1,50 @@
 import type { Metadata, Viewport } from "next";
-import { Frank_Ruhl_Libre, Heebo } from "next/font/google";
-import { brand } from "@/content/site";
-import { Providers } from "@/components/Providers";
+import { Bellefair, Heebo } from "next/font/google";
+import { brand, whatsapp } from "@/content/site";
+import { pages } from "@/content/routes";
+import { Header } from "@/components/Header";
+import { Engine } from "@/components/Engine";
+import { Consent } from "@/components/Consent";
+import { JsonLd, WaIcon } from "@/components/ui";
+import { orgGraph, pageMetadata } from "@/lib/seo";
+import { waHref } from "@/lib/whatsapp";
 import "./globals.css";
 
-const frank = Frank_Ruhl_Libre({
-  variable: "--font-frank",
-  subsets: ["hebrew", "latin"],
-  weight: ["400", "500"],
-});
-
-const heebo = Heebo({
-  variable: "--font-heebo",
-  subsets: ["hebrew", "latin"],
-  weight: ["300", "400", "500"],
-});
-
-const title = "ריבר הפקות | הפקת חתונות ואירועים | REVER";
-const description =
-  "REVER מפיקה חתונות ואירועים כבר 6 שנים: לוקיישן וספקים, תכנון ותקציב, עיצוב וניהול מלא של יום האירוע. השאירו פרטים ונחזור אליכם.";
+const bellefair = Bellefair({ variable: "--font-bellefair", subsets: ["hebrew", "latin"], weight: "400", display: "swap" });
+const heebo = Heebo({ variable: "--font-heebo", subsets: ["hebrew", "latin"], weight: ["300", "400", "500"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(brand.url),
-  title,
-  description,
-  keywords: ["הפקת אירועים", "מפיק אירועים", "הפקת חתונה", "הפקת בר מצווה", "הפקת אירועי חברה", "REVER PRODUCTIONS", "ריבר הפקות"],
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "he_IL",
-    url: brand.url,
-    siteName: brand.fullName,
-    title,
-    description,
-    images: [{ url: "/images/og.jpg", width: 1200, height: 630, alt: brand.fullName }],
-  },
-  twitter: { card: "summary_large_image", title, description, images: ["/images/og.jpg"] },
+  ...pageMetadata(pages.home),
   icons: { icon: "/icon.svg" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0e0c0a",
+  themeColor: "#0b0a0c",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "EventPlanner",
-  name: brand.fullName,
-  alternateName: brand.nameHe,
-  url: brand.url,
-  telephone: `+${brand.phoneIntl}`,
-  image: `${brand.url}/images/og.jpg`,
-  logo: `${brand.url}/images/logo.png`,
-  sameAs: [brand.instagram],
-  areaServed: "IL",
-};
+// Runs before first paint: pinned scenes only when motion is welcome and the screen is tall enough.
+const scenesScript = `(function(){var h=document.documentElement,m=function(q){return window.matchMedia&&matchMedia(q).matches};h.dataset.scenes=m('(prefers-reduced-motion: reduce)')||m('(orientation: landscape) and (max-height: 500px)')?'off':'on'})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="he" dir="rtl">
-      <body className={`${frank.variable} ${heebo.variable} antialiased`}>
-        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:right-3 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-bg">
-          דלג לתוכן
+    <html lang="he" dir="rtl" data-scenes="off" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: scenesScript }} />
+      </head>
+      <body className={`${bellefair.variable} ${heebo.variable}`}>
+        <a className="skip" href="#main">דלגו לתוכן</a>
+        <Header />
+        {children}
+        <a className="fab" id="fab" href={waHref()} target="_blank" rel="noopener" data-wa-link="fab" aria-label={`${whatsapp.cta} בוואטסאפ`}>
+          <WaIcon />
         </a>
-        <Providers>{children}</Providers>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <Consent />
+        <Engine />
+        <JsonLd data={{ "@context": "https://schema.org", "@graph": orgGraph() }} />
       </body>
     </html>
   );

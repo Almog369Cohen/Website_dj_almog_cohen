@@ -1,42 +1,35 @@
-import { Consent } from "@/components/Consent";
-import { Contact } from "@/components/Contact";
-import { DayStory } from "@/components/DayStory";
-import { Dialogs } from "@/components/Dialogs";
-import { Evening } from "@/components/Evening";
-import { FloatingActions } from "@/components/FloatingActions";
-import { Footer } from "@/components/Footer";
-import { Gallery } from "@/components/Gallery";
-import { Header } from "@/components/Header";
-import { Hero } from "@/components/Hero";
-import { LightField } from "@/components/LightField";
-import { LightSwitch } from "@/components/LightSwitch";
-import { Services } from "@/components/Services";
-import { Team } from "@/components/Team";
-import { Testimonials } from "@/components/Testimonials";
+import { preload } from "react-dom";
+import { events } from "@/content/events";
+import { verifiedFaq } from "@/content/faq";
+import { SHOW_TODO } from "@/content/site";
+import { EventsGallery } from "@/components/EventsGallery";
+import { FromField, Hero, How, Night, PaperChapter, Team } from "@/components/home";
+import { Closing, ContactSection, FaqList } from "@/components/sections";
+import { JsonLd } from "@/components/ui";
+import { faqGraph, pageGraph } from "@/lib/seo";
 
-/** Five questions, in the order a couple asks them: who are you, what do I get, can I trust you, who worked with you, how do we start. */
 export default function Home() {
+  // the opening's poster is the first thing on screen: fetch it before anything else
+  preload("/images/hero-poster-640.webp", { as: "image", fetchPriority: "high" });
   return (
     <>
-      <LightField />
-      <Header />
-      <main id="main">
+      <main id="main" data-wa="">
         <Hero />
-        <Evening />
-        <LightSwitch />
-        <DayStory />
-        <Services />
+        <PaperChapter />
+        <Night />
+        <How />
         <Team />
-        <div className="theme-ivory">
-          <Gallery />
-        </div>
-        <Testimonials />
-        <Contact />
+        <section className="events wrap" id="events" data-tone="paper" aria-labelledby="eventsTitle">
+          <div className="kicker">אירועים</div>
+          <h2 id="eventsTitle">אירועים שהפקנו.</h2>
+          <EventsGallery events={events} />
+        </section>
+        {SHOW_TODO && <FromField />}
+        <FaqList />
+        <ContactSection />
       </main>
-      <Footer />
-      <FloatingActions />
-      <Dialogs />
-      <Consent />
+      <Closing photo />
+      <JsonLd data={pageGraph("/", "ריבר הפקות", [{ name: "בית", path: "/" }], [faqGraph("/", verifiedFaq)])} />
     </>
   );
 }

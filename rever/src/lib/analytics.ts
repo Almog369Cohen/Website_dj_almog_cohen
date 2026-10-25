@@ -1,44 +1,37 @@
 /**
- * Measurement and lead capture. Everything is optional and off until configured:
- *   NEXT_PUBLIC_GA_ID            Google Analytics 4 measurement id
- *   NEXT_PUBLIC_META_PIXEL_ID    Meta (Facebook/Instagram) pixel id
- *   NEXT_PUBLIC_LEAD_ENDPOINT    URL that receives form leads as JSON (Formspree, Make, Apps Script)
- * Tracking scripts load only after the visitor accepts the consent bar.
+ * Measurement and lead capture. Everything is off until configured:
+ *   NEXT_PUBLIC_GA_ID          Google Analytics 4 measurement id (loads only after the visitor accepts cookies)
+ *   NEXT_PUBLIC_LEAD_ENDPOINT  URL that receives each form lead as JSON, before WhatsApp opens
+ *                              (a Google Sheet via Apps Script works: see scripts/lead-sheet.gs)
  */
 import { getSource } from "./source";
 import { waContextText } from "./whatsapp";
 
-type Win = Window & { gtag?: (...a: unknown[]) => void; fbq?: (...a: unknown[]) => void };
+type Win = Window & { gtag?: (...a: unknown[]) => void };
 
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
-export const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "";
 export const LEAD_ENDPOINT = process.env.NEXT_PUBLIC_LEAD_ENDPOINT || "";
-export const trackingConfigured = Boolean(GA_ID || PIXEL_ID);
 
-const META_EVENTS: Record<string, string> = { generate_lead: "Lead", click_whatsapp: "Contact", click_call: "Contact" };
+export type TrackEvent = "click_whatsapp" | "click_call" | "generate_lead" | "open_photo" | "hero_opened" | "night_finished";
 
-export function track(event: "click_whatsapp" | "click_call" | "generate_lead" | "open_gallery", params: Record<string, string> = {}) {
+export function track(event: TrackEvent, params: Record<string, string> = {}) {
   if (typeof window === "undefined") return;
-  const w = window as Win;
-  w.gtag?.("event", event, params);
-  if (META_EVENTS[event]) w.fbq?.("track", META_EVENTS[event], params);
+  (window as Win).gtag?.("event", event, params);
 }
 
+/** Saves the lead first; a failed save never blocks the WhatsApp hand-off. */
 export async function sendLead(data: Record<string, string>) {
-  if (!LEAD_ENDPOINT || data.website) return; // `website` is the hidden honeypot field: a human never fills it
+  if (!LEAD_ENDPOINT || data.website) return; // `website` is the hidden honeypot: a person never fills it
+  const body = JSON.stringify({ ...data, source: getSource(), context: waContextText(), page: location.href, at: new Date().toISOString() });
   try {
-    await fetch(LEAD_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ ...data, source: getSource(), context: waContextText(), page: location.href }),
-      keepalive: true,
-    });
+    // text/plain keeps it a "simple" request, which Apps Script and most form services accept without CORS preflight
+    await fetch(LEAD_ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body, keepalive: true, mode: "no-cors" });
   } catch {
-    // the WhatsApp hand-off still happens; a failed backup must not block the visitor
+    // the WhatsApp message still carries every detail
   }
 }
 
-/** Phones and in-app browsers (Instagram, Facebook) block window.open after a submit; navigate instead. */
+/** Phones and in-app browsers (Instagram, Facebook) block window.open after a submit, so navigate instead. */
 export function openWhatsApp(url: string) {
   if (window.matchMedia("(max-width: 767px)").matches) window.location.href = url;
   else window.open(url, "_blank", "noopener,noreferrer");

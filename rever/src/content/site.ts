@@ -1,263 +1,101 @@
 /**
- * כל התוכן של האתר במקום אחד. הטקסטים מגיעים מדף הנחיתה של REVER PRODUCTIONS.
- * להחלפת טקסט, טלפון או תמונה מספיק לערוך כאן.
+ * Everything the site says, in one place. Only facts REVER gave us live here as plain text;
+ * anything still unverified is wrapped in <Todo> where it is used, and never shown in production.
  */
+
+/** Production = a real domain is configured. Without it the site is a preview: noindex everywhere, green placeholders visible. */
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
+export const IS_PRODUCTION = Boolean(SITE_URL);
+export const SHOW_TODO = !IS_PRODUCTION;
 
 export const brand = {
   name: "REVER",
-  nameHe: "ריבר",
+  nameHe: "ריבר הפקות",
   fullName: "REVER PRODUCTIONS",
-  // לא מאומתים: באתר הם מוצגים בירוק עד שהלקוח מאשר
-  addressPlaceholder: "כתובת: להשלים",
+  /** The one way the business is named everywhere (search engines and AI answers match on it). */
+  entity: "ריבר הפקות | REVER PRODUCTIONS",
+  url: SITE_URL || "https://rever-events.co.il",
+  // not verified yet: shown in green until REVER confirms
   phoneDisplay: "054-664-6923",
   phoneIntl: "972546646923",
-  whatsappMessage: "היי REVER, הגעתי מהאתר ואשמח לשמוע על הפקת האירוע שלנו.",
-  // לאמת שהדומיין שלהם לפני עלייה לאוויר, או להגדיר NEXT_PUBLIC_SITE_URL
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://rever-events.co.il",
   instagram: "https://www.instagram.com/rever_production/",
   instagramHandle: "@rever_production",
-  logo: "/images/logo.webp",
-  logoSize: { width: 907, height: 524 },
+  years: 6,
+};
+
+export const founders = [
+  { id: "gal", name: "גל", role: "מייסד REVER", photo: "gal", alt: "גל, ממייסדי REVER, בחולצה שחורה ליד הבר" },
+  { id: "liel", name: "ליאל", role: "מייסד REVER", photo: "liel", alt: "ליאל, ממייסדי REVER, בחולצה לבנה בחתונת גן" },
+] as const;
+
+export const whatsapp = {
+  greeting: "היי גל וליאל, ",
+  fallback: "הגעתי מהאתר ואשמח לשמוע על הפקת האירוע שלנו.",
+  cta: "דברו עם גל וליאל",
 };
 
 export const nav = [
-  { id: "evening", label: "הערב שלכם" },
-  { id: "services", label: "איך זה עובד" },
-  { id: "about", label: "הצוות" },
-  { id: "gallery", label: "אירועים" },
-  { id: "contact", label: "דברו איתנו" },
+  { href: "/wedding-production/", label: "הפקת חתונה" },
+  { href: "/events/", label: "אירועים" },
+  { href: "/guides/", label: "מדריכים" },
+  { href: "/about/", label: "גל וליאל" },
+  { href: "/faq/", label: "שאלות נפוצות" },
 ];
 
 export const hero = {
-  video: "/video/hero.mp4",
-  videoWebm: "/video/hero.webm",
-  videoMobile: "/video/hero-m.mp4",
-  videoMobileWebm: "/video/hero-m.webm",
-  poster: "/images/hero-poster-1080.webp",
-  eyebrow: "REVER PRODUCTIONS",
-  titleTop: "מקבלת הפנים בגן",
-  titleBottom: "ועד השיר האחרון על הרחבה",
+  h1: "הפקת חתונות ואירועים, בליווי מלא",
+  displayTop: "מקבלת הפנים בגן",
+  displayBottom: "ועד השיר האחרון על הרחבה",
   tagline: "אתם מתרגשים מהאירוע, אנחנו דואגים לכל מה שמסביב.",
-  subtitle: "הפקת חתונות ואירועים מהרעיון הראשון ועד השיר האחרון: לוקיישן, ספקים, עיצוב וניהול מלא של יום האירוע.",
-  ctaPrimary: "דברו איתנו בוואטסאפ",
-  ctaSecondary: "לרגעים שהפקנו",
 };
 
-/** The light switch: what a couple runs alone, and what changes with one contact person. Every line comes from REVER's own copy. */
-export const contrast = {
-  kicker: "ההבדל",
-  title: "הדליקו את האור",
-  hint: "לחצו על המתג",
-  illustration: "המחשה",
-  phoneTitle: "ביום החתונה",
-  vendors: ["האולם", "הצלם", "ה־DJ", "העיצוב"],
-  // the seven things REVER's service copy says it takes off the couple
-  tasks: ["לוקיישן", "ספקים", "חוזים", "תקציב", "לו״ז", "הושבה", "רזרבות"],
-  off: { label: "בלי הפקה, את כל זה מנהלים לבד", budget: "בלי ניהול, התקציב זולג" },
-  on: {
-    label: "עם REVER, איש קשר אחד",
-    card: "REVER · איש קשר אחד",
-    cardText: "לוקיישן, ספקים, חוזים, תקציב, לו״ז, הושבה ורזרבות, הכול אצלנו.",
-    noMore: ["לא צריך לרדוף אחרי ספקים", "לא צריך לקרוא חוזים לבד בלילה", "לא צריך לענות לטלפונים ביום האירוע"],
-    budget: "עם REVER, התקציב נשמר",
-  },
-  onPhone: "REVER · אנחנו על זה",
+export const difference = {
+  tasks: "לוקיישן, ספקים, חוזים, תקציב, לו״ז, הושבה, רזרבות.",
+  after: "את כל זה מחזיק איש קשר אחד.",
+  ours: { title: "הכול אצלנו.", text: "הלו״ז, הספקים וההושבה, בזמן אמת. בתמונה: ארד מצוות REVER, ליד הזוג." },
+  yours: { title: "אצלכם נשאר רק הערב.", text: "אתם נכנסים, רוקדים, ונהנים מכל רגע." },
+  noNeed: ["לא צריך לרדוף אחרי ספקים.", "לא צריך לקרוא חוזים לבד בלילה.", "לא צריך לענות לטלפונים ביום האירוע."],
 };
 
-/** One real event-day story. Green until REVER gives one. */
-export const dayStory = {
-  kicker: "סיפור מהשטח",
-  title: "מה קרה באמת ביום אירוע",
-  steps: [
-    { label: "מה השתנה", hint: "ברגע האחרון: הושבה, ספק שמאחר" },
-    { label: "מה הצוות עשה", hint: "בזמן אמת, בלי שהזוג ידע" },
-    { label: "איך זה נגמר", hint: "מה הזוג ראה בסוף" },
-  ],
-};
+export const eventTypes = ["חתונות", "בר ובת מצווה", "אירועי חברה", "אירועים פרטיים"];
 
-export const team = {
-  kicker: "הצוות",
-  title: "האנשים שמאחורי הערב",
-  // only "6" is confirmed; the rest stay green until REVER sends numbers
-  stats: [
-    { n: "6", label: "שנים של הפקות", verified: true },
-    { n: "להשלים", label: "אירועים שהפקנו", verified: false },
-    { n: "להשלים", label: "ספקים בנבחרת שלנו", verified: false },
-  ],
-  people: [
-    { src: "/images/team-founders.jpg", alt: "שני אנשי REVER ליד הבר באירוע", pos: "50% 30%", caption: "לאשר: האם אלה המייסדים?" },
-    { src: "/images/team-day.jpg", alt: "מפיק REVER עם תג צוות ליד הזוג ביום האירוע", pos: "78% 40%", caption: "ביום האירוע, ליד הזוג" },
-    { src: "/images/team-group.jpg", alt: "צוות REVER עם הזוג בסוף הערב", pos: "55% 40%", caption: "בסוף הערב, עם הזוג" },
-  ],
-};
-
-/** One evening, two worlds: the hand-over from the light of the reception to the dark of the dance floor. */
-export const evening = {
-  kicker: "הערב שלכם",
-  title: "שני עולמות, ערב אחד",
-  lead: "קבלת פנים באור, ואחריה רחבה בחושך. אצלנו זה אותו צוות, מההתחלה ועד השיר האחרון.",
-  reception: { src: "/images/ev-court-1.jpg", alt: "פינות ישיבה בין העצים תחת שרשראות אור", title: "קבלת פנים", text: "שולחנות, מנורות ופרחים בסגנון שלכם, בין עצים ושרשראות אור." },
-  moment: { src: "/images/ev-couple-1.jpg", alt: "הזוג הולך בשביל בין ניצוצות", title: "הרגע שלכם", text: "אנחנו מחזיקים את הלו״ז, הספקים וההושבה. אתם רק נכנסים." },
-};
-
-export const about = {
-  kicker: "מי אנחנו",
-  title: "כבר 6 שנים יוצרים רגעים שנשארים.",
-  paragraphs: [
-    "REVER יוצרת ומפיקה אירועים מכל הסוגים, עם התמחות בעולם החתונות וליווי מלא לאורך כל הדרך, מתוך אהבה גדולה לאנשים, לאירועים ולחוויות שמלוות אתכם הרבה אחרי שהערב נגמר.",
-    "אנחנו לוקחים את כל מה שדמיינתם, מחברים את כל החלקים והופכים אותם לאירוע אחד מרגש ובלתי נשכח, כדי שאתם תוכלו פשוט ליהנות.",
-  ],
-  image: "/images/about.jpg",
-};
-
-export const servicesIntro = {
-  kicker: "איך זה עובד",
-  title: "מהפגישה הראשונה ועד השיר האחרון",
-  text: "אנחנו מנהלים עבורכם את כל התהליך, כדי שתוכלו להיות רגועים, בטוחים ופנויים ליהנות מהדרך ומהאירוע עצמו.",
-};
-
-export const services = [
-  {
-    id: "design",
-    yours: "החלומות והסגנון שלכם",
-    ours: "לתרגם אותם לתוכנית עבודה ברורה",
-    step: "היכרות",
-    title: "עיצוב ואפיון האירוע",
-    text: "תהליך שמתחיל מהרגע הראשון שהכרנו. אנחנו לומדים להכיר אתכם לעומק, את החלומות ואת הסגנון, ומתרגמים אותם לתוכנית עבודה ברורה שמלווה את האירוע עד הביצוע.",
-    image: "/images/service-design.jpg",
-  },
-  {
-    id: "location-vendors",
-    yours: "לבחור לוקיישן ולהחליט על ספקים",
-    ours: "סבב התרשמות בלוקיישנים, וספקים מובילים בתנאים מועדפים",
-    step: "בחירה",
-    title: "לוקיישן וספקים בהתאמה אישית",
-    text: "איתור לוקיישן שמתאים לסגנון ולאופי שלכם, כולל סבב התרשמות בלוקיישנים המותאמים עבורכם יחד איתנו. בחירת ספקים מובילים, מאולם וצלמים ועד DJ ועיצוב, בתנאים מועדפים ללקוחות REVER.",
-    image: "/images/service-location.jpg",
-  },
-  {
-    id: "planning",
-    yours: "התקציב, החוזים והלו״ז של כל ספק",
-    ours: "תקציב שנשמר, מעבר על החוזים, מסמכים ולו״ז",
-    step: "תכנון",
-    title: "תכנון וניהול מוקדם",
-    text: "אנחנו בונים איתכם תקציב ברור ושומרים עליו לאורך כל הדרך. מכינים לו״ז לכל הספקים, מרכזים את המסמכים, עוברים על החוזים, ומלווים את ההפקה עד היום הגדול.",
-    image: "/images/service-planning.jpg",
-  },
-  {
-    id: "day-of",
-    yours: "לדעת איפה כל ספק נמצא",
-    ours: "הלו״ז, הספקים, ההושבה והרזרבות, בזמן אמת",
-    step: "היום הגדול",
-    title: "ניהול מלא של יום האירוע",
-    text: "ביום האירוע אנחנו מנהלים הכול: הלו״ז, הספקים, ההושבה והרזרבות, ועונים לכל צורך בזמן אמת.",
-    image: "/images/service-day.jpg",
-  },
-];
-
-/** The party, done with restraint: their own night photos in an editorial collage. */
 export const night = {
-  kicker: "על הרחבה",
-  title: "כשהאורות כבים,",
-  titleAccent: "הרחבה שלכם מתחילה.",
-  text: "מוזיקה, ריקודים ואנרגיה עד השיר האחרון. אנחנו מחזיקים את הערב, אתם רוקדים.",
-  images: [
-    { src: "/images/night-1.jpg", alt: "הזוג רוקד ליד עמדת התקליטן" },
-    { src: "/images/night-2.jpg", alt: "כניסת הזוג לרחבה" },
-    { src: "/images/night-3.jpg", alt: "שמפניה על הבמה" },
-    { src: "/images/night-4.jpg", alt: "כלה רוקדת בז'קט פאייטים" },
+  title: "שני עולמות, ערב אחד.",
+  lead: "קבלת פנים באור, ואחריה רחבה בחושך. אצלנו זה אותו צוות, מההתחלה ועד הסוף.",
+  chapters: [
+    { photo: "ev-court-1", alt: "פינות ישיבה בין העצים תחת שרשראות אור", title: "קבלת פנים", text: "שולחנות, מנורות ופרחים בסגנון שלכם, בין עצים ושרשראות אור.", wa: "ראיתי באתר את קבלת הפנים" },
+    { photo: "ev-couple-1", alt: "הזוג הולך בשביל בין ניצוצות", title: "הרגע שלכם", text: "אנחנו מחזיקים את הלו״ז, הספקים וההושבה. אתם רק נכנסים.", wa: "ראיתי באתר את הכניסה של הזוג" },
+    { photo: "ev-lotus-2", alt: "שולחן עץ ארוך עם פרחי גן", title: "העיצוב", text: "הסגנון שלכם, מתורגם לשולחן, לפרחים ולאור.", wa: "ראיתי באתר את העיצוב והשולחנות" },
+    { photo: "night-4", alt: "כלה רוקדת בז'קט פאייטים על הרחבה", title: "הרחבה", text: "כשהאורות כבים, הרחבה שלכם מתחילה.", wa: "ראיתי באתר את הרחבה" },
+    { photo: "ev-lotus-4", alt: "עמדת ה־DJ בצורת לוטוס עם תותחי עשן", title: "השיר האחרון", text: "מוזיקה, ריקודים ואנרגיה עד הסוף. אנחנו מחזיקים את הערב, אתם רוקדים.", wa: "ראיתי באתר את עמדת הלוטוס" },
   ],
-  stage: { src: "/images/stage-1.jpg", alt: "אולם בתאורה ורודה עם עצים וקריסטלים" },
-  stageCaption: "מחתונת גן אינטימית ועד הפקת במה מלאה",
 };
 
-type Photo = { src: string; w: number; h: number; alt: string };
-const ph = (src: string, w: number, h: number, alt: string): Photo => ({ src: `/images/${src}.jpg`, w, h, alt });
-
-/**
- * REVER's photos sorted into the real events they come from (by EXIF date, faces and setting).
- * Descriptions say only what the photos show; places and dates stay green until REVER confirms them.
- */
-export const events = [
-  {
-    id: "courtyard",
-    tab: "חצר האבן",
-    title: "חתונת גן בחצר אבן",
-    text: "חצר אבן בין עצים, שרשראות אור, מנורות שולחן ופינות ישיבה. האורחים בלבן, והערב נגמר על הרחבה.",
-    photos: [
-      ph("ev-court-1", 2048, 1366, "פינות ישיבה בין העצים תחת שרשראות אור"),
-      ph("ev-court-2", 1366, 2048, "שולחנות עם מנורות ופרחים בחצר"),
-      ph("ev-court-3", 1366, 2048, "מבט מלמעלה על החצר ערוכה לאירוע"),
-      ph("ev-court-4", 1366, 2048, "שולחן ארוך תחת חופה בד"),
-      ph("ev-court-7", 2048, 1362, "שולחנות ארוכים בין העצים"),
-      ph("ev-court-5", 2048, 1366, "כניסת הכלה בין האורחים בלבן"),
-      ph("ev-court-6", 1366, 2048, "הכלה רוקדת בז'קט פאייטים"),
-      ph("ev-court-8", 2048, 1366, "מבט מלמעלה על השולחנות העגולים"),
-    ],
-  },
-  {
-    id: "nye",
-    tab: "ערב 31.12",
-    title: "חתונה בערב השנה החדשה",
-    text: "Let's Celebrate New Year & New Love: אולם בתאורת מגנטה, צמחייה תלויה עם כדורי מראה, פמוטי קריסטל, ניצוצות ומגדל שמפניה.",
-    photos: [
-      ph("ev-nye-2", 1600, 1066, "האולם בתאורת מגנטה עם עצים ופמוטים"),
-      ph("ev-nye-1", 1066, 1600, "שלט הכניסה בין עצי הדקל"),
-      ph("ev-nye-3", 1600, 1066, "צמחייה תלויה וכדורי מראה מעל הרחבה"),
-      ph("ev-nye-4", 1066, 1600, "שולחן עם פמוטי קריסטל ופרחים"),
-      ph("ev-nye-5", 1600, 1067, "הזוג רוקד בין ניצוצות"),
-      ph("ev-nye-6", 1600, 1067, "שמפניה למגדל הכוסות"),
-      ph("ev-nye-7", 1600, 1067, "הזוג בעמדת ה־DJ"),
-      ph("ev-nye-8", 1600, 1066, "שולחנות שחורים וכיסאות קריסטל"),
-    ],
-  },
-  {
-    id: "lotus",
-    tab: "עמדת הלוטוס",
-    title: "חתונת גן עם עמדת הלוטוס",
-    text: "שולחנות עץ ארוכים עם פרחי גן, מגדל שמפניה על הדשא, ועמדת DJ בצורת לוטוס עם תותחי עשן לרחבה.",
-    photos: [
-      ph("ev-lotus-4", 2400, 3600, "עמדת הלוטוס עם תותחי עשן"),
-      ph("ev-lotus-2", 2400, 1600, "שולחן עץ ארוך עם פרחי גן"),
-      ph("ev-lotus-5", 2400, 3600, "הזוג ליד מגדל השמפניה"),
-      ph("ev-lotus-3", 2400, 1600, "פרחים ורודים ולבנים על השולחן"),
-      ph("ev-lotus-1", 2400, 3600, "הכלה בשמלה ארוכה לפני האירוע"),
-      ph("ev-lotus-6", 2400, 3600, "עמדת הלוטוס מבעד לצמחייה"),
-    ],
-  },
-  {
-    id: "stage",
-    tab: "מופע במה",
-    title: "מופע במה עם להקה חיה",
-    text: "להקה חיה, נגן בוזוקי בעמדת ה־DJ, מסך לד ענק ותאורת לייזר מעל הרחבה.",
-    photos: [
-      ph("ev-stage-1", 2048, 1366, "להקה חיה ומסך לד ענק על הבמה"),
-      ph("ev-stage-4", 1600, 1067, "לייזרים ירוקים מעל הקהל"),
-      ph("ev-stage-2", 2048, 1366, "נגן בוזוקי בעמדת ה־DJ"),
-      ph("ev-stage-3", 2400, 3185, "שולחן בקבוקים עם ורדים כחולים"),
-    ],
-  },
-  {
-    id: "couples",
-    tab: "רגעים של זוגות",
-    title: "רגעים של זוגות",
-    text: "פגישה ראשונה בפארק מול הים, צילומים בין הקשתות, ושביל ניצוצות בדרך לחופה.",
-    photos: [
-      ph("ev-couple-1", 1600, 1067, "הזוג הולך בשביל בין ניצוצות"),
-      ph("ev-couple-2", 1067, 1600, "פגישה ראשונה בפארק מול הים"),
-      ph("ev-couple-4", 1067, 1600, "הזוג בין הקשתות הלבנות"),
-      ph("ev-couple-3", 1600, 1067, "הזוג יוצא מבעד לקשת"),
-      ph("ev-couple-5", 1067, 1600, "הזוג מחובק בין הקשתות"),
-    ],
-  },
+/** REVER's four service steps, in their own words. */
+export const steps = [
+  { id: "design", label: "01 · היכרות", title: "עיצוב ואפיון האירוע", photo: "service-design", alt: "שולחנות ערוכים עם מנורות ופרחים",
+    text: "אנחנו לומדים להכיר אתכם לעומק, את החלומות ואת הסגנון, ומתרגמים אותם לתוכנית עבודה ברורה שמלווה את האירוע עד הביצוע.",
+    yours: "החלומות והסגנון שלכם", ours: "לתרגם אותם לתוכנית עבודה ברורה" },
+  { id: "location", label: "02 · בחירה", title: "לוקיישן וספקים בהתאמה אישית", photo: "service-location", alt: "מבט מלמעלה על חצר ערוכה לאירוע",
+    text: "איתור לוקיישן שמתאים לסגנון שלכם, כולל סבב התרשמות יחד איתנו. ספקים מובילים, מאולם וצלמים ועד DJ ועיצוב, בתנאים מועדפים ללקוחות REVER.",
+    yours: "לבחור לוקיישן ולהחליט על ספקים", ours: "סבב לוקיישנים, וספקים מובילים בתנאים מועדפים" },
+  { id: "planning", label: "03 · תכנון", title: "תכנון וניהול מוקדם", photo: "service-planning", alt: "שולחן ארוך עם פרחי גן",
+    text: "אנחנו בונים איתכם תקציב ברור ושומרים עליו לאורך הדרך. מכינים לו״ז לכל הספקים, מרכזים את המסמכים ועוברים על החוזים.",
+    yours: "התקציב, החוזים והלו״ז של כל ספק", ours: "תקציב שנשמר, מעבר על החוזים, מסמכים ולו״ז" },
+  { id: "day", label: "04 · היום הגדול", title: "ניהול מלא של יום האירוע", photo: "service-day", alt: "הזוג נכנס בשביל ניצוצות",
+    text: "ביום האירוע אנחנו מנהלים הכול: הלו״ז, הספקים, ההושבה והרזרבות, ועונים לכל צורך בזמן אמת.",
+    yours: "לדעת איפה כל ספק נמצא", ours: "הלו״ז, הספקים, ההושבה והרזרבות, בזמן אמת" },
 ];
 
-export const contact = {
-  kicker: "דברו איתנו",
-  title: "בואו נתחיל לתכנן",
-  titleAccent: "את האירוע שלכם.",
-  subtitle: "REVER, ליווי מלא ומקצועי משלב התכנון ועד רגע השיא ביום האירוע. השאירו פרטים ונחזור אליכם.",
-  image: "/images/contact-bg.jpg",
+export const includes = ["אפיון ועיצוב", "סבב לוקיישנים", "ספקים בתנאים מועדפים", "תקציב ומעקב", "מעבר על חוזים", "לו״ז לכל ספק", "ניהול יום האירוע"];
+
+export const about = [
+  "REVER יוצרת ומפיקה אירועים מכל הסוגים, עם התמחות בעולם החתונות וליווי מלא לאורך כל הדרך.",
+  "אנחנו לוקחים את כל מה שדמיינתם, מחברים את כל החלקים והופכים אותם לאירוע אחד, כדי שאתם תוכלו פשוט ליהנות.",
+];
+
+export const contactCopy = {
+  title: "בואו נתחיל לתכנן את האירוע שלכם.",
+  lead: "ליווי מלא משלב התכנון ועד יום האירוע. השאירו פרטים ונחזור אליכם.",
   eventTypes: ["חתונה", "בר / בת מצווה", "אירוע חברה", "אירוע פרטי", "אחר"],
-  when: ["בחודשים הקרובים", "בעוד חצי שנה", "בעוד שנה", "יותר משנה", "עוד לא יודעים"],
 };

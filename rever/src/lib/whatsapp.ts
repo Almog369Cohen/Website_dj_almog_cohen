@@ -1,32 +1,24 @@
-import { brand } from "@/content/site";
+import { brand, whatsapp } from "@/content/site";
 
-export function waLink(message: string = brand.whatsappMessage) {
-  return `https://wa.me/${brand.phoneIntl}?text=${encodeURIComponent(message)}`;
-}
-
-export const telLink = `tel:+${brand.phoneIntl}`;
+export const waHref = (message: string = whatsapp.greeting + whatsapp.fallback) =>
+  `https://wa.me/${brand.phoneIntl}?text=${encodeURIComponent(message)}`;
 
 /**
- * Where the visitor is on the page, in words: the text of the `data-wa` section under the middle of the screen.
- * Used for the WhatsApp message and for the lead record, so REVER knows what the couple was looking at.
+ * What the couple is looking at, in words: the last `[data-wa]` element under the middle of the screen
+ * (x and y, so a card in the sideways track counts), falling back to the page's `main[data-wa]`.
  */
 export function waContextText(): string {
   if (typeof document === "undefined") return "";
-  const mid = window.innerHeight / 2;
-  for (const el of document.querySelectorAll<HTMLElement>("[data-wa]")) {
+  const x = window.innerWidth / 2, y = window.innerHeight / 2;
+  let hit = "";
+  document.querySelectorAll<HTMLElement>("[data-wa]").forEach((el) => {
     const r = el.getBoundingClientRect();
-    if (r.top <= mid && r.bottom > mid) return el.dataset.wa ?? "";
-  }
-  return "";
+    if (el.dataset.wa && r.top <= y && r.bottom > y && r.left <= x && r.right > x) hit = el.dataset.wa;
+  });
+  return hit || document.querySelector<HTMLElement>("main[data-wa]")?.dataset.wa || "";
 }
 
-/** A WhatsApp message that says what the couple was looking at when they tapped. */
-export function waContextMessage(): string {
+export const waContextMessage = () => {
   const what = waContextText();
-  return what ? `היי REVER, ${what} ואשמח לשמוע על הפקת האירוע שלנו.` : brand.whatsappMessage;
-}
-
-/** onClick helper for a WhatsApp link: rewrites its href at tap time, before the browser follows it. */
-export function waContext(e: { currentTarget: HTMLAnchorElement }) {
-  e.currentTarget.href = waLink(waContextMessage());
-}
+  return whatsapp.greeting + (what ? `${what} ואשמח לשמוע על הפקת האירוע שלנו.` : whatsapp.fallback);
+};
