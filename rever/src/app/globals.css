@@ -88,15 +88,45 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .menu .close { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 10px); left: var(--gut); }
 .menu .btn-gold { margin-top: auto; align-self: stretch; }
 
-/* 1. Opening: the zoom portal */
-.hero { position: relative; height: calc(200vh + 100svh); background: var(--night); color: var(--on-dark); }
+/* 1. Opening: the journey. The first photo opens from the window, then each photo zooms into the next (Engine sets the exact height) */
+.hero { position: relative; height: calc(200vh + 464svh); background: var(--night); color: var(--on-dark); }
 .hero-stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 .hero-inner { position: absolute; inset: 0; transform-origin: 50% 30%; }
-.hero-media { position: absolute; inset: 0; will-change: clip-path, transform; }
+.hero-media { position: absolute; inset: 0; overflow: hidden; }
 /* The window's starting shape is set in CSS, exactly where the slot sits, so the opening paints before any script runs */
 html[data-scenes="on"] .hero-media { clip-path: inset(calc(50svh - min(46vw, 26svh)) calc(50vw - min(36.8vw, 20.8svh)) calc(100vh - 50svh - min(46vw, 26svh)) calc(50vw - min(36.8vw, 20.8svh)) round 4px); }
-.hero-media video { width: 100%; height: 100%; object-fit: cover; transform: scale(1.18); }
+.jl { position: absolute; inset: 0; transform-origin: 0 0; visibility: hidden; overflow: hidden; contain: strict; background: var(--night); }
+.jl[data-i="0"] { visibility: visible; }
+.jl picture { position: absolute; inset: 0; }
+.jl img, .jl video { display: block; width: 100%; height: 100%; object-fit: cover; }
+html[data-scenes="on"] .jl[data-i="0"] img { transform: scale(1.18); }
+/* the current stage darkens as the camera goes in; the window has a gold hairline (3px at 1/3 scale is 1px) */
+.jl::after { content: ""; position: absolute; inset: 0; background: #000; opacity: var(--dk, 0); pointer-events: none; }
+.jl::before { content: ""; position: absolute; inset: 0; z-index: 1; border: 3px solid var(--gold-soft); opacity: var(--f, 0); pointer-events: none; }
 .hero-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(8, 7, 6, .9) 0, rgba(8, 7, 6, .55) 40%, transparent 64%); opacity: 0; }
+/* the stage caption sits above the floating WhatsApp button, inside the small viewport so the toolbar never hides it */
+.jcap { position: absolute; left: 0; right: 0; top: calc(100svh - 200px - env(safe-area-inset-bottom, 0px)); padding-left: var(--gut); padding-right: var(--gut-r); display: grid; gap: 8px; justify-items: start; opacity: 0; visibility: hidden; text-shadow: 0 1px 14px rgba(0, 0, 0, .55); pointer-events: none; }
+.jcap::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; top: -60px; height: calc(200px + 60px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(to top, rgba(8, 7, 6, .72), rgba(8, 7, 6, 0)); }
+.jbrand { font-size: 11px; letter-spacing: .18em; color: var(--on-dark-2); }
+.jstage { display: flex; align-items: baseline; gap: 10px; margin: 0; }
+.jnum { display: inline-block; overflow: hidden; height: 1em; line-height: 1; font-family: var(--display); font-size: 36px; color: var(--gold-soft); font-variant-numeric: tabular-nums; }
+.jnum span { display: inline-block; }
+.jof { font-size: 12px; letter-spacing: .12em; color: var(--on-dark-2); }
+.jstage b { font-family: var(--display); font-weight: 400; font-size: 28px; line-height: 1.1; color: var(--on-dark); }
+.jline { margin: 0; font-size: 15px; color: var(--on-dark-2); max-width: 34ch; }
+.jbar { display: grid; grid-template-columns: repeat(var(--stages, 5), minmax(0, 1fr)); gap: 6px; width: min(240px, 60vw); margin-top: 6px; }
+.jbar i { position: relative; height: 1px; background: var(--hair-dark); }
+.jbar b { position: absolute; inset: 0; background: var(--gold-soft); transform: scaleX(0); transform-origin: right; }
+.jcap.swap #jnum { animation: odo .42s cubic-bezier(.22, 1, .36, 1); }
+.jcap.swap .jstage b, .jcap.swap .jline { animation: lift .32s var(--ease) .06s both; }
+@keyframes odo { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes lift { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.jskip { position: absolute; left: var(--gut); top: calc(76px + env(safe-area-inset-top, 0px)); font-size: 12px; letter-spacing: .06em; color: var(--on-dark-2); text-underline-offset: 4px; opacity: 0; visibility: hidden; }
+.jskip:focus-visible { opacity: 1 !important; visibility: visible !important; }
+/* the same journey as a list: for screen readers while the zoom runs, on screen when motion is off */
+.jstatic { list-style: none; margin: 0; padding: 0; }
+html[data-scenes="on"] .jstatic { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+html[data-scenes="on"] .jstatic img { display: none; }
 .masthead { position: absolute; top: 0; left: 0; right: 0; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2svh; pointer-events: none; }
 .mw { display: block; overflow: hidden; padding-block: .08em; font-family: var(--display); font-size: min(17vw, 9.5svh); line-height: .8; color: var(--on-dark); will-change: transform, opacity; }
 .mw1 { letter-spacing: .1em; margin-inline-end: -.1em; }
@@ -109,7 +139,7 @@ html[data-scenes="on"] .hero-media { clip-path: inset(calc(50svh - min(46vw, 26s
 .cue { display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .2em; color: var(--on-dark-2); }
 .cue i { position: relative; width: 1px; height: 36px; background: var(--hair-dark); overflow: hidden; }
 .cue i::after { content: ""; position: absolute; inset: 0; background: var(--gold-soft); animation: cue 1.8s var(--ease) infinite; }
-.pause { position: absolute; left: var(--gut); top: calc(76px + env(safe-area-inset-top, 0px)); width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--hair-dark); background: rgba(11, 10, 12, .35); color: var(--on-dark); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
+.pause { position: absolute; z-index: 2; left: var(--gut); top: calc(76px + env(safe-area-inset-top, 0px)); transition: opacity .3s; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--hair-dark); background: rgba(11, 10, 12, .35); color: var(--on-dark); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
 .pause svg { width: 12px; height: 12px; fill: currentColor; }
 .hero-copy { position: absolute; left: 0; right: 0; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); padding-left: var(--gut); padding-right: var(--gut-r); display: grid; gap: 16px; justify-items: start; opacity: 0; visibility: hidden; }
 .hero-copy .small { font-size: 12px; letter-spacing: .22em; color: var(--gold-soft); }
@@ -119,9 +149,17 @@ html[data-scenes="on"] .hero-media { clip-path: inset(calc(50svh - min(46vw, 26s
 .hero-copy .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
 .hero-dim { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
 @media (min-width: 1024px) {
-  .hero { height: 330vh; }
-  .hero-media { inset: auto; left: 0; top: 0; width: 56.25vh; height: 100vh; }
-  html[data-scenes="on"] .hero-media { transform: translateX(calc(50vw - 28.125vh)); clip-path: inset(23vh 12.9375vh 23vh 12.9375vh round 4px); }
+  .hero { height: 748vh; }
+  html[data-scenes="on"] .hero-media { clip-path: inset(23vh calc(50vw - 15.1875vh) 23vh calc(50vw - 15.1875vh) round 4px); }
+  /* the clip is portrait: on a wide screen it ends as a tall panel on the night, opposite the copy */
+  .jl-video video { position: absolute; top: 0; left: max(4vw, calc(28vw - 28.125vh)); width: 56.25vh; }
+  .hero-shade { background: linear-gradient(to left, rgba(8, 7, 6, .86) 0, rgba(8, 7, 6, .45) 45%, transparent 72%); }
+  .jcap { top: auto; bottom: 40px; padding-right: var(--gut-r); width: min(520px, 40vw); right: 0; left: auto; }
+  .jcap::before { top: -80px; height: calc(100% + 120px); left: -40vw; }
+  .jnum { font-size: 48px; }
+  .jstage b { font-size: 36px; }
+  .jline { font-size: 17px; }
+  .jskip { top: auto; bottom: 44px; }
   /* the slot sits exactly in the middle, the words hug it from both sides */
   .masthead { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; column-gap: 3vw; }
   .mw1 { justify-self: end; }
@@ -131,7 +169,7 @@ html[data-scenes="on"] .hero-media { clip-path: inset(calc(50svh - min(46vw, 26s
   .hero-copy { left: auto; right: 0; bottom: auto; top: 50%; translate: 0 -50%; width: min(52vw, 820px); padding-left: 0; gap: 22px; }
   .display { font-size: clamp(56px, 5.6vw, 100px); }
   .tagline { font-size: 18px; }
-  .pause { left: auto; right: auto; top: auto; inset-inline-end: calc(56.25vh + 24px); bottom: 28px; }
+  .pause { left: var(--gut); top: auto; bottom: 28px; }
 }
 
 /* The founders' signature: two small round faces */
@@ -194,30 +232,6 @@ html[data-scenes="on"] .says .w { opacity: .55; transition: opacity .25s linear;
 .marquee .item i { width: .12em; height: .12em; border-radius: 50%; background: var(--gold-line); flex: none; }
 @media (min-width: 1024px) { .marquee .item { font-size: 11vw; } }
 
-/* 4. The night: the sideways track */
-.dark { background: var(--dusk); color: var(--on-dark); }
-.night-head { padding-block: 16svh 6svh; }
-.track-pin { position: relative; }
-.track-stage { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
-.track { display: flex; gap: 6vw; padding-inline: 6vw; width: max-content; will-change: transform; }
-.card { width: 78vw; display: grid; gap: 14px; align-content: start; }
-.card:nth-child(even) { padding-top: 5svh; }
-.card .num { font-family: var(--display); font-size: 56px; line-height: .9; color: rgba(246, 240, 230, .5); }
-.card figure { margin: 0; position: relative; height: min(50svh, 92vw); overflow: hidden; background: var(--deep); }
-.card figure img { position: absolute; top: 0; left: -6%; width: 112%; max-width: none; height: 100%; object-fit: cover; will-change: transform; }
-.card .txt { display: grid; gap: 8px; }
-.card p { font-size: 16px; color: var(--on-dark-2); max-width: 34ch; }
-.track-bar { position: absolute; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); left: 6vw; right: 6vw; height: 1px; background: var(--hair-dark); }
-.track-bar i { position: absolute; inset: 0; background: var(--gold-soft); transform: scaleX(0); transform-origin: right; }
-.night-cta { padding-block: 12svh 16svh; display: grid; gap: 22px; justify-items: start; }
-@media (min-width: 1024px) {
-  .track { gap: 4vw; }
-  .card { width: 34vw; }
-  .card:nth-child(even) { padding-top: 8vh; }
-  .card .num { font-size: 88px; }
-  .card figure { height: 56vh; }
-  .card p { font-size: 17px; }
-}
 
 /* 5. How it works */
 .how { padding-block: 16svh 10svh; }
@@ -408,7 +422,16 @@ html[data-scenes="on"] .says .w { opacity: .55; transition: opacity .25s linear;
 html[data-scenes="off"] .hero { height: auto; }
 html[data-scenes="off"] .hero-stage { position: relative; height: 100svh; }
 html[data-scenes="off"] .hero-media { inset: 0; width: auto; height: auto; animation: none; clip-path: none; transform: none; }
-html[data-scenes="off"] .hero-media video { transform: none; }
+html[data-scenes="off"] .jl { visibility: hidden; }
+html[data-scenes="off"] .jl-video { visibility: visible; transform: none; }
+html[data-scenes="off"] .jcap, html[data-scenes="off"] .jskip { display: none; }
+html[data-scenes="off"] .jstatic { display: grid; gap: 40px; padding: 48px var(--gut-r) 64px var(--gut); }
+html[data-scenes="off"] .jstatic figure { margin: 0; display: grid; gap: 12px; }
+html[data-scenes="off"] .jstatic img { width: 100%; height: auto; max-height: 70svh; object-fit: cover; }
+html[data-scenes="off"] .jstatic figcaption { font-size: 15px; color: var(--on-dark-2); }
+html[data-scenes="off"] .jstatic figcaption span { font-family: var(--display); color: var(--gold-soft); margin-inline-end: 8px; }
+html[data-scenes="off"] .jstatic figcaption b { font-family: var(--display); font-weight: 400; font-size: 22px; color: var(--on-dark); }
+@media (min-width: 1024px) { html[data-scenes="off"] .jstatic { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 html[data-scenes="off"] .hero-shade { opacity: 1; }
 html[data-scenes="off"] .masthead, html[data-scenes="off"] .cue { display: none; }
 html[data-scenes="off"] .hero-copy { opacity: 1; visibility: visible; }
@@ -421,14 +444,8 @@ html[data-scenes="off"] .wipe img { position: relative; height: 70svh; clip-path
 html[data-scenes="off"] .wipe-shade { display: none; }
 html[data-scenes="off"] .wipe-cap { position: relative; bottom: auto; left: auto; right: auto; opacity: 1; color: var(--ink); padding: 20px var(--gut-r) 36px var(--gut); }
 html[data-scenes="off"] .wipe-cap span { color: var(--ink-2); }
-html[data-scenes="off"] .track-pin { height: auto !important; }
-html[data-scenes="off"] .track-stage { position: relative; height: auto; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 6vw; padding-block: 2svh 8svh; }
-html[data-scenes="off"] .track { transform: none !important; }
-html[data-scenes="off"] .card { width: 82vw; scroll-snap-align: start; }
-html[data-scenes="off"] .card figure img { transform: none !important; }
-html[data-scenes="off"] .track-bar { display: none; }
-@media (min-width: 1024px) { html[data-scenes="off"] .card { width: 34vw; } }
 @media (prefers-reduced-motion: reduce) { .cue i::after, .mw > span, .hero-media { animation: none; } .btn-gold, .tile img, .how-frame img, .ev-card .ph img { transition: none; } }
+html[data-scenes="on"] .pause { opacity: 0; visibility: hidden; }
 .pause .play { display: none; }
 .pause.is-paused .play { display: block; }
 .pause.is-paused .bars { display: none; }

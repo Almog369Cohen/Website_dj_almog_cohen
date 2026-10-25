@@ -59,16 +59,27 @@ export const difference = {
 
 export const eventTypes = ["חתונות", "בר ובת מצווה", "אירועי חברה", "אירועים פרטיים"];
 
-export const night = {
-  title: "שני עולמות, ערב אחד.",
-  lead: "קבלת פנים באור, ואחריה רחבה בחושך. אצלנו זה אותו צוות, מההתחלה ועד הסוף.",
-  chapters: [
-    { photo: "ev-court-1", alt: "פינות ישיבה בין העצים תחת שרשראות אור", title: "קבלת פנים", text: "שולחנות, מנורות ופרחים בסגנון שלכם, בין עצים ושרשראות אור.", wa: "ראיתי באתר את קבלת הפנים" },
-    { photo: "ev-couple-1", alt: "הזוג הולך בשביל בין ניצוצות", title: "הרגע שלכם", text: "אנחנו מחזיקים את הלו״ז, הספקים וההושבה. אתם רק נכנסים.", wa: "ראיתי באתר את הכניסה של הזוג" },
-    { photo: "ev-lotus-2", alt: "שולחן עץ ארוך עם פרחי גן", title: "העיצוב", text: "הסגנון שלכם, מתורגם לשולחן, לפרחים ולאור.", wa: "ראיתי באתר את העיצוב והשולחנות" },
-    { photo: "night-4", alt: "כלה רוקדת בז'קט פאייטים על הרחבה", title: "הרחבה", text: "כשהאורות כבים, הרחבה שלכם מתחילה.", wa: "ראיתי באתר את הרחבה" },
-    { photo: "ev-lotus-4", alt: "עמדת ה־DJ בצורת לוטוס עם תותחי עשן", title: "השיר האחרון", text: "מוזיקה, ריקודים ואנרגיה עד הסוף. אנחנו מחזיקים את הערב, אתם רוקדים.", wa: "ראיתי באתר את עמדת הלוטוס" },
-  ],
+/**
+ * The opening: the night as one journey. Each photo holds a window with the next stage, and the scroll
+ * zooms into it. `at` is where the window sits in the photo (0..1 of its width and height), on something
+ * real; `pos` is the object-position on a phone, in the phone crop when there is one (journey-crops.json),
+ * and `pan` moves it before the zoom so the phone in the guest's hand comes into view; `desk` is the
+ * object-position on wider screens; `S` is how far the camera goes in. The lotus video ends the journey.
+ */
+export type JourneyStage = { id: string; photo: string; label: string; line: string; wa: string; at: [number, number]; pos: [number, number]; pan?: [number, number]; desk?: [number, number]; S: number };
+export const journey: JourneyStage[] = [
+  { id: "reception", photo: "ev-court-1", label: "קבלת פנים", line: "הספקים, ההושבה והלו״ז אצלנו. אתם פוגשים את האורחים.", wa: "ראיתי באתר את קבלת הפנים", at: [0.52, 0.44], pos: [0.5, 0.5], S: 3 },
+  { id: "aisle", photo: "ev-couple-1", label: "כניסה לחופה", line: "אנחנו מתזמנים את הכניסה מול הספקים. אתם רק הולכים.", wa: "ראיתי באתר את הכניסה לחופה", at: [0.53, 0.33], pos: [0.5, 0.5], S: 3 },
+  { id: "chuppah", photo: "ev-court-4", label: "החופה", line: "אנחנו מחזיקים את הלו״ז. אתם נמצאים ברגע.", wa: "ראיתי באתר את החופה", at: [0.72, 0.31], pos: [0.7, 0.4], desk: [0.5, 0.38], S: 3 },
+  { id: "dance", photo: "ev-court-5", label: "כניסה לריקודים", line: "המעבר לרחבה מתואם מראש עם הצוות. אתם פשוט נכנסים.", wa: "ראיתי באתר את הכניסה לריקודים", at: [0.745, 0.56], pos: [0.1, 0.5], pan: [1, 0.5], S: 4 },
+  { id: "after", photo: "ev-stage-4", label: "אפטר", line: "הצוות שלנו בשטח עד הסוף. אתם נשארים על הרחבה.", wa: "ראיתי באתר את האפטר", at: [0.5, 0.61], pos: [0.5, 0.5], S: 3 },
+];
+export const journeyAlt: Record<string, string> = {
+  "ev-court-1": "פינות ישיבה ומנורות בין העצים תחת שרשראות אור, בקבלת הפנים",
+  "ev-couple-1": "הזוג הולך בשביל בין ניצוצות והאורחים מוחאים כפיים",
+  "ev-court-4": "שולחן ארוך תחת סוככי בד, עם פרחים ומנורות",
+  "ev-court-5": "הכלה נכנסת בין האורחים בלבן, והטלפונים למעלה",
+  "ev-stage-4": "לייזרים ירוקים וכדורי מראה מעל הקהל באפטר",
 };
 
 /** REVER's four service steps, in their own words. */

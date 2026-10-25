@@ -1,82 +1,73 @@
-# Rever הפקות אירועים — אתר נחיתה
+# REVER PRODUCTIONS | ריבר הפקות
 
-אתר One-Page ל-Rever, בנוי ב-Next.js 16 + Tailwind 4 + Framer Motion, באותה מערכת כמו `site/` (ייצוא סטטי).
+האתר של ריבר הפקות (גל וליאל). Next.js 16 בייצוא סטטי, React 19, CSS רגיל ב-`globals.css`, ופונטים Bellefair ו-Heebo.
 
-## הרצה מקומית
+## הרצה
 
 ```bash
 cd rever
 npm install
-npm run dev        # http://localhost:3000
-npm run build      # ייצוא סטטי לתיקיית out/
+npm run dev            # http://localhost:3000
+npm run build          # ייצוא סטטי לתיקיית out/
+npm run lint && npx tsc --noEmit
+npm run check:launch   # אחרי build עם NEXT_PUBLIC_SITE_URL: בודק שהאתר מוכן לגוגל
 ```
 
 ## איפה משנים מה
 
 | מה | קובץ |
-|---|---|
-| כל הטקסטים, הטלפון, השירותים, שאלות נפוצות, המלצות | `src/content/site.ts` |
-| תמונות | `public/images/` (אותם שמות קבצים = אין צורך לגעת בקוד) |
-| צבעים ופונטים | `src/app/globals.css` (משתני `:root`) |
+| --- | --- |
+| כל הטקסטים, המייסדים, וואטסאפ, תפריט, שלבי המסע בפתיחה | `src/content/site.ts` |
+| אירועים (עמוד לכל אירוע) | `src/content/events.ts` |
+| שאלות נפוצות (רק שאלות עם תשובה מוצגות באתר החי) | `src/content/faq.ts` |
+| מדריכים ומקורות | `src/content/guides.ts` |
+| סטטוס עמודים (מאומת / טיוטה) | `src/content/routes.ts` |
+| מידות התמונות | `src/content/photos.ts` |
+| חיתוכי הטלפון של שלבי הפתיחה | `src/content/journey-crops.json` |
 
-## מבנה האתר (גרסת זכוכית יוקרתית)
+כל מה שעוד לא אושר על ידי REVER מסומן בירוק (`<Todo>`). הוא מוצג רק בתצוגה המקדימה ולא באתר החי. עמוד עם סטטוס "draft" נשאר noindex.
 
-1. **פתיחה:** סרטון עמדת הלוטוס בקשת, מעל עותק מטושטש של עצמו, וטקסט על לוח זכוכית אחד.
-2. **מי אנחנו:** רקע שמנת, צילום כלה בקשת, ולוח זכוכית שמנת שחופף אותו.
-3. **מה אנחנו עושים:** צילום מסך מלא שמתחלף בגלילה, וכרטיס זכוכית אחד לכל תחום.
-4. **הרחבה:** קולאז' לילה מהצילומים שלהם, עם כיתוב זכוכית.
-5. **גלריה:** 12 תמונות בטורים (masonry), עם הגדלה בלחיצה.
-6. **צור קשר:** צילום חתונת הגן ברקע, וטופס זכוכית.
+## דף הבית
 
-## לפני עלייה לאוויר
+1. **הפתיחה, הערב כמסע:**
+   - קבלת הפנים נפתחת מהחלון שבין REVER ל"הפקות".
+   - כל תמונה מחזיקה חלון עם השלב הבא, והגלילה נכנסת לתוכו: כניסה לחופה, החופה, כניסה לריקודים, אפטר.
+   - המסע נגמר בסרטון עמדת הלוטוס, ואחריו הסלוגן והכפתור.
+   - הקוד: `Hero` ב-`src/components/home.tsx`, ו-`heroUpdate` ב-`src/components/Engine.tsx`.
+2. **ההבדל:** רשימת המשימות, ה-wipe של "אצלנו / אצלכם" ו"לא צריך".
+3. **גל וליאל:** המייסדים.
+4. **איך זה עובד, הצוות, אירועים, שאלות נפוצות, יצירת קשר.**
 
-- התמונות ב-`public/images/` הן placeholders שנוצרו ב-`scripts/generate-placeholder-images.py`. להחליף בתמונות אמיתיות של Rever באותם שמות.
-- לאמת מול דף ה-Canva: טלפון (`054-664-6923`), טקסטים, המלצות ומספרים ב-`stats`.
-- לעדכן את הדומיין ב-`brand.url`.
-- טופס יצירת הקשר שולח את הפרטים לוואטסאפ של העסק (אין צורך בשרת).
+בהעדפת "הפחתת תנועה", בלי JavaScript, או במסך נמוך: אין אנימציות. השלבים מוצגים כרשימת תמונות רגילה (`html[data-scenes="off"]`).
 
-## חומרים מקוריים (איכות)
+## תמונות וסרטונים
 
 ```bash
-cd rever
-npm run media -- /path/to/Rever-folder   # מייבא תמונות וסרטונים מקוריים ומעבד אותם
-npm run media                            # מעבד מחדש את כל התמונות ב-public/images
+npm run media -- /path/to/folder   # מייבא מקוריים: JPEG מאסטר ו-WebP ב-640/1080/1280/1600/2400
+node scripts/journey-crops.mjs     # חיתוכי טלפון לשלבי הפתיחה (<photo>-m-640/960.webp)
 ```
 
-- **תמונות:** מסובבות לפי EXIF, נשמרות כ-JPEG מאסטר ברוחב 2400 וכ-WebP ברוחבים 640/1080/1600/2400. הטוען המותאם (`src/lib/image-loader.ts`) מגיש לכל מסך את הגודל המתאים.
-- **סרטונים:** MP4 בפורמט H.264 ב-1080p וב-720p, בלי סאונד, עם faststart, ותמונת פוסטר. סרטונים ארוכים מאחסנים מחוץ לגיט (Bunny, Cloudflare Stream או R2).
-- **שמות קבצים:** כדי שתמונה תופיע במקום מסוים באתר, שומרים אותה בשם של מקום התמונה הזמנית (למשל `reception-1.jpg`), או מעדכנים את הנתיב ב-`src/content/site.ts`.
+`PHOTOS.md` מפרט מאיזה אירוע כל תמונה, ומה עוד צריך לאשר מול REVER.
 
-## החומרים האמיתיים באתר
+## הגדרות לעלייה לאוויר
 
-התמונות נמשכו מתיקיית Drive "Rever - Marketing - Almog" ועובדו עם `npm run media`. שמות הקבצים ב-`public/images` הם לפי התפקיד:
+מגדירים אצל ספק האחסון לפני `npm run build`:
 
-| קובץ | איפה באתר |
-|---|---|
-| `about` | "מי אנחנו" |
-| `service-*` | ארבעת התחומים |
-| `night-1..4` | קולאז' הרחבה |
-| `g01..g12` | גלריה |
-| `contact-bg` | רקע צור קשר |
-| `hero-poster` + `video/hero.mp4/.webm` | סרטון הפתיחה |
-| `logo.png` | הלוגו האמיתי, זהב על שקוף |
-
-הסרטונים (15 קבצים, עד 200MB) לא נכנסו: הם כבדים מדי לגיט. להכנת סרטון פתיחה: `npm run media -- <תיקייה עם הסרטון>`, ואז לאחסן בשירות סרטונים.
-
-## Settings for going live
-
-Set these in the host's environment before `npm run build`:
-
-| Variable | What it does |
+| משתנה | מה הוא עושה |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | The real domain, used for canonical links, Open Graph and structured data |
-| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 id. Loads only after the visitor accepts the cookie bar |
-| `NEXT_PUBLIC_META_PIXEL_ID` | Meta Pixel id. Same consent rule |
-| `NEXT_PUBLIC_LEAD_ENDPOINT` | Optional URL (Formspree, Make, a Google Apps Script) that receives each form submission as JSON, so leads are kept even if the visitor never presses send in WhatsApp |
+| `NEXT_PUBLIC_SITE_URL` | הדומיין האמיתי. בלעדיו האתר הוא תצוגה מקדימה: noindex, robots חוסם, והירוק מוצג |
+| `NEXT_PUBLIC_LEAD_ENDPOINT` | כתובת שמקבלת כל ליד לפני שהוואטסאפ נפתח. גיליון Google עובד: `scripts/lead-sheet.gs` |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4. נטען רק אחרי הסכמה לעוגיות |
 
-With no tracking ids set, the cookie bar does not appear.
+`npm run check:launch` נכשל אם:
+- robots חוסם את האתר;
+- עמוד שפתוח לגוגל מכיל ירוק;
+- לעמוד חסרים כותרת, canonical עם סלאש בסוף, או H1 אחד בדיוק.
 
-## Before launch
+## תצוגה מקדימה
 
-- Anything shown in green on the site is unverified (phone, address, accessibility coordinator, contact email). Replace it in `src/content/site.ts` and `src/components/Dialogs.tsx`.
-- Confirm that the couples in the photos agreed to appear on the site.
+```bash
+npm run build && python3 scripts/stage-preview.py out <תיקייה>
+```
+
+הסקריפט מעתיק את הייצוא לתיקייה שעובדת מכל נתיב: קבצי HTML שטוחים, נתיבים יחסיים, ורק התמונות שבשימוש.

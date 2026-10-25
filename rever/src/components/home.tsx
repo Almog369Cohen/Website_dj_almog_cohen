@@ -1,16 +1,76 @@
 import Link from "next/link";
-import { about, brand, difference, eventTypes, founders, hero, includes, night, steps } from "@/content/site";
-import { Faces, Pic, Todo, WaButton } from "./ui";
+import { PHOTO_SIZES } from "@/content/photos";
+import journeyCrops from "@/content/journey-crops.json";
+import { about, brand, difference, eventTypes, founders, hero, includes, journey, journeyAlt, steps } from "@/content/site";
+import { coverSizes, Faces, Pic, srcSetFor, Todo, WaButton } from "./ui";
 
-/** 1. The opening: the lotus video in a window between REVER and "הפקות", opened to full screen by the scroll. */
-export function Hero() {
+const PHONE = "(max-aspect-ratio: 3/4)";
+const crops: Record<string, number[]> = journeyCrops;
+
+/** One stage of the journey: a full-screen photo, with a lighter crop for portrait phones. Loaded by the Engine. */
+function JourneyPhoto({ name, first }: { name: string; first: boolean }) {
+  const crop = crops[name];
+  const [w, h] = PHOTO_SIZES[name] ?? [1600, 1067];
+  const phone = crop && [640, 960].map((x) => `/images/${name}-m-${x}.webp ${x}w`).join(", ");
+  const phoneSizes = crop && `calc(100svh * ${((w * (crop[1] - crop[0])) / h).toFixed(3)})`;
+  const { srcSet } = srcSetFor(name);
+  const lazy = !first;
   return (
-    <section className="hero" id="top" data-tone="hero">
+    <picture>
+      {/* the first stage paints from the light 640 crop and is upgraded after the page has loaded */}
+      {crop && <source media={PHONE} srcSet={lazy ? undefined : `/images/${name}-m-640.webp`} data-srcset={phone} data-sizes={phoneSizes} />}
+      <img
+        src={lazy ? undefined : `/images/${name}-1080.webp`}
+        srcSet={lazy ? undefined : srcSet}
+        sizes={lazy ? undefined : coverSizes(name)}
+        data-srcset={lazy ? srcSet : undefined}
+        data-sizes={lazy ? coverSizes(name) : undefined}
+        width={w}
+        height={h}
+        alt=""
+        loading="eager"
+        fetchPriority={first ? "high" : undefined}
+        decoding="async"
+      />
+    </picture>
+  );
+}
+
+/** The files the first stage paints with, for the preload in the page head (it must match what the browser picks). */
+export function journeyPreload() {
+  const name = journey[0].photo, crop = crops[name];
+  return {
+    phone: crop ? `/images/${name}-m-640.webp` : null,
+    wide: { srcSet: srcSetFor(name).srcSet, sizes: coverSizes(name) },
+    href: `/images/${name}-1080.webp`,
+  };
+}
+
+/**
+ * 1. The opening: the night as a journey. The first photo sits in a window between REVER and "הפקות" and
+ * opens to full screen; then every photo holds a window with the next stage of the night, and the scroll
+ * zooms into it (Engine: heroUpdate / journeyUpdate). It ends on the lotus video and the copy.
+ */
+export function Hero() {
+  const n = journey.length;
+  return (
+    <section className="hero" id="top" data-tone="hero" data-wa="" style={{ ["--stages" as string]: n }}>
       <div className="hero-stage">
         <div className="hero-inner" id="heroInner">
           <div className="hero-media" id="heroMedia">
-            {/* the sources are attached after the page loads, so the poster paints first (see Engine) */}
-            <video id="heroVideo" muted loop playsInline preload="none" poster="/images/hero-poster-640.webp" data-webm="/video/hero-m.webm" data-mp4="/video/hero-m.mp4" aria-label="עמדת ה־DJ בצורת לוטוס עם תותחי עשן, בחתונת גן" />
+            {journey.map((s, i) => {
+              const crop = crops[s.photo];
+              const [w, h] = PHOTO_SIZES[s.photo] ?? [1600, 1067];
+              return (
+                <div className="jl" key={s.id} data-i={i} data-w={w} data-h={h} data-crop={crop?.join(",")} data-at={s.at.join(",")} data-pos={s.pos.join(",")} data-pan={s.pan?.join(",")} data-desk={(s.desk ?? [0.5, 0.5]).join(",")} data-s={s.S}>
+                  <JourneyPhoto name={s.photo} first={i === 0} />
+                </div>
+              );
+            })}
+            <div className="jl jl-video" data-i={n} data-w={720} data-h={1280} data-desk="0.5,0.5" data-pos="0.6,0.5">
+              {/* the sources are attached after the page loads (see Engine) */}
+              <video id="heroVideo" muted loop playsInline preload="none" data-poster="/images/hero-poster-640.webp" data-webm="/video/hero-m.webm" data-mp4="/video/hero-m.mp4" data-webm-wide="/video/hero.webm" data-mp4-wide="/video/hero.mp4" aria-label="עמדת ה־DJ בצורת לוטוס עם תותחי עשן, בחתונת גן" />
+            </div>
             <div className="hero-shade" id="heroShade" />
           </div>
           <div className="masthead" aria-hidden="true">
@@ -18,6 +78,17 @@ export function Hero() {
             <span className="slot" id="slot" />
             <span className="mw mw2"><span>הפקות</span></span>
           </div>
+          <div className="jcap" id="jcap" aria-hidden="true">
+            <span className="jbrand">ריבר הפקות · ליווי מלא עד סוף הערב</span>
+            <p className="jstage">
+              <span className="jnum en" lang="en"><span id="jnum">01</span></span>
+              <span className="jof en" lang="en">/ {String(n).padStart(2, "0")}</span>
+              <b id="jname">{journey[0].label}</b>
+            </p>
+            <p className="jline" id="jline">{journey[0].line}</p>
+            <div className="jbar">{journey.map((s) => <i key={s.id}><b /></i>)}</div>
+          </div>
+          <a className="jskip" id="jskip" href="#difference">דלגו על המסע</a>
           <div className="hero-rest" id="heroRest">
             <h1>{hero.h1}</h1>
             <div className="cue" aria-hidden="true">גללו<i /></div>
@@ -39,6 +110,17 @@ export function Hero() {
         </button>
         <div className="hero-dim" id="heroDim" />
       </div>
+      {/* The same journey as a plain list: read by screen readers, and shown instead of the zoom when motion is off */}
+      <ol className="jstatic" aria-label="הערב שלכם, שלב אחר שלב">
+        {journey.map((s, i) => (
+          <li key={s.id}>
+            <figure>
+              <Pic name={s.photo} alt={journeyAlt[s.photo] ?? ""} sizes="(min-width: 1024px) 60vw, 100vw" />
+              <figcaption><span className="en" lang="en">{String(i + 1).padStart(2, "0")}</span> <b>{s.label}.</b> {s.line}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
@@ -120,37 +202,6 @@ export function Founders({ intro = true }: { intro?: boolean }) {
           <Link className="link-quiet" href="/about/">עוד על גל וליאל</Link>
         </div>
       )}
-    </section>
-  );
-}
-
-/** 5. The night: five chapters that move sideways as you scroll down. */
-export function Night() {
-  return (
-    <section className="dark" id="night" data-tone="dark" aria-labelledby="nightTitle">
-      <div className="night-head wrap">
-        <div className="kicker">הערב שלכם</div>
-        <h2 id="nightTitle">{night.title}</h2>
-        <p className="lead">{night.lead}</p>
-      </div>
-      <div className="track-pin" id="trackPin">
-        <div className="track-stage" id="trackStage">
-          <div className="track" id="track">
-            {night.chapters.map((c, i) => (
-              <article className="card" key={c.title} data-wa={c.wa}>
-                <span className="num en" lang="en">{String(i + 1).padStart(2, "0")}</span>
-                <figure><Pic name={c.photo} alt={c.alt} sizes="(min-width: 1024px) 40vw, 90vw" /></figure>
-                <div className="txt"><h3>{c.title}</h3><p>{c.text}</p></div>
-              </article>
-            ))}
-          </div>
-          <div className="track-bar" aria-hidden="true"><i id="trackBar" /></div>
-        </div>
-      </div>
-      <div className="night-cta wrap">
-        <h3>רוצים ערב כזה?</h3>
-        <WaButton where="night" />
-      </div>
     </section>
   );
 }

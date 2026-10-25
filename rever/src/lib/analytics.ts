@@ -12,7 +12,7 @@ type Win = Window & { gtag?: (...a: unknown[]) => void };
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 export const LEAD_ENDPOINT = process.env.NEXT_PUBLIC_LEAD_ENDPOINT || "";
 
-export type TrackEvent = "click_whatsapp" | "click_call" | "generate_lead" | "open_photo" | "hero_opened" | "night_finished";
+export type TrackEvent = "click_whatsapp" | "click_call" | "generate_lead" | "open_photo" | "hero_opened" | "journey_stage";
 
 export function track(event: TrackEvent, params: Record<string, string> = {}) {
   if (typeof window === "undefined") return;

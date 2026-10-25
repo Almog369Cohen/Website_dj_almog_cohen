@@ -5,27 +5,43 @@ import { waHref } from "@/lib/whatsapp";
 
 const WIDTHS = [640, 1080, 1280, 1600, 2400];
 
+/** The processed files of a photo, as a srcset (the widths never exceed the original). */
+export function srcSetFor(name: string) {
+  const [w] = PHOTO_SIZES[name] ?? [1600, 1067];
+  const widths = WIDTHS.filter((x) => x <= w);
+  const list = widths.length ? widths : [WIDTHS[0]];
+  return { list, srcSet: list.map((x) => `/images/${name}-${x}.webp ${Math.min(x, w)}w`).join(", ") };
+}
+
+/** How wide a full-screen photo is drawn with object-fit: cover: on a narrow screen it overflows to the sides. */
+export function coverSizes(name: string) {
+  const [w, h] = PHOTO_SIZES[name] ?? [1600, 1067];
+  return `(max-aspect-ratio: ${w}/${h}) calc(100svh * ${(w / h).toFixed(3)}), 100vw`;
+}
+
 /**
  * A photo from public/images in every processed size, so a phone never downloads the desktop file.
  * `sizes` says how wide it is drawn; the browser picks the smallest file that is sharp enough.
+ * `deferred` leaves the files in data attributes for the Engine to attach after the page has loaded.
  */
-export function Pic({ name, alt, sizes = "100vw", className, priority, id }: { name: string; alt: string; sizes?: string; className?: string; priority?: boolean; id?: string }) {
+export function Pic({ name, alt, sizes = "100vw", className, priority, deferred, id }: { name: string; alt: string; sizes?: string; className?: string; priority?: boolean; deferred?: boolean; id?: string }) {
   const [w, h] = PHOTO_SIZES[name] ?? [1600, 1067];
-  const widths = WIDTHS.filter((x) => x <= w);
-  const list = widths.length ? widths : [WIDTHS[0]];
-  const srcSet = list.map((x) => `/images/${name}-${x}.webp ${Math.min(x, w)}w`).join(", ");
+  const { list, srcSet } = srcSetFor(name);
+  const src = `/images/${name}-${list[Math.min(1, list.length - 1)]}.webp`;
   return (
     // eslint-disable-next-line @next/next/no-img-element -- static export: srcset is built from our own processed sizes
     <img
       id={id}
-      src={`/images/${name}-${list[Math.min(1, list.length - 1)]}.webp`}
-      srcSet={srcSet}
-      sizes={sizes}
+      src={deferred ? undefined : src}
+      srcSet={deferred ? undefined : srcSet}
+      sizes={deferred ? undefined : sizes}
+      data-srcset={deferred ? srcSet : undefined}
+      data-sizes={deferred ? sizes : undefined}
       width={w}
       height={h}
       alt={alt}
       className={className}
-      loading={priority ? "eager" : "lazy"}
+      loading={priority || deferred ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : undefined}
       decoding="async"
     />
