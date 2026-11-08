@@ -46,19 +46,19 @@ jobs:
           echo "PROJECT=$PROJECT" >> $GITHUB_ENV
           echo "CLOUDSDK_CORE_PROJECT=$PROJECT" >> $GITHUB_ENV
           export CLOUDSDK_CORE_PROJECT=$PROJECT
-          # משתמשים במאגר קיים אם יש (לחשבון השירות אין הרשאה ליצור מאגר חדש)
-          for cand in "me-west1/rever" "us-central1/compakt" "us-central1/cloud-run-source-deploy" "me-west1/cloud-run-source-deploy"; do
+          # מאגר נפרד לרבר אם אפשר, אחרת מאגר קיים
+          ACCT=$(gcloud config get-value account 2>/dev/null)
+          echo "Roles of the deploy account in this project:"
+          gcloud projects get-iam-policy "$PROJECT" --flatten="bindings[].members" \
+            --filter="bindings.members:serviceAccount:$ACCT" --format="value(bindings.role)" || echo "(cannot read IAM policy)"
+          use() { echo "IMAGE=$1-docker.pkg.dev/$PROJECT/$2/rever-app" >> $GITHUB_ENV; echo "REG_HOST=$1-docker.pkg.dev" >> $GITHUB_ENV; echo "Using $1/$2"; }
+          if gcloud artifacts repositories describe rever --location=me-west1 >/dev/null 2>&1; then use me-west1 rever; exit 0; fi
+          if gcloud artifacts repositories create rever --repository-format=docker --location=me-west1 --description="Rever management system" 2>/dev/null; then use me-west1 rever; exit 0; fi
+          for cand in "us-central1/compakt" "us-central1/cloud-run-source-deploy" "me-west1/cloud-run-source-deploy"; do
             loc=${cand%%/*}; repo=${cand##*/}
-            if gcloud artifacts repositories describe "$repo" --location="$loc" >/dev/null 2>&1; then
-              echo "IMAGE=$loc-docker.pkg.dev/$PROJECT/$repo/rever-app" >> $GITHUB_ENV
-              echo "REG_HOST=$loc-docker.pkg.dev" >> $GITHUB_ENV
-              echo "Using $cand"; exit 0
-            fi
+            if gcloud artifacts repositories describe "$repo" --location="$loc" >/dev/null 2>&1; then use "$loc" "$repo"; exit 0; fi
           done
-          echo "Trying to create me-west1/rever"
-          gcloud artifacts repositories create rever --repository-format=docker --location=me-west1 --description="Rever management system"
-          echo "IMAGE=me-west1-docker.pkg.dev/$PROJECT/rever/rever-app" >> $GITHUB_ENV
-          echo "REG_HOST=me-west1-docker.pkg.dev" >> $GITHUB_ENV
+          echo "No usable Artifact Registry repository"; exit 1
 
       - name: Configure Docker
         run: gcloud auth configure-docker "$REG_HOST" --quiet
