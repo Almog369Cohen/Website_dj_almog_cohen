@@ -110,24 +110,40 @@ export interface Settings {
 }
 
 export type Role = "admin" | "team";
-export type Perm = "finance" | "delete" | "templates" | "settings";
+export type Perm = "prices" | "finance" | "delete" | "templates" | "settings";
+/** הרשאות שהמנהלים מדליקים לכל עובד. "settings" (הגדרות + צוות) = מנהלים בלבד */
 export const PERMS: { id: Exclude<Perm, "settings">; label: string; hint: string }[] = [
-  { id: "finance", label: "כספים", hint: "מחירים, תשלומים, הוצאות, הצעות מחיר וחשבוניות" },
-  { id: "delete", label: "מחיקה", hint: "מחיקת לידים, תשלומים ופריטים" },
+  { id: "prices", label: "מחירים", hint: "רואה מחירים בלידים ובהצעות" },
+  { id: "finance", label: "כספים", hint: "מסך כספים: הכנסות, תשלומים, הוצאות, חשבוניות" },
+  { id: "delete", label: "מחיקה", hint: "מחיקת לידים ופריטים" },
   { id: "templates", label: "עריכת תבניות", hint: "שינוי תבניות ההודעה" },
 ];
-/** "settings" (הגדרות, צוות והרשאות) = למנהלים בלבד */
 
-/** משתמש במערכת. id = האימייל באותיות קטנות (חשבון גוגל) */
+/** עובד. כולם נכנסים עם חשבון הגוגל של העסק, ואז כל אחד מקיש קוד אישי. */
 export interface Member {
   id: string;
   name: string;
-  role: Role;
+  title?: string; // תפקיד: מזכירה, תפעול…
+  role: Role; // admin = קוד מאסטר
+  can_prices: boolean;
   can_finance: boolean;
   can_delete: boolean;
   can_templates: boolean;
   active: boolean;
+  has_pin?: boolean; // מגיע מהשרת: האם הוגדר קוד
+  pin?: string; // מצב דמו בלבד
   created_at?: string;
+}
+
+/** בדיקת הרשאה. משותף לשרת ולמסך. */
+export function memberCan(m: Member | undefined, perm: Perm): boolean {
+  if (!m || !m.active) return false;
+  if (m.role === "admin") return true;
+  if (perm === "prices") return m.can_prices || m.can_finance;
+  if (perm === "finance") return m.can_finance;
+  if (perm === "delete") return m.can_delete;
+  if (perm === "templates") return m.can_templates;
+  return false;
 }
 
 export interface DB {

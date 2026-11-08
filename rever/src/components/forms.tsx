@@ -78,7 +78,7 @@ export function LeadModal({ lead, onClose, onSaved }: { lead?: Lead; onClose: ()
             ))}
           </select>
         </Field>
-        {can("finance") && (
+        {can("prices") && (
           <Field label="מחיר (₪)">
             <input type="number" min={0} value={f.price ?? ""} onChange={(e) => set({ price: num(e.target.value) })} />
           </Field>

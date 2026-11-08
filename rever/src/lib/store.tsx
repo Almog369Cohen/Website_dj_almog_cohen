@@ -2,7 +2,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { Activity, ActivityKind, DB, Lead, LeadStatus, Member, Perm, Settings, Table } from "./types";
 import { useAuth } from "./auth";
-import { statusLabel } from "./types";
+import { memberCan, statusLabel } from "./types";
 import { makeRepo, type Repo } from "./repo";
 import { emptyDB } from "./seed";
 import { uid } from "./format";
@@ -31,7 +31,7 @@ interface Store {
 const Ctx = createContext<Store | null>(null);
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const { email } = useAuth();
+  const { staffId } = useAuth();
   const repoRef = useRef<Repo | null>(null);
   const [db, setDb] = useState<DB>(emptyDB());
   const [ready, setReady] = useState(false);
@@ -114,18 +114,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [updateLead, log],
   );
 
-  const me = db.members.find((m) => m.id === email && m.active);
-  const can = useCallback(
-    (perm: Perm) => {
-      if (!me) return false;
-      if (me.role === "admin") return true;
-      if (perm === "finance") return me.can_finance;
-      if (perm === "delete") return me.can_delete;
-      if (perm === "templates") return me.can_templates;
-      return false; // settings: מנהלים בלבד
-    },
-    [me],
-  );
+  const me = db.members.find((m) => m.id === staffId && m.active);
+  const can = useCallback((perm: Perm) => memberCan(me, perm), [me]);
 
   const value = useMemo<Store>(
     () => ({

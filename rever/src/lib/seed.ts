@@ -114,10 +114,15 @@ export function demoDB(): DB {
   };
 }
 
+const M = (p: Partial<Member> & Pick<Member, "id" | "name" | "role">): Member => ({
+  can_prices: false, can_finance: false, can_delete: false, can_templates: false, active: true, has_pin: true, ...p,
+});
+/** קודים בדמו: גל 1111 · ליאל 2222 · ארד 3333 · ספיר 4444 */
 export const DEMO_MEMBERS: Member[] = [
-  { id: "gal@rever.co.il", name: "גל", role: "admin", can_finance: true, can_delete: true, can_templates: true, active: true },
-  { id: "liel@rever.co.il", name: "ליאל", role: "admin", can_finance: true, can_delete: true, can_templates: true, active: true },
-  { id: "noa@rever.co.il", name: "נועה", role: "team", can_finance: false, can_delete: false, can_templates: false, active: true },
+  M({ id: "m-gal", name: "גל", title: "בעלים", role: "admin", pin: "1111" }),
+  M({ id: "m-liel", name: "ליאל", title: "בעלים", role: "admin", pin: "2222" }),
+  M({ id: "m-arad", name: "ארד", title: "עוזר ומנהל תפעול · חזרה ללקוחות", role: "team", can_templates: true, pin: "3333" }),
+  M({ id: "m-sapir", name: "ספיר", title: "מזכירה", role: "team", pin: "4444" }),
 ];
 
 export function emptyDB(): DB {

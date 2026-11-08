@@ -50,7 +50,7 @@ function LeadView({ l }: { l: Lead }) {
   const waRef = useRef<HTMLDivElement>(null);
 
   const templates = [...db.templates].sort((a, b) => a.sort - b.sort);
-  const acts = db.activities.filter((a) => a.lead_id === l.id && (a.kind !== "payment" || can("finance"))).sort((a, b) => +new Date(b.at) - +new Date(a.at));
+  const acts = db.activities.filter((a) => a.lead_id === l.id && (a.kind !== "payment" || can("prices"))).sort((a, b) => +new Date(b.at) - +new Date(a.at));
   const messages = [...acts].filter((a) => a.kind === "message").reverse();
   const meeting = db.calendar_items
     .filter((c) => c.lead_id === l.id && c.kind === "meeting" && new Date(c.start) >= new Date())
@@ -76,7 +76,7 @@ function LeadView({ l }: { l: Lead }) {
       setTplId(null);
     } else if (suggested) {
       setTplId(suggested.id);
-      setText(fillTemplate(suggested.body, can("finance") ? l : { ...l, price: undefined }, settings, meeting));
+      setText(fillTemplate(suggested.body, can("prices") ? l : { ...l, price: undefined }, settings, meeting));
     }
     if (typeof window !== "undefined" && window.location.hash === "#wa") setTimeout(() => waRef.current?.scrollIntoView({ block: "start" }), 50);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,7 +85,7 @@ function LeadView({ l }: { l: Lead }) {
   const pick = (id: string) => {
     const t = templates.find((x) => x.id === id)!;
     setTplId(id);
-    setText(fillTemplate(t.body, can("finance") ? l : { ...l, price: undefined }, settings, meeting));
+    setText(fillTemplate(t.body, can("prices") ? l : { ...l, price: undefined }, settings, meeting));
   };
 
   const send = async () => {
@@ -198,7 +198,7 @@ function LeadView({ l }: { l: Lead }) {
             <span>הגיעו דרך</span>
             <b>{l.source}</b>
           </div>
-          {l.price && can("finance") ? (
+          {l.price && can("prices") ? (
             <div className="field">
               <span>מחיר</span>
               <b>{nis(l.price)}</b>
@@ -286,7 +286,7 @@ function LeadView({ l }: { l: Lead }) {
             <div key={a.id} className="tli">
               <span className="dt" style={{ background: DOT[a.kind] }} />
               <div style={{ minWidth: 0 }}>
-                {a.kind === "message" ? "נשלחה הודעת וואטסאפ" : can("finance") ? a.text : a.text.replace(/₪[\d,]+/g, "₪•••")}
+                {a.kind === "message" ? "נשלחה הודעת וואטסאפ" : can("prices") ? a.text : a.text.replace(/₪[\d,]+/g, "₪•••")}
                 <small>{new Date(a.at).toLocaleString("he-IL", { weekday: "long", day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })}</small>
               </div>
             </div>
