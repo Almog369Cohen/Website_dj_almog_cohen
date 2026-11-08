@@ -1,0 +1,144 @@
+"use client";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import type { Activity, ActivityKind, DB, Lead, LeadStatus, Settings, Table } from "./types";
+import { statusLabel } from "./types";
+import { makeRepo, type Repo } from "./repo";
+import { emptyDB } from "./seed";
+import { uid } from "./format";
+
+interface Store {
+  db: DB;
+  ready: boolean;
+  error: string | null;
+  mode: Repo["mode"];
+  settings: Settings;
+  save<T extends Table>(table: T, row: DB[T][number]): Promise<void>;
+  remove(table: Table, id: string): Promise<void>;
+  log(lead_id: string, kind: ActivityKind, text: string): Promise<void>;
+  setStatus(lead: Lead, status: LeadStatus): Promise<void>;
+  updateLead(lead: Lead, patch: Partial<Lead>): Promise<void>;
+  lead(id?: string): Lead | undefined;
+  resetDemo?: () => Promise<void>;
+  toast(msg: string): void;
+  toastMsg: string | null;
+}
+
+const Ctx = createContext<Store | null>(null);
+
+export function StoreProvider({ children }: { children: React.ReactNode }) {
+  const repoRef = useRef<Repo | null>(null);
+  const [db, setDb] = useState<DB>(emptyDB());
+  const [ready, setReady] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [toastMsg, setToast] = useState<string | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout>>();
+
+  const toast = useCallback((msg: string) => {
+    setToast(msg);
+    clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), 3200);
+  }, []);
+
+  const load = useCallback(async () => {
+    const repo = repoRef.current!;
+    try {
+      const data = await repo.loadAll();
+      if (!data.settings?.length) data.settings = emptyDB().settings;
+      if (!data.templates?.length) data.templates = emptyDB().templates;
+      setDb(data);
+      setError(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    repoRef.current = makeRepo();
+    load();
+  }, [load]);
+
+  const save = useCallback(
+    async <T extends Table>(table: T, row: DB[T][number]) => {
+      setDb((prev) => {
+        const list = [...(prev[table] as { id: string }[])];
+        const i = list.findIndex((r) => r.id === (row as { id: string }).id);
+        if (i >= 0) list[i] = row as { id: string };
+        else list.push(row as { id: string });
+        return { ...prev, [table]: list };
+      });
+      try {
+        await repoRef.current!.upsert(table, row);
+      } catch (e) {
+        toast("השמירה נכשלה: " + (e instanceof Error ? e.message : e));
+        load();
+      }
+    },
+    [load, toast],
+  );
+
+  const remove = useCallback(
+    async (table: Table, id: string) => {
+      setDb((prev) => ({ ...prev, [table]: (prev[table] as { id: string }[]).filter((r) => r.id !== id) }));
+      try {
+        await repoRef.current!.remove(table, id);
+      } catch (e) {
+        toast("המחיקה נכשלה: " + (e instanceof Error ? e.message : e));
+        load();
+      }
+    },
+    [load, toast],
+  );
+
+  const log = useCallback(
+    (lead_id: string, kind: ActivityKind, text: string) =>
+      save("activities", { id: uid(), lead_id, kind, text, at: new Date().toISOString() } as Activity),
+    [save],
+  );
+
+  const updateLead = useCallback((lead: Lead, patch: Partial<Lead>) => save("leads", { ...lead, ...patch }), [save]);
+
+  const setStatus = useCallback(
+    async (lead: Lead, status: LeadStatus) => {
+      if (lead.status === status) return;
+      await updateLead(lead, { status });
+      await log(lead.id, "status", `סטטוס שונה ל"${statusLabel(status)}"`);
+    },
+    [updateLead, log],
+  );
+
+  const value = useMemo<Store>(
+    () => ({
+      db,
+      ready,
+      error,
+      mode: repoRef.current?.mode ?? "demo",
+      settings: db.settings[0] ?? emptyDB().settings[0],
+      save,
+      remove,
+      log,
+      setStatus,
+      updateLead,
+      lead: (id?: string) => db.leads.find((l) => l.id === id),
+      resetDemo: repoRef.current?.reset
+        ? async () => {
+            const d = await repoRef.current!.reset!();
+            setDb(d);
+            toast("נתוני הדמו אופסו");
+          }
+        : undefined,
+      toast,
+      toastMsg,
+    }),
+    [db, ready, error, save, remove, log, setStatus, updateLead, toast, toastMsg],
+  );
+
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
+}
+
+export const useStore = () => {
+  const s = useContext(Ctx);
+  if (!s) throw new Error("useStore outside provider");
+  return s;
+};
