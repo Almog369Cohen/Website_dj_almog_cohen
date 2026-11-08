@@ -10,11 +10,22 @@ npm run dev        # http://localhost:3100
 ```
 בלי משתני סביבה המערכת רצה ב**מצב דמו**: נתוני דוגמה נשמרים בדפדפן בלבד.
 
-## חיבור Supabase (נתונים אמיתיים + כניסה עם מייל)
+## כניסה והרשאות
+- כניסה עם **חשבון Google** בלבד (Supabase Auth). מערכת עצמאית של רבר: לא קשורה ל-Claude.
+- רק מי שרשום בטבלת `members` נכנס. כל השאר רואים "אין לך עדיין גישה".
+- **מנהל** (גל, ליאל): הכל, כולל כספים, הגדרות וניהול צוות.
+- **צוות**: לידים, יומן והודעות. בנוסף, לכל אחד אפשר להדליק: כספים / מחיקה / עריכת תבניות.
+- ההרשאות נאכפות **במסד הנתונים** (RLS), לא רק במסך. נבדק: צוות בלי כספים לא רואה ולא יכול לרשום תשלומים, לא יכול למחוק, לא יכול לשנות הגדרות או לקדם את עצמו למנהל.
+- המשתמש הראשון שנכנס למערכת ריקה הופך למנהל, ומשם מוסיפים את השאר בהגדרות ← צוות והרשאות.
+- מחיר העסקה בכרטיס הליד מוסתר במסך לצוות בלי הרשאת כספים (ברמת המסד העמודה עדיין נגישה).
+
+## חיבור Supabase (נתונים אמיתיים)
 1. ליצור פרויקט Supabase ולהריץ את `supabase/migrations/001_init.sql` ב-SQL Editor.
-2. להוסיף את אנשי הצוות: `insert into members (email, name) values ('...', '...');`
-3. להעתיק את `.env.example` ל-`.env.local` ולמלא `NEXT_PUBLIC_SUPABASE_URL` ו-`NEXT_PUBLIC_SUPABASE_ANON_KEY`.
-4. ב-Supabase → Authentication → URL Configuration: להוסיף את כתובת האתר.
+2. Authentication → Providers → **Google**: להפעיל ולהדביק Client ID / Secret מ-Google Cloud Console
+   (OAuth Client מסוג Web, עם Redirect URI: `https://<project>.supabase.co/auth/v1/callback`).
+3. Authentication → URL Configuration: להוסיף את כתובת האתר (Site URL + Redirect URLs).
+4. להעתיק את `.env.example` ל-`.env.local` ולמלא `NEXT_PUBLIC_SUPABASE_URL` ו-`NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+5. להיכנס ראשון (גל או ליאל) → "להיכנס כמנהל" → להוסיף את השני ואת הצוות.
 
 ## וואטסאפ
 - **ברירת מחדל:** נפתח וואטסאפ עם ההודעה מוכנה (wa.me). עובד מיד, בלי חיבור.

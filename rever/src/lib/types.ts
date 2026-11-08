@@ -109,6 +109,27 @@ export interface Settings {
   vat_rate: number;
 }
 
+export type Role = "admin" | "team";
+export type Perm = "finance" | "delete" | "templates" | "settings";
+export const PERMS: { id: Exclude<Perm, "settings">; label: string; hint: string }[] = [
+  { id: "finance", label: "כספים", hint: "מחירים, תשלומים, הוצאות, הצעות מחיר וחשבוניות" },
+  { id: "delete", label: "מחיקה", hint: "מחיקת לידים, תשלומים ופריטים" },
+  { id: "templates", label: "עריכת תבניות", hint: "שינוי תבניות ההודעה" },
+];
+/** "settings" (הגדרות, צוות והרשאות) = למנהלים בלבד */
+
+/** משתמש במערכת. id = האימייל באותיות קטנות (חשבון גוגל) */
+export interface Member {
+  id: string;
+  name: string;
+  role: Role;
+  can_finance: boolean;
+  can_delete: boolean;
+  can_templates: boolean;
+  active: boolean;
+  created_at?: string;
+}
+
 export interface DB {
   leads: Lead[];
   activities: Activity[];
@@ -118,7 +139,8 @@ export interface DB {
   expenses: Expense[];
   docs: Doc[];
   settings: Settings[];
+  members: Member[];
 }
 
 export type Table = keyof DB;
-export const TABLES: Table[] = ["leads", "activities", "calendar_items", "templates", "payments", "expenses", "docs", "settings"];
+export const TABLES: Table[] = ["leads", "activities", "calendar_items", "templates", "payments", "expenses", "docs", "settings", "members"];

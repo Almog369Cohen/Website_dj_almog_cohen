@@ -1,6 +1,7 @@
 "use client";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import type { Activity, ActivityKind, DB, Lead, LeadStatus, Settings, Table } from "./types";
+import type { Activity, ActivityKind, DB, Lead, LeadStatus, Member, Perm, Settings, Table } from "./types";
+import { useAuth } from "./auth";
 import { statusLabel } from "./types";
 import { makeRepo, type Repo } from "./repo";
 import { emptyDB } from "./seed";
@@ -12,6 +13,10 @@ interface Store {
   error: string | null;
   mode: Repo["mode"];
   settings: Settings;
+  /** המשתמש המחובר (undefined = אין לו גישה) */
+  me?: Member;
+  can(perm: Perm): boolean;
+  reload(): Promise<void>;
   save<T extends Table>(table: T, row: DB[T][number]): Promise<void>;
   remove(table: Table, id: string): Promise<void>;
   log(lead_id: string, kind: ActivityKind, text: string): Promise<void>;
@@ -26,6 +31,7 @@ interface Store {
 const Ctx = createContext<Store | null>(null);
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
+  const { email } = useAuth();
   const repoRef = useRef<Repo | null>(null);
   const [db, setDb] = useState<DB>(emptyDB());
   const [ready, setReady] = useState(false);
@@ -108,13 +114,30 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [updateLead, log],
   );
 
+  const me = db.members.find((m) => m.id === email && m.active);
+  const can = useCallback(
+    (perm: Perm) => {
+      if (!me) return false;
+      if (me.role === "admin") return true;
+      if (perm === "finance") return me.can_finance;
+      if (perm === "delete") return me.can_delete;
+      if (perm === "templates") return me.can_templates;
+      return false; // settings: מנהלים בלבד
+    },
+    [me],
+  );
+
   const value = useMemo<Store>(
     () => ({
+      me,
+      can,
+      reload: load,
       db,
       ready,
       error,
       mode: repoRef.current?.mode ?? "demo",
-      settings: db.settings[0] ?? emptyDB().settings[0],
+      // בהודעות: השם של מי ששולח
+      settings: { ...(db.settings[0] ?? emptyDB().settings[0]), owner_name: me?.name || db.settings[0]?.owner_name || "" },
       save,
       remove,
       log,
@@ -131,7 +154,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       toast,
       toastMsg,
     }),
-    [db, ready, error, save, remove, log, setStatus, updateLead, toast, toastMsg],
+    [db, ready, error, save, remove, log, setStatus, updateLead, toast, toastMsg, me, can, load],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

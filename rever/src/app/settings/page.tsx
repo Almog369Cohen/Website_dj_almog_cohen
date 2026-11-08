@@ -4,10 +4,11 @@ import { useStore } from "@/lib/store";
 import type { Settings } from "@/lib/types";
 import { Field } from "@/components/ui";
 import { supabase } from "@/lib/repo";
+import Team from "@/components/Team";
 
 export default function SettingsPage() {
-  const { settings, save, mode, resetDemo, toast } = useStore();
-  const [f, setF] = useState<Settings>(settings);
+  const { db, settings, save, mode, resetDemo, toast } = useStore();
+  const [f, setF] = useState<Settings>(db.settings[0] ?? settings);
   const [origin, setOrigin] = useState("");
   useEffect(() => setOrigin(window.location.origin), []);
   const set = (p: Partial<Settings>) => setF((x) => ({ ...x, ...p }));
@@ -17,9 +18,10 @@ export default function SettingsPage() {
       <div className="top">
         <div>
           <h1>הגדרות</h1>
-          <div className="sub">פרטי העסק וחיבורים</div>
+          <div className="sub">צוות והרשאות, פרטי העסק וחיבורים</div>
         </div>
       </div>
+      <Team />
       <div className="grid2" style={{ alignItems: "start" }}>
         <form
           className="card form"
@@ -32,9 +34,6 @@ export default function SettingsPage() {
           <h2 className="full">פרטי העסק</h2>
           <Field label="שם העסק">
             <input value={f.business_name} onChange={(e) => set({ business_name: e.target.value })} />
-          </Field>
-          <Field label="שם שמופיע בהודעות">
-            <input value={f.owner_name} onChange={(e) => set({ owner_name: e.target.value })} placeholder="ענבל" />
           </Field>
           <Field label='מע"מ (%)'>
             <input type="number" value={f.vat_rate} onChange={(e) => set({ vat_rate: Number(e.target.value) })} />

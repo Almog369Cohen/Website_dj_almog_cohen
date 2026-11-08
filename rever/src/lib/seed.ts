@@ -1,4 +1,4 @@
-import type { DB, Lead, Template } from "./types";
+import type { DB, Lead, Member, Template } from "./types";
 import { ymd } from "./format";
 
 /** נתוני דמו — תאריכים יחסיים להיום כדי שהדמו תמיד ייראה עדכני */
@@ -47,7 +47,7 @@ export function demoDB(): DB {
       next_followup: at(-2, 10), followup_note: "לא ענו אחרי ההודעה הראשונה", last_contact: at(-2, 14, 10), created_at: at(-2, 13, 52) }),
     L({ id: "l2", name: "משפחת לוי", phone: "054-7720914", event_date: day(270), guests: 320, status: "quote", price: 24500,
       next_followup: at(0, 9), followup_note: "לבדוק אם ראו את הצעת המחיר", last_contact: at(-5) }),
-    L({ id: "l3", name: "גל ושחר", phone: "050-3391027", event_date: day(260), guests: 220, source: "אינסטגרם", status: "talk",
+    L({ id: "l3", name: "עדי ושחר", phone: "050-3391027", event_date: day(260), guests: 220, source: "אינסטגרם", status: "talk",
       next_followup: at(0, 10), followup_note: "ביקשו שנחזור אליהם היום ב-10:00", last_contact: at(-3) }),
     L({ id: "l4", name: "מיכל כהן", phone: "058-6612470", event_type: "בת מצווה", event_date: day(115), guests: 120, source: "וואטסאפ", status: "new",
       next_followup: at(0, 12), followup_note: "ליד חדש מאתמול, לשלוח הודעת היכרות", created_at: at(-1, 21, 40) }),
@@ -71,7 +71,7 @@ export function demoDB(): DB {
     leads,
     activities: [
       { id: "a1", lead_id: "l1", kind: "created", text: "ליד חדש נכנס מהאתר", at: at(-2, 13, 52) },
-      { id: "a2", lead_id: "l1", kind: "message", text: "היי דנה ויובל! 🎉 כאן ענבל מרבר הפקות. ראינו שהשארתם פרטים לחתונה, מזל טוב! מתי נוח לכם לשיחה קצרה?", at: at(-2, 14, 10) },
+      { id: "a2", lead_id: "l1", kind: "message", text: "היי דנה ויובל! 🎉 כאן גל מרבר הפקות. ראינו שהשארתם פרטים לחתונה, מזל טוב! מתי נוח לכם לשיחה קצרה?", at: at(-2, 14, 10) },
       { id: "a3", lead_id: "l2", kind: "status", text: "נשלחה הצעת מחיר ₪24,500", at: at(-5, 12) },
       { id: "a4", lead_id: "l11", kind: "payment", text: "התקבלה מקדמה ₪5,000", at: at(-60) },
     ],
@@ -109,13 +109,21 @@ export function demoDB(): DB {
       { id: "d3", lead_id: "l13", type: "invoice", number: "INV-2207", amount: 22000, date: day(-2), status: "paid" },
       { id: "d4", lead_id: "l10", type: "receipt", number: "R-3110", amount: 6000, date: day(-6), status: "paid" },
     ],
-    settings: [{ id: "main", business_name: "רבר הפקות", owner_name: "ענבל", whatsapp_mode: "link", vat_rate: 18 }],
+    settings: [{ id: "main", business_name: "רבר הפקות", owner_name: "גל", whatsapp_mode: "link", vat_rate: 18 }],
+    members: DEMO_MEMBERS,
   };
 }
+
+export const DEMO_MEMBERS: Member[] = [
+  { id: "gal@rever.co.il", name: "גל", role: "admin", can_finance: true, can_delete: true, can_templates: true, active: true },
+  { id: "liel@rever.co.il", name: "ליאל", role: "admin", can_finance: true, can_delete: true, can_templates: true, active: true },
+  { id: "noa@rever.co.il", name: "נועה", role: "team", can_finance: false, can_delete: false, can_templates: false, active: true },
+];
 
 export function emptyDB(): DB {
   return {
     leads: [], activities: [], calendar_items: [], templates: DEFAULT_TEMPLATES, payments: [], expenses: [], docs: [],
     settings: [{ id: "main", business_name: "רבר הפקות", owner_name: "", whatsapp_mode: "link", vat_rate: 18 }],
+    members: [],
   };
 }

@@ -22,7 +22,7 @@ export const supabase = () => {
   return client;
 };
 
-const LS_KEY = "rever-crm-demo-v2";
+const LS_KEY = "rever-crm-demo-v3";
 
 class LocalRepo implements Repo {
   mode = "demo" as const;

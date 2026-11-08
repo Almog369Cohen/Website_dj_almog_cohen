@@ -3,6 +3,7 @@ import { Heebo } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/lib/store";
 import Shell from "@/components/Shell";
+import { AuthProvider } from "@/lib/auth";
 
 const heebo = Heebo({ subsets: ["hebrew", "latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-heebo" });
 
@@ -13,9 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="he" dir="rtl" className={heebo.variable}>
       <body>
-        <StoreProvider>
-          <Shell>{children}</Shell>
-        </StoreProvider>
+        <AuthProvider>
+          <StoreProvider>
+            <Shell>{children}</Shell>
+          </StoreProvider>
+        </AuthProvider>
       </body>
     </html>
   );

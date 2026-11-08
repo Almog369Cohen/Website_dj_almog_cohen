@@ -10,7 +10,7 @@ const num = (v: string) => (v === "" ? undefined : Number(v));
 
 /* ---------------- ליד ---------------- */
 export function LeadModal({ lead, onClose, onSaved }: { lead?: Lead; onClose: () => void; onSaved?: (l: Lead) => void }) {
-  const { save, log } = useStore();
+  const { save, log, can } = useStore();
   const [f, setF] = useState<Lead>(
     lead ?? {
       id: uid(),
@@ -78,9 +78,11 @@ export function LeadModal({ lead, onClose, onSaved }: { lead?: Lead; onClose: ()
             ))}
           </select>
         </Field>
-        <Field label="מחיר (₪)">
-          <input type="number" min={0} value={f.price ?? ""} onChange={(e) => set({ price: num(e.target.value) })} />
-        </Field>
+        {can("finance") && (
+          <Field label="מחיר (₪)">
+            <input type="number" min={0} value={f.price ?? ""} onChange={(e) => set({ price: num(e.target.value) })} />
+          </Field>
+        )}
         <Field label="פולואפ הבא">
           <input type="datetime-local" value={toLocalInput(f.next_followup)} onChange={(e) => set({ next_followup: fromLocalInput(e.target.value) })} />
         </Field>
@@ -173,7 +175,7 @@ export function CalendarModal({
   defaultKind?: CalendarKind;
   onClose: () => void;
 }) {
-  const { db, save, remove, lead, log, setStatus } = useStore();
+  const { db, save, remove, lead, log, setStatus, can } = useStore();
   const start0 = date ? new Date(date + "T18:00:00").toISOString() : new Date().toISOString();
   const l0 = lead(leadId);
   const [f, setF] = useState<CalendarItem>(
@@ -223,7 +225,7 @@ export function CalendarModal({
         </Field>
         <div className="mfoot full">
           <button className="btn pri">שמירה</button>
-          {item && (
+          {item && can("delete") && (
             <button
               type="button"
               className="btn danger"
@@ -243,7 +245,7 @@ export function CalendarModal({
 
 /* ---------------- תשלום ---------------- */
 export function PaymentModal({ leadId, payment, onClose }: { leadId?: string; payment?: Payment; onClose: () => void }) {
-  const { db, save, remove, log, lead } = useStore();
+  const { db, save, remove, log, lead, can } = useStore();
   const won = db.leads.filter((l) => l.status === "won" || l.id === leadId);
   const [f, setF] = useState<Payment>(
     payment ?? { id: uid(), lead_id: leadId ?? won[0]?.id ?? "", kind: "payment", amount: 0, date: todayYmd(), method: PAYMENT_METHODS[0] },
@@ -302,7 +304,7 @@ export function PaymentModal({ leadId, payment, onClose }: { leadId?: string; pa
         )}
         <div className="mfoot full">
           <button className="btn pri">שמירה</button>
-          {payment && (
+          {payment && can("delete") && (
             <button type="button" className="btn danger" onClick={async () => (await remove("payments", payment.id), onClose())}>
               מחיקה
             </button>
@@ -315,7 +317,7 @@ export function PaymentModal({ leadId, payment, onClose }: { leadId?: string; pa
 
 /* ---------------- הוצאה ---------------- */
 export function ExpenseModal({ expense, onClose }: { expense?: Expense; onClose: () => void }) {
-  const { db, save, remove } = useStore();
+  const { db, save, remove, can } = useStore();
   const [f, setF] = useState<Expense>(expense ?? { id: uid(), date: todayYmd(), amount: 0, category: EXPENSE_CATEGORIES[0], supplier: "" });
   const set = (p: Partial<Expense>) => setF((x) => ({ ...x, ...p }));
   return (
@@ -361,7 +363,7 @@ export function ExpenseModal({ expense, onClose }: { expense?: Expense; onClose:
         </Field>
         <div className="mfoot full">
           <button className="btn pri">שמירה</button>
-          {expense && (
+          {expense && can("delete") && (
             <button type="button" className="btn danger" onClick={async () => (await remove("expenses", expense.id), onClose())}>
               מחיקה
             </button>
@@ -374,7 +376,7 @@ export function ExpenseModal({ expense, onClose }: { expense?: Expense; onClose:
 
 /* ---------------- מסמך (הצעת מחיר / חשבונית) ---------------- */
 export function DocModal({ doc, leadId, onClose }: { doc?: Doc; leadId?: string; onClose: () => void }) {
-  const { db, save, remove, log, lead, setStatus } = useStore();
+  const { db, save, remove, log, lead, setStatus, can } = useStore();
   const nextNo = (t: DocType) => {
     const prefix = t === "quote" ? "Q-" : t === "invoice" ? "INV-" : "R-";
     const nums = db.docs.filter((d) => d.type === t).map((d) => parseInt(d.number.replace(/\D/g, "")) || 0);
@@ -444,7 +446,7 @@ export function DocModal({ doc, leadId, onClose }: { doc?: Doc; leadId?: string;
         </div>
         <div className="mfoot full">
           <button className="btn pri">שמירה</button>
-          {doc && (
+          {doc && can("delete") && (
             <button type="button" className="btn danger" onClick={async () => (await remove("docs", doc.id), onClose())}>
               מחיקה
             </button>

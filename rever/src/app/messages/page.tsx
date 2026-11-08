@@ -8,7 +8,8 @@ import { Field, Modal } from "@/components/ui";
 const VARS = ["{שם}", "{תאריך}", "{אירוע}", "{פגישה}", "{מחיר}", "{עסק}", "{בעלים}"];
 
 export default function MessagesPage() {
-  const { db, save, remove } = useStore();
+  const { db, save, remove, can } = useStore();
+  const canEdit = can("templates");
   const [edit, setEdit] = useState<Template | null>(null);
   const templates = [...db.templates].sort((a, b) => a.sort - b.sort);
 
@@ -19,16 +20,16 @@ export default function MessagesPage() {
           <h1>תבניות הודעה</h1>
           <div className="sub">הודעות מוכנות לוואטסאפ. בשליחה המשתנים מתמלאים לבד לפי הליד.</div>
         </div>
-        <button
+        {canEdit && <button
           className="btn pri ml"
           onClick={() => setEdit({ id: uid(), name: "", description: "", body: "", sort: (templates.at(-1)?.sort ?? 0) + 1 })}
         >
           + תבנית חדשה
-        </button>
+        </button>}
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))", gap: 16 }}>
         {templates.map((t) => (
-          <button key={t.id} className="card" style={{ textAlign: "right", display: "flex", flexDirection: "column", gap: 8 }} onClick={() => setEdit(t)}>
+          <button key={t.id} className="card" style={{ textAlign: "right", display: "flex", flexDirection: "column", gap: 8 }} onClick={() => canEdit && setEdit(t)} disabled={!canEdit}>
             <b style={{ fontSize: 17 }}>{t.name}</b>
             <span className="muted" style={{ fontSize: 14 }}>{t.description}</span>
             <div className="bubble" style={{ maxWidth: "100%", fontSize: 14 }}>{t.body}</div>
