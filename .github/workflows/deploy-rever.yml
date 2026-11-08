@@ -11,7 +11,6 @@ on:
 env:
   SERVICE_NAME: rever-demo
   REGION: me-west1
-  IMAGE: me-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/rever/app
 
 jobs:
   deploy:
@@ -38,15 +37,27 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Configure project and Docker
+      - name: Pick image registry
         run: |
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-          gcloud auth configure-docker me-west1-docker.pkg.dev --quiet
-
-      - name: Create Artifact Registry (if not exists)
-        run: |
-          gcloud artifacts repositories describe rever --location=me-west1 2>/dev/null || \
+          echo "Existing Artifact Registry repositories:"
+          gcloud artifacts repositories list --location=- --format="value(name)" || true
+          # משתמשים במאגר קיים אם יש (לחשבון השירות אין הרשאה ליצור מאגר חדש)
+          for cand in "me-west1/rever" "us-central1/compakt" "us-central1/cloud-run-source-deploy" "me-west1/cloud-run-source-deploy"; do
+            loc=${cand%%/*}; repo=${cand##*/}
+            if gcloud artifacts repositories describe "$repo" --location="$loc" >/dev/null 2>&1; then
+              echo "IMAGE=$loc-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/$repo/rever-app" >> $GITHUB_ENV
+              echo "REG_HOST=$loc-docker.pkg.dev" >> $GITHUB_ENV
+              echo "Using $cand"; exit 0
+            fi
+          done
+          echo "Trying to create me-west1/rever"
           gcloud artifacts repositories create rever --repository-format=docker --location=me-west1 --description="Rever management system"
+          echo "IMAGE=me-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/rever/rever-app" >> $GITHUB_ENV
+          echo "REG_HOST=me-west1-docker.pkg.dev" >> $GITHUB_ENV
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker "$REG_HOST" --quiet
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
