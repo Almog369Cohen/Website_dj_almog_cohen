@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import { DOC_STATUS, DOC_TYPES, PAYMENT_KINDS, STATUSES } from "@/lib/types";
 import type { ActivityKind, Lead, LeadStatus } from "@/lib/types";
@@ -20,7 +20,15 @@ const DOT: Record<ActivityKind, string> = {
 };
 
 export default function LeadPage() {
-  const { id } = useParams<{ id: string }>();
+  return (
+    <Suspense>
+      <LeadById />
+    </Suspense>
+  );
+}
+
+function LeadById() {
+  const id = useSearchParams().get("id") ?? "";
   const { lead } = useStore();
   const l = lead(id);
   if (!l)

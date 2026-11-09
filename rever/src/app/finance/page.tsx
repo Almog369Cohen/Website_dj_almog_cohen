@@ -183,7 +183,7 @@ export default function FinancePage() {
               </thead>
               <tbody>
                 {deals.map((d) => (
-                  <tr key={d.l.id} className="click" onClick={() => router.push(`/leads/${d.l.id}`)}>
+                  <tr key={d.l.id} className="click" onClick={() => router.push(`/leads/view?id=${d.l.id}`)}>
                     <td>
                       <b>{d.l.name}</b>
                       <div className="muted" style={{ fontSize: 13 }}>{d.l.event_type}</div>
@@ -209,7 +209,7 @@ export default function FinancePage() {
                           + תשלום
                         </button>
                         {d.balance > 0 && (
-                          <Link className="ib wa" href={`/leads/${d.l.id}#wa`} title="תזכורת תשלום בוואטסאפ" style={{ width: 36, height: 36 }}>
+                          <Link className="ib wa" href={`/leads/view?id=${d.l.id}#wa`} title="תזכורת תשלום בוואטסאפ" style={{ width: 36, height: 36 }}>
                             💬
                           </Link>
                         )}

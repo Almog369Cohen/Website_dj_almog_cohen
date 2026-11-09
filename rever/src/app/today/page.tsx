@@ -95,7 +95,7 @@ export default function TodayPage() {
           </h2>
           {due.length === 0 && <div className="empty">אין פולואפים להיום 🎉</div>}
           {due.map((l) => (
-            <FollowupRow key={l.id} l={l} owner={nameOf(l.assigned_to)} mine={l.assigned_to === me?.id} onOpen={() => router.push(`/leads/${l.id}`)} />
+            <FollowupRow key={l.id} l={l} owner={nameOf(l.assigned_to)} mine={l.assigned_to === me?.id} onOpen={() => router.push(`/leads/view?id=${l.id}`)} />
           ))}
         </div>
         <div className="card">
@@ -111,7 +111,7 @@ export default function TodayPage() {
               className="ag"
               key={a.key}
               style={{ cursor: a.lead_id ? "pointer" : undefined }}
-              onClick={() => a.lead_id && router.push(`/leads/${a.lead_id}`)}
+              onClick={() => a.lead_id && router.push(`/leads/view?id=${a.lead_id}`)}
             >
               <div className="tm">
                 {a.allDay ? "—" : time(a.start)}
@@ -126,7 +126,7 @@ export default function TodayPage() {
           ))}
         </div>
       </div>
-      {adding && <LeadModal onClose={() => setAdding(false)} onSaved={(l) => router.push(`/leads/${l.id}`)} />}
+      {adding && <LeadModal onClose={() => setAdding(false)} onSaved={(l) => router.push(`/leads/view?id=${l.id}`)} />}
     </>
   );
 }
@@ -162,7 +162,7 @@ function FollowupRow({ l, owner, mine, onOpen }: { l: Lead; owner?: string; mine
         <a className="ib" href={`tel:${l.phone}`} title="שיחה">
           📞
         </a>
-        <Link className="ib wa" href={`/leads/${l.id}#wa`} title="וואטסאפ">
+        <Link className="ib wa" href={`/leads/view?id=${l.id}#wa`} title="וואטסאפ">
           💬
         </Link>
       </div>

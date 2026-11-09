@@ -58,5 +58,8 @@ npm run dev        # http://localhost:3100
 - סטטיסטיקות קמפיינים ממטא
 
 ## העלאה
-עדיין לא הועלה לשום מקום. רבר היא מערכת נפרדת: היא תועלה לחשבון ענן של רבר עצמה, לא לחשבונות של אלמוג.
-הרצה מקומית: `npm run dev`. בנייה ל-Docker: `rever/Dockerfile` (מוכן, נבדק בבנייה).
+**דמו (עכשיו):** `scripts/build-demo.sh /demo/rever` בונה גרסה סטטית לתיקייה `out-demo/` (מצב דמו, נתונים בדפדפן).
+הקבצים יושבים ב-Compakt תחת `public/demo/rever`, ונגישים ב-`app.compaktt.com/demo/rever`.
+לעדכון הדמו: להריץ את הסקריפט ולהעתיק את `out-demo/` ל-`compakt/public/demo/rever`.
+
+**גרסה מלאה (אחרי Supabase):** `rever/Dockerfile` / `netlify.toml`, בחשבון של רבר.

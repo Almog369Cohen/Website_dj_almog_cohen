@@ -100,7 +100,7 @@ function Leads() {
             {rows.map((l) => {
               const openLead = !["won", "lost"].includes(l.status);
               return (
-                <tr key={l.id} className="click" onClick={() => router.push(`/leads/${l.id}`)}>
+                <tr key={l.id} className="click" onClick={() => router.push(`/leads/view?id=${l.id}`)}>
                   <td>
                     <b>{l.name}</b>
                   </td>
@@ -135,7 +135,7 @@ function Leads() {
                       <a className="ib" href={`tel:${l.phone}`} title="שיחה">
                         📞
                       </a>
-                      <Link className="ib wa" href={`/leads/${l.id}#wa`} title="וואטסאפ">
+                      <Link className="ib wa" href={`/leads/view?id=${l.id}#wa`} title="וואטסאפ">
                         💬
                       </Link>
                     </div>
@@ -147,7 +147,7 @@ function Leads() {
         </table>
         {rows.length === 0 && <div className="empty">אין לידים להצגה</div>}
       </div>
-      {adding && <LeadModal onClose={() => setAdding(false)} onSaved={(l) => router.push(`/leads/${l.id}`)} />}
+      {adding && <LeadModal onClose={() => setAdding(false)} onSaved={(l) => router.push(`/leads/view?id=${l.id}`)} />}
       {importing && <ImportSheet onClose={() => setImporting(false)} />}
     </>
   );
