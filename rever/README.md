@@ -57,8 +57,6 @@ npm run dev        # http://localhost:3100
 - הפקת חשבוניות במורנינג / iCount (כרגע המסמכים נרשמים למעקב בלבד)
 - סטטיסטיקות קמפיינים ממטא
 
-## העלאה ל-Cloud Run
-כל דחיפה לענף שמשנה את `rever/` מריצה את `.github/workflows/deploy-rever.yml`:
-בדיקות הרשאה → בניית Docker → העלאה לשירות `rever-demo` באזור `me-west1` (תל אביב).
-חשבון השירות של GitHub צריך: Artifact Registry Writer, Cloud Run Admin, Service Account User.
-כרגע השירות רץ ב**מצב דמו** (בלי Supabase). כדי לעבור לנתונים אמיתיים: להוסיף את משתני Supabase ו-`SESSION_SECRET` לשירות.
+## העלאה
+עדיין לא הועלה לשום מקום. רבר היא מערכת נפרדת: היא תועלה לחשבון ענן של רבר עצמה, לא לחשבונות של אלמוג.
+הרצה מקומית: `npm run dev`. בנייה ל-Docker: `rever/Dockerfile` (מוכן, נבדק בבנייה).
