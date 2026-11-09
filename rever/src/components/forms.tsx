@@ -10,7 +10,7 @@ const num = (v: string) => (v === "" ? undefined : Number(v));
 
 /* ---------------- ליד ---------------- */
 export function LeadModal({ lead, onClose, onSaved }: { lead?: Lead; onClose: () => void; onSaved?: (l: Lead) => void }) {
-  const { save, log, can } = useStore();
+  const { db, save, log, can, me } = useStore();
   const [f, setF] = useState<Lead>(
     lead ?? {
       id: uid(),
@@ -22,6 +22,7 @@ export function LeadModal({ lead, onClose, onSaved }: { lead?: Lead; onClose: ()
       created_at: new Date().toISOString(),
       next_followup: new Date().toISOString(),
       followup_note: "לשלוח הודעת היכרות",
+      assigned_to: me?.role === "team" ? me.id : undefined,
     },
   );
   const set = (p: Partial<Lead>) => setF((x) => ({ ...x, ...p }));
@@ -67,6 +68,18 @@ export function LeadModal({ lead, onClose, onSaved }: { lead?: Lead; onClose: ()
             {SOURCES.map((t) => (
               <option key={t}>{t}</option>
             ))}
+          </select>
+        </Field>
+        <Field label="מי מטפל">
+          <select value={f.assigned_to ?? ""} onChange={(e) => set({ assigned_to: e.target.value || undefined })}>
+            <option value="">— לא משויך</option>
+            {db.members
+              .filter((m) => m.active)
+              .map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
           </select>
         </Field>
         <Field label="סטטוס">

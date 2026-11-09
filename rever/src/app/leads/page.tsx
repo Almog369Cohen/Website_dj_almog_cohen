@@ -6,7 +6,7 @@ import { useStore } from "@/lib/store";
 import { STATUSES } from "@/lib/types";
 import type { LeadStatus } from "@/lib/types";
 import { isOverdue, relDay, shortDate } from "@/lib/format";
-import { StatusTag } from "@/components/ui";
+import { Owner, StatusTag } from "@/components/ui";
 import { LeadModal } from "@/components/forms";
 
 export default function LeadsPage() {
@@ -18,7 +18,9 @@ export default function LeadsPage() {
 }
 
 function Leads() {
-  const { db } = useStore();
+  const { db, me } = useStore();
+  const [mine, setMine] = useState(false);
+  const nameOf = (id?: string) => db.members.find((m) => m.id === id)?.name;
   const router = useRouter();
   const params = useSearchParams();
   const status = (params.get("status") as LeadStatus | null) ?? "all";
@@ -28,6 +30,7 @@ function Leads() {
   const active = db.leads.filter((l) => !["won", "lost"].includes(l.status)).length;
   const rows = db.leads
     .filter((l) => (status === "all" ? l.status !== "lost" : l.status === status))
+    .filter((l) => !mine || l.assigned_to === me?.id)
     .filter((l) => !q || (l.name + l.phone + (l.event_type ?? "") + (l.venue ?? "")).includes(q.trim()))
     .sort((a, b) => {
       // קודם מי שצריך לחזור אליו, לפי זמן פולואפ
@@ -52,6 +55,10 @@ function Leads() {
         </button>
       </div>
       <div className="filters">
+        <button className={"fl" + (mine ? " on" : "")} onClick={() => setMine(!mine)}>
+          👤 שלי<i>{db.leads.filter((l) => l.assigned_to === me?.id && l.status !== "lost").length}</i>
+        </button>
+        <span style={{ width: 1, background: "var(--line)", margin: "0 4px" }} />
         <button className={"fl" + (status === "all" ? " on" : "")} onClick={() => setStatus("all")}>
           הכל<i>{db.leads.filter((l) => l.status !== "lost").length}</i>
         </button>
@@ -71,6 +78,7 @@ function Leads() {
               <th>תאריך אירוע</th>
               <th>טלפון</th>
               <th>סטטוס</th>
+              <th>מטפל</th>
               <th>פולואפ הבא</th>
               <th>קשר אחרון</th>
               <th></th>
@@ -94,6 +102,9 @@ function Leads() {
                   </td>
                   <td>
                     <StatusTag s={l.status} />
+                  </td>
+                  <td>
+                    <Owner name={nameOf(l.assigned_to)} mine={l.assigned_to === me?.id} />
                   </td>
                   <td>
                     {openLead && l.next_followup ? (

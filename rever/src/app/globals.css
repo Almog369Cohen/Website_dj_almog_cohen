@@ -190,11 +190,20 @@ h1{font-size:28px;font-weight:800}
   .statuses{grid-template-columns:repeat(3,1fr);gap:8px}
   .st{padding:10px 12px}.st .n{font-size:24px}.st small{display:none}
   .grid2,.leadgrid{grid-template-columns:1fr}
-  .fu{flex-wrap:wrap}.fu>button{flex:1;min-width:0}.fu .who{width:auto;flex:1}.fu>.tag{display:none}.fu .why{flex-basis:100%;order:3}
+  .fu{flex-wrap:wrap}.fu>button{flex:1;min-width:0}.fu .who{width:auto;flex:1}.fu>.col-tags{display:none}.fu .why{flex-basis:100%;order:3}
   .kpis{grid-template-columns:1fr 1fr}
   .cal .d{min-height:72px;padding:4px}.ev{font-size:10.5px;padding:2px 4px}
   .form{grid-template-columns:1fr}
   .search{min-width:0;flex:1}
+  .card h2{flex-wrap:wrap;row-gap:8px}
+  .card h2 .r{margin-right:0;flex-basis:100%;order:5}
+  .bars{gap:6px;height:170px}
+  .bars .val{font-size:9.5px}
+  .bars .lbl{font-size:11px}
+  .tabs{overflow-x:auto;white-space:nowrap}
+  .tab{padding:10px 12px;font-size:14px}
+  .kpi .v{font-size:22px}
+  .top .btn{height:40px;padding:0 12px;font-size:14px}
 }
 
 /* login + roles */
@@ -232,3 +241,17 @@ h1{font-size:28px;font-weight:800}
 .sr{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
 .switchbtn{color:#e2bd72;font-size:12.5px;font-weight:600;white-space:nowrap}
 .titleinput{display:block;border:none;background:transparent;color:var(--muted);font-size:12.5px;padding:0;outline:none;width:180px}.titleinput:focus{color:var(--text);border-bottom:1px solid var(--line)}
+.owner{font-size:12.5px;padding:2px 9px;border-radius:20px;background:#f0f1f3;color:#3b414d;white-space:nowrap;font-weight:500}
+.owner.mine{background:var(--goldbg);color:#8a6420}
+.owner.none{background:transparent;color:var(--dim);padding:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.seg button{padding:7px 14px;font-size:14px;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--text);color:#fff}
+.by{color:var(--muted);font-weight:500}
+.col-tags{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.mobilebar{display:none}
+@media (max-width: 900px){
+  .mobilebar{display:flex;align-items:center;gap:10px;margin:-6px 0 -4px;font-size:14px}
+  .mobilebar .logo{width:32px;height:32px;font-size:15px;border-radius:9px}
+  .mobilebar .btn{height:32px}
+}

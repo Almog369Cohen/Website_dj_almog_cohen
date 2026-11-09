@@ -6,8 +6,8 @@ import { readSession } from "./session";
 
 /** העמודות שמותר לכתוב לכל טבלה (כל השאר נזרק). */
 const COLUMNS: Record<Table, string[]> = {
-  leads: ["id", "name", "phone", "email", "event_type", "event_date", "guests", "venue", "source", "status", "price", "next_followup", "followup_note", "pending_message", "last_contact", "notes", "created_at"],
-  activities: ["id", "lead_id", "kind", "text", "at"],
+  leads: ["id", "name", "phone", "email", "event_type", "event_date", "guests", "venue", "source", "status", "price", "next_followup", "followup_note", "pending_message", "last_contact", "notes", "assigned_to", "created_at"],
+  activities: ["id", "lead_id", "kind", "text", "at", "by"],
   calendar_items: ["id", "kind", "title", "start", "location", "lead_id"],
   templates: ["id", "name", "description", "body", "sort"],
   payments: ["id", "lead_id", "kind", "amount", "date", "method", "note"],

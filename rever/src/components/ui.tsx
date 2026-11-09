@@ -53,3 +53,9 @@ export function Field({ label, full, children }: { label: string; full?: boolean
     </div>
   );
 }
+
+/** תג קטן עם שם העובד שמטפל */
+export function Owner({ name, mine }: { name?: string; mine?: boolean }) {
+  if (!name) return <span className="owner none">לא משויך</span>;
+  return <span className={"owner" + (mine ? " mine" : "")}>👤 {name}</span>;
+}

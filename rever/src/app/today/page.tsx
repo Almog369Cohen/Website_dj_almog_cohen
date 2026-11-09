@@ -6,18 +6,21 @@ import { useStore } from "@/lib/store";
 import { STATUSES } from "@/lib/types";
 import type { Lead } from "@/lib/types";
 import { DAYS, MONTHS, endOfDay, initials, isDueToday, isOverdue, relDay, shortDate, startOfDay, time } from "@/lib/format";
-import { Avatar, StatusTag } from "@/components/ui";
+import { Avatar, Owner, StatusTag } from "@/components/ui";
 import { LeadModal } from "@/components/forms";
 import { agendaItems } from "@/lib/agenda";
 
 export default function TodayPage() {
-  const { db, settings } = useStore();
+  const { db, settings, me } = useStore();
+  const [scope, setScope] = useState<"mine" | "all">(me?.role === "team" ? "mine" : "all");
+  const nameOf = (id?: string) => db.members.find((m) => m.id === id)?.name;
   const router = useRouter();
   const [adding, setAdding] = useState(false);
   const now = new Date();
 
   const open = db.leads.filter((l) => !["won", "lost"].includes(l.status));
   const due = open
+    .filter((l) => scope === "all" || l.assigned_to === me?.id)
     .filter((l) => isDueToday(l.next_followup))
     .sort((a, b) => +new Date(a.next_followup!) - +new Date(b.next_followup!));
 
@@ -70,13 +73,21 @@ export default function TodayPage() {
         <div className="card">
           <h2>
             📌 פולואפים להיום <span className="tag s-lost">{due.length}</span>
+            <span className="seg">
+              <button className={scope === "mine" ? "on" : ""} onClick={() => setScope("mine")}>
+                שלי
+              </button>
+              <button className={scope === "all" ? "on" : ""} onClick={() => setScope("all")}>
+                כולם
+              </button>
+            </span>
             <Link href="/leads" className="r link">
               לכל הלידים ←
             </Link>
           </h2>
           {due.length === 0 && <div className="empty">אין פולואפים להיום 🎉</div>}
           {due.map((l) => (
-            <FollowupRow key={l.id} l={l} onOpen={() => router.push(`/leads/${l.id}`)} />
+            <FollowupRow key={l.id} l={l} owner={nameOf(l.assigned_to)} mine={l.assigned_to === me?.id} onOpen={() => router.push(`/leads/${l.id}`)} />
           ))}
         </div>
         <div className="card">
@@ -112,7 +123,7 @@ export default function TodayPage() {
   );
 }
 
-function FollowupRow({ l, onOpen }: { l: Lead; onOpen: () => void }) {
+function FollowupRow({ l, owner, mine, onOpen }: { l: Lead; owner?: string; mine?: boolean; onOpen: () => void }) {
   const late = isOverdue(l.next_followup);
   return (
     <div className="fu">
@@ -135,7 +146,10 @@ function FollowupRow({ l, onOpen }: { l: Lead; onOpen: () => void }) {
           קשר אחרון: {l.last_contact ? relDay(l.last_contact, false) : "עוד לא"}
         </small>
       </div>
-      <StatusTag s={l.status} />
+      <div className="col-tags">
+        <StatusTag s={l.status} />
+        <Owner name={owner} mine={mine} />
+      </div>
       <div className="acts">
         <a className="ib" href={`tel:${l.phone}`} title="שיחה">
           📞

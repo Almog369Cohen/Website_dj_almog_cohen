@@ -198,6 +198,27 @@ function LeadView({ l }: { l: Lead }) {
             <span>הגיעו דרך</span>
             <b>{l.source}</b>
           </div>
+          <div className="field">
+            <span>מי מטפל</span>
+            <select
+              className="inline-select"
+              value={l.assigned_to ?? ""}
+              onChange={async (e) => {
+                const to = e.target.value || undefined;
+                await updateLead(l, { assigned_to: to });
+                await log(l.id, "note", to ? `שויך ל${db.members.find((m) => m.id === to)?.name}` : "השיוך הוסר");
+              }}
+            >
+              <option value="">— לא משויך</option>
+              {db.members
+                .filter((m) => m.active)
+                .map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name}
+                  </option>
+                ))}
+            </select>
+          </div>
           {l.price && can("prices") ? (
             <div className="field">
               <span>מחיר</span>
@@ -287,7 +308,10 @@ function LeadView({ l }: { l: Lead }) {
               <span className="dt" style={{ background: DOT[a.kind] }} />
               <div style={{ minWidth: 0 }}>
                 {a.kind === "message" ? "נשלחה הודעת וואטסאפ" : can("prices") ? a.text : a.text.replace(/₪[\d,]+/g, "₪•••")}
-                <small>{new Date(a.at).toLocaleString("he-IL", { weekday: "long", day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })}</small>
+                <small>
+                  {new Date(a.at).toLocaleString("he-IL", { weekday: "long", day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })}
+                  {a.by && <span className="by"> · {db.members.find((m) => m.id === a.by)?.name ?? "עובד שהוסר"}</span>}
+                </small>
               </div>
             </div>
           ))}
@@ -317,7 +341,9 @@ function LeadView({ l }: { l: Lead }) {
             {messages.map((m) => (
               <div key={m.id} className="bubble">
                 {m.text}
-                <small>{new Date(m.at).toLocaleString("he-IL", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })} ✓✓</small>
+                <small>{new Date(m.at).toLocaleString("he-IL", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })}
+                  {m.by ? ` · ${db.members.find((x) => x.id === m.by)?.name ?? ""}` : ""} ✓✓
+                </small>
               </div>
             ))}
             {l.pending_message && <div className="banner">יש הודעה מתוזמנת ל{relDay(l.next_followup)}. היא מוכנה למטה, רק לשלוח.</div>}

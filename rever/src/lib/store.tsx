@@ -97,10 +97,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [load, toast],
   );
 
+  const me = db.members.find((m) => m.id === staffId && m.active);
+  const can = useCallback((perm: Perm) => memberCan(me, perm), [me]);
+
   const log = useCallback(
     (lead_id: string, kind: ActivityKind, text: string) =>
-      save("activities", { id: uid(), lead_id, kind, text, at: new Date().toISOString() } as Activity),
-    [save],
+      save("activities", { id: uid(), lead_id, kind, text, at: new Date().toISOString(), by: me?.id } as Activity),
+    [save, me?.id],
   );
 
   const updateLead = useCallback((lead: Lead, patch: Partial<Lead>) => save("leads", { ...lead, ...patch }), [save]);
@@ -113,9 +116,6 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     },
     [updateLead, log],
   );
-
-  const me = db.members.find((m) => m.id === staffId && m.active);
-  const can = useCallback((perm: Perm) => memberCan(me, perm), [me]);
 
   const value = useMemo<Store>(
     () => ({

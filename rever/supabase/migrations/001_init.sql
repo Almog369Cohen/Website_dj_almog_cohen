@@ -39,6 +39,7 @@ create table if not exists leads (
   pending_message text,
   last_contact timestamptz,
   notes text,
+  assigned_to text,
   created_at timestamptz not null default now(),
   updated_at timestamptz default now()
 );
@@ -50,8 +51,11 @@ create table if not exists activities (
   lead_id text not null references leads(id) on delete cascade,
   kind text not null,
   text text not null,
-  at timestamptz not null default now()
+  at timestamptz not null default now(),
+  by text
 );
+alter table leads add column if not exists assigned_to text;
+alter table activities add column if not exists by text;
 create index if not exists activities_lead_idx on activities(lead_id);
 
 create table if not exists calendar_items (

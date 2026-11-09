@@ -71,6 +71,14 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           </div>
         </aside>
         <main className="main">
+          <div className="mobilebar">
+            <div className="logo">{(settings.business_name || "R").trim()[0]}</div>
+            <b>{settings.business_name}</b>
+            <span className="ml muted">{me.name}</span>
+            <button className="btn sm" onClick={lock}>
+              החלפה ⇄
+            </button>
+          </div>
           {error && <div className="banner err">לא הצלחתי לטעון נתונים: {error}</div>}
           {blocked ? (
             <div className="card empty">

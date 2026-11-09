@@ -31,6 +31,7 @@ export interface Lead {
   pending_message?: string; // הודעה מתוזמנת שממתינה לשליחה
   last_contact?: string; // ISO
   notes?: string;
+  assigned_to?: string; // העובד שמטפל בליד
   created_at: string;
 }
 
@@ -41,6 +42,7 @@ export interface Activity {
   kind: ActivityKind;
   text: string;
   at: string;
+  by?: string; // מזהה העובד שביצע
 }
 
 export type CalendarKind = "event" | "meeting" | "followup";
