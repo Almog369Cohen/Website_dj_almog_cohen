@@ -111,8 +111,16 @@ create table if not exists settings (
   owner_name text not null default '',
   whatsapp_mode text not null default 'link' check (whatsapp_mode in ('link','webhook')),
   make_webhook_url text,
-  vat_rate numeric not null default 18
+  vat_rate numeric not null default 18,
+  sheet_url text,
+  sheet_map text,
+  sheet_auto boolean default false,
+  sheet_last_pull timestamptz
 );
+alter table settings add column if not exists sheet_url text;
+alter table settings add column if not exists sheet_map text;
+alter table settings add column if not exists sheet_auto boolean default false;
+alter table settings add column if not exists sheet_last_pull timestamptz;
 
 -- RLS: נעילה מלאה לדפדפן. רק השרת (service role) ניגש.
 do $$

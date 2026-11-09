@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { usePullSheet } from "./ImportSheet";
 import { useStore } from "@/lib/store";
 import { useAuth } from "@/lib/auth";
 import { initials, isDueToday } from "@/lib/format";
@@ -18,6 +20,14 @@ const NAV: { href: string; e: string; label: string; perm?: Perm }[] = [
 export default function Shell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   const { db, settings, mode, toastMsg, error, ready, me, can } = useStore();
+  const pull = usePullSheet();
+  const pulled = useRef(false);
+  // משיכה אוטומטית של לידים חדשים מהגיליון, פעם אחת בכל כניסה
+  useEffect(() => {
+    if (!ready || !me || pulled.current || !db.settings[0]?.sheet_url || !db.settings[0]?.sheet_auto) return;
+    pulled.current = true;
+    pull(true);
+  }, [ready, me, db.settings, pull]);
   const { lock } = useAuth();
 
   if (!ready) return <div className="empty">טוען…</div>;

@@ -9,6 +9,9 @@ export interface Repo {
   upsert<T extends Table>(table: T, row: DB[T][number]): Promise<void>;
   remove(table: Table, id: string): Promise<void>;
   reset?(): Promise<DB>;
+  /** מצב דמו: מחיקת נתוני הדוגמה (שומר צוות, תבניות והגדרות) */
+  clean?(): Promise<DB>;
+  restore?(db: DB): Promise<DB>;
 }
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -66,6 +69,18 @@ class LocalRepo implements Repo {
   }
   async reset() {
     const db = demoDB();
+    this.write(db);
+    return db;
+  }
+  async clean() {
+    const cur = this.read();
+    const db: DB = { ...cur, leads: [], activities: [], calendar_items: [], payments: [], expenses: [], docs: [] };
+    this.write(db);
+    return db;
+  }
+  async restore(db: DB) {
+    for (const t of ["leads", "activities", "calendar_items", "templates", "payments", "expenses", "docs", "settings", "members"] as const)
+      if (!Array.isArray(db[t])) throw new Error("קובץ גיבוי לא תקין");
     this.write(db);
     return db;
   }

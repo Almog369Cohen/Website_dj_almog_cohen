@@ -5,9 +5,14 @@ import type { Settings } from "@/lib/types";
 import { Field } from "@/components/ui";
 import { supabase } from "@/lib/repo";
 import Team from "@/components/Team";
+import ImportSheet from "@/components/ImportSheet";
+import { relDay } from "@/lib/format";
+import type { DB } from "@/lib/types";
 
 export default function SettingsPage() {
-  const { db, settings, save, mode, resetDemo, toast } = useStore();
+  const { db, settings, save, mode, resetDemo, cleanDemo, restoreDemo, toast } = useStore();
+  const [importing, setImporting] = useState(false);
+  const sheet = db.settings[0];
   const [f, setF] = useState<Settings>(db.settings[0] ?? settings);
   const [origin, setOrigin] = useState("");
   useEffect(() => setOrigin(window.location.origin), []);
@@ -117,16 +122,103 @@ Header: x-webhook-secret: <LEADS_WEBHOOK_SECRET>
             {!supabase() && <div className="banner" style={{ marginTop: 10 }}>זמין אחרי חיבור Supabase (במצב דמו אין שרת לשמור אליו).</div>}
           </div>
 
-          {mode === "demo" && resetDemo && (
-            <div className="card">
-              <h2>נתוני דמו</h2>
-              <button className="btn" onClick={() => confirm("לאפס את כל הנתונים לדמו המקורי?") && resetDemo()}>
-                איפוס נתוני הדמו
+          <div className="card">
+            <h2>📗 גוגל שיטס</h2>
+            {sheet?.sheet_url ? (
+              <>
+                <div className="field">
+                  <span>גיליון מחובר</span>
+                  <a className="link" href={sheet.sheet_url} target="_blank" rel="noreferrer">
+                    פתיחה ↗
+                  </a>
+                </div>
+                <div className="field">
+                  <span>משיכה אחרונה</span>
+                  <b>{sheet.sheet_last_pull ? relDay(sheet.sheet_last_pull) : "—"}</b>
+                </div>
+                <label className="radio" style={{ padding: "10px 0" }}>
+                  <input type="checkbox" checked={!!sheet.sheet_auto} onChange={(e) => save("settings", { ...sheet, sheet_auto: e.target.checked })} />
+                  למשוך לידים חדשים אוטומטית בכל כניסה
+                </label>
+                <div className="row">
+                  <button className="btn sm" onClick={() => setImporting(true)}>
+                    החלפת גיליון / עמודות
+                  </button>
+                  <button className="btn sm danger" onClick={() => save("settings", { ...sheet, sheet_url: undefined, sheet_map: undefined, sheet_auto: false })}>
+                    ניתוק
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="muted" style={{ fontSize: 14, lineHeight: 1.6, marginBottom: 10 }}>
+                  מחברים את גיליון הלידים פעם אחת. אחרי זה לידים חדשים נמשכים בלחיצה, או אוטומטית בכל כניסה. בלי כפילויות.
+                </p>
+                <button className="btn pri" onClick={() => setImporting(true)}>
+                  ⬇ חיבור גיליון
+                </button>
+              </>
+            )}
+          </div>
+
+          <div className="card">
+            <h2>💾 הנתונים</h2>
+            {mode === "demo" && (
+              <p className="muted" style={{ fontSize: 13.5, lineHeight: 1.6, marginBottom: 10 }}>
+                כרגע הנתונים נשמרים בדפדפן של המכשיר הזה בלבד. מומלץ לשמור גיבוי פעם ביום.
+              </p>
+            )}
+            <div className="row" style={{ flexWrap: "wrap" }}>
+              <button
+                className="btn sm"
+                onClick={() => {
+                  const blob = new Blob([JSON.stringify(db, null, 1)], { type: "application/json" });
+                  const a = document.createElement("a");
+                  a.href = URL.createObjectURL(blob);
+                  a.download = `rever-backup-${new Date().toISOString().slice(0, 10)}.json`;
+                  a.click();
+                  URL.revokeObjectURL(a.href);
+                }}
+              >
+                ⬇ שמירת גיבוי
               </button>
+              {restoreDemo && (
+                <label className="btn sm" style={{ cursor: "pointer" }}>
+                  ⬆ שחזור מגיבוי
+                  <input
+                    type="file"
+                    accept=".json,application/json"
+                    hidden
+                    onChange={async (e) => {
+                      const f = e.target.files?.[0];
+                      if (!f || !confirm("השחזור מחליף את כל הנתונים הנוכחיים. להמשיך?")) return;
+                      try {
+                        await restoreDemo(JSON.parse(await f.text()) as DB);
+                      } catch (x) {
+                        toast("השחזור נכשל: " + (x instanceof Error ? x.message : x));
+                      }
+                    }}
+                  />
+                </label>
+              )}
             </div>
-          )}
+            {mode === "demo" && cleanDemo && resetDemo && (
+              <div className="row" style={{ flexWrap: "wrap", marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--line2)" }}>
+                <button
+                  className="btn sm pri"
+                  onClick={() => confirm("למחוק את כל נתוני הדוגמה (לידים, יומן, כספים) ולהתחיל לעבוד עם נתונים אמיתיים? הצוות, הקודים והתבניות נשארים.") && cleanDemo()}
+                >
+                  🧹 התחלה נקייה לעבודה אמיתית
+                </button>
+                <button className="btn sm" onClick={() => confirm("להחזיר את נתוני הדוגמה? כל מה שהוזן יימחק.") && resetDemo()}>
+                  החזרת נתוני דוגמה
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
+      {importing && <ImportSheet onClose={() => setImporting(false)} />}
     </>
   );
 }

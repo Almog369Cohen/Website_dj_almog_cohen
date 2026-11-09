@@ -13,7 +13,7 @@ const COLUMNS: Record<Table, string[]> = {
   payments: ["id", "lead_id", "kind", "amount", "date", "method", "note"],
   expenses: ["id", "date", "amount", "category", "supplier", "note", "lead_id"],
   docs: ["id", "lead_id", "type", "number", "amount", "date", "status"],
-  settings: ["id", "business_name", "owner_name", "whatsapp_mode", "make_webhook_url", "vat_rate"],
+  settings: ["id", "business_name", "owner_name", "whatsapp_mode", "make_webhook_url", "vat_rate", "sheet_url", "sheet_map", "sheet_auto", "sheet_last_pull"],
   members: ["id", "name", "title", "role", "can_prices", "can_finance", "can_delete", "can_templates", "active", "created_at"],
 };
 const FINANCE: Table[] = ["payments", "expenses", "docs"];

@@ -109,6 +109,10 @@ export interface Settings {
   whatsapp_mode: "link" | "webhook";
   make_webhook_url?: string;
   vat_rate: number;
+  sheet_url?: string; // גיליון לידים בגוגל שיטס
+  sheet_map?: string; // JSON: איזה עמודה = איזה שדה
+  sheet_auto?: boolean; // למשוך לידים חדשים אוטומטית בכל כניסה
+  sheet_last_pull?: string;
 }
 
 export type Role = "admin" | "team";

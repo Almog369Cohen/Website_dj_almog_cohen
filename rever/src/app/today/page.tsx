@@ -8,6 +8,7 @@ import type { Lead } from "@/lib/types";
 import { DAYS, MONTHS, endOfDay, initials, isDueToday, isOverdue, relDay, shortDate, startOfDay, time } from "@/lib/format";
 import { Avatar, Owner, StatusTag } from "@/components/ui";
 import { LeadModal } from "@/components/forms";
+import { usePullSheet } from "@/components/ImportSheet";
 import { agendaItems } from "@/lib/agenda";
 
 export default function TodayPage() {
@@ -16,6 +17,8 @@ export default function TodayPage() {
   const nameOf = (id?: string) => db.members.find((m) => m.id === id)?.name;
   const router = useRouter();
   const [adding, setAdding] = useState(false);
+  const [pulling, setPulling] = useState(false);
+  const pull = usePullSheet();
   const now = new Date();
 
   const open = db.leads.filter((l) => !["won", "lost"].includes(l.status));
@@ -54,7 +57,12 @@ export default function TodayPage() {
             יום {DAYS[now.getDay()]}, {now.getDate()} ב{MONTHS[now.getMonth()]} · {due.length} פולואפים להיום · {meetingsToday} פגישות
           </div>
         </div>
-        <button className="btn pri ml" onClick={() => setAdding(true)}>
+        {db.settings[0]?.sheet_url && (
+          <button className="btn ml" disabled={pulling} onClick={async () => (setPulling(true), await pull(), setPulling(false))}>
+            {pulling ? "מושך…" : "🔄 משוך לידים מהגיליון"}
+          </button>
+        )}
+        <button className={"btn pri" + (db.settings[0]?.sheet_url ? "" : " ml")} onClick={() => setAdding(true)}>
           + ליד חדש
         </button>
       </div>

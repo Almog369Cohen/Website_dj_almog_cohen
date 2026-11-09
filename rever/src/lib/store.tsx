@@ -24,6 +24,8 @@ interface Store {
   updateLead(lead: Lead, patch: Partial<Lead>): Promise<void>;
   lead(id?: string): Lead | undefined;
   resetDemo?: () => Promise<void>;
+  cleanDemo?: () => Promise<void>;
+  restoreDemo?: (db: DB) => Promise<void>;
   toast(msg: string): void;
   toastMsg: string | null;
 }
@@ -139,6 +141,18 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
             const d = await repoRef.current!.reset!();
             setDb(d);
             toast("נתוני הדמו אופסו");
+          }
+        : undefined,
+      cleanDemo: repoRef.current?.clean
+        ? async () => {
+            setDb(await repoRef.current!.clean!());
+            toast("נתוני הדוגמה נמחקו. אפשר להתחיל לעבוד ✓");
+          }
+        : undefined,
+      restoreDemo: repoRef.current?.restore
+        ? async (d: DB) => {
+            setDb(await repoRef.current!.restore!(d));
+            toast("הגיבוי שוחזר ✓");
           }
         : undefined,
       toast,

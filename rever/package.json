@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -p ${PORT:-3100}",
     "typecheck": "tsc --noEmit",
-    "test": "NODE_ENV=test SESSION_SECRET=test-secret-test-secret-test-secret-1234 node --require ./tests/setup.cjs --import tsx tests/access.test.ts"
+    "test": "NODE_ENV=test SESSION_SECRET=test-secret-test-secret-test-secret-1234 node --require ./tests/setup.cjs --import tsx tests/access.test.ts && node --import tsx tests/sheets.test.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.97.0",

@@ -8,6 +8,7 @@ import type { LeadStatus } from "@/lib/types";
 import { isOverdue, relDay, shortDate } from "@/lib/format";
 import { Owner, StatusTag } from "@/components/ui";
 import { LeadModal } from "@/components/forms";
+import ImportSheet, { usePullSheet } from "@/components/ImportSheet";
 
 export default function LeadsPage() {
   return (
@@ -26,6 +27,9 @@ function Leads() {
   const status = (params.get("status") as LeadStatus | null) ?? "all";
   const [q, setQ] = useState("");
   const [adding, setAdding] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [pulling, setPulling] = useState(false);
+  const pull = usePullSheet();
 
   const active = db.leads.filter((l) => !["won", "lost"].includes(l.status)).length;
   const rows = db.leads
@@ -50,6 +54,14 @@ function Leads() {
           <div className="sub">{active} לידים פעילים</div>
         </div>
         <input className="search ml" placeholder="🔍 חיפוש שם, טלפון, מקום…" value={q} onChange={(e) => setQ(e.target.value)} />
+        {db.settings[0]?.sheet_url ? (
+          <button className="btn" disabled={pulling} onClick={async () => (setPulling(true), await pull(), setPulling(false))}>
+            {pulling ? "מושך…" : "🔄 משוך מהגיליון"}
+          </button>
+        ) : null}
+        <button className="btn" onClick={() => setImporting(true)}>
+          ⬇ ייבוא מגוגל שיטס
+        </button>
         <button className="btn pri" onClick={() => setAdding(true)}>
           + ליד חדש
         </button>
@@ -136,6 +148,7 @@ function Leads() {
         {rows.length === 0 && <div className="empty">אין לידים להצגה</div>}
       </div>
       {adding && <LeadModal onClose={() => setAdding(false)} onSaved={(l) => router.push(`/leads/${l.id}`)} />}
+      {importing && <ImportSheet onClose={() => setImporting(false)} />}
     </>
   );
 }

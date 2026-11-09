@@ -1,0 +1,11 @@
+# אירוח הדמו של רבר ב-Netlify (חשבון של רבר, לא של אלמוג)
+# בהגדרת האתר ב-Netlify: Base directory = rever
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
