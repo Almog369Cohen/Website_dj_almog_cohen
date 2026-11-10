@@ -68,6 +68,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           ))}
           <div className="foot">
             {mode === "demo" && <span className="mode">מצב דמו · הנתונים נשמרים בדפדפן</span>}
+            {mode === "sheets" && <span className="mode" style={{ color: "#7fd8a8" }}>● מחובר לגוגל שיטס</span>}
             <div className="userbox">
               <div className="av">{initials(me.name)}</div>
               <div style={{ minWidth: 0 }}>

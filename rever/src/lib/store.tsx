@@ -24,6 +24,7 @@ interface Store {
   updateLead(lead: Lead, patch: Partial<Lead>): Promise<void>;
   lead(id?: string): Lead | undefined;
   resetDemo?: () => Promise<void>;
+  setPin?: (staffId: string, pin: string) => Promise<void>;
   cleanDemo?: () => Promise<void>;
   restoreDemo?: (db: DB) => Promise<void>;
   toast(msg: string): void;
@@ -66,6 +67,18 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     repoRef.current = makeRepo();
     load();
   }, [load]);
+
+  // גוגל שיטס: רענון אוטומטי כדי לראות שינויים של שאר הצוות (כל דקה + כשחוזרים לחלון)
+  useEffect(() => {
+    if (repoRef.current?.mode !== "sheets") return;
+    const tick = () => document.visibilityState === "visible" && load();
+    const id = setInterval(tick, 60_000);
+    window.addEventListener("focus", tick);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("focus", tick);
+    };
+  }, [load, ready]);
 
   const save = useCallback(
     async <T extends Table>(table: T, row: DB[T][number]) => {
@@ -143,6 +156,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
             toast("נתוני הדמו אופסו");
           }
         : undefined,
+      setPin: repoRef.current?.setPin ? (id: string, pin: string) => repoRef.current!.setPin!(id, pin) : undefined,
       cleanDemo: repoRef.current?.clean
         ? async () => {
             setDb(await repoRef.current!.clean!());

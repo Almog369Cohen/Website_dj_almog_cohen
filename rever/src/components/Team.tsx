@@ -20,7 +20,8 @@ async function setPinOnServer(staffId: string, pin: string) {
 }
 
 export default function Team() {
-  const { db, save, remove, me, toast, mode, reload } = useStore();
+  const { db, save, remove, me, toast, mode, reload, setPin } = useStore();
+  const pinOnServer = (id: string, pin: string) => (setPin ? setPin(id, pin) : setPinOnServer(id, pin));
   const [adding, setAdding] = useState(false);
   const [pinFor, setPinFor] = useState<Member | null>(null);
   const admins = db.members.filter((m) => m.role === "admin" && m.active);
@@ -36,7 +37,7 @@ export default function Team() {
   const savePin = async (m: Member, pin: string) => {
     if (mode === "demo") await save("members", { ...m, pin, has_pin: true });
     else {
-      await setPinOnServer(m.id, pin);
+      await pinOnServer(m.id, pin);
       await reload();
     }
     toast(`הקוד של ${m.name} נשמר`);
@@ -149,7 +150,7 @@ export default function Team() {
           onCreate={async (m, pin) => {
             await save("members", mode === "demo" ? { ...m, pin, has_pin: true } : m);
             if (mode !== "demo") {
-              await setPinOnServer(m.id, pin);
+              await pinOnServer(m.id, pin);
               await reload();
             }
             toast(`${m.name} נוסף/ה עם קוד אישי`);

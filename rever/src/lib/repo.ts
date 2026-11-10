@@ -4,7 +4,9 @@ import { demoDB } from "./seed";
 
 /** שכבת נתונים אחת עם שני מימושים: Supabase (אמיתי) או localStorage (דמו). */
 export interface Repo {
-  mode: "supabase" | "demo";
+  mode: "supabase" | "sheets" | "demo";
+  /** קביעת קוד לעובד (בשרת) */
+  setPin?(staffId: string, pin: string): Promise<void>;
   loadAll(): Promise<DB>;
   upsert<T extends Table>(table: T, row: DB[T][number]): Promise<void>;
   remove(table: Table, id: string): Promise<void>;
@@ -112,6 +114,89 @@ class ApiRepo implements Repo {
   }
 }
 
+/* ───────────── גוגל שיטס (Apps Script) ───────────── */
+
+const SHEETS_URL_KEY = "rever-sheets-url";
+const SHEETS_TOKEN_KEY = "rever-sheets-token";
+
+/** כתובת השרת בגיליון: נקבעת בבנייה, או פעם אחת במכשיר (?connect=...) */
+export function sheetsUrl(): string | null {
+  const baked = process.env.NEXT_PUBLIC_SHEETS_URL;
+  if (baked) return baked;
+  if (typeof window === "undefined") return null;
+  try {
+    const p = new URLSearchParams(window.location.search).get("connect");
+    if (p && /^https:\/\/script\.google\.com\/(a\/macros\/[^/]+|macros)\/s\/[\w-]+\/exec$/.test(p)) localStorage.setItem(SHEETS_URL_KEY, p);
+    return localStorage.getItem(SHEETS_URL_KEY);
+  } catch {
+    return null;
+  }
+}
+export function disconnectSheets() {
+  try {
+    localStorage.removeItem(SHEETS_URL_KEY);
+    localStorage.removeItem(SHEETS_TOKEN_KEY);
+  } catch {}
+}
+export const sheetsToken = {
+  get: () => {
+    try {
+      return localStorage.getItem(SHEETS_TOKEN_KEY);
+    } catch {
+      return null;
+    }
+  },
+  set: (t: string | null) => {
+    try {
+      if (t) localStorage.setItem(SHEETS_TOKEN_KEY, t);
+      else localStorage.removeItem(SHEETS_TOKEN_KEY);
+    } catch {}
+  },
+};
+
+/** קריאה לשרת שבגיליון. text/plain כדי שהדפדפן לא ישלח בקשת preflight. */
+export async function sheetsCall<T = Record<string, unknown>>(action: string, payload: Record<string, unknown> = {}): Promise<T> {
+  const url = sheetsUrl();
+  if (!url) throw new Error("הגיליון לא מחובר");
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action, token: sheetsToken.get(), ...payload }),
+      redirect: "follow",
+    });
+  } catch {
+    throw new Error("אין חיבור לגיליון. בדקו אינטרנט ונסו שוב");
+  }
+  const data = await res.json().catch(() => ({ error: "תשובה לא תקינה מהגיליון" }));
+  if (data.code === "auth") {
+    sheetsToken.set(null);
+    window.dispatchEvent(new Event("rever:signed-out"));
+  }
+  if (data.error) throw new Error(data.error);
+  return data as T;
+}
+
+class SheetsRepo implements Repo {
+  mode = "sheets" as const;
+  async loadAll() {
+    const r = await sheetsCall<{ db: DB }>("load");
+    return r.db;
+  }
+  async upsert<T extends Table>(table: T, row: DB[T][number]) {
+    await sheetsCall("upsert", { table, row });
+  }
+  async remove(table: Table, id: string) {
+    await sheetsCall("remove", { table, id });
+  }
+  async setPin(staffId: string, pin: string) {
+    await sheetsCall("set_pin", { staff_id: staffId, pin });
+  }
+}
+
 export function makeRepo(): Repo {
-  return supabase() ? new ApiRepo() : new LocalRepo();
+  if (supabase()) return new ApiRepo();
+  if (sheetsUrl()) return new SheetsRepo();
+  return new LocalRepo();
 }

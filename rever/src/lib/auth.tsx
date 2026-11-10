@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { demoMembers, supabase } from "./repo";
+import { demoMembers, sheetsCall, sheetsToken, sheetsUrl, supabase } from "./repo";
 import type { Member } from "./types";
 import { initials } from "./format";
 
@@ -24,7 +24,8 @@ type Stage = "loading" | "google" | "pick" | "in";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const sb = supabase();
-  const demo = !sb;
+  const sheets = !sb && !!sheetsUrl(); // מחובר לגוגל שיטס
+  const demo = !sb && !sheets;
   const [stage, setStage] = useState<Stage>("loading");
   const [staffId, setStaffId] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
@@ -40,18 +41,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setStage(ok ? "in" : "pick");
       return;
     }
+    if (sheets) {
+      if (!sheetsToken.get()) return setStage("pick");
+      try {
+        const r = await sheetsCall<{ me: { id: string } }>("me");
+        setStaffId(r.me.id);
+        setStage("in");
+      } catch {
+        setStage("pick");
+      }
+      return;
+    }
     const res = await fetch("/api/session", { credentials: "same-origin" });
     const data = await res.json().catch(() => ({}));
     if (data.me) {
       setStaffId(data.me.id);
       setStage("in");
     } else setStage("pick");
-  }, [demo]);
+  }, [demo, sheets]);
 
   useEffect(() => {
-    if (demo) {
+    if (demo || sheets) {
       checkStaff();
-      return;
+      const onOut = () => (setStaffId(null), setStage("pick"));
+      window.addEventListener("rever:signed-out", onOut);
+      return () => window.removeEventListener("rever:signed-out", onOut);
     }
     const apply = (s: { access_token: string } | null) => {
       setToken(s?.access_token ?? null);
@@ -69,14 +83,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data.subscription.unsubscribe();
       window.removeEventListener("rever:signed-out", onOut);
     };
-  }, [sb, demo, checkStaff]);
+  }, [sb, demo, sheets, checkStaff]);
 
   const lock = async () => {
     if (demo) {
       try {
         sessionStorage.removeItem(DEMO_KEY);
       } catch {}
-    } else await fetch("/api/session", { method: "DELETE", credentials: "same-origin" });
+    } else if (sheets) sheetsToken.set(null);
+    else await fetch("/api/session", { method: "DELETE", credentials: "same-origin" });
     setStaffId(null);
     setStage("pick");
   };
@@ -87,6 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return (
       <StaffPicker
         demo={demo}
+        sheets={sheets}
         token={token}
         onDone={(id) => {
           if (demo) {
@@ -155,11 +171,13 @@ type Staff = Pick<Member, "id" | "name" | "title" | "role" | "has_pin">;
 
 function StaffPicker({
   demo,
+  sheets,
   token,
   onDone,
   onSignOutGoogle,
 }: {
   demo: boolean;
+  sheets: boolean;
   token: string | null;
   onDone: (id: string) => void;
   onSignOutGoogle: () => Promise<void>;
@@ -177,6 +195,12 @@ function StaffPicker({
       setStaff(demoMembers().filter((m) => m.active));
       return;
     }
+    if (sheets) {
+      sheetsCall<{ staff: Staff[]; setup: boolean }>("staff")
+        .then((d) => (setStaff(d.staff), setSetup(d.setup)))
+        .catch((e) => setErr(e.message));
+      return;
+    }
     fetch("/api/staff", { headers: { Authorization: `Bearer ${token}` } })
       .then(async (r) => {
         const d = await r.json();
@@ -185,7 +209,7 @@ function StaffPicker({
         setSetup(d.setup);
       })
       .catch((e) => setErr(e.message));
-  }, [demo, token]);
+  }, [demo, sheets, token]);
 
   const submit = async (code: string) => {
     if (!sel || busy) return;
@@ -196,6 +220,11 @@ function StaffPicker({
         const m = demoMembers().find((x) => x.id === sel.id);
         if (m?.pin === code) return onDone(sel.id);
         throw new Error("קוד שגוי");
+      }
+      if (sheets) {
+        const r = await sheetsCall<{ token: string }>("login", { staff_id: sel.id, pin: code });
+        sheetsToken.set(r.token);
+        return onDone(sel.id);
       }
       const r = await fetch("/api/session", {
         method: "POST",
@@ -230,6 +259,15 @@ function StaffPicker({
           onSubmit={async (e) => {
             e.preventDefault();
             setErr("");
+            if (sheets) {
+              try {
+                const d = await sheetsCall<{ id: string; token: string }>("setup_first", { name, pin });
+                sheetsToken.set(d.token);
+                return onDone(d.id);
+              } catch (x) {
+                return setErr(x instanceof Error ? x.message : String(x));
+              }
+            }
             const r = await fetch("/api/staff", {
               method: "POST",
               credentials: "same-origin",
@@ -311,7 +349,7 @@ function StaffPicker({
           </>
         )}
         {err && <div className="banner err">{err}</div>}
-        {!demo && (
+        {!demo && !sheets && (
           <button className="muted" style={{ fontSize: 12.5 }} onClick={onSignOutGoogle}>
             ניתוק המכשיר מחשבון הגוגל
           </button>

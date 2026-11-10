@@ -81,7 +81,15 @@ export default function SettingsPage() {
             <h2>חיבורים</h2>
             <div className="field">
               <span>מסד נתונים</span>
-              <b>{mode === "supabase" ? <span className="tag t-green">Supabase מחובר</span> : <span className="tag t-gold">מצב דמו (דפדפן)</span>}</b>
+              <b>
+                {mode === "supabase" ? (
+                  <span className="tag t-green">Supabase מחובר</span>
+                ) : mode === "sheets" ? (
+                  <span className="tag t-green">גוגל שיטס מחובר</span>
+                ) : (
+                  <span className="tag t-gold">מצב דמו (דפדפן)</span>
+                )}
+              </b>
             </div>
             <div className="field">
               <span>וואטסאפ</span>
