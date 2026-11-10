@@ -102,6 +102,7 @@ export interface Doc {
   amount: number;
   date: string;
   status: DocStatus;
+  show_client?: boolean; // להציג בקישור ללקוח
 }
 
 export interface Settings {
@@ -115,16 +116,18 @@ export interface Settings {
   sheet_map?: string; // JSON: איזה עמודה = איזה שדה
   sheet_auto?: boolean; // למשוך לידים חדשים אוטומטית בכל כניסה
   sheet_last_pull?: string;
+  contact_phone?: string; // טלפון לפניות לקוחות (בקישור ללקוח)
 }
 
 export type Role = "admin" | "team";
-export type Perm = "prices" | "finance" | "delete" | "templates" | "settings";
+export type Perm = "prices" | "finance" | "delete" | "templates" | "portal" | "settings";
 /** הרשאות שהמנהלים מדליקים לכל עובד. "settings" (הגדרות + צוות) = מנהלים בלבד */
 export const PERMS: { id: Exclude<Perm, "settings">; label: string; hint: string }[] = [
   { id: "prices", label: "מחירים", hint: "רואה מחירים בלידים ובהצעות" },
   { id: "finance", label: "כספים", hint: "מסך כספים: הכנסות, תשלומים, הוצאות, חשבוניות" },
   { id: "delete", label: "מחיקה", hint: "מחיקת לידים ופריטים" },
   { id: "templates", label: "עריכת תבניות", hint: "שינוי תבניות ההודעה" },
+  { id: "portal", label: "קישור ללקוח", hint: "הפעלה ושליחה של הקישור ללקוח, ומה מוצג בו" },
 ];
 
 /** עובד. כולם נכנסים עם חשבון הגוגל של העסק, ואז כל אחד מקיש קוד אישי. */
@@ -137,6 +140,7 @@ export interface Member {
   can_finance: boolean;
   can_delete: boolean;
   can_templates: boolean;
+  can_portal?: boolean;
   active: boolean;
   has_pin?: boolean; // מגיע מהשרת: האם הוגדר קוד
   pin?: string; // מצב דמו בלבד
@@ -151,6 +155,7 @@ export function memberCan(m: Member | undefined, perm: Perm): boolean {
   if (perm === "finance") return m.can_finance;
   if (perm === "delete") return m.can_delete;
   if (perm === "templates") return m.can_templates;
+  if (perm === "portal") return !!m.can_portal;
   return false;
 }
 
@@ -170,10 +175,38 @@ export interface EventPlan {
   moments?: string; // JSON: Record<momentId, song>
   equipment?: string; // JSON: Record<item, boolean> (ציוד לפני היציאה)
   after?: string; // JSON: { review_asked, review_got, footage_got, skip }
+  // ---- קישור ללקוח ----
+  portal_token?: string;
+  portal_enabled?: boolean;
+  portal_sections?: string; // JSON: Record<PortalSection, boolean>
+  portal_seen_at?: string;
+  client_steps?: string; // JSON: מזהי צ'קליסט שהלקוח רואה
+  payment_plan?: string; // JSON: PlanPayment[]
+  contract_status?: "none" | "sent" | "signed";
+  internal_notes?: string; // הלקוח לא רואה
   updated_at?: string;
 }
-export interface TimelineItem { id: string; time: string; title: string; who?: string }
-export interface Supplier { id: string; role: string; name: string; phone?: string; cost?: number; confirmed?: boolean }
+export interface TimelineItem { id: string; time: string; title: string; who?: string; show_client?: boolean }
+export interface Supplier { id: string; role: string; name: string; phone?: string; cost?: number; confirmed?: boolean; category?: string; show_client?: boolean }
+export interface PlanPayment { id: string; name: string; amount: number; due?: string }
+export type PortalSection = "status" | "timeline" | "payments" | "suppliers" | "details";
+export const PORTAL_SECTIONS: { id: PortalSection; label: string; hint?: string }[] = [
+  { id: "status", label: "✨ סטטוס הכנה" },
+  { id: "timeline", label: "🕒 לו״ז הערב", hint: "בלי \"מי אחראי\"" },
+  { id: "payments", label: "💳 התשלומים שלו", hint: "בלי עלויות ורווח" },
+  { id: "suppliers", label: "🤝 ספקים", hint: "בלי מחירים" },
+  { id: "details", label: "📍 פרטי האירוע ומה שסיכמנו" },
+];
+export const SUPPLIER_CATEGORIES = [
+  { id: "venue", label: "אולם / מקום", icon: "🏛️" },
+  { id: "catering", label: "קייטרינג", icon: "🍽️" },
+  { id: "design", label: "עיצוב ופרחים", icon: "💐" },
+  { id: "photo", label: "צילום", icon: "📸" },
+  { id: "dj", label: "DJ", icon: "🎧" },
+  { id: "light", label: "תאורה והגברה", icon: "💡" },
+  { id: "attraction", label: "אטרקציות", icon: "🎉" },
+  { id: "other", label: "אחר", icon: "🤝" },
+];
 
 export interface DB {
   leads: Lead[];

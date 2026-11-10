@@ -137,8 +137,8 @@ export default function TodayPage() {
           </h2>
           {eventTodos(db).map((t) => (
             <button key={t.kind + t.lead.id} className="ag" style={{ width: "100%", textAlign: "right" }} onClick={() => router.push(`/events/view?id=${t.lead.id}`)}>
-              <div className="tm" style={{ fontSize: 20 }}>{t.kind === "review" ? "⭐" : t.kind === "no_songs" ? "🎵" : "🗓️"}</div>
-              <div className="bar" style={{ background: t.kind === "review" ? "var(--gold)" : "var(--orange)" }} />
+              <div className="tm" style={{ fontSize: 20 }}>{t.kind === "review" ? "⭐" : t.kind === "payment" ? "💳" : "🗓️"}</div>
+              <div className="bar" style={{ background: t.kind === "review" ? "var(--gold)" : t.kind === "payment" ? "var(--red)" : "var(--orange)" }} />
               <div>
                 <b>{t.text}</b>
                 <span>{t.sub}</span>

@@ -6,9 +6,8 @@ export const CHECKS: { id: string; label: string }[] = [
   { id: "contract", label: "חוזה נחתם" },
   { id: "deposit", label: "מקדמה התקבלה" },
   { id: "meeting", label: "פגישת תיאום עם הלקוח" },
-  { id: "songs", label: "שירים ורגעים סגורים" },
-  { id: "timeline", label: "לו\"ז סגור ונשלח לספקים" },
-  { id: "suppliers", label: "ספקים וציוד סגורים" },
+  { id: "suppliers", label: "ספקים סגורים ואישרו" },
+  { id: "timeline", label: "לו\"ז סופי, אושר מול הלקוח ונשלח לספקים" },
   { id: "venue", label: "תיאום עם האולם / המקום" },
   { id: "invoice", label: "חשבונית הופקה" },
   { id: "final_payment", label: "תשלום אחרון התקבל" },
@@ -102,14 +101,14 @@ export const equipmentList = (v: PlanView) => [...EQUIPMENT, ...Object.keys(v.eq
 
 /** מה דורש טיפול באירועים (כמו במשרד): לא מוכן בשבועיים, בלי שירים בשבוע, המלצה אחרי */
 export function eventTodos(db: DB) {
-  const out: { lead: Lead; kind: "not_ready" | "no_songs" | "review"; text: string; sub: string }[] = [];
+  const out: { lead: Lead; kind: "not_ready" | "review" | "payment"; text: string; sub: string }[] = [];
   for (const l of db.leads) {
     if (l.status !== "won" || !l.event_date) continue;
     const d = daysUntil(l.event_date)!;
     const v = planOf(db, l);
     const r = readiness(v);
     if (d >= 0 && d <= 14 && r.pct < 100) out.push({ lead: l, kind: "not_ready", text: `${l.event_type}: ${l.name}`, sub: `בעוד ${d} ימים · מוכן ${r.done} מתוך ${r.total}` });
-    if (d >= 0 && d <= 7 && !v.songs.length) out.push({ lead: l, kind: "no_songs", text: `שבוע לאירוע: להתחיל הכנה · ${l.name}`, sub: "שירי חובה, רגעים וציוד" });
+    for (const p of duePayments(db, l)) out.push({ lead: l, kind: "payment", text: `תשלום: ${l.name} · ${p.name}`, sub: p.late ? `באיחור של ${-p.days} ימים · ₪${p.amount.toLocaleString("he-IL")}` : `בעוד ${p.days} ימים · ₪${p.amount.toLocaleString("he-IL")}` });
     if (d < 0 && d >= -21 && !v.after.review_asked && !v.after.skip) out.push({ lead: l, kind: "review", text: `לבקש המלצה: ${l.name}`, sub: `האירוע היה לפני ${-d} ימים` });
   }
   return out;
@@ -145,3 +144,18 @@ export const byTime = (a: TimelineItem, b: TimelineItem) => {
   };
   return k(a.time) - k(b.time);
 };
+
+/** שלבי תוכנית התשלומים שעוד לא שולמו, ותאריך היעד שלהם עבר או בעוד 3 ימים לכל היותר */
+export function duePayments(db: DB, l: Lead, withinDays = 3) {
+  const plan = parse<{ id: string; name: string; amount: number; due?: string }[]>(planOf(db, l).plan.payment_plan, []);
+  let left = db.payments.filter((p) => p.lead_id === l.id).reduce((s, p) => s + (p.kind === "refund" ? -p.amount : p.amount), 0);
+  const out: { name: string; amount: number; due: string; days: number; late: boolean }[] = [];
+  for (const p of plan) {
+    const paid = left >= p.amount - 0.5;
+    left -= p.amount;
+    if (paid || !p.due) continue;
+    const days = daysUntil(p.due)!;
+    if (days <= withinDays) out.push({ name: p.name, amount: p.amount, due: p.due, days, late: days < 0 });
+  }
+  return out;
+}

@@ -6,7 +6,7 @@ import type { Member, Role } from "@/lib/types";
 import { initials, uid } from "@/lib/format";
 import { Field, Modal } from "./ui";
 
-const FLAG = { prices: "can_prices", finance: "can_finance", delete: "can_delete", templates: "can_templates" } as const;
+const FLAG = { prices: "can_prices", finance: "can_finance", delete: "can_delete", templates: "can_templates", portal: "can_portal" } as const;
 
 async function setPinOnServer(staffId: string, pin: string) {
   const r = await fetch("/api/staff/pin", {
@@ -214,7 +214,7 @@ function PinModal({ m, onClose, onSave }: { m: Member; onClose: () => void; onSa
 
 function AddMember({ onClose, onCreate }: { onClose: () => void; onCreate: (m: Member, pin: string) => Promise<void> }) {
   const [f, setF] = useState<Member>({
-    id: uid(), name: "", title: "", role: "team", can_prices: false, can_finance: false, can_delete: false, can_templates: false, active: true,
+    id: uid(), name: "", title: "", role: "team", can_prices: false, can_finance: false, can_delete: false, can_templates: false, can_portal: false, active: true,
   });
   const [pin, setPin] = useState("");
   const [err, setErr] = useState("");

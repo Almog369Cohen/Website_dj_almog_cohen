@@ -166,4 +166,35 @@ ok("כרטיס אירוע: עלויות ספקים מוסתרות ממי שאי�
   assert.equal(stored[0].confirmed, true);
   assert.equal(stored[0].cost, 8000);
 });
+ok("קישור ללקוח: עובד רק כשהליד נסגר והקישור פעיל, בלי קוד עובד, ורושם צפייה (לא בתצוגה מקדימה)", () => {
+  const TOK = "tok_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+  call({ action: "upsert", token: gal, table: "leads", row: { ...ctx.readTable_("leads")[0], status: "won" } });
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], portal_token: TOK, portal_enabled: false, payment_plan: JSON.stringify([{ id: "a", name: "מקדמה", amount: 5000 }]), internal_notes: "סודי" } });
+  assert.match(call({ action: "portal_view", portal_token: TOK }).error, /לא פעיל/);
+  const p = ctx.readTable_("event_plans")[0];
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...p, portal_enabled: true } });
+  const pv = call({ action: "portal_view", portal_token: TOK, preview: true });
+  assert.ok(pv.view && pv.view.event.name === "דנה ויובל");
+  assert.equal(ctx.readTable_("event_plans")[0].portal_seen_at, undefined);
+  const v = call({ action: "portal_view", portal_token: TOK }).view;
+  assert.ok(ctx.readTable_("event_plans")[0].portal_seen_at);
+  const flat = JSON.stringify(v);
+  assert.ok(!flat.includes("סודי") && !flat.includes("8000") && !flat.includes("cost"));
+  assert.match(call({ action: "portal_view", portal_token: "tok_wrongwrongwrongwrongwrong" }).error, /לא פעיל/);
+});
+ok("עובד בלי הרשאת קישור ללקוח לא רואה את הקוד ולא יכול להפעיל/לשנות; בלי מחירים לא רואה תוכנית תשלומים", () => {
+  const arad = call({ action: "login", staff_id: "arad", pin: "3333" }).token;
+  const row = call({ action: "load", token: arad }).db.event_plans[0];
+  assert.equal(row.portal_token, undefined);
+  assert.equal(row.payment_plan, undefined);
+  call({ action: "upsert", token: arad, table: "event_plans", row: { ...row, portal_enabled: false, portal_token: "hacked_hacked_hacked_hacked_x", payment_plan: "[]", notes: "עודכן" } });
+  const stored = ctx.readTable_("event_plans")[0];
+  assert.equal(stored.portal_enabled, true);
+  assert.equal(stored.portal_token, "tok_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+  assert.match(stored.payment_plan, /5000/);
+  assert.equal(stored.notes, "עודכן");
+});
+ok("ללקוח אין שום פעולת כתיבה", () => {
+  for (const action of ["upsert", "remove", "set_pin", "load"]) assert.equal(call({ action, portal_token: "tok_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", table: "leads", row: { id: "x" } }).code, "auth");
+});
 console.log(`\nכל ${n} בדיקות השרת בגוגל שיטס עברו`);

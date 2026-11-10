@@ -145,6 +145,17 @@ alter table event_plans add column if not exists no_songs text;
 alter table event_plans add column if not exists moments text;
 alter table event_plans add column if not exists equipment text;
 alter table event_plans add column if not exists after text;
+alter table event_plans add column if not exists portal_token text unique;
+alter table event_plans add column if not exists portal_enabled boolean default false;
+alter table event_plans add column if not exists portal_sections text;
+alter table event_plans add column if not exists portal_seen_at timestamptz;
+alter table event_plans add column if not exists client_steps text;
+alter table event_plans add column if not exists payment_plan text;
+alter table event_plans add column if not exists contract_status text;
+alter table event_plans add column if not exists internal_notes text;
+alter table docs add column if not exists show_client boolean default false;
+alter table settings add column if not exists contact_phone text;
+alter table members add column if not exists can_portal boolean not null default false;
 
 -- RLS: נעילה מלאה לדפדפן. רק השרת (service role) ניגש.
 do $$

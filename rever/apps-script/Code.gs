@@ -28,13 +28,14 @@ var TABLES = {
   templates: ["תבניות", [["id", "מזהה"], ["name", "שם"], ["description", "מתי משתמשים"], ["body", "הודעה"], ["sort", "סדר"]]],
   payments: ["תשלומים", [["id", "מזהה"], ["lead_id", "ליד"], ["kind", "סוג"], ["amount", "סכום"], ["date", "תאריך"], ["method", "אמצעי"], ["note", "הערה"]]],
   expenses: ["הוצאות", [["id", "מזהה"], ["date", "תאריך"], ["amount", "סכום"], ["category", "קטגוריה"], ["supplier", "ספק"], ["note", "הערה"], ["lead_id", "אירוע"]]],
-  docs: ["מסמכים", [["id", "מזהה"], ["lead_id", "ליד"], ["type", "סוג"], ["number", "מספר"], ["amount", "סכום"], ["date", "תאריך"], ["status", "סטטוס"]]],
-  settings: ["הגדרות", [["id", "מזהה"], ["business_name", "שם העסק"], ["owner_name", "שם בהודעות"], ["whatsapp_mode", "שליחת וואטסאפ"], ["make_webhook_url", "Make webhook"], ["vat_rate", "מעמ"], ["sheet_url", "גיליון לידים"], ["sheet_map", "מיפוי עמודות"], ["sheet_auto", "משיכה אוטומטית"], ["sheet_last_pull", "משיכה אחרונה"]]],
-  members: ["צוות", [["id", "מזהה"], ["name", "שם"], ["title", "תפקיד"], ["role", "הרשאה"], ["can_prices", "מחירים"], ["can_finance", "כספים"], ["can_delete", "מחיקה"], ["can_templates", "תבניות"], ["active", "פעיל"], ["created_at", "נוצר"], ["pin_hash", "קוד מוצפן"], ["failed_attempts", "ניסיונות שגויים"], ["locked_until", "נעול עד"], ["last_login", "כניסה אחרונה"]]],
-  event_plans: ["אירועים", [["id", "ליד"], ["timeline", "לוז"], ["suppliers", "ספקים"], ["checklist", "צקליסט"], ["extra_checks", "פריטים נוספים"], ["contact_name", "איש קשר"], ["contact_phone", "טלפון איש קשר"], ["requests", "בקשות מיוחדות"], ["notes", "הערות"], ["must_songs", "שירי חובה"], ["no_songs", "אסור לנגן"], ["moments", "רגעים"], ["equipment", "ציוד"], ["after", "אחרי האירוע"], ["updated_at", "עודכן"]]]
+  docs: ["מסמכים", [["id", "מזהה"], ["lead_id", "ליד"], ["type", "סוג"], ["number", "מספר"], ["amount", "סכום"], ["date", "תאריך"], ["status", "סטטוס"], ["show_client", "מוצג ללקוח"]]],
+  settings: ["הגדרות", [["id", "מזהה"], ["business_name", "שם העסק"], ["owner_name", "שם בהודעות"], ["whatsapp_mode", "שליחת וואטסאפ"], ["make_webhook_url", "Make webhook"], ["vat_rate", "מעמ"], ["sheet_url", "גיליון לידים"], ["sheet_map", "מיפוי עמודות"], ["sheet_auto", "משיכה אוטומטית"], ["sheet_last_pull", "משיכה אחרונה"], ["contact_phone", "טלפון לפניות לקוחות"]]],
+  members: ["צוות", [["id", "מזהה"], ["name", "שם"], ["title", "תפקיד"], ["role", "הרשאה"], ["can_prices", "מחירים"], ["can_finance", "כספים"], ["can_delete", "מחיקה"], ["can_templates", "תבניות"], ["can_portal", "קישור ללקוח"], ["active", "פעיל"], ["created_at", "נוצר"], ["pin_hash", "קוד מוצפן"], ["failed_attempts", "ניסיונות שגויים"], ["locked_until", "נעול עד"], ["last_login", "כניסה אחרונה"]]],
+  event_plans: ["אירועים", [["id", "ליד"], ["timeline", "לוז"], ["suppliers", "ספקים"], ["checklist", "צקליסט"], ["extra_checks", "פריטים נוספים"], ["contact_name", "איש קשר"], ["contact_phone", "טלפון איש קשר"], ["requests", "בקשות מיוחדות"], ["notes", "הערות"], ["must_songs", "שירי חובה"], ["no_songs", "אסור לנגן"], ["moments", "רגעים"], ["equipment", "ציוד"], ["after", "אחרי האירוע"], ["portal_token", "קוד קישור ללקוח"], ["portal_enabled", "קישור פעיל"], ["portal_sections", "מה הלקוח רואה"], ["portal_seen_at", "הלקוח צפה"], ["client_steps", "שלבים ללקוח"], ["payment_plan", "תוכנית תשלומים"], ["contract_status", "חוזה"], ["internal_notes", "הערות פנימיות"], ["updated_at", "עודכן"]]]
 };
 var NUMBERS = { guests: 1, price: 1, amount: 1, vat_rate: 1, sort: 1, failed_attempts: 1 };
-var BOOLS = { can_prices: 1, can_finance: 1, can_delete: 1, can_templates: 1, active: 1, sheet_auto: 1 };
+var BOOLS = { can_prices: 1, can_finance: 1, can_delete: 1, can_templates: 1, can_portal: 1, active: 1, sheet_auto: 1, portal_enabled: 1, show_client: 1 };
+var PORTAL_FIELDS = ["portal_token", "portal_enabled", "portal_sections", "client_steps"];
 var FINANCE = { payments: 1, expenses: 1, docs: 1 };
 var PRIVATE_MEMBER = { pin_hash: 1, failed_attempts: 1, locked_until: 1, last_login: 1 };
 
@@ -96,6 +97,7 @@ function handle_(req) {
   if (a === "staff") return { staff: publicStaff_(), setup: readTable_("members").length === 0 };
   if (a === "setup_first") return setupFirst_(req.name, req.pin);
   if (a === "login") return login_(req.staff_id, req.pin);
+  if (a === "portal_view") return portalView_(req.portal_token, !!req.preview); // הלקוח: קריאה בלבד, בלי קוד עובד
   var me = auth_(req.token);
   if (a === "me") return { me: publicMember_(me) };
   if (a === "load") return { db: loadAll_(me), sheet_url: me.role === "admin" ? SpreadsheetApp.getActive().getUrl() : null };
@@ -184,6 +186,7 @@ function can_(m, perm) {
   if (perm === "finance") return !!m.can_finance;
   if (perm === "delete") return !!m.can_delete;
   if (perm === "templates") return !!m.can_templates;
+  if (perm === "portal") return !!m.can_portal;
   return false;
 }
 
@@ -208,7 +211,8 @@ function loadAll_(me) {
     if (t === "leads" && !prices) rows.forEach(function (r) { delete r.price; });
     if (t === "activities" && !prices) rows = rows.filter(function (r) { return r.kind !== "payment"; }).map(function (r) { r.text = String(r.text).replace(/₪\s?[\d,.]+/g, "₪•••"); return r; });
     if (t === "settings" && me.role !== "admin") rows.forEach(function (r) { delete r.make_webhook_url; });
-    if (t === "event_plans" && !prices) rows.forEach(function (r) { r.suppliers = stripCosts_(r.suppliers); });
+    if (t === "event_plans" && !prices) rows.forEach(function (r) { r.suppliers = stripCosts_(r.suppliers); delete r.payment_plan; });
+    if (t === "event_plans" && !can_(me, "portal")) rows.forEach(function (r) { delete r.portal_token; });
     out[t] = rows;
   });
   return out;
@@ -225,11 +229,17 @@ function upsert_(me, table, input) {
   var prev = findRow_(table, input.id);
   if (table === "leads" && !can_(me, "prices")) row.price = prev ? prev.price : "";
   if (table === "settings" && prev && !("make_webhook_url" in input)) row.make_webhook_url = prev.make_webhook_url;
-  if (table === "event_plans" && !can_(me, "prices")) row.suppliers = keepCosts_(row.suppliers, prev && prev.suppliers);
+  if (table === "event_plans" && !can_(me, "prices")) { row.suppliers = keepCosts_(row.suppliers, prev && prev.suppliers); row.payment_plan = prev ? prev.payment_plan : ""; }
+  if (table === "event_plans" && !can_(me, "portal")) PORTAL_FIELDS.forEach(function (k) { row[k] = prev ? prev[k] : ""; });
+  if (table === "event_plans") row.portal_seen_at = prev ? prev.portal_seen_at : ""; // נכתב רק כשהלקוח צופה
+  if (table === "event_plans" && row.portal_token) {
+    var clash = readTable_("event_plans").filter(function (p) { return p.portal_token === row.portal_token && p.id !== row.id; });
+    if (clash.length) throw err_("קוד קישור כפול");
+  }
   if (table === "members") {
     if (row.id === me.id && (row.role !== "admin" || !row.active)) throw err_("אי אפשר להוריד לעצמך הרשאת מאסטר");
     if (row.role !== "admin" && row.role !== "team") row.role = "team";
-    ["can_prices", "can_finance", "can_delete", "can_templates", "active"].forEach(function (k) { row[k] = !!row[k]; });
+    ["can_prices", "can_finance", "can_delete", "can_templates", "can_portal", "active"].forEach(function (k) { row[k] = !!row[k]; });
     if (prev) Object.keys(PRIVATE_MEMBER).forEach(function (k) { row[k] = prev[k]; }); // הקוד לא משתנה מכאן
   }
   writeRow_(table, row);
@@ -270,6 +280,77 @@ function keepCosts_(next, prev) {
     (prev ? JSON.parse(prev) : []).forEach(function (s) { old[s.id] = s.cost; });
     return JSON.stringify(JSON.parse(next).map(function (s) { s.cost = old[s.id]; if (s.cost === undefined) delete s.cost; return s; }));
   } catch (x) { return ""; }
+}
+
+/* ───────────── קישור ללקוח (קריאה בלבד) ───────────── */
+// חייב להתאים ל-src/lib/portal.ts (הבדיקות משוות בין השניים)
+var CHECK_IDS = ["contract", "deposit", "meeting", "suppliers", "timeline", "venue", "invoice", "final_payment"];
+var CLIENT_STEP_LABELS = { contract: "החוזה נחתם", deposit: "מקדמה התקבלה", meeting: "פגישת תיאום", suppliers: "הספקים נסגרו", timeline: "לו״ז סופי", venue: "תיאום עם המקום", invoice: "חשבונית", final_payment: "תשלום אחרון" };
+var DEFAULT_CLIENT_STEPS = ["contract", "deposit", "meeting", "suppliers", "timeline"];
+var DOC_LABELS = { quote: "הצעת מחיר", invoice: "חשבונית מס", receipt: "קבלה" };
+var SUP_CATS = { venue: ["אולם / מקום", "🏛️"], catering: ["קייטרינג", "🍽️"], design: ["עיצוב ופרחים", "💐"], photo: ["צילום", "📸"], dj: ["DJ", "🎧"], light: ["תאורה והגברה", "💡"], attraction: ["אטרקציות", "🎉"], other: ["אחר", "🤝"] };
+
+function portalView_(token, preview) {
+  if (!token || String(token).length < 20) throw err_("הקישור לא פעיל");
+  var plan = null;
+  readTable_("event_plans").forEach(function (p) { if (p.portal_token === token) plan = p; });
+  if (!plan || !plan.portal_enabled) throw err_("הקישור לא פעיל");
+  var lead = findRow_("leads", plan.id);
+  if (!lead || lead.status !== "won") throw err_("הקישור לא פעיל");
+  if (!preview) withLock_(function () { var p = findRow_("event_plans", plan.id); p.portal_seen_at = new Date().toISOString(); writeRow_("event_plans", p); });
+  return { view: clientView_(lead, plan, readTable_("payments"), readTable_("docs"), readTable_("settings"), readTable_("members")) };
+}
+
+function parse_(s, d) { if (!s) return d; try { return JSON.parse(s); } catch (x) { return d; } }
+function timeKey_(t) { var p = String(t || "").split(":"); var h = Number(p[0]) || 0, m = Number(p[1]) || 0; return (h < 6 ? h + 24 : h) * 60 + m; }
+
+function clientView_(lead, plan, payments, docs, settingsRows, members) {
+  var sections = { status: true, timeline: true, payments: true, suppliers: true, details: true };
+  var s = parse_(plan.portal_sections, {});
+  Object.keys(s).forEach(function (k) { sections[k] = s[k]; });
+  var checklist = parse_(plan.checklist, {}), extra = parse_(plan.extra_checks, []);
+  var ids = CHECK_IDS.concat(extra.map(function (x) { return "x:" + x; }));
+  var settings = settingsRows[0] || {};
+  var owner = members.filter(function (m) { return m.id === lead.assigned_to; })[0];
+  var view = {
+    business: settings.business_name || "",
+    event: { name: lead.name, type: lead.event_type, date: lead.event_date, venue: lead.venue, guests: lead.guests },
+    sections: sections,
+    contact: { name: String((owner && owner.name) || settings.owner_name || settings.business_name || "").split(" ")[0], phone: settings.contact_phone || undefined }
+  };
+  if (sections.status) {
+    view.readiness = ids.length ? Math.round(ids.filter(function (i) { return checklist[i]; }).length / ids.length * 100) : 0;
+    view.steps = parse_(plan.client_steps, DEFAULT_CLIENT_STEPS).filter(function (id) { return CLIENT_STEP_LABELS[id]; })
+      .map(function (id) { return { label: CLIENT_STEP_LABELS[id], done: !!checklist[id] }; });
+  }
+  if (sections.timeline) {
+    view.timeline = parse_(plan.timeline, []).filter(function (t) { return t.show_client !== false && t.title; })
+      .sort(function (a, b) { return timeKey_(a.time) - timeKey_(b.time); })
+      .map(function (t) { return { time: t.time, title: t.title }; });
+  }
+  if (sections.payments) {
+    var total = Number(lead.price) || 0;
+    var paid = payments.filter(function (p) { return p.lead_id === lead.id; }).reduce(function (a, p) { return a + (p.kind === "refund" ? -p.amount : p.amount); }, 0);
+    var left = paid;
+    view.payments = {
+      total: total, paid: paid, balance: Math.max(0, total - paid),
+      plan: parse_(plan.payment_plan, []).map(function (p) { var ok = left >= p.amount - 0.5; left -= p.amount; return { name: p.name, amount: p.amount, due: p.due, paid: ok }; }),
+      docs: docs.filter(function (d) { return d.lead_id === lead.id && d.show_client && d.status !== "cancelled"; })
+        .map(function (d) { return { label: DOC_LABELS[d.type], number: d.number, date: d.date }; })
+    };
+  }
+  if (sections.suppliers) {
+    view.suppliers = parse_(plan.suppliers, []).filter(function (x) { return x.show_client && x.name; }).map(function (x) {
+      var c = SUP_CATS[x.category];
+      return { category: (c && c[0]) || x.role || "", icon: (c && c[1]) || "🤝", name: x.name, phone: x.phone || undefined };
+    });
+  }
+  if (sections.details) {
+    var tl = view.timeline || [], arrival;
+    tl.forEach(function (t) { if (!arrival && /קבלת פנים|הגעת אורחים/.test(t.title)) arrival = t.time; });
+    view.details = { venue: lead.venue, arrival: arrival, guests: lead.guests, day_contact: plan.contact_name || undefined, requests: plan.requests || undefined };
+  }
+  return JSON.parse(JSON.stringify(view)); // מסיר undefined, כמו JSON בצד השני
 }
 
 /* ───────────── קריאה וכתיבה לגיליון ───────────── */

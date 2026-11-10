@@ -133,6 +133,16 @@ async function main() {
     assert.equal(JSON.parse(String(tables.event_plans[0].suppliers))[0].cost, 8000);
   });
 
+  await ok("קישור ללקוח ותוכנית תשלומים: מוסתרים ונשמרים לפי הרשאה", async () => {
+    tables.event_plans = [{ id: "L1", portal_token: "tok_x", portal_enabled: true, payment_plan: "[{\"amount\":5000}]" }];
+    const d = await readAll(pub("arad"));
+    assert.equal(d.event_plans[0].portal_token, undefined);
+    assert.equal(d.event_plans[0].payment_plan, undefined);
+    await writeRow(pub("arad"), "event_plans", { id: "L1", portal_enabled: false, portal_token: "hacked", payment_plan: "[]", notes: "x" });
+    const r = tables.event_plans[0];
+    assert.equal(r.portal_token, "tok_x"); assert.equal(r.portal_enabled, true); assert.match(String(r.payment_plan), /5000/); assert.equal(r.notes, "x");
+  });
+
   // ---- קודים וסשן ----
   await ok("קוד נשמר מוצפן ונבדק נכון", () => {
     const h = hashPin("1234");
