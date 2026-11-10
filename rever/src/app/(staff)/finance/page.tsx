@@ -7,13 +7,16 @@ import { DOC_STATUS, DOC_TYPES, PAYMENT_KINDS } from "@/lib/types";
 import type { Doc, Expense, Payment } from "@/lib/types";
 import { MONTHS, nis, shortDate, todayYmd } from "@/lib/format";
 import { DocModal, ExpenseModal, PaymentModal } from "@/components/forms";
+import { duePayments, planOf } from "@/lib/events";
+import { waLink } from "@/lib/whatsapp";
 
 type Tab = "events" | "payments" | "expenses" | "docs";
 const signed = (p: Payment) => (p.kind === "refund" ? -p.amount : p.amount);
 const monthKey = (ymd: string) => ymd.slice(0, 7);
 
 export default function FinancePage() {
-  const { db } = useStore();
+  const { db, me } = useStore();
+  const isMaster = me?.role === "admin";
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("events");
   const [modal, setModal] = useState<
@@ -45,12 +48,16 @@ export default function FinancePage() {
     .map((l) => {
       const paid = db.payments.filter((p) => p.lead_id === l.id).reduce((s, p) => s + signed(p), 0);
       const price = l.price ?? 0;
-      return { l, price, paid, balance: price - paid, days: l.event_date ? Math.ceil((+new Date(l.event_date) - +now) / 86400000) : null };
+      const supCost = planOf(db, l).suppliers.reduce((s, x) => s + (x.cost || 0), 0);
+      // תשלום לספק שנרשם כהוצאה כבר כלול בעלות הספק בכרטיס האירוע
+      const linked = db.expenses.filter((e) => e.lead_id === l.id && e.category !== "ספקים").reduce((s, e) => s + e.amount, 0);
+      return { l, price, paid, cost: supCost + linked, profit: price - supCost - linked, balance: price - paid, days: l.event_date ? Math.ceil((+new Date(l.event_date) - +now) / 86400000) : null };
     })
     .sort((a, b) => (a.l.event_date ?? "9").localeCompare(b.l.event_date ?? "9"));
   const openBalance = deals.reduce((s, d) => s + Math.max(0, d.balance), 0);
   const urgent = deals.filter((d) => d.balance > 0 && d.days !== null && d.days <= 14);
   const pastDue = deals.filter((d) => d.balance > 0 && d.days !== null && d.days < 0);
+  const due = deals.flatMap((d) => duePayments(db, d.l, 14).map((x) => ({ ...x, l: d.l }))).sort((a, b) => a.due.localeCompare(b.due));
   const openQuotes = db.docs.filter((d) => d.type === "quote" && d.status === "sent");
 
   const status = (d: (typeof deals)[number]) => {
@@ -123,6 +130,34 @@ export default function FinancePage() {
         </div>
       )}
 
+      {due.length > 0 && (
+        <div className="card">
+          <h2>
+            💳 תשלומים לפי תוכנית · שבועיים קרובים ובאיחור
+            <span className="r muted" style={{ fontSize: 14, fontWeight: 500 }}>{nis(due.reduce((s, x) => s + x.amount, 0))}</span>
+          </h2>
+          {due.map((x, i) => (
+            <div key={i} className="trow">
+              <span>
+                <Link className="link" href={`/events/view?id=${x.l.id}#payments`}>{x.l.name}</Link> · {x.name}
+              </span>
+              <span className="ml">{x.late ? <span className="tag t-red">באיחור {-x.days} ימים</span> : <span className="tag t-gold">{x.days === 0 ? "היום" : `עד ${shortDate(x.due)}`}</span>}</span>
+              <b className="num">{nis(x.amount)}</b>
+              <a
+                className="ib wa"
+                style={{ width: 34, height: 34 }}
+                target="_blank"
+                rel="noreferrer"
+                title="תזכורת בוואטסאפ"
+                href={waLink(x.l.phone, `היי ${x.l.name}, תזכורת קטנה: ${x.name} על סך ${nis(x.amount)} ${x.late ? "היה אמור להשתלם" : "צריך להשתלם"} עד ${shortDate(x.due)}. תודה! 🙏`)}
+              >
+                💬
+              </a>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="card">
         <h2>
           הכנסות מול הוצאות · 6 חודשים
@@ -176,6 +211,7 @@ export default function FinancePage() {
                   <th>מחיר</th>
                   <th>שולם</th>
                   <th>יתרה</th>
+                  {isMaster && <th title="מחיר פחות עלויות הספקים בכרטיס האירוע ופחות הוצאות אחרות שמשויכות לאירוע">רווח 🔒</th>}
                   <th></th>
                   <th>מצב</th>
                   <th></th>
@@ -197,6 +233,12 @@ export default function FinancePage() {
                     <td className="num">
                       <b className={d.balance > 0 ? "late" : ""}>{nis(Math.max(0, d.balance))}</b>
                     </td>
+                    {isMaster && (
+                      <td className="num" title={`עלויות: ${nis(d.cost)}`}>
+                        <b style={{ color: d.profit >= 0 ? "var(--green)" : "var(--red)" }}>{d.price ? nis(d.profit) : "—"}</b>
+                        {d.price > 0 && <div className="muted" style={{ fontSize: 12.5 }}>{Math.round((d.profit / d.price) * 100)}%</div>}
+                      </td>
+                    )}
                     <td>
                       <div className="progress">
                         <span style={{ width: `${d.price ? Math.min(100, (d.paid / d.price) * 100) : 0}%` }} />

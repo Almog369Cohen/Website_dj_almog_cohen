@@ -26,7 +26,17 @@ export const supabase = () => {
   return client;
 };
 
-const LS_KEY = "rever-crm-demo-v8";
+const LS_KEY = "rever-crm-demo-v9";
+
+/** מצב דמו: כל הנתונים מהדפדפן (לקישור ללקוח באותו מכשיר) */
+export function readLocalDB(): DB | null {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? (JSON.parse(raw) as DB) : demoDB();
+  } catch {
+    return null;
+  }
+}
 
 /** עובדים במצב דמו (כולל קודים), למסך בחירת העובד */
 export function demoMembers() {

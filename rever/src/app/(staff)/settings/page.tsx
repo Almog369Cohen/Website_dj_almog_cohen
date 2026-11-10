@@ -40,6 +40,9 @@ export default function SettingsPage() {
           <Field label="שם העסק">
             <input value={f.business_name} onChange={(e) => set({ business_name: e.target.value })} />
           </Field>
+          <Field label="טלפון לפניות לקוחות (בקישור ללקוח)">
+            <input dir="ltr" value={f.contact_phone ?? ""} placeholder="050-0000000" onChange={(e) => set({ contact_phone: e.target.value })} />
+          </Field>
           <Field label='מע"מ (%)'>
             <input type="number" value={f.vat_rate} onChange={(e) => set({ vat_rate: Number(e.target.value) })} />
           </Field>
