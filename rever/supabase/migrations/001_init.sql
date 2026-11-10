@@ -122,11 +122,35 @@ alter table settings add column if not exists sheet_map text;
 alter table settings add column if not exists sheet_auto boolean default false;
 alter table settings add column if not exists sheet_last_pull timestamptz;
 
+create table if not exists event_plans (
+  id text primary key references leads(id) on delete cascade,
+  timeline text,
+  suppliers text,
+  checklist text,
+  extra_checks text,
+  contact_name text,
+  contact_phone text,
+  requests text,
+  notes text,
+  must_songs text,
+  no_songs text,
+  moments text,
+  equipment text,
+  after text,
+  updated_at timestamptz
+);
+alter table leads add column if not exists lost_reason text;
+alter table event_plans add column if not exists must_songs text;
+alter table event_plans add column if not exists no_songs text;
+alter table event_plans add column if not exists moments text;
+alter table event_plans add column if not exists equipment text;
+alter table event_plans add column if not exists after text;
+
 -- RLS: נעילה מלאה לדפדפן. רק השרת (service role) ניגש.
 do $$
 declare t text; p record;
 begin
-  foreach t in array array['leads','activities','calendar_items','templates','payments','expenses','docs','settings','members'] loop
+  foreach t in array array['leads','activities','calendar_items','templates','payments','expenses','docs','settings','members','event_plans'] loop
     execute format('alter table %I enable row level security', t);
     for p in select policyname from pg_policies where schemaname = 'public' and tablename = t loop
       execute format('drop policy %I on %I', p.policyname, t);

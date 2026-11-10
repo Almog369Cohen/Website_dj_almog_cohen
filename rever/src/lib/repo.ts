@@ -26,7 +26,7 @@ export const supabase = () => {
   return client;
 };
 
-const LS_KEY = "rever-crm-demo-v5";
+const LS_KEY = "rever-crm-demo-v8";
 
 /** עובדים במצב דמו (כולל קודים), למסך בחירת העובד */
 export function demoMembers() {

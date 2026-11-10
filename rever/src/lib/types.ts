@@ -12,6 +12,7 @@ export const STATUSES: { id: LeadStatus; label: string; hint: string; color: str
 export const statusLabel = (s: LeadStatus) => STATUSES.find((x) => x.id === s)?.label ?? s;
 
 export const EVENT_TYPES = ["חתונה", "בר מצווה", "בת מצווה", "חינה", "אירוע חברה", "כנס", "יום הולדת", "אחר"];
+export const LOST_REASONS = ["מחיר", "תאריך תפוס", "בחרו מישהו אחר", "לא ענו", "אחר"];
 export const SOURCES = ["פייסבוק", "אינסטגרם", "וואטסאפ", "אתר", "המלצה", "אחר"];
 
 export interface Lead {
@@ -32,6 +33,7 @@ export interface Lead {
   last_contact?: string; // ISO
   notes?: string;
   assigned_to?: string; // העובד שמטפל בליד
+  lost_reason?: string; // למה לא סגרנו
   created_at: string;
 }
 
@@ -152,6 +154,27 @@ export function memberCan(m: Member | undefined, perm: Perm): boolean {
   return false;
 }
 
+/** כרטיס אירוע (לליד שנסגר). id = מזהה הליד. רשימות נשמרות כ-JSON כדי שיעבדו גם בגוגל שיטס */
+export interface EventPlan {
+  id: string;
+  timeline?: string; // JSON: TimelineItem[]
+  suppliers?: string; // JSON: Supplier[]
+  checklist?: string; // JSON: Record<string, boolean>
+  extra_checks?: string; // JSON: string[] (פריטים שהוסיפו)
+  contact_name?: string;
+  contact_phone?: string;
+  requests?: string; // בקשות מיוחדות
+  notes?: string;
+  must_songs?: string; // שירי חובה, שיר בכל שורה
+  no_songs?: string; // אסור לנגן
+  moments?: string; // JSON: Record<momentId, song>
+  equipment?: string; // JSON: Record<item, boolean> (ציוד לפני היציאה)
+  after?: string; // JSON: { review_asked, review_got, footage_got, skip }
+  updated_at?: string;
+}
+export interface TimelineItem { id: string; time: string; title: string; who?: string }
+export interface Supplier { id: string; role: string; name: string; phone?: string; cost?: number; confirmed?: boolean }
+
 export interface DB {
   leads: Lead[];
   activities: Activity[];
@@ -162,7 +185,8 @@ export interface DB {
   docs: Doc[];
   settings: Settings[];
   members: Member[];
+  event_plans: EventPlan[];
 }
 
 export type Table = keyof DB;
-export const TABLES: Table[] = ["leads", "activities", "calendar_items", "templates", "payments", "expenses", "docs", "settings", "members"];
+export const TABLES: Table[] = ["leads", "activities", "calendar_items", "templates", "payments", "expenses", "docs", "settings", "members", "event_plans"];

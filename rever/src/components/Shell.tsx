@@ -12,6 +12,7 @@ const NAV: { href: string; e: string; label: string; perm?: Perm }[] = [
   { href: "/today", e: "☀️", label: "היום" },
   { href: "/leads", e: "👥", label: "לידים" },
   { href: "/calendar", e: "📅", label: "יומן" },
+  { href: "/events", e: "📋", label: "אירועים" },
   { href: "/finance", e: "💰", label: "כספים", perm: "finance" },
   { href: "/messages", e: "💬", label: "הודעות" },
   { href: "/settings", e: "⚙️", label: "הגדרות", perm: "settings" },

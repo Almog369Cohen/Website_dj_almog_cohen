@@ -30,7 +30,7 @@ export default function CalendarPage() {
   const onItem = (e: React.MouseEvent, a: AgendaItem) => {
     e.stopPropagation();
     if (a.item_id) setModal({ itemId: a.item_id });
-    else if (a.lead_id) router.push(`/leads/view?id=${a.lead_id}`);
+    else if (a.lead_id) router.push(a.kind === "event" ? `/events/view?id=${a.lead_id}` : `/leads/view?id=${a.lead_id}`);
   };
   const editing = modal?.itemId ? db.calendar_items.find((c) => c.id === modal.itemId) : undefined;
 

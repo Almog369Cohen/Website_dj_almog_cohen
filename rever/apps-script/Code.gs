@@ -22,7 +22,7 @@ var LOCK_MIN = 10;
 
 /** טבלה → [שם הלשונית, [[מפתח, כותרת בעברית], ...]] */
 var TABLES = {
-  leads: ["לידים", [["id", "מזהה"], ["name", "שם"], ["phone", "טלפון"], ["email", "אימייל"], ["event_type", "סוג אירוע"], ["event_date", "תאריך אירוע"], ["guests", "מוזמנים"], ["venue", "מקום"], ["source", "מקור"], ["status", "סטטוס"], ["price", "מחיר"], ["next_followup", "פולואפ הבא"], ["followup_note", "מה לעשות בפולואפ"], ["pending_message", "הודעה מתוזמנת"], ["last_contact", "קשר אחרון"], ["notes", "הערות"], ["assigned_to", "מטפל"], ["created_at", "נוצר"]]],
+  leads: ["לידים", [["id", "מזהה"], ["name", "שם"], ["phone", "טלפון"], ["email", "אימייל"], ["event_type", "סוג אירוע"], ["event_date", "תאריך אירוע"], ["guests", "מוזמנים"], ["venue", "מקום"], ["source", "מקור"], ["status", "סטטוס"], ["price", "מחיר"], ["next_followup", "פולואפ הבא"], ["followup_note", "מה לעשות בפולואפ"], ["pending_message", "הודעה מתוזמנת"], ["last_contact", "קשר אחרון"], ["notes", "הערות"], ["assigned_to", "מטפל"], ["lost_reason", "סיבה שלא נסגר"], ["created_at", "נוצר"]]],
   activities: ["היסטוריה", [["id", "מזהה"], ["lead_id", "ליד"], ["kind", "סוג"], ["text", "תיאור"], ["at", "מתי"], ["by", "מי"]]],
   calendar_items: ["יומן", [["id", "מזהה"], ["kind", "סוג"], ["title", "כותרת"], ["start", "מתי"], ["location", "מקום"], ["lead_id", "ליד"]]],
   templates: ["תבניות", [["id", "מזהה"], ["name", "שם"], ["description", "מתי משתמשים"], ["body", "הודעה"], ["sort", "סדר"]]],
@@ -30,7 +30,8 @@ var TABLES = {
   expenses: ["הוצאות", [["id", "מזהה"], ["date", "תאריך"], ["amount", "סכום"], ["category", "קטגוריה"], ["supplier", "ספק"], ["note", "הערה"], ["lead_id", "אירוע"]]],
   docs: ["מסמכים", [["id", "מזהה"], ["lead_id", "ליד"], ["type", "סוג"], ["number", "מספר"], ["amount", "סכום"], ["date", "תאריך"], ["status", "סטטוס"]]],
   settings: ["הגדרות", [["id", "מזהה"], ["business_name", "שם העסק"], ["owner_name", "שם בהודעות"], ["whatsapp_mode", "שליחת וואטסאפ"], ["make_webhook_url", "Make webhook"], ["vat_rate", "מעמ"], ["sheet_url", "גיליון לידים"], ["sheet_map", "מיפוי עמודות"], ["sheet_auto", "משיכה אוטומטית"], ["sheet_last_pull", "משיכה אחרונה"]]],
-  members: ["צוות", [["id", "מזהה"], ["name", "שם"], ["title", "תפקיד"], ["role", "הרשאה"], ["can_prices", "מחירים"], ["can_finance", "כספים"], ["can_delete", "מחיקה"], ["can_templates", "תבניות"], ["active", "פעיל"], ["created_at", "נוצר"], ["pin_hash", "קוד מוצפן"], ["failed_attempts", "ניסיונות שגויים"], ["locked_until", "נעול עד"], ["last_login", "כניסה אחרונה"]]]
+  members: ["צוות", [["id", "מזהה"], ["name", "שם"], ["title", "תפקיד"], ["role", "הרשאה"], ["can_prices", "מחירים"], ["can_finance", "כספים"], ["can_delete", "מחיקה"], ["can_templates", "תבניות"], ["active", "פעיל"], ["created_at", "נוצר"], ["pin_hash", "קוד מוצפן"], ["failed_attempts", "ניסיונות שגויים"], ["locked_until", "נעול עד"], ["last_login", "כניסה אחרונה"]]],
+  event_plans: ["אירועים", [["id", "ליד"], ["timeline", "לוז"], ["suppliers", "ספקים"], ["checklist", "צקליסט"], ["extra_checks", "פריטים נוספים"], ["contact_name", "איש קשר"], ["contact_phone", "טלפון איש קשר"], ["requests", "בקשות מיוחדות"], ["notes", "הערות"], ["must_songs", "שירי חובה"], ["no_songs", "אסור לנגן"], ["moments", "רגעים"], ["equipment", "ציוד"], ["after", "אחרי האירוע"], ["updated_at", "עודכן"]]]
 };
 var NUMBERS = { guests: 1, price: 1, amount: 1, vat_rate: 1, sort: 1, failed_attempts: 1 };
 var BOOLS = { can_prices: 1, can_finance: 1, can_delete: 1, can_templates: 1, active: 1, sheet_auto: 1 };
@@ -207,6 +208,7 @@ function loadAll_(me) {
     if (t === "leads" && !prices) rows.forEach(function (r) { delete r.price; });
     if (t === "activities" && !prices) rows = rows.filter(function (r) { return r.kind !== "payment"; }).map(function (r) { r.text = String(r.text).replace(/₪\s?[\d,.]+/g, "₪•••"); return r; });
     if (t === "settings" && me.role !== "admin") rows.forEach(function (r) { delete r.make_webhook_url; });
+    if (t === "event_plans" && !prices) rows.forEach(function (r) { r.suppliers = stripCosts_(r.suppliers); });
     out[t] = rows;
   });
   return out;
@@ -223,6 +225,7 @@ function upsert_(me, table, input) {
   var prev = findRow_(table, input.id);
   if (table === "leads" && !can_(me, "prices")) row.price = prev ? prev.price : "";
   if (table === "settings" && prev && !("make_webhook_url" in input)) row.make_webhook_url = prev.make_webhook_url;
+  if (table === "event_plans" && !can_(me, "prices")) row.suppliers = keepCosts_(row.suppliers, prev && prev.suppliers);
   if (table === "members") {
     if (row.id === me.id && (row.role !== "admin" || !row.active)) throw err_("אי אפשר להוריד לעצמך הרשאת מאסטר");
     if (row.role !== "admin" && row.role !== "team") row.role = "team";
@@ -254,6 +257,19 @@ function setPin_(me, staffId, pin) {
   if (!m) throw err_("העובד לא נמצא");
   m.pin_hash = hashPin_(pin); m.failed_attempts = 0; m.locked_until = "";
   writeRow_("members", m);
+}
+
+function stripCosts_(json) {
+  if (!json) return json;
+  try { return JSON.stringify(JSON.parse(json).map(function (s) { delete s.cost; return s; })); } catch (x) { return json; }
+}
+function keepCosts_(next, prev) {
+  if (!next) return next;
+  try {
+    var old = {};
+    (prev ? JSON.parse(prev) : []).forEach(function (s) { old[s.id] = s.cost; });
+    return JSON.stringify(JSON.parse(next).map(function (s) { s.cost = old[s.id]; if (s.cost === undefined) delete s.cost; return s; }));
+  } catch (x) { return ""; }
 }
 
 /* ───────────── קריאה וכתיבה לגיליון ───────────── */

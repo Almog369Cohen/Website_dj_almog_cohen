@@ -2,7 +2,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { Activity, ActivityKind, DB, Lead, LeadStatus, Member, Perm, Settings, Table } from "./types";
 import { useAuth } from "./auth";
-import { memberCan, statusLabel } from "./types";
+import { memberCan, statusLabel, TABLES } from "./types";
 import { makeRepo, type Repo } from "./repo";
 import { emptyDB } from "./seed";
 import { uid } from "./format";
@@ -52,6 +52,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const repo = repoRef.current!;
     try {
       const data = await repo.loadAll();
+      for (const t of TABLES) if (!Array.isArray(data[t])) (data as unknown as Record<string, unknown[]>)[t] = [];
       if (!data.settings?.length) data.settings = emptyDB().settings;
       if (!data.templates?.length) data.templates = emptyDB().templates;
       setDb(data);

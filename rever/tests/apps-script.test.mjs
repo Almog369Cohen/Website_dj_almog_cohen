@@ -153,4 +153,17 @@ ok("מחיקה ע\"י מאסטר עובדת", () => {
   call({ action: "remove", token: liel, table: "payments", id: "P1" });
   assert.equal(ctx.readTable_("payments").length, 0);
 });
+ok("כרטיס אירוע: עלויות ספקים מוסתרות ממי שאין לו מחירים, ונשמרות כשהוא עורך", () => {
+  call({ action: "upsert", token: gal, table: "members", row: { id: "arad", name: "ארד", role: "team", active: true } });
+  call({ action: "set_pin", token: gal, staff_id: "arad", pin: "3333" });
+  const arad = call({ action: "login", staff_id: "arad", pin: "3333" }).token;
+  call({ action: "upsert", token: gal, table: "event_plans", row: { id: "L1", suppliers: JSON.stringify([{ id: "s1", role: "DJ", name: "דני", cost: 8000, confirmed: false }]) } });
+  const seen = JSON.parse(call({ action: "load", token: arad }).db.event_plans[0].suppliers);
+  assert.equal("cost" in seen[0], false);
+  seen[0].confirmed = true; seen[0].cost = 1;
+  call({ action: "upsert", token: arad, table: "event_plans", row: { id: "L1", suppliers: JSON.stringify(seen) } });
+  const stored = JSON.parse(ctx.readTable_("event_plans")[0].suppliers);
+  assert.equal(stored[0].confirmed, true);
+  assert.equal(stored[0].cost, 8000);
+});
 console.log(`\nכל ${n} בדיקות השרת בגוגל שיטס עברו`);

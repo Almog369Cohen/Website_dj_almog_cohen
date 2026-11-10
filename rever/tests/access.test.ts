@@ -122,6 +122,17 @@ async function main() {
     await denied(deleteRow(pub("gal"), "members", "gal"));
   });
 
+  await ok("כרטיס אירוע: עלויות ספקים מוסתרות ונשמרות", async () => {
+    tables.event_plans = [{ id: "L1", suppliers: JSON.stringify([{ id: "s1", name: "דני", cost: 8000 }]) }];
+    await writeRow(pub("gal"), "members", { ...pub("arad"), can_prices: false });
+    const d = await readAll(pub("arad"));
+    const seen = JSON.parse(d.event_plans[0].suppliers!);
+    assert.equal("cost" in seen[0], false);
+    seen[0].cost = 1;
+    await writeRow(pub("arad"), "event_plans", { id: "L1", suppliers: JSON.stringify(seen) });
+    assert.equal(JSON.parse(String(tables.event_plans[0].suppliers))[0].cost, 8000);
+  });
+
   // ---- קודים וסשן ----
   await ok("קוד נשמר מוצפן ונבדק נכון", () => {
     const h = hashPin("1234");

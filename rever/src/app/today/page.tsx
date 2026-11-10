@@ -10,6 +10,7 @@ import { Avatar, Owner, StatusTag } from "@/components/ui";
 import { LeadModal } from "@/components/forms";
 import { usePullSheet } from "@/components/ImportSheet";
 import { agendaItems } from "@/lib/agenda";
+import { eventTodos } from "@/lib/events";
 
 export default function TodayPage() {
   const { db, settings, me } = useStore();
@@ -111,7 +112,7 @@ export default function TodayPage() {
               className="ag"
               key={a.key}
               style={{ cursor: a.lead_id ? "pointer" : undefined }}
-              onClick={() => a.lead_id && router.push(`/leads/view?id=${a.lead_id}`)}
+              onClick={() => a.lead_id && router.push(a.kind === "event" ? `/events/view?id=${a.lead_id}` : `/leads/view?id=${a.lead_id}`)}
             >
               <div className="tm">
                 {a.allDay ? "—" : time(a.start)}
@@ -126,6 +127,26 @@ export default function TodayPage() {
           ))}
         </div>
       </div>
+      {eventTodos(db).length > 0 && (
+        <div className="card">
+          <h2>
+            📋 אירועים שדורשים טיפול
+            <Link href="/events" className="r link">
+              לכל האירועים ←
+            </Link>
+          </h2>
+          {eventTodos(db).map((t) => (
+            <button key={t.kind + t.lead.id} className="ag" style={{ width: "100%", textAlign: "right" }} onClick={() => router.push(`/events/view?id=${t.lead.id}`)}>
+              <div className="tm" style={{ fontSize: 20 }}>{t.kind === "review" ? "⭐" : t.kind === "no_songs" ? "🎵" : "🗓️"}</div>
+              <div className="bar" style={{ background: t.kind === "review" ? "var(--gold)" : "var(--orange)" }} />
+              <div>
+                <b>{t.text}</b>
+                <span>{t.sub}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
       {adding && <LeadModal onClose={() => setAdding(false)} onSaved={(l) => router.push(`/leads/view?id=${l.id}`)} />}
     </>
   );

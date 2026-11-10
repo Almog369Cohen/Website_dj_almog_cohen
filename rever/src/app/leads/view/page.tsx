@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
-import { DOC_STATUS, DOC_TYPES, PAYMENT_KINDS, STATUSES } from "@/lib/types";
+import { DOC_STATUS, DOC_TYPES, LOST_REASONS, PAYMENT_KINDS, STATUSES } from "@/lib/types";
 import type { ActivityKind, Lead, LeadStatus } from "@/lib/types";
 import { fromLocalInput, isOverdue, nis, relDay, shortDate, toLocalInput } from "@/lib/format";
 import { fillTemplate, sendWhatsApp } from "@/lib/whatsapp";
@@ -142,7 +142,7 @@ function LeadView({ l }: { l: Lead }) {
       <div className="top">
         <div>
           <div className="crumb">
-            <Link href="/leads">לידים</Link> ‹ {l.name}
+            <Link href="/leads">לידים</Link> ‹ כרטיס לקוח
           </div>
           <h1 className="row" style={{ flexWrap: "wrap" }}>
             {l.name}
@@ -167,6 +167,11 @@ function LeadView({ l }: { l: Lead }) {
         <button className="btn" onClick={() => setModal("meeting")}>
           📅 לקבוע פגישה
         </button>
+        {l.status === "won" && (
+          <Link className="btn pri" href={`/events/view?id=${l.id}`}>
+            📋 כרטיס אירוע
+          </Link>
+        )}
         <button className="btn" onClick={() => setModal("edit")}>
           ✏️ עריכה
         </button>
@@ -227,6 +232,17 @@ function LeadView({ l }: { l: Lead }) {
                 ))}
             </select>
           </div>
+          {l.status === "lost" && (
+            <div className="field">
+              <span>למה לא סגרנו</span>
+              <select className="inline-select" value={l.lost_reason ?? ""} onChange={(e) => updateLead(l, { lost_reason: e.target.value || undefined })}>
+                <option value="">— לבחור</option>
+                {LOST_REASONS.map((r) => (
+                  <option key={r}>{r}</option>
+                ))}
+              </select>
+            </div>
+          )}
           {l.price && can("prices") ? (
             <div className="field">
               <span>מחיר</span>
