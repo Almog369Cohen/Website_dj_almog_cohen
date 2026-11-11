@@ -73,7 +73,7 @@ export function clientView(input: { lead: Lead; plan: EventPlan; db: Pick<DB, "p
     business: settings?.business_name || "",
     event: { name: lead.name, type: lead.event_type, date: lead.event_date, venue: lead.venue, guests: lead.guests },
     sections,
-    contact: { name: (owner?.name || settings?.owner_name || settings?.business_name || "").split(" ")[0], phone: settings?.contact_phone || undefined },
+    contact: { name: (owner?.name || settings?.owner_name || settings?.business_name || "").split(" ")[0], phone: owner?.phone || settings?.contact_phone || undefined },
   };
 
   if (sections.status) {

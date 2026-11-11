@@ -268,8 +268,6 @@ h1{font-size:28px;font-weight:800}
 .tl-row input:focus,.cell:focus{border-color:var(--text);background:#fff}
 .tl-time{font-weight:700;font-variant-numeric:tabular-nums}
 .tl-who{color:var(--muted)}
-.moments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.moments .f input{height:38px;border:1px solid var(--line);border-radius:9px;padding:0 10px;outline:none}
 .evlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .evcard{text-align:right;display:block;width:100%}
 .evcard:hover{box-shadow:0 4px 18px rgba(20,23,31,.07)}
@@ -279,8 +277,7 @@ h1{font-size:28px;font-weight:800}
   .eventgrid{grid-template-columns:1fr}
   .tl-row{grid-template-columns:78px minmax(0,1fr) 22px}
   .tl-who{grid-column:2/3}
-  .moments{grid-template-columns:1fr 1fr}
-  .evlist{grid-template-columns:1fr}
+    .evlist{grid-template-columns:1fr}
 }
 @media print{
   .side,.mobilebar,.top .btn,.top a.btn,.link,button,.toast{display:none!important}
@@ -311,3 +308,6 @@ h1{font-size:28px;font-weight:800}
   .tl-row5{grid-template-columns:70px minmax(0,1fr) 44px 22px}
   .tl-row5 .tl-who{grid-column:2/3;grid-row:2}
 }
+/* תוכן רחב (טבלה, קוד) גולל בתוך הכרטיס ולא מרחיב את הדף בטלפון */
+.grid2>*,.leadgrid>*,.eventgrid>*,.portalgrid>*{min-width:0}
+pre{max-width:100%;overflow-x:auto}

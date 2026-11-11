@@ -120,10 +120,10 @@ const M = (p: Partial<Member> & Pick<Member, "id" | "name" | "role">): Member =>
 });
 /** קודים בדמו: גל 1111 · ליאל 2222 · ארד 3333 · ספיר 4444 */
 export const DEMO_MEMBERS: Member[] = [
-  M({ id: "m-gal", name: "גל", title: "בעלים", role: "admin", pin: "1111" }),
-  M({ id: "m-liel", name: "ליאל", title: "בעלים", role: "admin", pin: "2222" }),
-  M({ id: "m-arad", name: "ארד", title: "עוזר ומנהל תפעול · חזרה ללקוחות", role: "team", can_templates: true, can_portal: true, pin: "3333" }),
-  M({ id: "m-sapir", name: "ספיר", title: "מזכירה", role: "team", pin: "4444" }),
+  M({ id: "m-gal", name: "גל", title: "בעלים", phone: "050-0000101", role: "admin", pin: "1111" }),
+  M({ id: "m-liel", name: "ליאל", title: "בעלים", phone: "050-0000102", role: "admin", pin: "2222" }),
+  M({ id: "m-arad", name: "ארד", title: "עוזר ומנהל תפעול · חזרה ללקוחות", phone: "050-0000103", role: "team", can_templates: true, can_portal: true, pin: "3333" }),
+  M({ id: "m-sapir", name: "ספיר", title: "מזכירה", phone: "050-0000104", role: "team", pin: "4444" }),
 ];
 
 export function emptyDB(): DB {

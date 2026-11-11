@@ -135,6 +135,7 @@ export interface Member {
   id: string;
   name: string;
   title?: string; // תפקיד: מזכירה, תפעול…
+  phone?: string; // מוצג ללקוח כשהעובד מטפל באירוע שלו
   role: Role; // admin = קוד מאסטר
   can_prices: boolean;
   can_finance: boolean;
@@ -170,10 +171,6 @@ export interface EventPlan {
   contact_phone?: string;
   requests?: string; // בקשות מיוחדות
   notes?: string;
-  must_songs?: string; // שירי חובה, שיר בכל שורה
-  no_songs?: string; // אסור לנגן
-  moments?: string; // JSON: Record<momentId, song>
-  equipment?: string; // JSON: Record<item, boolean> (ציוד לפני היציאה)
   after?: string; // JSON: { review_asked, review_got, footage_got, skip }
   // ---- קישור ללקוח ----
   portal_token?: string;

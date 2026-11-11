@@ -92,6 +92,14 @@ export default function Team() {
                           placeholder="תפקיד"
                           onBlur={(e) => e.target.value !== (m.title ?? "") && update(m, { title: e.target.value || undefined })}
                         />
+                        <input
+                          className="titleinput"
+                          dir="ltr"
+                          style={{ textAlign: "right" }}
+                          defaultValue={m.phone ?? ""}
+                          placeholder="טלפון (מוצג ללקוחות שלו)"
+                          onBlur={(e) => e.target.value !== (m.phone ?? "") && update(m, { phone: e.target.value || undefined })}
+                        />
                       </div>
                     </div>
                   </td>
@@ -225,7 +233,7 @@ function AddMember({ onClose, onCreate }: { onClose: () => void; onCreate: (m: M
         onSubmit={async (e) => {
           e.preventDefault();
           try {
-            await onCreate({ ...f, title: f.title || undefined, created_at: new Date().toISOString() }, pin);
+            await onCreate({ ...f, title: f.title || undefined, phone: f.phone || undefined, created_at: new Date().toISOString() }, pin);
             onClose();
           } catch (x) {
             setErr(x instanceof Error ? x.message : String(x));
@@ -237,6 +245,9 @@ function AddMember({ onClose, onCreate }: { onClose: () => void; onCreate: (m: M
         </Field>
         <Field label="תפקיד">
           <input value={f.title ?? ""} onChange={(e) => setF({ ...f, title: e.target.value })} placeholder="מזכירה / תפעול / שירות לקוחות" />
+        </Field>
+        <Field label="טלפון (מוצג ללקוח בקישור לאירוע)">
+          <input dir="ltr" value={f.phone ?? ""} onChange={(e) => setF({ ...f, phone: e.target.value })} placeholder="050-0000000" />
         </Field>
         <PinInput label="קוד אישי *" value={pin} onChange={setPin} />
         <Field label="הרשאה">

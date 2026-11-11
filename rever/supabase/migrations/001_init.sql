@@ -132,18 +132,10 @@ create table if not exists event_plans (
   contact_phone text,
   requests text,
   notes text,
-  must_songs text,
-  no_songs text,
-  moments text,
-  equipment text,
   after text,
   updated_at timestamptz
 );
 alter table leads add column if not exists lost_reason text;
-alter table event_plans add column if not exists must_songs text;
-alter table event_plans add column if not exists no_songs text;
-alter table event_plans add column if not exists moments text;
-alter table event_plans add column if not exists equipment text;
 alter table event_plans add column if not exists after text;
 alter table event_plans add column if not exists portal_token text unique;
 alter table event_plans add column if not exists portal_enabled boolean default false;
@@ -156,6 +148,12 @@ alter table event_plans add column if not exists internal_notes text;
 alter table docs add column if not exists show_client boolean default false;
 alter table settings add column if not exists contact_phone text;
 alter table members add column if not exists can_portal boolean not null default false;
+alter table members add column if not exists phone text;
+-- רבר היא חברת הפקות: שדות הדיג'יי הישנים יורדים
+alter table event_plans drop column if exists must_songs;
+alter table event_plans drop column if exists no_songs;
+alter table event_plans drop column if exists moments;
+alter table event_plans drop column if exists equipment;
 
 -- RLS: נעילה מלאה לדפדפן. רק השרת (service role) ניגש.
 do $$

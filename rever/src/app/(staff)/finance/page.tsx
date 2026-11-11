@@ -15,7 +15,7 @@ const signed = (p: Payment) => (p.kind === "refund" ? -p.amount : p.amount);
 const monthKey = (ymd: string) => ymd.slice(0, 7);
 
 export default function FinancePage() {
-  const { db, me } = useStore();
+  const { db, me, can } = useStore();
   const isMaster = me?.role === "admin";
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("events");
@@ -130,7 +130,7 @@ export default function FinancePage() {
         </div>
       )}
 
-      {due.length > 0 && (
+      {due.length > 0 && can("prices") && (
         <div className="card">
           <h2>
             💳 תשלומים לפי תוכנית · שבועיים קרובים ובאיחור

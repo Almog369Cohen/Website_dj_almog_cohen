@@ -2,7 +2,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { clientView, type ClientView } from "@/lib/portal";
-import { readLocalDB, sheetsCall, sheetsUrl, supabase } from "@/lib/repo";
+import { markLocalSeen, readLocalDB, sheetsCall, sheetsUrl, supabase } from "@/lib/repo";
 import { cleanPhone } from "@/lib/format";
 
 /** הקישור ללקוח: "האירוע שלכם". קריאה בלבד. */
@@ -30,7 +30,10 @@ async function loadView(token: string, preview: boolean): Promise<ClientView | n
   const db = readLocalDB();
   const plan = db?.event_plans?.find((p) => p.portal_token === token && p.portal_enabled);
   const lead = plan && db!.leads.find((l) => l.id === plan.id && l.status === "won");
-  return plan && lead ? clientView({ lead, plan, db: db! }) : null;
+  if (!plan || !lead) return null;
+  const view = clientView({ lead, plan, db: db! });
+  if (!preview) markLocalSeen(db!, plan.id);
+  return view;
 }
 
 const KICKER: Record<string, string> = { חתונה: "החתונה של", "בר מצווה": "בר המצווה של", "בת מצווה": "בת המצווה של", חינה: "החינה של" };

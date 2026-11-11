@@ -30,8 +30,8 @@ var TABLES = {
   expenses: ["הוצאות", [["id", "מזהה"], ["date", "תאריך"], ["amount", "סכום"], ["category", "קטגוריה"], ["supplier", "ספק"], ["note", "הערה"], ["lead_id", "אירוע"]]],
   docs: ["מסמכים", [["id", "מזהה"], ["lead_id", "ליד"], ["type", "סוג"], ["number", "מספר"], ["amount", "סכום"], ["date", "תאריך"], ["status", "סטטוס"], ["show_client", "מוצג ללקוח"]]],
   settings: ["הגדרות", [["id", "מזהה"], ["business_name", "שם העסק"], ["owner_name", "שם בהודעות"], ["whatsapp_mode", "שליחת וואטסאפ"], ["make_webhook_url", "Make webhook"], ["vat_rate", "מעמ"], ["sheet_url", "גיליון לידים"], ["sheet_map", "מיפוי עמודות"], ["sheet_auto", "משיכה אוטומטית"], ["sheet_last_pull", "משיכה אחרונה"], ["contact_phone", "טלפון לפניות לקוחות"]]],
-  members: ["צוות", [["id", "מזהה"], ["name", "שם"], ["title", "תפקיד"], ["role", "הרשאה"], ["can_prices", "מחירים"], ["can_finance", "כספים"], ["can_delete", "מחיקה"], ["can_templates", "תבניות"], ["can_portal", "קישור ללקוח"], ["active", "פעיל"], ["created_at", "נוצר"], ["pin_hash", "קוד מוצפן"], ["failed_attempts", "ניסיונות שגויים"], ["locked_until", "נעול עד"], ["last_login", "כניסה אחרונה"]]],
-  event_plans: ["אירועים", [["id", "ליד"], ["timeline", "לוז"], ["suppliers", "ספקים"], ["checklist", "צקליסט"], ["extra_checks", "פריטים נוספים"], ["contact_name", "איש קשר"], ["contact_phone", "טלפון איש קשר"], ["requests", "בקשות מיוחדות"], ["notes", "הערות"], ["must_songs", "שירי חובה"], ["no_songs", "אסור לנגן"], ["moments", "רגעים"], ["equipment", "ציוד"], ["after", "אחרי האירוע"], ["portal_token", "קוד קישור ללקוח"], ["portal_enabled", "קישור פעיל"], ["portal_sections", "מה הלקוח רואה"], ["portal_seen_at", "הלקוח צפה"], ["client_steps", "שלבים ללקוח"], ["payment_plan", "תוכנית תשלומים"], ["contract_status", "חוזה"], ["internal_notes", "הערות פנימיות"], ["updated_at", "עודכן"]]]
+  members: ["צוות", [["id", "מזהה"], ["name", "שם"], ["title", "תפקיד"], ["phone", "טלפון"], ["role", "הרשאה"], ["can_prices", "מחירים"], ["can_finance", "כספים"], ["can_delete", "מחיקה"], ["can_templates", "תבניות"], ["can_portal", "קישור ללקוח"], ["active", "פעיל"], ["created_at", "נוצר"], ["pin_hash", "קוד מוצפן"], ["failed_attempts", "ניסיונות שגויים"], ["locked_until", "נעול עד"], ["last_login", "כניסה אחרונה"]]],
+  event_plans: ["אירועים", [["id", "ליד"], ["timeline", "לוז"], ["suppliers", "ספקים"], ["checklist", "צקליסט"], ["extra_checks", "פריטים נוספים"], ["contact_name", "איש קשר"], ["contact_phone", "טלפון איש קשר"], ["requests", "בקשות מיוחדות"], ["notes", "הערות"], ["after", "אחרי האירוע"], ["portal_token", "קוד קישור ללקוח"], ["portal_enabled", "קישור פעיל"], ["portal_sections", "מה הלקוח רואה"], ["portal_seen_at", "הלקוח צפה"], ["client_steps", "שלבים ללקוח"], ["payment_plan", "תוכנית תשלומים"], ["contract_status", "חוזה"], ["internal_notes", "הערות פנימיות"], ["updated_at", "עודכן"]]]
 };
 var NUMBERS = { guests: 1, price: 1, amount: 1, vat_rate: 1, sort: 1, failed_attempts: 1 };
 var BOOLS = { can_prices: 1, can_finance: 1, can_delete: 1, can_templates: 1, can_portal: 1, active: 1, sheet_auto: 1, portal_enabled: 1, show_client: 1 };
@@ -51,11 +51,20 @@ var DEFAULT_TEMPLATES = [
 /* ───────────── התקנה ───────────── */
 
 /** יוצר את כל הלשוניות והכותרות. אפשר להריץ שוב בלי לאבד מידע. */
+/** עמודות ישנות שכבר לא בשימוש (רבר היא חברת הפקות, לא דיג'יי): נמחקות מגיליון קיים */
+var OBSOLETE = { event_plans: ["שירי חובה", "אסור לנגן", "רגעים", "ציוד", "must_songs", "no_songs", "moments", "equipment"] };
+function removeColumns_(sh, names) {
+  if (!names.length || !sh.getLastColumn()) return;
+  var head = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+  for (var i = head.length - 1; i >= 0; i--) if (names.indexOf(String(head[i])) >= 0) sh.deleteColumn(i + 1);
+}
+
 function setup() {
   var ss = SpreadsheetApp.getActive();
   Object.keys(TABLES).forEach(function (t) {
     var name = TABLES[t][0], cols = TABLES[t][1];
     var sh = ss.getSheetByName(name) || ss.insertSheet(name);
+    removeColumns_(sh, OBSOLETE[t] || []);
     var have = sh.getLastColumn() ? sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0] : [];
     var missing = cols.filter(function (c) { return have.indexOf(c[1]) < 0 && have.indexOf(c[0]) < 0; });
     if (missing.length) {
@@ -211,7 +220,8 @@ function loadAll_(me) {
     if (t === "leads" && !prices) rows.forEach(function (r) { delete r.price; });
     if (t === "activities" && !prices) rows = rows.filter(function (r) { return r.kind !== "payment"; }).map(function (r) { r.text = String(r.text).replace(/₪\s?[\d,.]+/g, "₪•••"); return r; });
     if (t === "settings" && me.role !== "admin") rows.forEach(function (r) { delete r.make_webhook_url; });
-    if (t === "event_plans" && !prices) rows.forEach(function (r) { r.suppliers = stripCosts_(r.suppliers); delete r.payment_plan; });
+    if (t === "event_plans" && !prices) rows.forEach(function (r) { r.suppliers = stripCosts_(r.suppliers); });
+    if (t === "event_plans" && !(prices && finance)) rows.forEach(function (r) { delete r.payment_plan; }); // תוכנית בלי תשלומים = "באיחור" מזויף
     if (t === "event_plans" && !can_(me, "portal")) rows.forEach(function (r) { delete r.portal_token; });
     out[t] = rows;
   });
@@ -229,7 +239,8 @@ function upsert_(me, table, input) {
   var prev = findRow_(table, input.id);
   if (table === "leads" && !can_(me, "prices")) row.price = prev ? prev.price : "";
   if (table === "settings" && prev && !("make_webhook_url" in input)) row.make_webhook_url = prev.make_webhook_url;
-  if (table === "event_plans" && !can_(me, "prices")) { row.suppliers = keepCosts_(row.suppliers, prev && prev.suppliers); row.payment_plan = prev ? prev.payment_plan : ""; }
+  if (table === "event_plans" && !can_(me, "prices")) row.suppliers = keepCosts_(row.suppliers, prev && prev.suppliers);
+  if (table === "event_plans" && !(can_(me, "prices") && can_(me, "finance"))) row.payment_plan = prev ? prev.payment_plan : "";
   if (table === "event_plans" && !can_(me, "portal")) PORTAL_FIELDS.forEach(function (k) { row[k] = prev ? prev[k] : ""; });
   if (table === "event_plans") row.portal_seen_at = prev ? prev.portal_seen_at : ""; // נכתב רק כשהלקוח צופה
   if (table === "event_plans" && row.portal_token) {
@@ -297,7 +308,11 @@ function portalView_(token, preview) {
   if (!plan || !plan.portal_enabled) throw err_("הקישור לא פעיל");
   var lead = findRow_("leads", plan.id);
   if (!lead || lead.status !== "won") throw err_("הקישור לא פעיל");
-  if (!preview) withLock_(function () { var p = findRow_("event_plans", plan.id); p.portal_seen_at = new Date().toISOString(); writeRow_("event_plans", p); });
+  if (!preview) withLock_(function () {
+    var p = findRow_("event_plans", plan.id), now = new Date().toISOString(), prev = p.portal_seen_at;
+    p.portal_seen_at = now; writeRow_("event_plans", p);
+    if (!prev || new Date(now) - new Date(prev) >= 6 * 3600e3) writeRow_("activities", { id: Utilities.getUuid(), lead_id: plan.id, kind: "note", text: "👀 הלקוח צפה בדף האירוע", at: now });
+  });
   return { view: clientView_(lead, plan, readTable_("payments"), readTable_("docs"), readTable_("settings"), readTable_("members")) };
 }
 
@@ -316,7 +331,7 @@ function clientView_(lead, plan, payments, docs, settingsRows, members) {
     business: settings.business_name || "",
     event: { name: lead.name, type: lead.event_type, date: lead.event_date, venue: lead.venue, guests: lead.guests },
     sections: sections,
-    contact: { name: String((owner && owner.name) || settings.owner_name || settings.business_name || "").split(" ")[0], phone: settings.contact_phone || undefined }
+    contact: { name: String((owner && owner.name) || settings.owner_name || settings.business_name || "").split(" ")[0], phone: (owner && owner.phone) || settings.contact_phone || undefined }
   };
   if (sections.status) {
     view.readiness = ids.length ? Math.round(ids.filter(function (i) { return checklist[i]; }).length / ids.length * 100) : 0;

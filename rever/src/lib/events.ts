@@ -13,28 +13,6 @@ export const CHECKS: { id: string; label: string }[] = [
   { id: "final_payment", label: "תשלום אחרון התקבל" },
 ];
 
-/** רגעים באירוע + שיר לכל רגע */
-export const MOMENTS: { id: string; label: string }[] = [
-  { id: "entrance", label: "כניסה" },
-  { id: "chuppah", label: "חופה" },
-  { id: "glass", label: "שבירת כוס" },
-  { id: "first", label: "ריקוד ראשון" },
-  { id: "slow", label: "סלואו" },
-  { id: "floor", label: "פתיחת רחבה" },
-];
-
-/** ציוד לפני היציאה (ברירת מחדל, אפשר להוסיף לכל אירוע) */
-export const EQUIPMENT = [
-  "מערכת הגברה ורמקולים",
-  "מיקסר וכבלים (XLR / חשמל / מפצלים)",
-  "מיקרופונים אלחוטיים + סוללות רזרביות",
-  "תאורה ומעמדים",
-  "מחשב / קונטרולר + גיבוי",
-  "דיסק-און-קי עם הסט כגיבוי",
-  "מכונת עשן / אפקטים (אם הוזמן)",
-  "שלטים ודגלים",
-];
-
 export const AFTER_STEPS: { id: string; label: string }[] = [
   { id: "review_asked", label: "ביקשתי המלצה" },
   { id: "review_got", label: "קיבלתי המלצה" },
@@ -70,10 +48,7 @@ export interface PlanView {
   suppliers: Supplier[];
   checklist: Record<string, boolean>;
   extra: string[];
-  moments: Record<string, string>;
-  equipment: Record<string, boolean>;
   after: Record<string, boolean>;
-  songs: string[]; // כל השירים: חובה + רגעים
 }
 
 export function planOf(db: DB, lead: Lead): PlanView {
@@ -84,22 +59,12 @@ export function planOf(db: DB, lead: Lead): PlanView {
     suppliers: parse<Supplier[]>(plan.suppliers, []),
     checklist: parse<Record<string, boolean>>(plan.checklist, {}),
     extra: parse<string[]>(plan.extra_checks, []),
-    moments: parse<Record<string, string>>(plan.moments, {}),
-    equipment: parse<Record<string, boolean>>(plan.equipment, {}),
     after: parse<Record<string, boolean>>(plan.after, {}),
-    songs: [
-      ...String(plan.must_songs ?? "").split(/\n+/),
-      ...Object.values(parse<Record<string, string>>(plan.moments, {})),
-    ]
-      .map((s) => s.trim())
-      .filter(Boolean),
   };
 }
 
-/** פריטי ציוד לאירוע: ברירת המחדל + מה שהוסיפו */
-export const equipmentList = (v: PlanView) => [...EQUIPMENT, ...Object.keys(v.equipment).filter((k) => !EQUIPMENT.includes(k))];
 
-/** מה דורש טיפול באירועים (כמו במשרד): לא מוכן בשבועיים, בלי שירים בשבוע, המלצה אחרי */
+/** מה דורש טיפול באירועים (כמו במשרד): לא מוכן בשבועיים, תשלום לפי התוכנית, המלצה אחרי */
 export function eventTodos(db: DB) {
   const out: { lead: Lead; kind: "not_ready" | "review" | "payment"; text: string; sub: string }[] = [];
   for (const l of db.leads) {

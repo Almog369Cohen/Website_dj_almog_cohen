@@ -126,7 +126,7 @@ export default function SettingsPage() {
             <pre dir="ltr" style={{ background: "#f5f6f8", borderRadius: 10, padding: 12, fontSize: 12.5, marginTop: 10, overflowX: "auto" }}>
 {`POST /api/leads
 Header: x-webhook-secret: <LEADS_WEBHOOK_SECRET>
-{ "name": "דנה ויובל", "phone": "0524418823",
+{ "name": "דנה ויובל", "phone": "050-0000000",
   "event_type": "חתונה", "event_date": "2027-09-09",
   "guests": 280, "source": "פייסבוק" }`}
             </pre>

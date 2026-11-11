@@ -21,6 +21,7 @@ class Sheet {
   getRange(r, c, nr = 1, nc = 1) { return new Range(this, r, c, nr, nc); }
   appendRow(v) { this.rows.push([...v]); }
   deleteRow(n) { this.rows.splice(n - 1, 1); }
+  deleteColumn(c) { this.rows.forEach((r) => r.splice(c - 1, 1)); }
   setFrozenRows() {} setRightToLeft() {}
   getName() { return this.name; }
 }
@@ -193,6 +194,38 @@ ok("עובד בלי הרשאת קישור ללקוח לא רואה את הקוד
   assert.equal(stored.portal_token, "tok_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
   assert.match(stored.payment_plan, /5000/);
   assert.equal(stored.notes, "עודכן");
+});
+ok("צפייה של הלקוח נרשמת בהיסטוריה פעם אחת (לא בכל רענון)", () => {
+  const seen = () => ctx.readTable_("activities").filter((a) => a.text.includes("הלקוח צפה")).length;
+  assert.equal(seen(), 1);
+  call({ action: "portal_view", portal_token: "tok_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" });
+  assert.equal(seen(), 1);
+});
+ok("טלפון של המטפל מוצג ללקוח (ואם אין, הטלפון הכללי)", () => {
+  const g = ctx.readTable_("members").find((m) => m.role === "admin");
+  call({ action: "upsert", token: gal, table: "members", row: { ...ctx.publicMember_(g), phone: "050-1112222" } });
+  call({ action: "upsert", token: gal, table: "leads", row: { ...ctx.readTable_("leads")[0], assigned_to: g.id } });
+  assert.equal(call({ action: "portal_view", portal_token: "tok_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", preview: true }).view.contact.phone, "050-1112222");
+});
+ok("מחירים בלי כספים: לא רואה תוכנית תשלומים ולא יכול לשנות אותה", () => {
+  const a = ctx.readTable_("members").find((m) => m.id === "arad");
+  call({ action: "upsert", token: gal, table: "members", row: { ...ctx.publicMember_(a), can_prices: true, can_finance: false } });
+  const arad = call({ action: "login", staff_id: "arad", pin: "3333" }).token;
+  const row = call({ action: "load", token: arad }).db.event_plans[0];
+  assert.equal(row.payment_plan, undefined);
+  assert.ok(JSON.parse(row.suppliers)[0].cost); // מחירים כן
+  call({ action: "upsert", token: arad, table: "event_plans", row: { ...row, payment_plan: "[]" } });
+  assert.match(ctx.readTable_("event_plans")[0].payment_plan, /5000/);
+});
+ok("שדות דיג'יי ישנים (שירים, רגעים, ציוד) לא נשמרים, ועמודות ישנות נמחקות מהגיליון", () => {
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], must_songs: "x", equipment: "{}" } });
+  const r = ctx.readTable_("event_plans")[0];
+  assert.equal(r.must_songs, undefined); assert.equal(r.equipment, undefined);
+  const sh = sheets["אירועים"]; const c = sh.getLastColumn() + 1;
+  sh.set(1, c, "שירי חובה"); sh.set(1, c + 1, "ציוד");
+  ctx.setup();
+  const head = sh.rows[0];
+  assert.ok(!head.includes("שירי חובה") && !head.includes("ציוד") && head.includes("לוז"));
 });
 ok("ללקוח אין שום פעולת כתיבה", () => {
   for (const action of ["upsert", "remove", "set_pin", "load"]) assert.equal(call({ action, portal_token: "tok_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", table: "leads", row: { id: "x" } }).code, "auth");

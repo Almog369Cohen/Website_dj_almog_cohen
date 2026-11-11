@@ -13,7 +13,9 @@ import { agendaItems } from "@/lib/agenda";
 import { eventTodos } from "@/lib/events";
 
 export default function TodayPage() {
-  const { db, settings, me } = useStore();
+  const { db, settings, me, can } = useStore();
+  // תזכורת תשלום כוללת סכום ונשענת על התשלומים: רק למי שרואה מחירים וגם כספים
+  const todos = eventTodos(db).filter((t) => t.kind !== "payment" || (can("prices") && can("finance")));
   const [scope, setScope] = useState<"mine" | "all">(me?.role === "team" ? "mine" : "all");
   const nameOf = (id?: string) => db.members.find((m) => m.id === id)?.name;
   const router = useRouter();
@@ -127,7 +129,7 @@ export default function TodayPage() {
           ))}
         </div>
       </div>
-      {eventTodos(db).length > 0 && (
+      {todos.length > 0 && (
         <div className="card">
           <h2>
             📋 אירועים שדורשים טיפול
@@ -135,8 +137,8 @@ export default function TodayPage() {
               לכל האירועים ←
             </Link>
           </h2>
-          {eventTodos(db).map((t) => (
-            <button key={t.kind + t.lead.id} className="ag" style={{ width: "100%", textAlign: "right" }} onClick={() => router.push(`/events/view?id=${t.lead.id}`)}>
+          {todos.map((t, i) => (
+            <button key={t.kind + t.lead.id + i} className="ag" style={{ width: "100%", textAlign: "right" }} onClick={() => router.push(`/events/view?id=${t.lead.id}`)}>
               <div className="tm" style={{ fontSize: 20 }}>{t.kind === "review" ? "⭐" : t.kind === "payment" ? "💳" : "🗓️"}</div>
               <div className="bar" style={{ background: t.kind === "review" ? "var(--gold)" : t.kind === "payment" ? "var(--red)" : "var(--orange)" }} />
               <div>

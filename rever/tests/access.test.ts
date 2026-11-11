@@ -143,6 +143,33 @@ async function main() {
     assert.equal(r.portal_token, "tok_x"); assert.equal(r.portal_enabled, true); assert.match(String(r.payment_plan), /5000/); assert.equal(r.notes, "x");
   });
 
+  await ok("מחירים בלי כספים: תוכנית התשלומים לא נשלחת ונשמרת", async () => {
+    tables.event_plans = [{ id: "L1", payment_plan: "[{\"amount\":5000}]", suppliers: JSON.stringify([{ id: "s1", name: "דני", cost: 8000 }]) }];
+    await writeRow(pub("gal"), "members", { ...pub("arad"), can_prices: true, can_finance: false });
+    const d = await readAll(pub("arad"));
+    assert.equal(d.event_plans[0].payment_plan, undefined);
+    assert.equal(JSON.parse(d.event_plans[0].suppliers!)[0].cost, 8000);
+    await writeRow(pub("arad"), "event_plans", { ...d.event_plans[0], payment_plan: "[]" });
+    assert.match(String(tables.event_plans[0].payment_plan), /5000/);
+  });
+  await ok("שדות דיג'יי ישנים (שירים, רגעים, ציוד) נזרקים", async () => {
+    await writeRow(pub("gal"), "event_plans", { id: "L1", must_songs: "x", no_songs: "y", moments: "{}", equipment: "{}" });
+    const r = tables.event_plans[0];
+    for (const k of ["must_songs", "no_songs", "moments", "equipment"]) assert.equal(k in r, false);
+  });
+  await ok("צפייה של הלקוח: נרשמת בהיסטוריה פעם אחת, וטלפון המטפל מוצג", async () => {
+    const { portalView } = await import("../src/lib/server/access");
+    tables.leads[0].status = "won"; tables.leads[0].assigned_to = "gal";
+    tables.members.find((m) => m.id === "gal")!.phone = "050-1112222";
+    tables.event_plans = [{ id: "L1", portal_token: "tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", portal_enabled: true }];
+    const before = tables.activities.length;
+    const v = await portalView("tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", false);
+    await portalView("tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", false);
+    await portalView("tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true);
+    assert.equal(tables.activities.length, before + 1);
+    assert.equal(v!.contact.phone, "050-1112222");
+  });
+
   // ---- קודים וסשן ----
   await ok("קוד נשמר מוצפן ונבדק נכון", () => {
     const h = hashPin("1234");

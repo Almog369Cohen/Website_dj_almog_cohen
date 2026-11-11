@@ -26,7 +26,21 @@ export const supabase = () => {
   return client;
 };
 
-const LS_KEY = "rever-crm-demo-v9";
+const LS_KEY = "rever-crm-demo-v10";
+
+/** מצב דמו: הלקוח צפה. מעדכן "נצפה לאחרונה" ורושם בהיסטוריה (לכל היותר פעם ב-6 שעות) */
+export function markLocalSeen(db: DB, planId: string) {
+  try {
+    const now = new Date().toISOString();
+    const plan = db.event_plans.find((p) => p.id === planId);
+    if (!plan) return;
+    const prev = plan.portal_seen_at;
+    plan.portal_seen_at = now;
+    if (!prev || +new Date(now) - +new Date(prev) >= 6 * 3600e3)
+      db.activities.push({ id: Math.random().toString(36).slice(2), lead_id: planId, kind: "note", text: "👀 הלקוח צפה בדף האירוע", at: now });
+    localStorage.setItem(LS_KEY, JSON.stringify(db));
+  } catch {}
+}
 
 /** מצב דמו: כל הנתונים מהדפדפן (לקישור ללקוח באותו מכשיר) */
 export function readLocalDB(): DB | null {

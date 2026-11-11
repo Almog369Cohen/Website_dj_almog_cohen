@@ -63,7 +63,7 @@ function EventCard({ l }: { l: Lead }) {
     { id: "timeline", label: "🕒 לו״ז", show: true },
     { id: "suppliers", label: "🤝 ספקים", show: true },
     { id: "prep", label: "✅ הכנה", show: true },
-    { id: "payments", label: "💳 תשלומים", show: can("prices") },
+    { id: "payments", label: "💳 תשלומים", show: can("prices") && can("finance") },
     { id: "portal", label: "🔗 קישור ללקוח", show: can("portal") },
   ];
 
@@ -114,7 +114,7 @@ function EventCard({ l }: { l: Lead }) {
       {tab === "timeline" && <TimelineTab l={l} v={v} onChange={(t) => savePlan({ timeline: JSON.stringify(t) })} />}
       {tab === "suppliers" && <SuppliersTab v={v} onChange={(s) => savePlan({ suppliers: JSON.stringify(s) })} showCost={can("prices")} />}
       {tab === "prep" && <PrepTab l={l} v={v} days={days} savePlan={savePlan} />}
-      {tab === "payments" && can("prices") && <PaymentsTab l={l} v={v} savePlan={savePlan} />}
+      {tab === "payments" && can("prices") && can("finance") && <PaymentsTab l={l} v={v} savePlan={savePlan} />}
       {tab === "portal" && can("portal") && <PortalTab l={l} v={v} savePlan={savePlan} />}
     </>
   );
@@ -451,6 +451,7 @@ function PaymentsTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: P
           </div>
         ) : null}
         {plan.length > 0 && (
+          <div className="tablewrap">
           <table className="tbl">
             <thead>
               <tr>
@@ -491,6 +492,7 @@ function PaymentsTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: P
               ))}
             </tbody>
           </table>
+          </div>
         )}
         <button className="link" style={{ marginTop: 10 }} onClick={() => setPlan([...plan, { id: uid(), name: "", amount: 0 }])}>
           + שלב תשלום
@@ -500,7 +502,7 @@ function PaymentsTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: P
         </div>
       </div>
 
-      {can("finance") && (
+      {(
         <div className="card">
           <h2>
             📄 מסמכים
