@@ -7,10 +7,12 @@ import type { Doc, EventPlan, Lead, PlanPayment, PortalSection, Supplier, Timeli
 import { DOC_STATUS, DOC_TYPES, PORTAL_SECTIONS, SUPPLIER_CATEGORIES } from "@/lib/types";
 import { nis, relDay, shortDate, uid } from "@/lib/format";
 import { AFTER_STEPS, CHECKS, byTime, daysUntil, planOf, readiness, timelineTemplate, timelineText, type PlanView } from "@/lib/events";
-import { CLIENT_STEP_LABELS, DEFAULT_CLIENT_STEPS, DEFAULT_SECTIONS, allocatePlan, newPortalToken, portalPath } from "@/lib/portal";
+import { CLIENT_STEP_LABELS, DEFAULT_CLIENT_STEPS, DEFAULT_SECTIONS, allocatePlan, newPortalCode, newPortalToken, portalPath } from "@/lib/portal";
 import { fillTemplate, waLink } from "@/lib/whatsapp";
+import { TASKS_LOG_PREFIX, lateTasks, parseTasks, partnersOf, starterTasks } from "@/lib/tasks";
+import { TaskList } from "@/components/TaskList";
 
-type Tab = "timeline" | "suppliers" | "prep" | "payments" | "portal";
+type Tab = "timeline" | "suppliers" | "prep" | "tasks" | "payments" | "portal";
 
 export default function EventPage() {
   return (
@@ -48,7 +50,7 @@ function EventCard({ l }: { l: Lead }) {
   useEffect(() => {
     const read = () => {
       const h = window.location.hash.slice(1) as Tab;
-      if (["timeline", "suppliers", "prep", "payments", "portal"].includes(h)) setTab(h);
+      if (["timeline", "suppliers", "prep", "tasks", "payments", "portal"].includes(h)) setTab(h);
     };
     read();
     window.addEventListener("hashchange", read);
@@ -63,6 +65,7 @@ function EventCard({ l }: { l: Lead }) {
     { id: "timeline", label: "🕒 לו״ז", show: true },
     { id: "suppliers", label: "🤝 ספקים", show: true },
     { id: "prep", label: "✅ הכנה", show: true },
+    { id: "tasks", label: "📝 משימות הזוג", show: l.status === "won" },
     { id: "payments", label: "💳 תשלומים", show: can("prices") && can("finance") },
     { id: "portal", label: "🔗 קישור ללקוח", show: can("portal") },
   ];
@@ -114,6 +117,7 @@ function EventCard({ l }: { l: Lead }) {
       {tab === "timeline" && <TimelineTab l={l} v={v} onChange={(t) => savePlan({ timeline: JSON.stringify(t) })} />}
       {tab === "suppliers" && <SuppliersTab v={v} onChange={(s) => savePlan({ suppliers: JSON.stringify(s) })} showCost={can("prices")} />}
       {tab === "prep" && <PrepTab l={l} v={v} days={days} savePlan={savePlan} />}
+      {tab === "tasks" && <CoupleTasksTab l={l} v={v} savePlan={savePlan} />}
       {tab === "payments" && can("prices") && can("finance") && <PaymentsTab l={l} v={v} savePlan={savePlan} />}
       {tab === "portal" && can("portal") && <PortalTab l={l} v={v} savePlan={savePlan} />}
     </>
@@ -411,6 +415,83 @@ function PrepTab({ l, v, days, savePlan }: { l: Lead; v: PlanView; days: number 
   );
 }
 
+/* ---------------- משימות הזוג ---------------- */
+function CoupleTasksTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Partial<EventPlan>) => void }) {
+  const { db, saveTasks, toast } = useStore();
+  const tasks = parseTasks(v.plan.client_tasks);
+  const dismissed = parse<string[]>(v.plan.dismissed_suggestions, []);
+  const partners = partnersOf(l, v.plan);
+  const late = lateTasks(tasks, 1);
+  const log = db.activities
+    .filter((a) => a.lead_id === l.id && (a.text.startsWith(TASKS_LOG_PREFIX) || a.text.includes("הלקוח צפה")))
+    .sort((a, b) => b.at.localeCompare(a.at))
+    .slice(0, 6);
+  return (
+    <div className="eventgrid">
+      <div className="card">
+        <h2>
+          📝 המשימות של הזוג
+          <span className="r muted" style={{ fontSize: 13, fontWeight: 500 }}>
+            הזוג רואה ועורך את אותה רשימה
+          </span>
+        </h2>
+        <TaskList
+          variant="staff"
+          tasks={tasks}
+          dismissed={dismissed}
+          partners={partners}
+          eventType={l.event_type}
+          eventDate={l.event_date}
+          onChange={(t, d) => saveTasks(l.id, t, d)}
+        />
+        {tasks.length === 0 && (
+          <button className="btn" style={{ marginTop: 10 }} onClick={() => (saveTasks(l.id, starterTasks(l.event_type, l.event_date), dismissed), toast("נטענה רשימה מוכנה ✓"))}>
+            📋 טעינת רשימה מוכנה ל{l.event_type}
+          </button>
+        )}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <div className="card">
+          <h2>👫 בני הזוג</h2>
+          <div className="form">
+            <div className="f">
+              <label>שם א׳</label>
+              <input defaultValue={v.plan.partner_a ?? ""} placeholder={partners.a} onBlur={(e) => e.target.value !== (v.plan.partner_a ?? "") && savePlan({ partner_a: e.target.value.trim() || undefined })} />
+            </div>
+            <div className="f">
+              <label>שם ב׳</label>
+              <input defaultValue={v.plan.partner_b ?? ""} placeholder={partners.b} onBlur={(e) => e.target.value !== (v.plan.partner_b ?? "") && savePlan({ partner_b: e.target.value.trim() || undefined })} />
+            </div>
+          </div>
+        </div>
+        <div className="card">
+          <h2>🕘 מה הזוג עשה</h2>
+          {log.length === 0 && <div className="muted" style={{ fontSize: 14 }}>עוד לא נכנסו לדף.</div>}
+          {log.map((a) => (
+            <div key={a.id} className="trow" style={{ display: "block" }}>
+              <div style={{ fontSize: 14 }}>{a.text}</div>
+              <div className="muted" style={{ fontSize: 12.5 }}>{relDay(a.at)}</div>
+            </div>
+          ))}
+          {late.map((t) => (
+            <div key={t.id} className="trow">
+              <span style={{ fontSize: 14 }}>⚠ &quot;{t.title}&quot; באיחור</span>
+              <a
+                className="btn sm wa ml"
+                target="_blank"
+                rel="noreferrer"
+                href={waLink(l.phone, `היי ${l.name} 😊 ראיתי ש"${t.title}" עוד פתוח. צריכים עזרה או המלצה? אנחנו כאן.`)}
+              >
+                💬 להציע עזרה
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- תשלומים ---------------- */
 function PaymentsTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Partial<EventPlan>) => void }) {
   const { db, save, can } = useStore();
@@ -535,11 +616,14 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
   const [base, setBase] = useState("");
   useEffect(() => setBase(window.location.origin + window.location.pathname.split("/events")[0]), []);
   const token = v.plan.portal_token;
+  const code = v.plan.portal_code;
+  const ver = Number(v.plan.portal_code_ver) || 0;
   const enabled = !!v.plan.portal_enabled && !!token;
-  const url = token ? base + portalPath(token) : "";
+  const url = token ? base + portalPath(token) : ""; // תצוגה מקדימה לצוות בלבד
+  const loginUrl = base + "/e";
   const sections = { ...DEFAULT_SECTIONS, ...parse<Partial<Record<PortalSection, boolean>>>(v.plan.portal_sections, {}) };
   const steps = parse<string[]>(v.plan.client_steps, DEFAULT_CLIENT_STEPS);
-  const msg = `היי ${l.name} 🥂\nזה הדף של האירוע שלכם, כל מה שחשוב במקום אחד: הלו״ז, התשלומים ואנשי הקשר.\n${url}`;
+  const msg = `היי ${l.name} 🥂\nזה הדף של האירוע שלכם, כל מה שחשוב במקום אחד: הלו״ז, המשימות שלכם, התשלומים ואנשי הקשר.\n${loginUrl}\nנכנסים עם מספר הטלפון הזה והקוד: ${code}`;
   const [frame, setFrame] = useState(0);
   const refresh = () => setTimeout(() => setFrame((x) => x + 1), 600);
 
@@ -549,56 +633,74 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
     <div className="portalgrid">
       <div className="card">
         <h2>
-          🔗 הקישור של הלקוח
+          🔗 הדף של הלקוח
           <span className="r">{enabled ? <span className="tag t-green">פעיל</span> : <span className="tag t-gray">כבוי</span>}</span>
         </h2>
-        {!enabled ? (
+        {!enabled || !code ? (
           <>
             <p className="muted" style={{ fontSize: 14, lineHeight: 1.6, marginBottom: 12 }}>
-              דף אישי לאירוע, ללא סיסמה, מהטלפון. הלקוח רק צופה: לו״ז, התשלומים שלו, הספקים ואיש הקשר. בלי עלויות, רווח או הערות פנימיות.
+              דף אישי לאירוע, מהטלפון. הזוג נכנס עם מספר הטלפון שלו וקוד שאתם שולחים. הוא רואה לו״ז, תשלומים, ספקים ואיש קשר, ועורך רק את המשימות שלו. בלי עלויות, רווח או הערות פנימיות.
             </p>
-            <button className="btn pri" onClick={() => (savePlan({ portal_token: token || newPortalToken(), portal_enabled: true }), refresh())}>
-              🔗 הפעלת הקישור
+            <button
+              className="btn pri"
+              onClick={() => (savePlan({ portal_token: token || newPortalToken(), portal_enabled: true, portal_code: code || newPortalCode(), portal_code_ver: ver }), refresh())}
+            >
+              🔗 הפעלת הדף והנפקת קוד
             </button>
           </>
         ) : (
           <>
-            <div className="linkbox" dir="ltr">
-              🔒 {url.replace(/^https?:\/\//, "")}
+            <div className="codebox">
+              <div>
+                <small>כתובת (אותה לכל הלקוחות)</small>
+                <b dir="ltr">{loginUrl.replace(/^https?:\/\//, "")}</b>
+              </div>
+              <div>
+                <small>טלפון</small>
+                <b dir="ltr">{l.phone || "—"}</b>
+              </div>
+              <div>
+                <small>קוד כניסה</small>
+                <b dir="ltr" className="code">{code}</b>
+              </div>
             </div>
+            {!l.phone && <div className="banner err" style={{ marginTop: 10 }}>אין טלפון בכרטיס הלקוח, ולכן הזוג לא יוכל להיכנס. מוסיפים טלפון בכרטיס הלקוח.</div>}
             <div className="row" style={{ marginTop: 12, flexWrap: "wrap" }}>
               <a className="btn wa" href={waLink(l.phone, msg)} target="_blank" rel="noreferrer">
                 💬 שליחה ל{l.name}
               </a>
-              <button className="btn" onClick={() => navigator.clipboard?.writeText(url).then(() => toast("הקישור הועתק"))}>
-                📋 העתקה
+              <button className="btn" onClick={() => navigator.clipboard?.writeText(msg).then(() => toast("ההודעה הועתקה"))}>
+                📋 העתקת ההודעה
               </button>
-              <a className="btn" href={url + "&preview=1"} target="_blank" rel="noreferrer">
+              <a className="btn" href={url} target="_blank" rel="noreferrer">
                 👁 לראות כמו הלקוח
               </a>
             </div>
             <div className="trow" style={{ marginTop: 8 }}>
               <span>👀 נצפה לאחרונה</span>
-              <b className="ml">{v.plan.portal_seen_at ? relDay(v.plan.portal_seen_at) : "עוד לא נפתח"}</b>
+              <b className="ml">{v.plan.portal_seen_at ? relDay(v.plan.portal_seen_at) : "עוד לא נכנסו"}</b>
             </div>
           </>
         )}
-        {token && (
+        {token && code && (
           <>
             <div className="trow">
-              <span>הקישור פעיל</span>
+              <span>הדף פעיל</span>
               <label className="switch ml">
                 <input type="checkbox" checked={enabled} onChange={(e) => (savePlan({ portal_enabled: e.target.checked }), refresh())} />
                 <span />
               </label>
             </div>
             <div className="trow">
-              <span className="muted" style={{ fontSize: 14 }}>הועבר למישהו בטעות?</span>
+              <span className="muted" style={{ fontSize: 14 }}>הקוד הגיע למישהו אחר?</span>
               <button
                 className="btn sm danger ml"
-                onClick={() => confirm("הקישור הישן יפסיק לעבוד מיד. להנפיק קישור חדש?") && (savePlan({ portal_token: newPortalToken() }), toast("נוצר קישור חדש. הישן לא פעיל"), refresh())}
+                onClick={() =>
+                  confirm("מי שנכנס עם הקוד הנוכחי ינותק מיד. להנפיק קוד חדש?") &&
+                  (savePlan({ portal_code: newPortalCode(), portal_code_ver: ver + 1, portal_token: newPortalToken() }), toast("נוצר קוד חדש. צריך לשלוח אותו לזוג"), refresh())
+                }
               >
-                ביטול והנפקת קישור חדש
+                קוד חדש
               </button>
             </div>
           </>
@@ -648,7 +750,7 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
         <div className="muted" style={{ fontSize: 13.5, fontWeight: 600 }}>תצוגה מקדימה · כך זה נראה אצל הלקוח</div>
         {enabled ? (
           <div className="phone">
-            <iframe key={frame} src={url + "&preview=1"} title="תצוגה מקדימה" />
+            <iframe key={frame} src={url} title="תצוגה מקדימה" />
           </div>
         ) : (
           <div className="phone phone-off">הקישור כבוי</div>

@@ -157,17 +157,72 @@ async function main() {
     const r = tables.event_plans[0];
     for (const k of ["must_songs", "no_songs", "moments", "equipment"]) assert.equal(k in r, false);
   });
-  await ok("צפייה של הלקוח: נרשמת בהיסטוריה פעם אחת, וטלפון המטפל מוצג", async () => {
-    const { portalView } = await import("../src/lib/server/access");
-    tables.leads[0].status = "won"; tables.leads[0].assigned_to = "gal";
+  // ---- הזוג: כניסה בטלפון + קוד, צפייה, ושמירת משימות ----
+  const T = (id: string, title: string, extra: Record<string, unknown> = {}) => ({ id, title, owner: "both", category: "guests", status: "todo", done: false, section: "before", order: 0, ...extra });
+  let session = "";
+  await ok("כניסת הזוג: טלפון + קוד נכונים בלבד; 5 טעויות נועלות", async () => {
+    const { portalLogin } = await import("../src/lib/server/access");
+    tables.leads[0].status = "won"; tables.leads[0].phone = "050-1234567"; tables.leads[0].assigned_to = "gal";
     tables.members.find((m) => m.id === "gal")!.phone = "050-1112222";
-    tables.event_plans = [{ id: "L1", portal_token: "tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", portal_enabled: true }];
+    tables.event_plans = [{ id: "L1", portal_token: "tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", portal_enabled: true, portal_code: "482913", portal_code_ver: 0, client_tasks_rev: 0, internal_notes: "סודי" }];
+    await denied(portalLogin("0501234567", "111111"));
+    session = (await portalLogin("+972-50-123-4567", "482913")).session;
+    assert.ok(session.length > 20);
+    for (let i = 0; i < 5; i++) await denied(portalLogin("0501234567", "000000"));
+    await assert.rejects(portalLogin("0501234567", "482913"), /יותר מדי ניסיונות/);
+    tables.event_plans[0].portal_locked_until = null;
+    await denied(portalLogin("0509999999", "482913")); // טלפון אחר
+  });
+  await ok("צפייה: רק עם אסימון תקף; נרשמת פעם אחת; טלפון המטפל; בלי הערות פנימיות", async () => {
+    const { portalView } = await import("../src/lib/server/access");
     const before = tables.activities.length;
-    const v = await portalView("tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", false);
-    await portalView("tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", false);
-    await portalView("tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true);
+    const v = await portalView(session);
+    await portalView(session);
     assert.equal(tables.activities.length, before + 1);
     assert.equal(v!.contact.phone, "050-1112222");
+    assert.ok(!JSON.stringify(v).includes("סודי") && !JSON.stringify(v).includes("482913"));
+    assert.equal(await portalView("tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), null); // הקישור הסודי לא מספיק
+    assert.equal(await portalView(session.slice(0, -2) + "xx"), null); // חתימה מזויפת
+    const { makeSession } = await import("../src/lib/server/session");
+    assert.equal(await portalView(makeSession("gal")), null); // אסימון עובד לא נכנס כלקוח
+  });
+  await ok("הזוג שומר משימות, וכותב רק אותן (לא מחיר, לא הערות, לא קישור)", async () => {
+    const { portalTasksSave } = await import("../src/lib/server/access");
+    const r = await portalTasksSave(session, { tasks: [T("k1", "טבעות"), { ...T("k2", "רבנות"), price: 1, internal_notes: "x" }], dismissed: ["s-bus"], rev: 0 });
+    assert.equal(r.rev, 1);
+    const p = tables.event_plans[0];
+    assert.equal(JSON.parse(String(p.client_tasks)).length, 2);
+    assert.ok(!String(p.client_tasks).includes("price"));
+    assert.equal(p.internal_notes, "סודי"); assert.equal(p.portal_enabled, true); assert.equal(tables.leads[0].price, 20000);
+    assert.ok(tables.activities.some((a) => String(a.text).startsWith("✅ הזוג עדכן משימות: הוסיפו: טבעות, רבנות")));
+  });
+  await ok("התנגשות גרסה, ולידציה, וחלק משימות כבוי חוסמים", async () => {
+    const { portalTasksSave, Conflict } = await import("../src/lib/server/access");
+    await assert.rejects(portalTasksSave(session, { tasks: [], rev: 0 }), (e) => e instanceof Conflict);
+    await denied(portalTasksSave(session, { tasks: Array.from({ length: 101 }, (_, i) => T("k" + i, "x")), rev: 1 }));
+    await denied(portalTasksSave(session, { tasks: [T("k1", "x", { owner: "hacker" })], rev: 1 }));
+    await denied(portalTasksSave(session, { tasks: [T("k1", "x".repeat(121))], rev: 1 }));
+    tables.event_plans[0].portal_sections = JSON.stringify({ tasks: false });
+    await denied(portalTasksSave(session, { tasks: [], rev: 1 }));
+    tables.event_plans[0].portal_sections = null;
+  });
+  await ok("סימון נרשם בהיסטוריה באותה שורה (מקובץ לשעה)", async () => {
+    const { portalTasksSave } = await import("../src/lib/server/access");
+    const n0 = tables.activities.length;
+    await portalTasksSave(session, { tasks: [T("k1", "טבעות", { done: true }), T("k2", "רבנות")], rev: 1 });
+    assert.equal(tables.activities.length, n0);
+    assert.ok(tables.activities.some((a) => String(a.text).includes("סימנו: טבעות")));
+  });
+  await ok("שמירה רגילה של הצוות לא דורסת משימות; קוד חדש מנתק את הזוג", async () => {
+    const { portalView, staffTasksSave } = await import("../src/lib/server/access");
+    await writeRow(pub("gal"), "event_plans", { id: "L1", client_tasks: "[]", client_tasks_rev: 0, portal_fails: 0, notes: "x", portal_enabled: true, portal_code: "482913", portal_code_ver: 0 });
+    assert.equal(JSON.parse(String(tables.event_plans[0].client_tasks)).length, 2);
+    await staffTasksSave(pub("arad"), "L1", { tasks: [T("k1", "טבעות")], rev: 2 });
+    assert.equal(tables.event_plans[0].client_tasks_rev, 3);
+    const d = await readAll(pub("sapir"));
+    assert.equal(d.event_plans[0].portal_code, undefined); // בלי הרשאת קישור ללקוח
+    await writeRow(pub("gal"), "event_plans", { ...tables.event_plans[0], portal_code: "777777", portal_code_ver: 1 });
+    assert.equal(await portalView(session), null);
   });
 
   // ---- קודים וסשן ----

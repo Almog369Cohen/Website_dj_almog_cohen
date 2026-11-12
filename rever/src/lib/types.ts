@@ -181,14 +181,26 @@ export interface EventPlan {
   payment_plan?: string; // JSON: PlanPayment[]
   contract_status?: "none" | "sent" | "signed";
   internal_notes?: string; // הלקוח לא רואה
+  // ---- כניסת הזוג (טלפון + קוד) ----
+  portal_code?: string; // 6 ספרות. רק מי שיש לו הרשאת "קישור ללקוח" רואה
+  portal_code_ver?: number; // עולה בכל "קוד חדש" ומנתק כניסות ישנות
+  portal_fails?: number; // שרת בלבד
+  portal_locked_until?: string; // שרת בלבד
+  // ---- המשימות של הזוג ----
+  client_tasks?: string; // JSON: ClientTask[] (src/lib/tasks.ts)
+  client_tasks_rev?: number; // גרסה: מונע דריסה בין הזוג לצוות
+  partner_a?: string;
+  partner_b?: string;
+  dismissed_suggestions?: string; // JSON: string[]
   updated_at?: string;
 }
 export interface TimelineItem { id: string; time: string; title: string; who?: string; show_client?: boolean }
 export interface Supplier { id: string; role: string; name: string; phone?: string; cost?: number; confirmed?: boolean; category?: string; show_client?: boolean }
 export interface PlanPayment { id: string; name: string; amount: number; due?: string }
-export type PortalSection = "status" | "timeline" | "payments" | "suppliers" | "details";
+export type PortalSection = "status" | "tasks" | "timeline" | "payments" | "suppliers" | "details";
 export const PORTAL_SECTIONS: { id: PortalSection; label: string; hint?: string }[] = [
   { id: "status", label: "✨ סטטוס הכנה" },
+  { id: "tasks", label: "✅ המשימות שלנו", hint: "הזוג עורך" },
   { id: "timeline", label: "🕒 לו״ז הערב", hint: "בלי \"מי אחראי\"" },
   { id: "payments", label: "💳 התשלומים שלו", hint: "בלי עלויות ורווח" },
   { id: "suppliers", label: "🤝 ספקים", hint: "בלי מחירים" },

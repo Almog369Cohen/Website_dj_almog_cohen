@@ -1,6 +1,7 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { DB, Table } from "./types";
 import { demoDB } from "./seed";
+import { applyClientTasks } from "./portal";
 
 /** שכבת נתונים אחת עם שני מימושים: Supabase (אמיתי) או localStorage (דמו). */
 export interface Repo {
@@ -14,6 +15,8 @@ export interface Repo {
   /** מצב דמו: מחיקת נתוני הדוגמה (שומר צוות, תבניות והגדרות) */
   clean?(): Promise<DB>;
   restore?(db: DB): Promise<DB>;
+  /** המשימות של הזוג (מסלול נפרד עם גרסה, כדי לא לדרוס שינוי של הזוג) */
+  saveTasks(id: string, input: { tasks: unknown; dismissed?: unknown; rev: number }): Promise<{ rev: number }>;
 }
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -26,7 +29,7 @@ export const supabase = () => {
   return client;
 };
 
-const LS_KEY = "rever-crm-demo-v10";
+const LS_KEY = "rever-crm-demo-v11";
 
 /** מצב דמו: הלקוח צפה. מעדכן "נצפה לאחרונה" ורושם בהיסטוריה (לכל היותר פעם ב-6 שעות) */
 export function markLocalSeen(db: DB, planId: string) {
@@ -88,6 +91,15 @@ class LocalRepo implements Repo {
     else list.push(row as { id: string });
     this.write(db);
   }
+  async saveTasks(id: string, input: { tasks: unknown; dismissed?: unknown; rev: number }) {
+    const db = this.read();
+    let plan = db.event_plans.find((p) => p.id === id);
+    if (!plan) db.event_plans.push((plan = { id }));
+    const r = applyClientTasks(plan, input, { client: false });
+    Object.assign(plan, r.patch);
+    this.write(db);
+    return { rev: r.rev };
+  }
   async remove(table: Table, id: string) {
     const db = this.read();
     (db[table] as { id: string }[]) = (db[table] as { id: string }[]).filter((r) => r.id !== id);
@@ -132,6 +144,9 @@ class ApiRepo implements Repo {
   }
   async upsert<T extends Table>(table: T, row: DB[T][number]) {
     await this.call("POST", "/api/data", { table, row });
+  }
+  async saveTasks(id: string, input: { tasks: unknown; dismissed?: unknown; rev: number }) {
+    return (await this.call("POST", "/api/data", { action: "tasks", id, ...input })) as { rev: number };
   }
   async remove(table: Table, id: string) {
     await this.call("DELETE", `/api/data?table=${table}&id=${encodeURIComponent(id)}`);
@@ -178,6 +193,23 @@ export const sheetsToken = {
   },
 };
 
+/** קריאה לשרת שבגיליון מדף הלקוח: בלי אסימון עובד, ובלי לנתק עובד שמחובר באותו מכשיר */
+export async function portalSheetsCall<T = Record<string, unknown>>(action: string, payload: Record<string, unknown> = {}): Promise<T> {
+  const url = sheetsUrl();
+  if (!url) throw new Error("הגיליון לא מחובר");
+  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action, ...payload }), redirect: "follow" });
+  const data = await res.json().catch(() => ({ error: "תשובה לא תקינה" }));
+  if (data.error) throw Object.assign(new Error(data.error), { code: data.code });
+  return data as T;
+}
+
+/** מצב דמו: קריאה וכתיבה ישירה של הנתונים בדפדפן (לדף הלקוח באותו מכשיר) */
+export function writeLocalDB(db: DB) {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify(db));
+  } catch {}
+}
+
 /** קריאה לשרת שבגיליון. text/plain כדי שהדפדפן לא ישלח בקשת preflight. */
 export async function sheetsCall<T = Record<string, unknown>>(action: string, payload: Record<string, unknown> = {}): Promise<T> {
   const url = sheetsUrl();
@@ -210,6 +242,9 @@ class SheetsRepo implements Repo {
   }
   async upsert<T extends Table>(table: T, row: DB[T][number]) {
     await sheetsCall("upsert", { table, row });
+  }
+  async saveTasks(id: string, input: { tasks: unknown; dismissed?: unknown; rev: number }) {
+    return sheetsCall<{ rev: number }>("tasks_save", { id, ...input });
   }
   async remove(table: Table, id: string) {
     await sheetsCall("remove", { table, id });

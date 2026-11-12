@@ -311,3 +311,10 @@ h1{font-size:28px;font-weight:800}
 /* תוכן רחב (טבלה, קוד) גולל בתוך הכרטיס ולא מרחיב את הדף בטלפון */
 .grid2>*,.leadgrid>*,.eventgrid>*,.portalgrid>*{min-width:0}
 pre{max-width:100%;overflow-x:auto}
+.codebox{display:grid;grid-template-columns:minmax(0,1.6fr) auto auto;gap:10px}
+.codebox>div{background:#f5f6f8;border-radius:12px;padding:10px 12px;min-width:0}
+.codebox small{display:block;font-size:12px;color:var(--muted)}
+.codebox b{display:block;font-size:15px;overflow-wrap:anywhere}
+.codebox>div:first-child b{font-size:13.5px;font-weight:600}
+.codebox .code{font-size:22px;letter-spacing:3px;font-variant-numeric:tabular-nums}
+@media (max-width:900px){.codebox{grid-template-columns:1fr 1fr}.codebox>div:first-child{grid-column:1/-1}}

@@ -31,11 +31,14 @@ var TABLES = {
   docs: ["מסמכים", [["id", "מזהה"], ["lead_id", "ליד"], ["type", "סוג"], ["number", "מספר"], ["amount", "סכום"], ["date", "תאריך"], ["status", "סטטוס"], ["show_client", "מוצג ללקוח"]]],
   settings: ["הגדרות", [["id", "מזהה"], ["business_name", "שם העסק"], ["owner_name", "שם בהודעות"], ["whatsapp_mode", "שליחת וואטסאפ"], ["make_webhook_url", "Make webhook"], ["vat_rate", "מעמ"], ["sheet_url", "גיליון לידים"], ["sheet_map", "מיפוי עמודות"], ["sheet_auto", "משיכה אוטומטית"], ["sheet_last_pull", "משיכה אחרונה"], ["contact_phone", "טלפון לפניות לקוחות"]]],
   members: ["צוות", [["id", "מזהה"], ["name", "שם"], ["title", "תפקיד"], ["phone", "טלפון"], ["role", "הרשאה"], ["can_prices", "מחירים"], ["can_finance", "כספים"], ["can_delete", "מחיקה"], ["can_templates", "תבניות"], ["can_portal", "קישור ללקוח"], ["active", "פעיל"], ["created_at", "נוצר"], ["pin_hash", "קוד מוצפן"], ["failed_attempts", "ניסיונות שגויים"], ["locked_until", "נעול עד"], ["last_login", "כניסה אחרונה"]]],
-  event_plans: ["אירועים", [["id", "ליד"], ["timeline", "לוז"], ["suppliers", "ספקים"], ["checklist", "צקליסט"], ["extra_checks", "פריטים נוספים"], ["contact_name", "איש קשר"], ["contact_phone", "טלפון איש קשר"], ["requests", "בקשות מיוחדות"], ["notes", "הערות"], ["after", "אחרי האירוע"], ["portal_token", "קוד קישור ללקוח"], ["portal_enabled", "קישור פעיל"], ["portal_sections", "מה הלקוח רואה"], ["portal_seen_at", "הלקוח צפה"], ["client_steps", "שלבים ללקוח"], ["payment_plan", "תוכנית תשלומים"], ["contract_status", "חוזה"], ["internal_notes", "הערות פנימיות"], ["updated_at", "עודכן"]]]
+  event_plans: ["אירועים", [["id", "ליד"], ["timeline", "לוז"], ["suppliers", "ספקים"], ["checklist", "צקליסט"], ["extra_checks", "פריטים נוספים"], ["contact_name", "איש קשר"], ["contact_phone", "טלפון איש קשר"], ["requests", "בקשות מיוחדות"], ["notes", "הערות"], ["after", "אחרי האירוע"], ["portal_token", "קוד קישור ללקוח"], ["portal_enabled", "קישור פעיל"], ["portal_sections", "מה הלקוח רואה"], ["portal_seen_at", "הלקוח צפה"], ["client_steps", "שלבים ללקוח"], ["payment_plan", "תוכנית תשלומים"], ["contract_status", "חוזה"], ["internal_notes", "הערות פנימיות"], ["portal_code", "קוד כניסה ללקוח"], ["portal_code_ver", "גרסת קוד"], ["portal_fails", "ניסיונות שגויים"], ["portal_locked_until", "נעול עד"], ["client_tasks", "משימות הזוג"], ["client_tasks_rev", "גרסת משימות"], ["partner_a", "בן/בת זוג א"], ["partner_b", "בן/בת זוג ב"], ["dismissed_suggestions", "הצעות שנסגרו"], ["updated_at", "עודכן"]]]
 };
-var NUMBERS = { guests: 1, price: 1, amount: 1, vat_rate: 1, sort: 1, failed_attempts: 1 };
+var NUMBERS = { guests: 1, price: 1, amount: 1, vat_rate: 1, sort: 1, failed_attempts: 1, portal_code_ver: 1, portal_fails: 1, client_tasks_rev: 1 };
 var BOOLS = { can_prices: 1, can_finance: 1, can_delete: 1, can_templates: 1, can_portal: 1, active: 1, sheet_auto: 1, portal_enabled: 1, show_client: 1 };
-var PORTAL_FIELDS = ["portal_token", "portal_enabled", "portal_sections", "client_steps"];
+var PORTAL_FIELDS = ["portal_token", "portal_enabled", "portal_sections", "client_steps", "portal_code", "portal_code_ver"];
+// נכתבים רק דרך מסלולים ייעודיים (צפייה, כניסה, שמירת משימות), לא בשמירה רגילה
+var GUARDED = ["portal_seen_at", "portal_fails", "portal_locked_until", "client_tasks", "client_tasks_rev", "dismissed_suggestions"];
+var SERVER_ONLY = ["portal_fails", "portal_locked_until"];
 var FINANCE = { payments: 1, expenses: 1, docs: 1 };
 var PRIVATE_MEMBER = { pin_hash: 1, failed_attempts: 1, locked_until: 1, last_login: 1 };
 
@@ -106,13 +109,18 @@ function handle_(req) {
   if (a === "staff") return { staff: publicStaff_(), setup: readTable_("members").length === 0 };
   if (a === "setup_first") return setupFirst_(req.name, req.pin);
   if (a === "login") return login_(req.staff_id, req.pin);
-  if (a === "portal_view") return portalView_(req.portal_token, !!req.preview); // הלקוח: קריאה בלבד, בלי קוד עובד
+  // ---- הזוג (בלי קוד עובד): כניסה, צפייה, שמירת המשימות שלהם בלבד ----
+  if (a === "portal_login") return portalLogin_(req.phone, req.code);
+  if (a === "portal_view") return portalView_(req.session);
+  if (a === "portal_tasks") return portalTasks_(req.session, req);
+  if (a === "portal_preview") return portalPreview_(req.portal_token); // תצוגה מקדימה לצוות: קריאה בלבד
   var me = auth_(req.token);
   if (a === "me") return { me: publicMember_(me) };
   if (a === "load") return { db: loadAll_(me), sheet_url: me.role === "admin" ? SpreadsheetApp.getActive().getUrl() : null };
   if (a === "upsert") return withLock_(function () { upsert_(me, req.table, req.row); return { ok: true }; });
   if (a === "remove") return withLock_(function () { remove_(me, req.table, req.id); return { ok: true }; });
   if (a === "set_pin") return withLock_(function () { setPin_(me, req.staff_id, req.pin); return { ok: true }; });
+  if (a === "tasks_save") return withLock_(function () { return saveTasks_(findRow_("event_plans", req.id) || { id: req.id }, req, false); });
   throw err_("פעולה לא מוכרת");
 }
 
@@ -222,7 +230,10 @@ function loadAll_(me) {
     if (t === "settings" && me.role !== "admin") rows.forEach(function (r) { delete r.make_webhook_url; });
     if (t === "event_plans" && !prices) rows.forEach(function (r) { r.suppliers = stripCosts_(r.suppliers); });
     if (t === "event_plans" && !(prices && finance)) rows.forEach(function (r) { delete r.payment_plan; }); // תוכנית בלי תשלומים = "באיחור" מזויף
-    if (t === "event_plans" && !can_(me, "portal")) rows.forEach(function (r) { delete r.portal_token; });
+    if (t === "event_plans") rows.forEach(function (r) {
+      SERVER_ONLY.forEach(function (k) { delete r[k]; });
+      if (!can_(me, "portal")) { delete r.portal_token; delete r.portal_code; }
+    });
     out[t] = rows;
   });
   return out;
@@ -242,7 +253,7 @@ function upsert_(me, table, input) {
   if (table === "event_plans" && !can_(me, "prices")) row.suppliers = keepCosts_(row.suppliers, prev && prev.suppliers);
   if (table === "event_plans" && !(can_(me, "prices") && can_(me, "finance"))) row.payment_plan = prev ? prev.payment_plan : "";
   if (table === "event_plans" && !can_(me, "portal")) PORTAL_FIELDS.forEach(function (k) { row[k] = prev ? prev[k] : ""; });
-  if (table === "event_plans") row.portal_seen_at = prev ? prev.portal_seen_at : ""; // נכתב רק כשהלקוח צופה
+  if (table === "event_plans") GUARDED.forEach(function (k) { row[k] = prev && prev[k] !== undefined ? prev[k] : ""; }); // נשמר הערך הקיים
   if (table === "event_plans" && row.portal_token) {
     var clash = readTable_("event_plans").filter(function (p) { return p.portal_token === row.portal_token && p.id !== row.id; });
     if (clash.length) throw err_("קוד קישור כפול");
@@ -301,26 +312,176 @@ var DEFAULT_CLIENT_STEPS = ["contract", "deposit", "meeting", "suppliers", "time
 var DOC_LABELS = { quote: "הצעת מחיר", invoice: "חשבונית מס", receipt: "קבלה" };
 var SUP_CATS = { venue: ["אולם / מקום", "🏛️"], catering: ["קייטרינג", "🍽️"], design: ["עיצוב ופרחים", "💐"], photo: ["צילום", "📸"], dj: ["DJ", "🎧"], light: ["תאורה והגברה", "💡"], attraction: ["אטרקציות", "🎉"], other: ["אחר", "🤝"] };
 
-function portalView_(token, preview) {
+var CLIENT_DAYS = 90, CLIENT_MAX_TRIES = 5, CLIENT_LOCK_MIN = 15, CLIENT_LOGIN_ERROR = "טלפון או קוד שגויים";
+
+function makeClientToken_(pid, ver) {
+  var payload = Utilities.base64EncodeWebSafe(JSON.stringify({ pid: pid, v: ver, exp: Date.now() + CLIENT_DAYS * 86400000 }));
+  return payload + "." + sign_("client:" + payload);
+}
+function verifyClientToken_(t) {
+  if (!t || typeof t !== "string") return null;
+  var p = t.split(".");
+  if (p.length !== 2 || sign_("client:" + p[0]) !== p[1]) return null;
+  try {
+    var o = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(p[0])).getDataAsString());
+    return typeof o.pid === "string" && o.exp > Date.now() ? { pid: o.pid, v: Number(o.v) || 0 } : null;
+  } catch (x) { return null; }
+}
+function normPhone_(p) { var d = String(p == null ? "" : p).replace(/\D/g, ""); return d.indexOf("972") === 0 ? "0" + d.slice(3) : d; }
+
+/** האירוע של הזוג לפי האסימון ("קוד חדש" מנתק אסימונים ישנים) */
+function planBySession_(session) {
+  var s = verifyClientToken_(session);
+  if (!s) return null;
+  var plan = findRow_("event_plans", s.pid);
+  if (!plan || !plan.portal_enabled || (Number(plan.portal_code_ver) || 0) !== s.v) return null;
+  var lead = findRow_("leads", plan.id);
+  if (!lead || lead.status !== "won") return null;
+  return { plan: plan, lead: lead };
+}
+function viewOf_(lead, plan) { return clientView_(lead, plan, readTable_("payments"), readTable_("docs"), readTable_("settings"), readTable_("members")); }
+
+function portalLogin_(phone, code) {
+  var p = normPhone_(phone), c = String(code == null ? "" : code).trim();
+  if (p.length < 9 || !/^\d{6}$/.test(c)) throw err_(CLIENT_LOGIN_ERROR);
+  return withLock_(function () {
+    var leads = readTable_("leads"), now = Date.now(), candidates = [], match = null;
+    readTable_("event_plans").forEach(function (pl) {
+      var l = leads.filter(function (x) { return x.id === pl.id; })[0];
+      if (l && l.status === "won" && pl.portal_enabled && normPhone_(l.phone) === p) {
+        candidates.push(pl);
+        if (!match && pl.portal_code && String(pl.portal_code) === c) match = pl;
+      }
+    });
+    if (candidates.some(function (pl) { return pl.portal_locked_until && new Date(pl.portal_locked_until).getTime() > now; })) throw err_("יותר מדי ניסיונות. נסו שוב בעוד " + CLIENT_LOCK_MIN + " דקות");
+    if (!match) {
+      candidates.forEach(function (pl) {
+        var fails = (Number(pl.portal_fails) || 0) + 1, lock = fails >= CLIENT_MAX_TRIES;
+        pl.portal_fails = lock ? 0 : fails; pl.portal_locked_until = lock ? new Date(now + CLIENT_LOCK_MIN * 60000).toISOString() : "";
+        writeRow_("event_plans", pl);
+      });
+      throw err_(CLIENT_LOGIN_ERROR);
+    }
+    match.portal_fails = 0; match.portal_locked_until = ""; writeRow_("event_plans", match);
+    return { session: makeClientToken_(match.id, Number(match.portal_code_ver) || 0) };
+  });
+}
+
+/** הדף של הזוג (אחרי כניסה). רושם צפייה בהיסטוריה, לכל היותר פעם ב-6 שעות */
+function portalView_(session) {
+  var d = planBySession_(session);
+  if (!d) throw err_("נדרשת כניסה מחדש", "auth");
+  withLock_(function () {
+    var p = findRow_("event_plans", d.plan.id), now = new Date().toISOString(), prev = p.portal_seen_at;
+    p.portal_seen_at = now; writeRow_("event_plans", p);
+    if (!prev || new Date(now) - new Date(prev) >= 6 * 3600e3) writeRow_("activities", { id: Utilities.getUuid(), lead_id: d.plan.id, kind: "note", text: "👀 הלקוח צפה בדף האירוע", at: now });
+  });
+  return { view: viewOf_(d.lead, d.plan) };
+}
+
+/** תצוגה מקדימה לצוות לפי הקישור הסודי: קריאה בלבד, לא נרשמת צפייה */
+function portalPreview_(token) {
   if (!token || String(token).length < 20) throw err_("הקישור לא פעיל");
   var plan = null;
   readTable_("event_plans").forEach(function (p) { if (p.portal_token === token) plan = p; });
   if (!plan || !plan.portal_enabled) throw err_("הקישור לא פעיל");
   var lead = findRow_("leads", plan.id);
   if (!lead || lead.status !== "won") throw err_("הקישור לא פעיל");
-  if (!preview) withLock_(function () {
-    var p = findRow_("event_plans", plan.id), now = new Date().toISOString(), prev = p.portal_seen_at;
-    p.portal_seen_at = now; writeRow_("event_plans", p);
-    if (!prev || new Date(now) - new Date(prev) >= 6 * 3600e3) writeRow_("activities", { id: Utilities.getUuid(), lead_id: plan.id, kind: "note", text: "👀 הלקוח צפה בדף האירוע", at: now });
+  return { view: viewOf_(lead, plan) };
+}
+
+/** הפעולה היחידה שהלקוח כותב: המשימות שלהם */
+function portalTasks_(session, req) {
+  return withLock_(function () {
+    var d = planBySession_(session);
+    if (!d) throw err_("נדרשת כניסה מחדש", "auth");
+    return saveTasks_(d.plan, req, true);
   });
-  return { view: clientView_(lead, plan, readTable_("payments"), readTable_("docs"), readTable_("settings"), readTable_("members")) };
+}
+
+/* ───── המשימות של הזוג: ולידציה ושמירה (חייב להתאים ל-src/lib/tasks.ts + portal.ts) ───── */
+var TASK_LIMITS = { count: 100, title: 120, note: 300, id: 40, dismissed: 200 };
+var TASK_OWNERS = ["a", "b", "both", "none"], TASK_STATUSES = ["todo", "doing", "on_it"];
+var TASK_CATS = ["guests", "rabbinate", "outfit", "rings", "transport", "day", "money", "after", "other"];
+var TASKS_LOG_PREFIX = "✅ הזוג עדכן משימות";
+
+function str_(v, max) { return typeof v === "string" ? v.trim().slice(0, max) : ""; }
+function sanitizeTasks_(input) {
+  if (!Array.isArray(input)) throw err_("רשימה לא תקינה");
+  if (input.length > TASK_LIMITS.count) throw err_("עד " + TASK_LIMITS.count + " משימות");
+  var seen = {};
+  return input.map(function (raw, i) {
+    var r = raw && typeof raw === "object" ? raw : {};
+    var id = str_(r.id, TASK_LIMITS.id), title = str_(r.title, TASK_LIMITS.title + 1);
+    if (!id || seen[id]) throw err_("משימה בלי מזהה");
+    if (!title) throw err_("משימה בלי שם");
+    if (title.length > TASK_LIMITS.title) throw err_("שם משימה עד " + TASK_LIMITS.title + " תווים");
+    seen[id] = 1;
+    if (TASK_OWNERS.indexOf(r.owner) < 0) throw err_("אחראי לא תקין");
+    if (TASK_STATUSES.indexOf(r.status) < 0) throw err_("סטטוס לא תקין");
+    if (r.section !== "before" && r.section !== "after") throw err_("חלק לא תקין");
+    var start = str_(r.start, 10);
+    if (start && !/^\d{4}-\d{2}-\d{2}$/.test(start)) throw err_("תאריך לא תקין");
+    var note = str_(r.note, TASK_LIMITS.note), order = Number(r.order);
+    var t = { id: id, title: title, owner: r.owner, category: TASK_CATS.indexOf(r.category) >= 0 ? r.category : "other", status: r.status, done: r.done === true, section: r.section, order: isFinite(order) ? Math.round(order) : i };
+    if (start) t.start = start;
+    if (note) t.note = note;
+    return t;
+  });
+}
+function sanitizeDismissed_(input) {
+  if (!Array.isArray(input)) return [];
+  var out = [];
+  input.forEach(function (x) { if (typeof x === "string" && /^[a-z0-9-]{1,40}$/.test(x) && out.indexOf(x) < 0) out.push(x); });
+  return out.slice(0, TASK_LIMITS.dismissed);
+}
+function describeChange_(prev, next) {
+  var before = {}, after = {};
+  prev.forEach(function (t) { before[t.id] = t; });
+  next.forEach(function (t) { after[t.id] = t; });
+  var done = next.filter(function (t) { return t.done && before[t.id] && !before[t.id].done; }).map(function (t) { return t.title; });
+  var added = next.filter(function (t) { return !before[t.id]; }).map(function (t) { return t.title; });
+  var removed = prev.filter(function (t) { return !after[t.id]; }).map(function (t) { return t.title; });
+  var parts = [];
+  if (done.length) parts.push("סימנו: " + done.join(", "));
+  if (added.length) parts.push("הוסיפו: " + added.join(", "));
+  if (removed.length) parts.push("מחקו: " + removed.join(", "));
+  return parts.join(" · ") || "עדכנו פרטים";
+}
+function saveTasks_(plan, req, client) {
+  var sections = { tasks: true }, s = parse_(plan.portal_sections, {});
+  if (s.tasks === false) sections.tasks = false;
+  if (client && !sections.tasks) throw err_("המשימות לא פתוחות לעריכה");
+  var cur = Number(plan.client_tasks_rev) || 0;
+  if (Number(req.rev) !== cur) throw err_("הרשימה עודכנה בינתיים. טוענים מחדש", "conflict");
+  var tasks = sanitizeTasks_(req.tasks), prev = parse_(plan.client_tasks, []);
+  if (!Array.isArray(prev)) prev = [];
+  var row = findRow_("event_plans", plan.id) || { id: plan.id };
+  row.client_tasks = JSON.stringify(tasks);
+  row.client_tasks_rev = cur + 1;
+  row.dismissed_suggestions = JSON.stringify(sanitizeDismissed_(req.dismissed !== undefined ? req.dismissed : parse_(plan.dismissed_suggestions, [])));
+  writeRow_("event_plans", row);
+  if (client) {
+    var now = new Date().toISOString(), change = describeChange_(prev, tasks);
+    var last = readTable_("activities").filter(function (a) { return a.lead_id === plan.id && String(a.text).indexOf(TASKS_LOG_PREFIX) === 0; }).sort(function (a, b) { return String(b.at).localeCompare(String(a.at)); })[0];
+    if (last && String(last.text).indexOf(TASKS_LOG_PREFIX) === 0 && new Date(now) - new Date(last.at) < 3600e3) {
+      last.text = (last.text + " · " + change).slice(0, 400); last.at = now; writeRow_("activities", last);
+    } else writeRow_("activities", { id: Utilities.getUuid(), lead_id: plan.id, kind: "note", text: (TASKS_LOG_PREFIX + ": " + change).slice(0, 400), at: now });
+  }
+  return { rev: cur + 1 };
+}
+function partners_(lead, plan) {
+  var parts = String(lead.name || "").split(/\s+ו(?=\S)|\s*&\s*|\s*\+\s*/);
+  var a = plan.partner_a || (parts.length > 1 ? parts[0].trim() : "");
+  var b = plan.partner_b || (parts.length > 1 ? parts[1].trim() : "");
+  return { a: a || "צד א׳", b: b || "צד ב׳" };
 }
 
 function parse_(s, d) { if (!s) return d; try { return JSON.parse(s); } catch (x) { return d; } }
 function timeKey_(t) { var p = String(t || "").split(":"); var h = Number(p[0]) || 0, m = Number(p[1]) || 0; return (h < 6 ? h + 24 : h) * 60 + m; }
 
 function clientView_(lead, plan, payments, docs, settingsRows, members) {
-  var sections = { status: true, timeline: true, payments: true, suppliers: true, details: true };
+  var sections = { status: true, tasks: true, timeline: true, payments: true, suppliers: true, details: true };
   var s = parse_(plan.portal_sections, {});
   Object.keys(s).forEach(function (k) { sections[k] = s[k]; });
   var checklist = parse_(plan.checklist, {}), extra = parse_(plan.extra_checks, []);
@@ -337,6 +498,10 @@ function clientView_(lead, plan, payments, docs, settingsRows, members) {
     view.readiness = ids.length ? Math.round(ids.filter(function (i) { return checklist[i]; }).length / ids.length * 100) : 0;
     view.steps = parse_(plan.client_steps, DEFAULT_CLIENT_STEPS).filter(function (id) { return CLIENT_STEP_LABELS[id]; })
       .map(function (id) { return { label: CLIENT_STEP_LABELS[id], done: !!checklist[id] }; });
+  }
+  if (sections.tasks) {
+    var list = parse_(plan.client_tasks, []);
+    view.tasks = { list: Array.isArray(list) ? list : [], rev: Number(plan.client_tasks_rev) || 0, partners: partners_(lead, plan), dismissed: parse_(plan.dismissed_suggestions, []) };
   }
   if (sections.timeline) {
     view.timeline = parse_(plan.timeline, []).filter(function (t) { return t.show_client !== false && t.title; })

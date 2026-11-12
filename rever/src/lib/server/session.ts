@@ -39,6 +39,30 @@ export function verifySession(v?: string): string | null {
   }
 }
 
+/* ───── כניסת הזוג: אסימון חתום (נשמר בטלפון שלהם), נפרד לגמרי מסשן עובד ───── */
+const CLIENT_DAYS = 90;
+const csign = (data: string) => sign("client:" + data);
+
+export function makeClientSession(planId: string, ver: number) {
+  const payload = b64(JSON.stringify({ pid: planId, v: ver, exp: Date.now() + CLIENT_DAYS * 86400_000 }));
+  return `${payload}.${csign(payload)}`;
+}
+
+export function verifyClientSession(v?: unknown): { pid: string; v: number } | null {
+  if (typeof v !== "string") return null;
+  const [payload, mac] = v.split(".");
+  if (!payload || !mac) return null;
+  const want = Buffer.from(csign(payload));
+  const got = Buffer.from(mac);
+  if (want.length !== got.length || !timingSafeEqual(want, got)) return null;
+  try {
+    const o = JSON.parse(Buffer.from(payload, "base64url").toString());
+    return typeof o.pid === "string" && o.exp > Date.now() ? { pid: o.pid, v: Number(o.v) || 0 } : null;
+  } catch {
+    return null;
+  }
+}
+
 export const cookieOpts = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",

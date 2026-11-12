@@ -6,6 +6,7 @@ import { memberCan, statusLabel, TABLES } from "./types";
 import { makeRepo, type Repo } from "./repo";
 import { emptyDB } from "./seed";
 import { uid } from "./format";
+import type { ClientTask } from "./tasks";
 
 interface Store {
   db: DB;
@@ -19,6 +20,8 @@ interface Store {
   reload(): Promise<void>;
   save<T extends Table>(table: T, row: DB[T][number]): Promise<void>;
   remove(table: Table, id: string): Promise<void>;
+  /** המשימות של הזוג: נשמרות במסלול נפרד עם גרסה */
+  saveTasks(planId: string, tasks: ClientTask[], dismissed: string[]): Promise<void>;
   log(lead_id: string, kind: ActivityKind, text: string): Promise<void>;
   setStatus(lead: Lead, status: LeadStatus): Promise<void>;
   updateLead(lead: Lead, patch: Partial<Lead>): Promise<void>;
@@ -113,6 +116,33 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [load, toast],
   );
 
+  // שמירות משימות יוצאות אחת-אחת, כדי שהגרסה תתקדם בסדר
+  const tasksQueue = useRef(Promise.resolve());
+  const dbRef = useRef(db);
+  dbRef.current = db;
+  const saveTasks = useCallback(
+    (planId: string, tasks: ClientTask[], dismissed: string[]) => {
+      const run = async () => {
+        const plan = dbRef.current.event_plans.find((p) => p.id === planId) ?? { id: planId };
+        const rev = Number(plan.client_tasks_rev) || 0;
+        const next = { ...plan, client_tasks: JSON.stringify(tasks), dismissed_suggestions: JSON.stringify(dismissed), client_tasks_rev: rev + 1 };
+        setDb((prev) => {
+          const list = prev.event_plans.filter((p) => p.id !== planId);
+          return { ...prev, event_plans: [...list, next] };
+        });
+        dbRef.current = { ...dbRef.current, event_plans: [...dbRef.current.event_plans.filter((p) => p.id !== planId), next] };
+        try {
+          await repoRef.current!.saveTasks(planId, { tasks, dismissed, rev });
+        } catch (e) {
+          toast("המשימות לא נשמרו: " + (e instanceof Error ? e.message : e));
+          await load();
+        }
+      };
+      return (tasksQueue.current = tasksQueue.current.then(run, run));
+    },
+    [load, toast],
+  );
+
   const me = db.members.find((m) => m.id === staffId && m.active);
   const can = useCallback((perm: Perm) => memberCan(me, perm), [me]);
 
@@ -146,6 +176,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       settings: { ...(db.settings[0] ?? emptyDB().settings[0]), owner_name: me?.name || db.settings[0]?.owner_name || "" },
       save,
       remove,
+      saveTasks,
       log,
       setStatus,
       updateLead,
@@ -173,7 +204,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       toast,
       toastMsg,
     }),
-    [db, ready, error, save, remove, log, setStatus, updateLead, toast, toastMsg, me, can, load],
+    [db, ready, error, save, remove, saveTasks, log, setStatus, updateLead, toast, toastMsg, me, can, load],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

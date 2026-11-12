@@ -1,5 +1,6 @@
 import type { DB, EventPlan, Lead, Supplier, TimelineItem } from "./types";
 import { shortDate, uid } from "./format";
+import { lateTasks, parseTasks } from "./tasks";
 
 /** צ'קליסט הכנה לאירוע (חברת הפקות) */
 export const CHECKS: { id: string; label: string }[] = [
@@ -66,7 +67,7 @@ export function planOf(db: DB, lead: Lead): PlanView {
 
 /** מה דורש טיפול באירועים (כמו במשרד): לא מוכן בשבועיים, תשלום לפי התוכנית, המלצה אחרי */
 export function eventTodos(db: DB) {
-  const out: { lead: Lead; kind: "not_ready" | "review" | "payment"; text: string; sub: string }[] = [];
+  const out: { lead: Lead; kind: "not_ready" | "review" | "payment" | "couple_task"; text: string; sub: string }[] = [];
   for (const l of db.leads) {
     if (l.status !== "won" || !l.event_date) continue;
     const d = daysUntil(l.event_date)!;
@@ -74,6 +75,8 @@ export function eventTodos(db: DB) {
     const r = readiness(v);
     if (d >= 0 && d <= 14 && r.pct < 100) out.push({ lead: l, kind: "not_ready", text: `${l.event_type}: ${l.name}`, sub: `בעוד ${d} ימים · מוכן ${r.done} מתוך ${r.total}` });
     for (const p of duePayments(db, l)) out.push({ lead: l, kind: "payment", text: `תשלום: ${l.name} · ${p.name}`, sub: p.late ? `באיחור של ${-p.days} ימים · ₪${p.amount.toLocaleString("he-IL")}` : `בעוד ${p.days} ימים · ₪${p.amount.toLocaleString("he-IL")}` });
+    const late = d >= 0 ? lateTasks(parseTasks(v.plan.client_tasks)) : [];
+    if (late.length) out.push({ lead: l, kind: "couple_task", text: `הזוג תקוע: ${l.name}`, sub: `${late.length === 1 ? `"${late[0].title}"` : `${late.length} משימות`} באיחור של יותר משבוע · להציע עזרה` });
     if (d < 0 && d >= -21 && !v.after.review_asked && !v.after.skip) out.push({ lead: l, kind: "review", text: `לבקש המלצה: ${l.name}`, sub: `האירוע היה לפני ${-d} ימים` });
   }
   return out;

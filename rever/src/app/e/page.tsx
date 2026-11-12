@@ -1,39 +1,20 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { clientView, type ClientView } from "@/lib/portal";
-import { markLocalSeen, readLocalDB, sheetsCall, sheetsUrl, supabase } from "@/lib/repo";
+import type { ClientView } from "@/lib/portal";
 import { cleanPhone } from "@/lib/format";
+import * as api from "@/lib/portalClient";
+import { clientSession, PortalError } from "@/lib/portalClient";
+import { TaskList, type SaveState } from "@/components/TaskList";
+import type { ClientTask } from "@/lib/tasks";
 
-/** הקישור ללקוח: "האירוע שלכם". קריאה בלבד. */
+/** דף הלקוח: "האירוע שלכם". כניסה עם טלפון + קוד מרבר. הזוג עורך רק את המשימות שלו. */
 export default function PortalPage() {
   return (
     <Suspense>
       <Portal />
     </Suspense>
   );
-}
-
-async function loadView(token: string, preview: boolean): Promise<ClientView | null> {
-  if (supabase()) {
-    const r = await fetch(`/api/portal?t=${encodeURIComponent(token)}${preview ? "&preview=1" : ""}`, { cache: "no-store" });
-    return r.ok ? ((await r.json()) as ClientView) : null;
-  }
-  if (sheetsUrl()) {
-    try {
-      return (await sheetsCall<{ view: ClientView }>("portal_view", { portal_token: token, preview })).view;
-    } catch {
-      return null;
-    }
-  }
-  // מצב דמו: מהדפדפן של המכשיר הזה
-  const db = readLocalDB();
-  const plan = db?.event_plans?.find((p) => p.portal_token === token && p.portal_enabled);
-  const lead = plan && db!.leads.find((l) => l.id === plan.id && l.status === "won");
-  if (!plan || !lead) return null;
-  const view = clientView({ lead, plan, db: db! });
-  if (!preview) markLocalSeen(db!, plan.id);
-  return view;
 }
 
 const KICKER: Record<string, string> = { חתונה: "החתונה של", "בר מצווה": "בר המצווה של", "בת מצווה": "בת המצווה של", חינה: "החינה של" };
@@ -43,19 +24,35 @@ const KEY = /חופה|כניסה|טקס|הדלקת|ריקוד ראשון/;
 
 function Portal() {
   const sp = useSearchParams();
-  const token = sp.get("t") ?? "";
-  const preview = sp.get("preview") === "1";
+  const token = sp.get("t") ?? ""; // תצוגה מקדימה לצוות (קריאה בלבד)
+  const preview = !!token;
   const [view, setView] = useState<ClientView | null | undefined>(undefined);
+  const [needLogin, setNeedLogin] = useState(false);
   const [now, setNow] = useState(() => Date.now());
 
+  const load = useCallback(async () => {
+    if (preview) return setView(await api.preview(token));
+    const s = clientSession.get();
+    if (!s) return setNeedLogin(true);
+    try {
+      setView(await api.view(s));
+      setNeedLogin(false);
+    } catch (e) {
+      if (e instanceof PortalError && e.code === "net") return setView(null);
+      clientSession.set(null);
+      setNeedLogin(true);
+    }
+  }, [preview, token]);
+
   useEffect(() => {
-    loadView(token, preview).then(setView);
-  }, [token, preview]);
+    load();
+  }, [load]);
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 30_000);
     return () => clearInterval(id);
   }, []);
 
+  if (needLogin) return <Login onDone={(s) => (clientSession.set(s), setView(undefined), load())} />;
   if (view === undefined)
     return (
       <div className="p-state">
@@ -70,8 +67,13 @@ function Portal() {
       <div className="p-state">
         <div className="box">
           <span className="mono" style={{ margin: "0 auto" }}>ר</span>
-          <h1 className="serif">הקישור לא פעיל</h1>
-          <p>ייתכן שהקישור שונה. בקשו מאיש הקשר שלכם קישור עדכני.</p>
+          <h1 className="serif">{preview ? "הקישור לא פעיל" : "אין חיבור"}</h1>
+          <p>{preview ? "ייתכן שהקישור שונה." : "בדקו את החיבור לאינטרנט ונסו שוב."}</p>
+          {!preview && (
+            <button className="p-btn" onClick={() => (setView(undefined), load())}>
+              לנסות שוב
+            </button>
+          )}
         </div>
       </div>
     );
@@ -134,6 +136,8 @@ function Portal() {
               </ul>
             </section>
           )}
+
+          {v.tasks && <TasksSection key={v.tasks.rev} view={v} readOnly={preview} onReload={load} />}
 
           {v.timeline && v.timeline.length > 0 && (
             <section className="sec">
@@ -234,9 +238,118 @@ function Portal() {
               </div>
             )}
           </section>
-          <div className="foot">{v.business} · הדף מתעדכן אוטומטית</div>
+          <div className="foot">
+            {v.business} · הדף מתעדכן אוטומטית
+            {!preview && (
+              <button className="p-out" onClick={() => (clientSession.set(null), location.reload())}>
+                יציאה
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>
+  );
+}
+
+/** כניסה: הטלפון שלכם + קוד מרבר */
+function Login({ onDone }: { onDone(session: string): void }) {
+  const [phone, setPhone] = useState("");
+  const [code, setCode] = useState("");
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  return (
+    <div className="p-state">
+      <form
+        className="box p-login"
+        onSubmit={async (e) => {
+          e.preventDefault();
+          setBusy(true);
+          setErr("");
+          try {
+            onDone(await api.login(phone, code));
+          } catch (x) {
+            setErr(x instanceof Error ? x.message : "שגיאה. נסו שוב");
+          } finally {
+            setBusy(false);
+          }
+        }}
+      >
+        <span className="mono" style={{ margin: "0 auto" }}>ר</span>
+        <h1 className="serif">הדף של האירוע שלכם</h1>
+        <p>נכנסים עם מספר הטלפון שלכם והקוד שקיבלתם מאיתנו בוואטסאפ.</p>
+        <label>
+          מספר טלפון
+          <input inputMode="tel" autoComplete="tel" dir="ltr" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="050-0000000" />
+        </label>
+        <label>
+          קוד
+          <input inputMode="numeric" autoComplete="one-time-code" dir="ltr" required maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))} placeholder="••••••" />
+        </label>
+        {err && <div className="p-err" role="alert">{err}</div>}
+        <button className="p-btn" disabled={busy || code.length !== 6}>
+          {busy ? "נכנסים…" : "כניסה"}
+        </button>
+        <small>אין לכם קוד? בקשו אותו מאיש הקשר שלכם.</small>
+      </form>
+    </div>
+  );
+}
+
+/** "המשימות שלנו": שמירה מיידית, אחת-אחת, עם חיווי. התנגשות = טוענים מחדש. */
+function TasksSection({ view, readOnly, onReload }: { view: ClientView; readOnly: boolean; onReload(): void }) {
+  const t = view.tasks!;
+  const [tasks, setTasks] = useState<ClientTask[]>(t.list);
+  const [dismissed, setDismissed] = useState<string[]>(t.dismissed);
+  const [save, setSave] = useState<SaveState>("idle");
+  const rev = useRef(t.rev);
+  const pending = useRef<{ tasks: ClientTask[]; dismissed: string[] } | null>(null);
+  const busy = useRef(false);
+
+  const flush = useCallback(async () => {
+    if (busy.current || !pending.current) return;
+    busy.current = true;
+    const s = clientSession.get();
+    while (pending.current) {
+      const next = pending.current;
+      pending.current = null;
+      setSave("saving");
+      try {
+        rev.current = await api.saveTasks(s ?? "", { ...next, rev: rev.current });
+        setSave("saved");
+      } catch (e) {
+        busy.current = false;
+        if (e instanceof PortalError && (e.code === "conflict" || e.code === "auth")) return onReload();
+        pending.current = pending.current ?? next;
+        setSave("error");
+        return;
+      }
+    }
+    busy.current = false;
+    setTimeout(() => setSave((x) => (x === "saved" ? "idle" : x)), 1800);
+  }, [onReload]);
+
+  return (
+    <section className="sec" id="tasks">
+      <h2 className="serif">
+        <span className="ic">✅</span>המשימות שלנו
+      </h2>
+      <TaskList
+        tasks={tasks}
+        dismissed={dismissed}
+        partners={t.partners}
+        eventType={view.event.type}
+        eventDate={view.event.date}
+        readOnly={readOnly}
+        save={save}
+        onRetry={flush}
+        onChange={(nt, nd) => {
+          setTasks(nt);
+          setDismissed(nd);
+          pending.current = { tasks: nt, dismissed: nd };
+          flush();
+        }}
+      />
+    </section>
   );
 }

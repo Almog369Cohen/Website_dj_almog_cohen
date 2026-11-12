@@ -145,6 +145,16 @@ alter table event_plans add column if not exists client_steps text;
 alter table event_plans add column if not exists payment_plan text;
 alter table event_plans add column if not exists contract_status text;
 alter table event_plans add column if not exists internal_notes text;
+-- כניסת הזוג (טלפון + קוד) והמשימות שלהם
+alter table event_plans add column if not exists portal_code text;
+alter table event_plans add column if not exists portal_code_ver integer default 0;
+alter table event_plans add column if not exists portal_fails integer default 0;
+alter table event_plans add column if not exists portal_locked_until timestamptz;
+alter table event_plans add column if not exists client_tasks text;
+alter table event_plans add column if not exists client_tasks_rev integer default 0;
+alter table event_plans add column if not exists partner_a text;
+alter table event_plans add column if not exists partner_b text;
+alter table event_plans add column if not exists dismissed_suggestions text;
 alter table docs add column if not exists show_client boolean default false;
 alter table settings add column if not exists contact_phone text;
 alter table members add column if not exists can_portal boolean not null default false;
