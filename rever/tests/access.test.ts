@@ -258,6 +258,15 @@ async function main() {
     await writeRow(pub("gal"), "event_plans", { ...tables.event_plans[0], portal_enabled: false });
     assert.equal(tables.event_plans[0].portal_enabled, true);
   });
+  await ok("לקוח עם שני אירועים לא ננעל מכניסות תקינות", async () => {
+    const { portalLogin } = await import("../src/lib/server/access");
+    tables.leads.push({ ...tables.leads[0], id: "L2", name: "אירוע שני" });
+    tables.event_plans.push({ id: "L2", portal_enabled: true, portal_code: "121212", portal_code_ver: 0 });
+    Object.assign(tables.event_plans[0], { portal_code: "343434", portal_code_ver: 9, portal_fails: 0, portal_locked_until: null, portal_enabled: true });
+    for (let i = 0; i < 7; i++) assert.ok((await portalLogin("0501234567", "343434")).session);
+    assert.ok((await portalLogin("0501234567", "121212")).session);
+    tables.leads.pop(); tables.event_plans.pop();
+  });
   await ok("אסימון לקוח לא עובר כאסימון עובד, ולהפך (גם עם קידומת)", async () => {
     const { makeClientSession, verifyClientSession } = await import("../src/lib/server/session");
     const c = makeClientSession("L1", 0);

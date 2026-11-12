@@ -51,10 +51,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     toastTimer.current = setTimeout(() => setToast(null), 3200);
   }, []);
 
-  const load = useCallback(async () => {
+  // כמה שמירות באוויר, ומונה שמתקדם בכל שמירה: רענון ברקע לא דורס שמירה שעוד לא הסתיימה
+  const pending = useRef(0);
+  const writeSeq = useRef(0);
+  const load = useCallback(async (background = false) => {
     const repo = repoRef.current!;
+    if (background && pending.current) return;
+    const seq = writeSeq.current;
     try {
       const data = await repo.loadAll();
+      if (background && (pending.current || seq !== writeSeq.current)) return; // נכתב משהו בזמן הטעינה: נרענן בפעם הבאה
       for (const t of TABLES) if (!Array.isArray(data[t])) (data as unknown as Record<string, unknown[]>)[t] = [];
       if (!data.settings?.length) data.settings = emptyDB().settings;
       if (!data.templates?.length) data.templates = emptyDB().templates;
@@ -75,7 +81,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   // גוגל שיטס / Supabase: רענון אוטומטי כדי לראות שינויים של שאר הצוות (כל דקה + כשחוזרים לחלון)
   useEffect(() => {
     if (!repoRef.current || repoRef.current.mode === "demo") return;
-    const tick = () => document.visibilityState === "visible" && load();
+    const tick = () => document.visibilityState === "visible" && load(true);
     const id = setInterval(tick, 60_000);
     window.addEventListener("focus", tick);
     return () => {
@@ -94,7 +100,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         return { ...prev, [table]: list };
       });
       try {
-        await repoRef.current!.upsert(table, row);
+        pending.current++;
+        writeSeq.current++;
+        await repoRef.current!.upsert(table, row).finally(() => pending.current--);
       } catch (e) {
         toast("השמירה נכשלה: " + (e instanceof Error ? e.message : e));
         load();
@@ -135,8 +143,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       const run = async () => {
         if (gen !== tasksGen.current) return; // שמירה ישנה מלפני כישלון
         const rev = Number(dbRef.current.event_plans.find((x) => x.id === planId)?.client_tasks_rev) || 0;
+        pending.current++;
+        writeSeq.current++;
         try {
-          const r = await repoRef.current!.saveTasks(planId, { tasks, dismissed, rev });
+          const r = await repoRef.current!.saveTasks(planId, { tasks, dismissed, rev }).finally(() => pending.current--);
           patchLocal({ client_tasks_rev: r.rev });
         } catch (e) {
           tasksGen.current++;
@@ -173,7 +183,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     () => ({
       me,
       can,
-      reload: load,
+      reload: () => load(),
       db,
       ready,
       error,

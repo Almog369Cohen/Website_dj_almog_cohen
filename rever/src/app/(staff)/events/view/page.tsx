@@ -611,8 +611,19 @@ function PaymentsTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: P
 }
 
 /* ---------------- קישור ללקוח ---------------- */
-function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Partial<EventPlan>) => void }) {
-  const { settings, toast, can } = useStore();
+function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Partial<EventPlan>) => void | Promise<void> }) {
+  const { settings, toast, can, reload } = useStore();
+  // שינוי גישה (הפעלה / כיבוי / קוד חדש): כפתור אחד בכל פעם, ואחרי השמירה מסתנכרנים עם מה שנשמר באמת
+  const [busy, setBusy] = useState(false);
+  const access = async (patch: Partial<EventPlan>) => {
+    setBusy(true);
+    try {
+      await savePlan(patch);
+      await reload();
+    } finally {
+      setBusy(false);
+    }
+  };
   const [base, setBase] = useState("");
   useEffect(() => setBase(window.location.origin + window.location.pathname.split("/events")[0]), []);
   const token = v.plan.portal_token;
@@ -643,7 +654,8 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
             </p>
             <button
               className="btn pri"
-              onClick={() => (savePlan({ portal_token: token || newPortalToken(), portal_enabled: true, portal_code: code || newPortalCode(), portal_code_ver: ver + 1 }), refresh())}
+              disabled={busy}
+              onClick={() => access({ portal_token: token || newPortalToken(), portal_enabled: true, portal_code: code || newPortalCode(), portal_code_ver: ver + 1 }).then(refresh)}
             >
               🔗 הפעלת הדף והנפקת קוד
             </button>
@@ -687,7 +699,7 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
             <div className="trow">
               <span>הדף פעיל</span>
               <label className="switch ml">
-                <input type="checkbox" checked={enabled} onChange={(e) => (savePlan({ portal_enabled: e.target.checked, portal_code_ver: ver + 1 }), refresh())} />
+                <input type="checkbox" checked={enabled} disabled={busy} onChange={(e) => access({ portal_enabled: e.target.checked, portal_code_ver: ver + 1 }).then(refresh)} />
                 <span />
               </label>
             </div>
@@ -695,9 +707,10 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
               <span className="muted" style={{ fontSize: 14 }}>הקוד הגיע למישהו אחר?</span>
               <button
                 className="btn sm danger ml"
+                disabled={busy}
                 onClick={() =>
                   confirm("מי שנכנס עם הקוד הנוכחי ינותק מיד. להנפיק קוד חדש?") &&
-                  (savePlan({ portal_code: newPortalCode(), portal_code_ver: ver + 1, portal_token: newPortalToken() }), toast("נוצר קוד חדש. צריך לשלוח אותו לזוג"), refresh())
+                  access({ portal_code: newPortalCode(), portal_code_ver: ver + 1, portal_token: newPortalToken() }).then(() => (toast("נוצר קוד חדש. צריך לשלוח אותו לזוג"), refresh()))
                 }
               >
                 קוד חדש

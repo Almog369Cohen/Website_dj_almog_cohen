@@ -270,7 +270,8 @@ export async function portalLogin(phone: unknown, code: unknown) {
     if (!reserved) throw new Forbidden(CLIENT_LOGIN_ERROR);
   }
   if (!match) throw new Forbidden(CLIENT_LOGIN_ERROR);
-  await db.from("event_plans").update({ portal_fails: 0, portal_locked_until: null }).eq("id", match.id);
+  // כניסה נכונה מאפסת את המונה בכל האירועים של הטלפון הזה (לקוח עם שני אירועים לא יינעל מכניסות תקינות)
+  for (const pl of candidates) await db.from("event_plans").update({ portal_fails: 0, portal_locked_until: null }).eq("id", pl.id);
   return { session: makeClientSession(match.id, Number(match.portal_code_ver) || 0) };
 }
 
