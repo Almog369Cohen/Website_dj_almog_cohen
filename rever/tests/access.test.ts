@@ -113,6 +113,11 @@ async function main() {
     await writeRow(pub("gal"), "members", { ...pub("sapir"), pin_hash: "hacked" });
     assert.equal(tables.members.find((m) => m.id === "sapir")!.pin_hash, "x");
   });
+  await ok("אנשי קשר נוספים נשמרים, גם כשעובדת בלי מחירים עורכת את הליד", async () => {
+    const c = JSON.stringify([{ id: "c1", name: "אמא", role: "אמא של הכלה", phone: "050" }]);
+    await writeRow(pub("sapir"), "leads", { ...tables.leads[0], contacts: c });
+    assert.equal(tables.leads[0].contacts, c); assert.equal(tables.leads[0].price, 20000);
+  });
   await ok("גל פותחת לספיר מחירים, וספיר רואה מחיר אבל לא תשלומים", async () => {
     await writeRow(pub("gal"), "members", { ...pub("sapir"), can_prices: true });
     const d = await readAll(pub("sapir"));

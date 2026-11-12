@@ -4,9 +4,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import { DOC_STATUS, DOC_TYPES, LOST_REASONS, PAYMENT_KINDS, STATUSES } from "@/lib/types";
-import type { ActivityKind, Lead, LeadStatus } from "@/lib/types";
-import { fromLocalInput, isOverdue, nis, relDay, shortDate, toLocalInput } from "@/lib/format";
-import { fillTemplate, sendWhatsApp } from "@/lib/whatsapp";
+import type { ActivityKind, Contact, Lead, LeadStatus } from "@/lib/types";
+import { fromLocalInput, isOverdue, nis, relDay, shortDate, toLocalInput, uid } from "@/lib/format";
+import { fillTemplate, sendWhatsApp, waLink } from "@/lib/whatsapp";
 import { CalendarModal, DocModal, FollowupModal, LeadModal, PaymentModal } from "@/components/forms";
 
 const DOT: Record<ActivityKind, string> = {
@@ -263,6 +263,8 @@ function LeadView({ l }: { l: Lead }) {
           </div>
           {l.followup_note && l.next_followup && <div className="muted" style={{ fontSize: 13.5, marginTop: -4 }}>{l.followup_note}</div>}
 
+          <Contacts l={l} />
+
           {l.status === "won" && can("finance") && (
             <>
               <h2 style={{ marginTop: 20 }}>
@@ -421,3 +423,78 @@ function LeadView({ l }: { l: Lead }) {
     </>
   );
 }
+
+/** אנשי קשר נוספים לאירוע (חתן, כלה, הורים…). הטלפון הראשי של הליד נשאר בשדה הטלפון. */
+function Contacts({ l }: { l: Lead }) {
+  const { updateLead } = useStore();
+  const list = parseContacts(l.contacts);
+  const [adding, setAdding] = useState(false);
+  const [f, setF] = useState<Contact>({ id: "", name: "", role: "", phone: "" });
+  const saveList = (next: Contact[]) => updateLead(l, { contacts: next.length ? JSON.stringify(next) : undefined });
+  return (
+    <>
+      <h2 style={{ marginTop: 20 }}>
+        👥 אנשי קשר נוספים
+        {!adding && (
+          <button className="r link" onClick={() => (setF({ id: uid(), name: "", role: "", phone: "" }), setAdding(true))}>
+            + איש קשר
+          </button>
+        )}
+      </h2>
+      {list.length === 0 && !adding && <div className="muted" style={{ fontSize: 13.5 }}>למשל: החתן, הכלה, אמא של הכלה.</div>}
+      {list.map((c) => (
+        <div key={c.id} className="field contact">
+          <span>
+            <b style={{ fontWeight: 600 }}>{c.name}</b>
+            {c.role ? <small className="muted"> · {c.role}</small> : null}
+          </span>
+          <span className="row" style={{ gap: 6 }}>
+            {c.phone && (
+              <>
+                <a className="ib" href={`tel:${c.phone}`} aria-label={`שיחה ל${c.name}`} style={{ width: 32, height: 32 }}>
+                  📞
+                </a>
+                <a className="ib wa" href={waLink(c.phone, `היי ${c.name}, `)} target="_blank" rel="noreferrer" aria-label={`וואטסאפ ל${c.name}`} style={{ width: 32, height: 32 }}>
+                  💬
+                </a>
+              </>
+            )}
+            <button className="muted" aria-label={`הסרת ${c.name}`} onClick={() => confirm(`להסיר את ${c.name}?`) && saveList(list.filter((x) => x.id !== c.id))}>
+              ✕
+            </button>
+          </span>
+        </div>
+      ))}
+      {adding && (
+        <form
+          className="contact-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!f.name.trim()) return;
+            saveList([...list, { id: f.id, name: f.name.trim(), role: f.role?.trim() || undefined, phone: f.phone?.trim() || undefined }]);
+            setAdding(false);
+          }}
+        >
+          <input className="search" required autoFocus placeholder="שם" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
+          <input className="search" placeholder="תפקיד (חתן, אמא של הכלה…)" value={f.role} onChange={(e) => setF({ ...f, role: e.target.value })} />
+          <input className="search" dir="ltr" inputMode="tel" placeholder="טלפון" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
+          <div className="row">
+            <button className="btn sm pri">שמירה</button>
+            <button type="button" className="btn sm" onClick={() => setAdding(false)}>
+              ביטול
+            </button>
+          </div>
+        </form>
+      )}
+    </>
+  );
+}
+
+const parseContacts = (s?: string): Contact[] => {
+  try {
+    const v = s ? JSON.parse(s) : [];
+    return Array.isArray(v) ? v.filter((c) => c && typeof c.name === "string") : [];
+  } catch {
+    return [];
+  }
+};

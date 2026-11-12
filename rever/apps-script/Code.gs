@@ -22,7 +22,7 @@ var LOCK_MIN = 10;
 
 /** טבלה → [שם הלשונית, [[מפתח, כותרת בעברית], ...]] */
 var TABLES = {
-  leads: ["לידים", [["id", "מזהה"], ["name", "שם"], ["phone", "טלפון"], ["email", "אימייל"], ["event_type", "סוג אירוע"], ["event_date", "תאריך אירוע"], ["guests", "מוזמנים"], ["venue", "מקום"], ["source", "מקור"], ["status", "סטטוס"], ["price", "מחיר"], ["next_followup", "פולואפ הבא"], ["followup_note", "מה לעשות בפולואפ"], ["pending_message", "הודעה מתוזמנת"], ["last_contact", "קשר אחרון"], ["notes", "הערות"], ["assigned_to", "מטפל"], ["lost_reason", "סיבה שלא נסגר"], ["created_at", "נוצר"]]],
+  leads: ["לידים", [["id", "מזהה"], ["name", "שם"], ["phone", "טלפון"], ["email", "אימייל"], ["event_type", "סוג אירוע"], ["event_date", "תאריך אירוע"], ["guests", "מוזמנים"], ["venue", "מקום"], ["source", "מקור"], ["status", "סטטוס"], ["price", "מחיר"], ["next_followup", "פולואפ הבא"], ["followup_note", "מה לעשות בפולואפ"], ["pending_message", "הודעה מתוזמנת"], ["last_contact", "קשר אחרון"], ["notes", "הערות"], ["assigned_to", "מטפל"], ["lost_reason", "סיבה שלא נסגר"], ["contacts", "אנשי קשר נוספים"], ["created_at", "נוצר"]]],
   activities: ["היסטוריה", [["id", "מזהה"], ["lead_id", "ליד"], ["kind", "סוג"], ["text", "תיאור"], ["at", "מתי"], ["by", "מי"]]],
   calendar_items: ["יומן", [["id", "מזהה"], ["kind", "סוג"], ["title", "כותרת"], ["start", "מתי"], ["location", "מקום"], ["lead_id", "ליד"]]],
   templates: ["תבניות", [["id", "מזהה"], ["name", "שם"], ["description", "מתי משתמשים"], ["body", "הודעה"], ["sort", "סדר"]]],

@@ -34,8 +34,10 @@ export interface Lead {
   notes?: string;
   assigned_to?: string; // העובד שמטפל בליד
   lost_reason?: string; // למה לא סגרנו
+  contacts?: string; // JSON: Contact[] (חתן, כלה, הורים…). הטלפון הראשי נשאר ב-phone
   created_at: string;
 }
+export interface Contact { id: string; name: string; role?: string; phone?: string }
 
 export type ActivityKind = "created" | "message" | "call" | "status" | "note" | "meeting" | "payment";
 export interface Activity {

@@ -122,6 +122,12 @@ ok("ספיר לא מקבלת מחירים, תשלומים או סכומים בה
   assert.equal(db.activities[0].text, "נשלחה הצעת מחיר ₪•••");
   assert.ok(db.members.every((m) => !("pin_hash" in m)));
 });
+ok("אנשי קשר נוספים נשמרים בגיליון בעמודה משלהם", () => {
+  const c = JSON.stringify([{ id: "c1", name: "אמא", phone: "050" }]);
+  call({ action: "upsert", token: gal, table: "leads", row: { ...ctx.readTable_("leads")[0], contacts: c } });
+  assert.equal(ctx.readTable_("leads")[0].contacts, c);
+  assert.ok(sheets["לידים"].rows[0].includes("אנשי קשר נוספים"));
+});
 ok("ספיר מעדכנת סטטוס, והמחיר נשמר", () => {
   call({ action: "upsert", token: sapir, table: "leads", row: { id: "L1", name: "דנה ויובל", phone: "0500000001", status: "talk", event_type: "חתונה", source: "אתר" } });
   const lead = ctx.readTable_("leads")[0];

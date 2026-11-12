@@ -6,7 +6,7 @@ import { makeClientSession, readSession, verifyClientSession } from "./session";
 
 /** העמודות שמותר לכתוב לכל טבלה (כל השאר נזרק). */
 const COLUMNS: Record<Table, string[]> = {
-  leads: ["id", "name", "phone", "email", "event_type", "event_date", "guests", "venue", "source", "status", "price", "next_followup", "followup_note", "pending_message", "last_contact", "notes", "assigned_to", "lost_reason", "created_at"],
+  leads: ["id", "name", "phone", "email", "event_type", "event_date", "guests", "venue", "source", "status", "price", "next_followup", "followup_note", "pending_message", "last_contact", "notes", "assigned_to", "lost_reason", "contacts", "created_at"],
   activities: ["id", "lead_id", "kind", "text", "at", "by"],
   calendar_items: ["id", "kind", "title", "start", "location", "lead_id"],
   templates: ["id", "name", "description", "body", "sort"],
@@ -64,7 +64,7 @@ export const isTable = (t: unknown): t is Table => typeof t === "string" && (TAB
 
 /** העובד המחובר לפי העוגייה, כפי שהוא כרגע במסד (כדי ששינוי הרשאה או השבתה ייכנסו לתוקף מיד). */
 export async function currentMember(): Promise<Member | null> {
-  const sid = readSession();
+  const sid = await readSession();
   if (!sid) return null;
   const { data } = await adminDb().from("members").select("*").eq("id", sid).maybeSingle();
   if (!data || !data.active) return null;

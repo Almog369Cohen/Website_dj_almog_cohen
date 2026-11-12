@@ -49,7 +49,8 @@ export function demoDB(): DB {
     L({ id: "l2", assigned_to: "m-liel", name: "משפחת לוי", phone: "050-0000002", event_type: "בר מצווה", event_date: day(120), guests: 150, source: "המלצה",
       status: "quote", price: 20000, next_followup: at(0, 12), followup_note: "לבדוק אם ראו את הצעת המחיר", last_contact: at(-3, 12), created_at: at(-10) }),
     L({ id: "l3", assigned_to: "m-gal", name: "שירן ועומר", phone: "050-0000003", event_type: "חתונה", event_date: day(20), guests: 400, source: "אינסטגרם",
-      venue: "אולם הגן", status: "won", price: 30000, last_contact: at(-5), created_at: at(-60) }),
+      venue: "אולם הגן", status: "won", price: 30000, last_contact: at(-5), created_at: at(-60),
+      contacts: JSON.stringify([{ id: "c1", name: "שירן", role: "כלה", phone: "050-0000003" }, { id: "c2", name: "עומר", role: "חתן", phone: "050-0000015" }, { id: "c3", name: "רונית", role: "אמא של הכלה", phone: "050-0000013" }]) }),
   ];
 
   return {

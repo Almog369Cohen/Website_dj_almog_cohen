@@ -7,19 +7,19 @@
     "build": "next build",
     "start": "next start -p ${PORT:-3100}",
     "typecheck": "tsc --noEmit",
-    "test": "NODE_ENV=test SESSION_SECRET=test-secret-test-secret-test-secret-1234 node --require ./tests/setup.cjs --import tsx tests/access.test.ts && node --import tsx tests/sheets.test.ts && node --import tsx tests/portal.test.ts && node tests/apps-script.test.mjs"
+    "test": "NODE_ENV=test SESSION_SECRET=test-secret-test-secret-test-secret-1234 node --require ./tests/setup.cjs --import tsx tests/access.test.ts && node --import tsx tests/sheets.test.ts && node --import tsx tests/portal.test.ts && node --import tsx tests/leads.test.ts && node tests/apps-script.test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.97.0",
-    "next": "14.2.35",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "tsx": "^4.19.2",
     "typescript": "^5"
   }

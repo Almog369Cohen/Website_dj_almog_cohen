@@ -21,8 +21,8 @@ export function makeSession(staffId: string) {
   return `${payload}.${ssign(payload)}`;
 }
 
-export function readSession(): string | null {
-  return verifySession(cookies().get(COOKIE)?.value);
+export async function readSession(): Promise<string | null> {
+  return verifySession((await cookies()).get(COOKIE)?.value);
 }
 
 export function verifySession(v?: string): string | null {

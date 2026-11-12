@@ -5,7 +5,8 @@ import { Suspense, useState } from "react";
 import { useStore } from "@/lib/store";
 import { STATUSES } from "@/lib/types";
 import type { LeadStatus } from "@/lib/types";
-import { isOverdue, relDay, shortDate } from "@/lib/format";
+import { isOverdue, nis, relDay, shortDate } from "@/lib/format";
+import { pipeline } from "@/lib/leads";
 import { Owner, StatusTag } from "@/components/ui";
 import { LeadModal } from "@/components/forms";
 import ImportSheet, { usePullSheet } from "@/components/ImportSheet";
@@ -19,7 +20,8 @@ export default function LeadsPage() {
 }
 
 function Leads() {
-  const { db, me } = useStore();
+  const { db, me, can } = useStore();
+  const pipe = pipeline(db.leads);
   const [mine, setMine] = useState(false);
   const nameOf = (id?: string) => db.members.find((m) => m.id === id)?.name;
   const router = useRouter();
@@ -51,7 +53,16 @@ function Leads() {
       <div className="top">
         <div>
           <h1>לידים</h1>
-          <div className="sub">{active} לידים פעילים</div>
+          <div className="sub">
+            {active} לידים פעילים
+            {can("prices") && pipe.count > 0 && (
+              <span title="סכום הצעות המחיר שנשלחו ועוד לא נסגרו">
+                {" "}
+                · 📄 בהצעות מחיר: <b>{nis(pipe.total)}</b> ({pipe.count})
+                {pipe.nearCount > 0 && <> · מתוכן לאירועים בחודשיים הקרובים: {nis(pipe.near)}</>}
+              </span>
+            )}
+          </div>
         </div>
         <input className="search ml" placeholder="🔍 חיפוש שם, טלפון, מקום…" value={q} onChange={(e) => setQ(e.target.value)} />
         {db.settings[0]?.sheet_url ? (

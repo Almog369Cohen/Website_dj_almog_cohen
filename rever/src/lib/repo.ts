@@ -29,7 +29,7 @@ export const supabase = () => {
   return client;
 };
 
-const LS_KEY = "rever-crm-demo-v11";
+const LS_KEY = "rever-crm-demo-v12";
 
 /** מצב דמו: הלקוח צפה. מעדכן "נצפה לאחרונה" ורושם בהיסטוריה (לכל היותר פעם ב-6 שעות) */
 export function markLocalSeen(db: DB, planId: string) {

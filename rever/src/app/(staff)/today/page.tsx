@@ -7,7 +7,8 @@ import { STATUSES } from "@/lib/types";
 import type { Lead } from "@/lib/types";
 import { DAYS, MONTHS, endOfDay, initials, isDueToday, isOverdue, relDay, shortDate, startOfDay, time } from "@/lib/format";
 import { Avatar, Owner, StatusTag } from "@/components/ui";
-import { LeadModal } from "@/components/forms";
+import { FollowupModal, LeadModal } from "@/components/forms";
+import { stuckLeads } from "@/lib/leads";
 import { usePullSheet } from "@/components/ImportSheet";
 import { agendaItems } from "@/lib/agenda";
 import { eventTodos } from "@/lib/events";
@@ -30,6 +31,9 @@ export default function TodayPage() {
     .filter((l) => scope === "all" || l.assigned_to === me?.id)
     .filter((l) => isDueToday(l.next_followup))
     .sort((a, b) => +new Date(a.next_followup!) - +new Date(b.next_followup!));
+
+  const stuck = stuckLeads(db).filter((s) => scope === "all" || s.lead.assigned_to === me?.id);
+  const [scheduling, setScheduling] = useState<Lead | null>(null);
 
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const counts = useMemo(() => {
@@ -131,6 +135,33 @@ export default function TodayPage() {
           ))}
         </div>
       </div>
+      {stuck.length > 0 && (
+        <div className="card">
+          <h2>
+            ⚠ נופלים בין הכיסאות <span className="tag s-lost">{stuck.length}</span>
+            <span className="r muted" style={{ fontSize: 13, fontWeight: 500 }}>
+              לידים פתוחים בלי פולואפ
+            </span>
+          </h2>
+          {stuck.map(({ lead: l, reason, text }) => (
+            <div key={l.id} className="ag stuck">
+              <div className="tm" style={{ fontSize: 20 }}>{reason === "new_untouched" ? "🆕" : reason === "quote_silent" ? "📄" : "⏸"}</div>
+              <div className="bar" style={{ background: reason === "no_followup" ? "var(--orange)" : "var(--red)" }} />
+              <button className="stuck-body" onClick={() => router.push(`/leads/view?id=${l.id}`)}>
+                <b>{l.name}</b>
+                <span>
+                  {text}
+                  {nameOf(l.assigned_to) ? ` · ${nameOf(l.assigned_to)}` : " · לא משויך"}
+                </span>
+              </button>
+              <button className="btn sm ml" onClick={() => setScheduling(l)}>
+                📌 לקבוע פולואפ
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      {scheduling && <FollowupModal lead={scheduling} onClose={() => setScheduling(null)} />}
       {todos.length > 0 && (
         <div className="card">
           <h2>
