@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Conflict, Forbidden, portalLogin, portalPreview, portalTasksSave, portalView } from "@/lib/server/access";
+import { Conflict, currentMember, Forbidden, portalLogin, portalPreview, portalTasksSave, portalView } from "@/lib/server/access";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +9,7 @@ const NOT_ACTIVE = "הקישור לא פעיל";
 /** תצוגה מקדימה לצוות (הקישור הסודי): קריאה בלבד */
 export async function GET(req: Request) {
   try {
-    const view = await portalPreview(new URL(req.url).searchParams.get("t") ?? "");
+    const view = await portalPreview(new URL(req.url).searchParams.get("t") ?? "", await currentMember());
     if (!view) return NextResponse.json({ error: NOT_ACTIVE }, { status: 404, headers: H });
     return NextResponse.json(view, { headers: H });
   } catch {

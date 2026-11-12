@@ -5,14 +5,16 @@ import { cleanPhone, relDay, shortDate } from "./format";
 export function fillTemplate(body: string, lead: Lead, settings: Settings, meeting?: CalendarItem) {
   const map: Record<string, string> = {
     "שם": lead.name,
-    "תאריך": lead.event_date ? shortDate(lead.event_date) : "התאריך",
+    "תאריך": lead.event_date ? shortDate(lead.event_date) : "התאריך שלכם",
     "אירוע": lead.event_type || "אירוע",
     "עסק": settings.business_name || "",
     "בעלים": settings.owner_name || "",
     "פגישה": meeting ? `${relDay(meeting.start)}${meeting.location ? ", " + meeting.location : ""}` : "בפגישה שקבענו",
     "מחיר": lead.price ? "₪" + lead.price.toLocaleString("he-IL") : "",
   };
-  return body.replace(/\{([^}]+)\}/g, (m, k) => (k in map ? map[k] : m));
+  // אין תאריך עדיין: "ל{אירוע} ב-{תאריך}" → "לחתונה" (בלי "ב-התאריך")
+  const text = lead.event_date ? body : body.replace(/\s*ב-?\s*\{תאריך\}/g, "").replace(/\s*\(\{תאריך\}\)/g, "");
+  return text.replace(/\{([^}]+)\}/g, (m, k) => (k in map ? map[k] : m));
 }
 
 export const waLink = (phone: string, text: string) =>

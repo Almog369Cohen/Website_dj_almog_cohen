@@ -39,6 +39,14 @@ var PORTAL_FIELDS = ["portal_token", "portal_enabled", "portal_sections", "clien
 // נכתבים רק דרך מסלולים ייעודיים (צפייה, כניסה, שמירת משימות), לא בשמירה רגילה
 var GUARDED = ["portal_seen_at", "portal_fails", "portal_locked_until", "client_tasks", "client_tasks_rev", "dismissed_suggestions"];
 var SERVER_ONLY = ["portal_fails", "portal_locked_until"];
+// שדות הגישה של הלקוח: כל שינוי בהם חייב להעלות את portal_code_ver באחד (עותק ישן לא מחזיר קוד שהוחלף)
+var ACCESS = ["portal_code", "portal_token", "portal_enabled"];
+function normAcc_(v) { return v === undefined || v === null || v === "" ? null : v === true || v === "TRUE" ? true : v === false || v === "FALSE" ? false : String(v); }
+function accessChanged_(row, prev) { return ACCESS.some(function (k) { return normAcc_(row[k]) !== normAcc_(prev[k]); }); }
+function staleAccess_(row, prev) {
+  var inV = Number(row.portal_code_ver) || 0, cur = Number(prev.portal_code_ver) || 0;
+  return inV < cur || (accessChanged_(row, prev) && inV !== cur + 1);
+}
 var FINANCE = { payments: 1, expenses: 1, docs: 1 };
 var PRIVATE_MEMBER = { pin_hash: 1, failed_attempts: 1, locked_until: 1, last_login: 1 };
 
@@ -113,13 +121,13 @@ function handle_(req) {
   if (a === "portal_login") return portalLogin_(req.phone, req.code);
   if (a === "portal_view") return portalView_(req.session);
   if (a === "portal_tasks") return portalTasks_(req.session, req);
-  if (a === "portal_preview") return portalPreview_(req.portal_token); // תצוגה מקדימה לצוות: קריאה בלבד
   var me = auth_(req.token);
   if (a === "me") return { me: publicMember_(me) };
   if (a === "load") return { db: loadAll_(me), sheet_url: me.role === "admin" ? SpreadsheetApp.getActive().getUrl() : null };
   if (a === "upsert") return withLock_(function () { upsert_(me, req.table, req.row); return { ok: true }; });
   if (a === "remove") return withLock_(function () { remove_(me, req.table, req.id); return { ok: true }; });
   if (a === "set_pin") return withLock_(function () { setPin_(me, req.staff_id, req.pin); return { ok: true }; });
+  if (a === "portal_preview") { var pv = portalPreview_(req.portal_token); if (!(can_(me, "prices") && can_(me, "finance"))) { delete pv.view.payments; pv.view.sections.payments = false; } return pv; } // תצוגה מקדימה: רק עובד מחובר
   if (a === "tasks_save") return withLock_(function () { return saveTasks_(findRow_("event_plans", req.id) || { id: req.id }, req, false); });
   throw err_("פעולה לא מוכרת");
 }
@@ -164,17 +172,25 @@ function auth_(token) {
 }
 
 function makeToken_(sid) {
-  var payload = Utilities.base64EncodeWebSafe(JSON.stringify({ sid: sid, exp: Date.now() + SESSION_HOURS * 3600000 }));
-  return payload + "." + sign_(payload);
+  var payload = Utilities.base64EncodeWebSafe(JSON.stringify({ typ: "staff", sid: sid, exp: Date.now() + SESSION_HOURS * 3600000 }));
+  return payload + "." + sign_("staff:" + payload);
 }
 function verifyToken_(t) {
   if (!t || typeof t !== "string") return null;
   var p = t.split(".");
-  if (p.length !== 2 || sign_(p[0]) !== p[1]) return null;
+  if (p.length !== 2 || !safeEq_(sign_("staff:" + p[0]), p[1])) return null;
   try {
     var o = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(p[0])).getDataAsString());
-    return o.exp > Date.now() ? o.sid : null;
+    return o.typ === "staff" && typeof o.sid === "string" && o.exp > Date.now() ? o.sid : null;
   } catch (x) { return null; }
+}
+/** השוואה בזמן קבוע (לא מגלה כמה תווים נכונים) */
+function safeEq_(a, b) {
+  a = String(a); b = String(b);
+  if (a.length !== b.length) return false;
+  var d = 0;
+  for (var i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return d === 0;
 }
 function sign_(s) {
   var secret = PropertiesService.getScriptProperties().getProperty("SECRET");
@@ -252,8 +268,11 @@ function upsert_(me, table, input) {
   if (table === "settings" && prev && !("make_webhook_url" in input)) row.make_webhook_url = prev.make_webhook_url;
   if (table === "event_plans" && !can_(me, "prices")) row.suppliers = keepCosts_(row.suppliers, prev && prev.suppliers);
   if (table === "event_plans" && !(can_(me, "prices") && can_(me, "finance"))) row.payment_plan = prev ? prev.payment_plan : "";
-  if (table === "event_plans" && !can_(me, "portal")) PORTAL_FIELDS.forEach(function (k) { row[k] = prev ? prev[k] : ""; });
+  var keepPortal = table === "event_plans" && (!can_(me, "portal") || (prev && staleAccess_(row, prev))); // אין הרשאה / עותק ישן של הדף
+  var resetLock = table === "event_plans" && !keepPortal && prev && accessChanged_(row, prev);
+  if (keepPortal) PORTAL_FIELDS.forEach(function (k) { row[k] = prev ? prev[k] : ""; });
   if (table === "event_plans") GUARDED.forEach(function (k) { row[k] = prev && prev[k] !== undefined ? prev[k] : ""; }); // נשמר הערך הקיים
+  if (resetLock) { row.portal_fails = 0; row.portal_locked_until = ""; } // קוד חדש מבטל נעילה
   if (table === "event_plans" && row.portal_token) {
     var clash = readTable_("event_plans").filter(function (p) { return p.portal_token === row.portal_token && p.id !== row.id; });
     if (clash.length) throw err_("קוד קישור כפול");
@@ -312,19 +331,19 @@ var DEFAULT_CLIENT_STEPS = ["contract", "deposit", "meeting", "suppliers", "time
 var DOC_LABELS = { quote: "הצעת מחיר", invoice: "חשבונית מס", receipt: "קבלה" };
 var SUP_CATS = { venue: ["אולם / מקום", "🏛️"], catering: ["קייטרינג", "🍽️"], design: ["עיצוב ופרחים", "💐"], photo: ["צילום", "📸"], dj: ["DJ", "🎧"], light: ["תאורה והגברה", "💡"], attraction: ["אטרקציות", "🎉"], other: ["אחר", "🤝"] };
 
-var CLIENT_DAYS = 90, CLIENT_MAX_TRIES = 5, CLIENT_LOCK_MIN = 15, CLIENT_LOGIN_ERROR = "טלפון או קוד שגויים";
+var CLIENT_DAYS = 90, CLIENT_MAX_TRIES = 5, CLIENT_LOCK_MIN = 15, CLIENT_LOGIN_ERROR = "טלפון או קוד שגויים. אחרי 5 ניסיונות הכניסה ננעלת לרבע שעה";
 
 function makeClientToken_(pid, ver) {
-  var payload = Utilities.base64EncodeWebSafe(JSON.stringify({ pid: pid, v: ver, exp: Date.now() + CLIENT_DAYS * 86400000 }));
+  var payload = Utilities.base64EncodeWebSafe(JSON.stringify({ typ: "client", pid: pid, v: ver, exp: Date.now() + CLIENT_DAYS * 86400000 }));
   return payload + "." + sign_("client:" + payload);
 }
 function verifyClientToken_(t) {
   if (!t || typeof t !== "string") return null;
   var p = t.split(".");
-  if (p.length !== 2 || sign_("client:" + p[0]) !== p[1]) return null;
+  if (p.length !== 2 || !safeEq_(sign_("client:" + p[0]), p[1])) return null;
   try {
     var o = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(p[0])).getDataAsString());
-    return typeof o.pid === "string" && o.exp > Date.now() ? { pid: o.pid, v: Number(o.v) || 0 } : null;
+    return o.typ === "client" && typeof o.pid === "string" && o.exp > Date.now() ? { pid: o.pid, v: Number(o.v) || 0 } : null;
   } catch (x) { return null; }
 }
 function normPhone_(p) { var d = String(p == null ? "" : p).replace(/\D/g, ""); return d.indexOf("972") === 0 ? "0" + d.slice(3) : d; }
@@ -353,7 +372,8 @@ function portalLogin_(phone, code) {
         if (!match && pl.portal_code && String(pl.portal_code) === c) match = pl;
       }
     });
-    if (candidates.some(function (pl) { return pl.portal_locked_until && new Date(pl.portal_locked_until).getTime() > now; })) throw err_("יותר מדי ניסיונות. נסו שוב בעוד " + CLIENT_LOCK_MIN + " דקות");
+    // נעול = אותה הודעה כמו קוד שגוי (לא מגלים שזה טלפון של לקוח)
+    if (candidates.some(function (pl) { return pl.portal_locked_until && new Date(pl.portal_locked_until).getTime() > now; })) throw err_(CLIENT_LOGIN_ERROR);
     if (!match) {
       candidates.forEach(function (pl) {
         var fails = (Number(pl.portal_fails) || 0) + 1, lock = fails >= CLIENT_MAX_TRIES;
@@ -449,9 +469,8 @@ function describeChange_(prev, next) {
   return parts.join(" · ") || "עדכנו פרטים";
 }
 function saveTasks_(plan, req, client) {
-  var sections = { tasks: true }, s = parse_(plan.portal_sections, {});
-  if (s.tasks === false) sections.tasks = false;
-  if (client && !sections.tasks) throw err_("המשימות לא פתוחות לעריכה");
+  var s = parse_(plan.portal_sections, {}) || {};
+  if (client && s.tasks === false) throw err_("המשימות לא פתוחות לעריכה");
   var cur = Number(plan.client_tasks_rev) || 0;
   if (Number(req.rev) !== cur) throw err_("הרשימה עודכנה בינתיים. טוענים מחדש", "conflict");
   var tasks = sanitizeTasks_(req.tasks), prev = parse_(plan.client_tasks, []);
@@ -459,13 +478,14 @@ function saveTasks_(plan, req, client) {
   var row = findRow_("event_plans", plan.id) || { id: plan.id };
   row.client_tasks = JSON.stringify(tasks);
   row.client_tasks_rev = cur + 1;
-  row.dismissed_suggestions = JSON.stringify(sanitizeDismissed_(req.dismissed !== undefined ? req.dismissed : parse_(plan.dismissed_suggestions, [])));
+  row.dismissed_suggestions = JSON.stringify(sanitizeDismissed_(req.dismissed != null ? req.dismissed : parse_(plan.dismissed_suggestions, [])));
   writeRow_("event_plans", row);
   if (client) {
     var now = new Date().toISOString(), change = describeChange_(prev, tasks);
     var last = readTable_("activities").filter(function (a) { return a.lead_id === plan.id && String(a.text).indexOf(TASKS_LOG_PREFIX) === 0; }).sort(function (a, b) { return String(b.at).localeCompare(String(a.at)); })[0];
-    if (last && String(last.text).indexOf(TASKS_LOG_PREFIX) === 0 && new Date(now) - new Date(last.at) < 3600e3) {
-      last.text = (last.text + " · " + change).slice(0, 400); last.at = now; writeRow_("activities", last);
+    var merged = last ? last.text + " · " + change : "";
+    if (last && new Date(now) - new Date(last.at) < 3600e3 && merged.length <= 400) {
+      last.text = merged; last.at = now; writeRow_("activities", last);
     } else writeRow_("activities", { id: Utilities.getUuid(), lead_id: plan.id, kind: "note", text: (TASKS_LOG_PREFIX + ": " + change).slice(0, 400), at: now });
   }
   return { rev: cur + 1 };
@@ -482,7 +502,7 @@ function timeKey_(t) { var p = String(t || "").split(":"); var h = Number(p[0]) 
 
 function clientView_(lead, plan, payments, docs, settingsRows, members) {
   var sections = { status: true, tasks: true, timeline: true, payments: true, suppliers: true, details: true };
-  var s = parse_(plan.portal_sections, {});
+  var s = parse_(plan.portal_sections, {}) || {};
   Object.keys(s).forEach(function (k) { sections[k] = s[k]; });
   var checklist = parse_(plan.checklist, {}), extra = parse_(plan.extra_checks, []);
   var ids = CHECK_IDS.concat(extra.map(function (x) { return "x:" + x; }));

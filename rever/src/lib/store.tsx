@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import type { Activity, ActivityKind, DB, Lead, LeadStatus, Member, Perm, Settings, Table } from "./types";
+import type { Activity, ActivityKind, DB, EventPlan, Lead, LeadStatus, Member, Perm, Settings, Table } from "./types";
 import { useAuth } from "./auth";
 import { memberCan, statusLabel, TABLES } from "./types";
 import { makeRepo, type Repo } from "./repo";
@@ -72,9 +72,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     load();
   }, [load]);
 
-  // גוגל שיטס: רענון אוטומטי כדי לראות שינויים של שאר הצוות (כל דקה + כשחוזרים לחלון)
+  // גוגל שיטס / Supabase: רענון אוטומטי כדי לראות שינויים של שאר הצוות (כל דקה + כשחוזרים לחלון)
   useEffect(() => {
-    if (repoRef.current?.mode !== "sheets") return;
+    if (!repoRef.current || repoRef.current.mode === "demo") return;
     const tick = () => document.visibilityState === "visible" && load();
     const id = setInterval(tick, 60_000);
     window.addEventListener("focus", tick);
@@ -116,24 +116,30 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [load, toast],
   );
 
-  // שמירות משימות יוצאות אחת-אחת, כדי שהגרסה תתקדם בסדר
+  // שמירות משימות יוצאות אחת-אחת. הגרסה נלקחת רק ממה שהשרת אישר (לא מניחוש מקומי),
+  // ואחרי כישלון כל השמירות שחיכו בתור נזרקות וטוענים מחדש, כדי לא לדרוס שינוי של הזוג.
   const tasksQueue = useRef(Promise.resolve());
+  const tasksGen = useRef(0);
   const dbRef = useRef(db);
   dbRef.current = db;
   const saveTasks = useCallback(
     (planId: string, tasks: ClientTask[], dismissed: string[]) => {
+      const gen = tasksGen.current;
+      const patchLocal = (p: Partial<EventPlan>) => {
+        const cur = dbRef.current.event_plans.find((x) => x.id === planId) ?? { id: planId };
+        const next = { ...cur, ...p };
+        dbRef.current = { ...dbRef.current, event_plans: [...dbRef.current.event_plans.filter((x) => x.id !== planId), next] };
+        setDb((prev) => ({ ...prev, event_plans: [...prev.event_plans.filter((x) => x.id !== planId), { ...(prev.event_plans.find((x) => x.id === planId) ?? { id: planId }), ...p }] }));
+      };
+      patchLocal({ client_tasks: JSON.stringify(tasks), dismissed_suggestions: JSON.stringify(dismissed) }); // המסך מתעדכן מיד
       const run = async () => {
-        const plan = dbRef.current.event_plans.find((p) => p.id === planId) ?? { id: planId };
-        const rev = Number(plan.client_tasks_rev) || 0;
-        const next = { ...plan, client_tasks: JSON.stringify(tasks), dismissed_suggestions: JSON.stringify(dismissed), client_tasks_rev: rev + 1 };
-        setDb((prev) => {
-          const list = prev.event_plans.filter((p) => p.id !== planId);
-          return { ...prev, event_plans: [...list, next] };
-        });
-        dbRef.current = { ...dbRef.current, event_plans: [...dbRef.current.event_plans.filter((p) => p.id !== planId), next] };
+        if (gen !== tasksGen.current) return; // שמירה ישנה מלפני כישלון
+        const rev = Number(dbRef.current.event_plans.find((x) => x.id === planId)?.client_tasks_rev) || 0;
         try {
-          await repoRef.current!.saveTasks(planId, { tasks, dismissed, rev });
+          const r = await repoRef.current!.saveTasks(planId, { tasks, dismissed, rev });
+          patchLocal({ client_tasks_rev: r.rev });
         } catch (e) {
+          tasksGen.current++;
           toast("המשימות לא נשמרו: " + (e instanceof Error ? e.message : e));
           await load();
         }

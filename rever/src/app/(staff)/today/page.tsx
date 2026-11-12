@@ -11,6 +11,7 @@ import { LeadModal } from "@/components/forms";
 import { usePullSheet } from "@/components/ImportSheet";
 import { agendaItems } from "@/lib/agenda";
 import { eventTodos } from "@/lib/events";
+import { DemoGuide } from "@/components/DemoGuide";
 
 export default function TodayPage() {
   const { db, settings, me, can } = useStore();
@@ -69,6 +70,7 @@ export default function TodayPage() {
           + ליד חדש
         </button>
       </div>
+      <DemoGuide />
 
       <div className="statuses">
         {STATUSES.map((s) => (

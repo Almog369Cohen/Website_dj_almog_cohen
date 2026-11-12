@@ -171,13 +171,13 @@ const TOK = "tok_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 let session = "";
 ok("כניסת הזוג: רק כשהליד נסגר והדף פעיל, עם טלפון + קוד נכונים; תצוגה מקדימה לא רושמת צפייה", () => {
   call({ action: "upsert", token: gal, table: "leads", row: { ...ctx.readTable_("leads")[0], status: "won" } });
-  call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], portal_token: TOK, portal_enabled: false, portal_code: "482913", portal_code_ver: 0, payment_plan: JSON.stringify([{ id: "a", name: "מקדמה", amount: 5000 }]), internal_notes: "סודי" } });
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], portal_token: TOK, portal_enabled: false, portal_code: "482913", portal_code_ver: 1, payment_plan: JSON.stringify([{ id: "a", name: "מקדמה", amount: 5000 }]), internal_notes: "סודי" } });
   assert.match(call({ action: "portal_login", phone: "0500000001", code: "482913" }).error, /שגויים/);
-  call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], portal_enabled: true } });
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], portal_enabled: true, portal_code_ver: 2 } });
   assert.match(call({ action: "portal_login", phone: "0500000001", code: "111111" }).error, /שגויים/);
   session = call({ action: "portal_login", phone: "+972 50-000-0001", code: "482913" }).session;
   assert.ok(session && session.length > 20);
-  const pv = call({ action: "portal_preview", portal_token: TOK });
+  const pv = call({ action: "portal_preview", token: gal, portal_token: TOK });
   assert.ok(pv.view && pv.view.event.name === "דנה ויובל");
   assert.equal(ctx.readTable_("event_plans")[0].portal_seen_at, undefined);
   const v = call({ action: "portal_view", session }).view;
@@ -191,7 +191,7 @@ ok("כניסת הזוג: רק כשהליד נסגר והדף פעיל, עם טל
 });
 ok("5 טעויות קוד לאותו טלפון נועלות ל-15 דקות", () => {
   for (let i = 0; i < 5; i++) call({ action: "portal_login", phone: "0500000001", code: "000000" });
-  assert.match(call({ action: "portal_login", phone: "0500000001", code: "482913" }).error, /יותר מדי ניסיונות/);
+  assert.match(call({ action: "portal_login", phone: "0500000001", code: "482913" }).error, /שגויים/); // נעול, גם עם הקוד הנכון
   const p = ctx.readTable_("event_plans")[0];
   p.portal_locked_until = ""; ctx.writeRow_("event_plans", p);
 });
@@ -217,7 +217,7 @@ ok("טלפון של המטפל מוצג ללקוח (ואם אין, הטלפון 
   const g = ctx.readTable_("members").find((m) => m.role === "admin");
   call({ action: "upsert", token: gal, table: "members", row: { ...ctx.publicMember_(g), phone: "050-1112222" } });
   call({ action: "upsert", token: gal, table: "leads", row: { ...ctx.readTable_("leads")[0], assigned_to: g.id } });
-  assert.equal(call({ action: "portal_preview", portal_token: TOK }).view.contact.phone, "050-1112222");
+  assert.equal(call({ action: "portal_preview", token: gal, portal_token: TOK }).view.contact.phone, "050-1112222");
 });
 const T = (id, title, extra = {}) => ({ id, title, owner: "both", category: "guests", status: "todo", done: false, section: "before", order: 0, ...extra });
 ok("הזוג שומר משימות וכותב רק אותן; היסטוריה מקובצת", () => {
@@ -248,7 +248,7 @@ ok("שמירה רגילה של הצוות לא דורסת משימות; הצוו
   const arad = call({ action: "login", staff_id: "arad", pin: "3333" }).token;
   assert.equal(call({ action: "tasks_save", token: arad, id: "L1", tasks: [T("k1", "טבעות")], rev: 2 }).rev, 3);
   assert.equal(call({ action: "tasks_save", token: arad, id: "L1", tasks: [], rev: 2 }).code, "conflict");
-  call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], portal_code: "777777", portal_code_ver: 1 } });
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], portal_code: "777777", portal_code_ver: ctx.readTable_("event_plans")[0].portal_code_ver + 1 } });
   assert.equal(call({ action: "portal_view", session }).code, "auth");
 });
 ok("מחירים בלי כספים: לא רואה תוכנית תשלומים ולא יכול לשנות אותה", () => {
@@ -270,6 +270,28 @@ ok("שדות דיג'יי ישנים (שירים, רגעים, ציוד) לא נש
   ctx.setup();
   const head = sh.rows[0];
   assert.ok(!head.includes("שירי חובה") && !head.includes("ציוד") && head.includes("לוז"));
+});
+ok("תצוגה מקדימה: רק לעובד מחובר; בלי מחירים+כספים אין תשלומים", () => {
+  assert.equal(call({ action: "portal_preview", portal_token: TOK }).code, "auth");
+  const arad = call({ action: "login", staff_id: "arad", pin: "3333" }).token;
+  call({ action: "upsert", token: gal, table: "members", row: { ...ctx.publicMember_(ctx.readTable_("members").find((m) => m.id === "arad")), can_prices: false, can_finance: false, can_portal: true } });
+  const v = call({ action: "portal_preview", token: arad, portal_token: ctx.readTable_("event_plans")[0].portal_token }).view;
+  assert.equal(v.payments, undefined); assert.equal(v.sections.payments, false);
+  assert.ok(call({ action: "portal_preview", token: gal, portal_token: ctx.readTable_("event_plans")[0].portal_token }).view.payments);
+});
+ok("עותק ישן של הדף לא מחזיר קוד שהוחלף ולא מדליק דף שכובה", () => {
+  const old = ctx.readTable_("event_plans")[0];
+  const V = old.portal_code_ver;
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...old, portal_code: "555555", portal_code_ver: V + 1 } }); // "קוד חדש"
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...old, notes: "עריכה מעותק ישן" } });
+  let r = ctx.readTable_("event_plans")[0];
+  assert.equal(r.portal_code, "555555"); assert.equal(r.portal_code_ver, V + 1); assert.equal(r.notes, "עריכה מעותק ישן");
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...r, portal_enabled: false } }); // שינוי בלי להעלות גרסה = נדחה
+  assert.equal(ctx.readTable_("event_plans")[0].portal_enabled, true);
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...r, portal_enabled: false, portal_code_ver: V + 2 } });
+  assert.equal(ctx.readTable_("event_plans")[0].portal_enabled, false);
+  call({ action: "upsert", token: gal, table: "event_plans", row: { ...r, portal_enabled: true, portal_code_ver: V + 1 } }); // ישן מנסה להדליק
+  assert.equal(ctx.readTable_("event_plans")[0].portal_enabled, false);
 });
 ok("ללקוח אין שום פעולת כתיבה מלבד המשימות", () => {
   for (const action of ["upsert", "remove", "set_pin", "load", "tasks_save"]) {

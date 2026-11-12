@@ -87,7 +87,13 @@ class LocalRepo implements Repo {
     const db = this.read();
     const list = db[table] as { id: string }[];
     const i = list.findIndex((r) => r.id === (row as { id: string }).id);
-    if (i >= 0) list[i] = row as { id: string };
+    if (i >= 0 && table === "event_plans") {
+      // כמו בשרת: המשימות של הזוג נשמרות רק במסלול שלהן, שמירה רגילה לא דורסת אותן
+      const prev = list[i] as Record<string, unknown>;
+      const next = { ...(row as unknown as Record<string, unknown>) };
+      for (const k of ["client_tasks", "client_tasks_rev", "dismissed_suggestions", "portal_seen_at"]) next[k] = prev[k];
+      list[i] = next as { id: string };
+    } else if (i >= 0) list[i] = row as { id: string };
     else list.push(row as { id: string });
     this.write(db);
   }
@@ -197,8 +203,13 @@ export const sheetsToken = {
 export async function portalSheetsCall<T = Record<string, unknown>>(action: string, payload: Record<string, unknown> = {}): Promise<T> {
   const url = sheetsUrl();
   if (!url) throw new Error("הגיליון לא מחובר");
-  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action, ...payload }), redirect: "follow" });
-  const data = await res.json().catch(() => ({ error: "תשובה לא תקינה" }));
+  let res: Response;
+  try {
+    res = await fetch(url, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action, ...payload }), redirect: "follow" });
+  } catch {
+    throw Object.assign(new Error("אין חיבור לאינטרנט. נסו שוב"), { code: "net" });
+  }
+  const data = await res.json().catch(() => ({ error: "תשובה לא תקינה. נסו שוב", code: "net" }));
   if (data.error) throw Object.assign(new Error(data.error), { code: data.code });
   return data as T;
 }

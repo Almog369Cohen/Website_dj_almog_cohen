@@ -6,6 +6,7 @@ import assert from "node:assert/strict";
 import type { Member } from "../src/lib/types";
 
 type Row = Record<string, unknown>;
+const IS_NULL = Symbol("null");
 const tables: Record<string, Row[]> = {};
 
 // ---- מסד מדומה שמחקה את מה ש-supabase-js מחזיר ----
@@ -15,10 +16,11 @@ function q(table: string) {
   let op: "select" | "delete" | "update" = "select";
   let patch: Row = {};
   let head = false;
-  const apply = () => rows().filter((r) => filters.every(([k, v]) => r[k] === v));
+  const apply = () => rows().filter((r) => filters.every(([k, v]) => (v === IS_NULL ? r[k] == null : r[k] === v)));
   const b = {
     select(_c?: string, o?: { head?: boolean }) { head = !!o?.head; return b; },
     eq(k: string, v: unknown) { filters.push([k, v]); return b; },
+    is(k: string, _v: null) { filters.push([k, IS_NULL]); return b; },
     order() { return b; },
     maybeSingle() { return Promise.resolve({ data: apply()[0] ?? null, error: null }); },
     delete() { op = "delete"; return b; },
@@ -31,7 +33,7 @@ function q(table: string) {
     insert(r: Row) { rows().push({ ...r }); return Promise.resolve({ error: null }); },
     then(res: (v: unknown) => void) {
       if (op === "delete") { const keep = rows().filter((r) => !apply().includes(r)); tables[table] = keep; return res({ error: null }); }
-      if (op === "update") { apply().forEach((r) => Object.assign(r, patch)); return res({ error: null }); }
+      if (op === "update") { const hit = apply(); hit.forEach((r) => Object.assign(r, patch)); return res({ data: hit.map((r) => ({ ...r })), error: null }); }
       const data = apply().map((r) => ({ ...r }));
       return res(head ? { count: data.length, error: null } : { data, error: null });
     },
@@ -169,7 +171,12 @@ async function main() {
     session = (await portalLogin("+972-50-123-4567", "482913")).session;
     assert.ok(session.length > 20);
     for (let i = 0; i < 5; i++) await denied(portalLogin("0501234567", "000000"));
-    await assert.rejects(portalLogin("0501234567", "482913"), /יותר מדי ניסיונות/);
+    await denied(portalLogin("0501234567", "482913")); // נעול, גם עם הקוד הנכון (ובלי לגלות שזה טלפון של לקוח)
+    // במקביל: 30 ניסיונות בבת אחת לא עוקפים את הנעילה
+    tables.event_plans[0].portal_locked_until = null; tables.event_plans[0].portal_fails = 0;
+    const burst = await Promise.allSettled(Array.from({ length: 30 }, () => portalLogin("0501234567", "000000")));
+    assert.ok(burst.every((r) => r.status === "rejected"));
+    assert.ok(tables.event_plans[0].portal_locked_until, "חייב להינעל");
     tables.event_plans[0].portal_locked_until = null;
     await denied(portalLogin("0509999999", "482913")); // טלפון אחר
   });
@@ -223,6 +230,39 @@ async function main() {
     assert.equal(d.event_plans[0].portal_code, undefined); // בלי הרשאת קישור ללקוח
     await writeRow(pub("gal"), "event_plans", { ...tables.event_plans[0], portal_code: "777777", portal_code_ver: 1 });
     assert.equal(await portalView(session), null);
+  });
+
+  await ok("שמירת משימות במקביל: אחד נשמר, השני מקבל התנגשות (לא נבלע בשקט)", async () => {
+    const { portalTasksSave, staffTasksSave, Conflict } = await import("../src/lib/server/access");
+    tables.event_plans[0].portal_code = "482913"; tables.event_plans[0].portal_code_ver = 0; tables.event_plans[0].portal_enabled = true;
+    const s2 = (await (await import("../src/lib/server/access")).portalLogin("0501234567", "482913")).session;
+    const rev = Number(tables.event_plans[0].client_tasks_rev);
+    const r = await Promise.allSettled([portalTasksSave(s2, { tasks: [T("z1", "זוג")], rev }), staffTasksSave(pub("gal"), "L1", { tasks: [T("z2", "צוות")], rev })]);
+    assert.equal(r.filter((x) => x.status === "fulfilled").length, 1);
+    assert.ok(r.some((x) => x.status === "rejected" && x.reason instanceof Conflict));
+  });
+  await ok("תצוגה מקדימה: רק לעובד מחובר; בלי מחירים+כספים אין תשלומים", async () => {
+    const { portalPreview } = await import("../src/lib/server/access");
+    const tok = String(tables.event_plans[0].portal_token);
+    assert.equal(await portalPreview(tok, null), null);
+    const v = await portalPreview(tok, pub("sapir") as never);
+    assert.equal(v!.payments, undefined);
+    assert.ok((await portalPreview(tok, pub("gal")))!.payments);
+  });
+  await ok("עותק ישן של הדף לא מחזיר קוד שהוחלף ולא מדליק דף שכובה", async () => {
+    const old = { ...tables.event_plans[0] };
+    const v = Number(old.portal_code_ver) || 0;
+    await writeRow(pub("gal"), "event_plans", { ...old, portal_code: "555555", portal_code_ver: v + 1 });
+    await writeRow(pub("gal"), "event_plans", { ...old, notes: "ישן" });
+    assert.equal(tables.event_plans[0].portal_code, "555555"); assert.equal(tables.event_plans[0].notes, "ישן");
+    await writeRow(pub("gal"), "event_plans", { ...tables.event_plans[0], portal_enabled: false });
+    assert.equal(tables.event_plans[0].portal_enabled, true);
+  });
+  await ok("אסימון לקוח לא עובר כאסימון עובד, ולהפך (גם עם קידומת)", async () => {
+    const { makeClientSession, verifyClientSession } = await import("../src/lib/server/session");
+    const c = makeClientSession("L1", 0);
+    assert.equal(verifySession(c), null); assert.equal(verifySession("client:" + c), null);
+    assert.equal(verifyClientSession(makeSession("gal")), null);
   });
 
   // ---- קודים וסשן ----

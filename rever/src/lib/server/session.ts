@@ -14,10 +14,11 @@ const secret = () => {
 
 const b64 = (s: string) => Buffer.from(s).toString("base64url");
 const sign = (data: string) => createHmac("sha256", secret()).update(data).digest("base64url");
+const ssign = (data: string) => sign("staff:" + data); // מפריד בין אסימון עובד לאסימון לקוח
 
 export function makeSession(staffId: string) {
-  const payload = b64(JSON.stringify({ sid: staffId, exp: Date.now() + TTL_H * 3600_000 }));
-  return `${payload}.${sign(payload)}`;
+  const payload = b64(JSON.stringify({ typ: "staff", sid: staffId, exp: Date.now() + TTL_H * 3600_000 }));
+  return `${payload}.${ssign(payload)}`;
 }
 
 export function readSession(): string | null {
@@ -28,12 +29,12 @@ export function verifySession(v?: string): string | null {
   if (!v) return null;
   const [payload, mac] = v.split(".");
   if (!payload || !mac) return null;
-  const want = Buffer.from(sign(payload));
+  const want = Buffer.from(ssign(payload));
   const got = Buffer.from(mac);
   if (want.length !== got.length || !timingSafeEqual(want, got)) return null;
   try {
-    const { sid, exp } = JSON.parse(Buffer.from(payload, "base64url").toString());
-    return typeof sid === "string" && exp > Date.now() ? sid : null;
+    const { typ, sid, exp } = JSON.parse(Buffer.from(payload, "base64url").toString());
+    return typ === "staff" && typeof sid === "string" && exp > Date.now() ? sid : null;
   } catch {
     return null;
   }
@@ -44,7 +45,7 @@ const CLIENT_DAYS = 90;
 const csign = (data: string) => sign("client:" + data);
 
 export function makeClientSession(planId: string, ver: number) {
-  const payload = b64(JSON.stringify({ pid: planId, v: ver, exp: Date.now() + CLIENT_DAYS * 86400_000 }));
+  const payload = b64(JSON.stringify({ typ: "client", pid: planId, v: ver, exp: Date.now() + CLIENT_DAYS * 86400_000 }));
   return `${payload}.${csign(payload)}`;
 }
 
@@ -57,7 +58,7 @@ export function verifyClientSession(v?: unknown): { pid: string; v: number } | n
   if (want.length !== got.length || !timingSafeEqual(want, got)) return null;
   try {
     const o = JSON.parse(Buffer.from(payload, "base64url").toString());
-    return typeof o.pid === "string" && o.exp > Date.now() ? { pid: o.pid, v: Number(o.v) || 0 } : null;
+    return o.typ === "client" && typeof o.pid === "string" && o.exp > Date.now() ? { pid: o.pid, v: Number(o.v) || 0 } : null;
   } catch {
     return null;
   }

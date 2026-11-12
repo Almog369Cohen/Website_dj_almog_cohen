@@ -38,9 +38,11 @@ function Portal() {
       setView(await api.view(s));
       setNeedLogin(false);
     } catch (e) {
-      if (e instanceof PortalError && e.code === "net") return setView(null);
-      clientSession.set(null);
-      setNeedLogin(true);
+      if (e instanceof PortalError && e.code === "auth") {
+        clientSession.set(null);
+        return setNeedLogin(true);
+      }
+      setView(null); // תקלה זמנית: לא מנתקים את הזוג, מציעים לנסות שוב
     }
   }, [preview, token]);
 
@@ -67,8 +69,8 @@ function Portal() {
       <div className="p-state">
         <div className="box">
           <span className="mono" style={{ margin: "0 auto" }}>ר</span>
-          <h1 className="serif">{preview ? "הקישור לא פעיל" : "אין חיבור"}</h1>
-          <p>{preview ? "ייתכן שהקישור שונה." : "בדקו את החיבור לאינטרנט ונסו שוב."}</p>
+          <h1 className="serif">{preview ? "הקישור לא פעיל" : "משהו השתבש"}</h1>
+          <p>{preview ? "ייתכן שהקישור שונה, או שצריך להיכנס למערכת." : "לא הצלחנו לטעון את הדף. בדקו את החיבור לאינטרנט ונסו שוב."}</p>
           {!preview && (
             <button className="p-btn" onClick={() => (setView(undefined), load())}>
               לנסות שוב

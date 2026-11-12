@@ -64,7 +64,7 @@ export function allocatePlan(plan: PlanPayment[], paid: number) {
 
 export function clientView(input: { lead: Lead; plan: EventPlan; db: Pick<DB, "payments" | "docs" | "settings" | "members"> }): ClientView {
   const { lead, plan, db } = input;
-  const sections = { ...DEFAULT_SECTIONS, ...parse<Partial<Record<PortalSection, boolean>>>(plan.portal_sections, {}) };
+  const sections = { ...DEFAULT_SECTIONS, ...(parse<Partial<Record<PortalSection, boolean>> | null>(plan.portal_sections, {}) ?? {}) };
   const checklist = parse<Record<string, boolean>>(plan.checklist, {});
   const extra = parse<string[]>(plan.extra_checks, []);
   const ids = [...CHECKS.map((c) => c.id), ...extra.map((x) => "x:" + x)];
@@ -146,7 +146,7 @@ export const portalPath = (token: string) => `/e?t=${encodeURIComponent(token)}`
 export const CLIENT_SESSION_DAYS = 90;
 export const CLIENT_MAX_TRIES = 5;
 export const CLIENT_LOCK_MIN = 15;
-export const CLIENT_LOGIN_ERROR = "טלפון או קוד שגויים";
+export const CLIENT_LOGIN_ERROR = "טלפון או קוד שגויים. אחרי 5 ניסיונות הכניסה ננעלת לרבע שעה";
 
 /** 050-123-4567 / +972501234567 → 0501234567 */
 export const normPhone = (p: unknown) => {
@@ -180,8 +180,8 @@ export class TasksConflict extends Error {}
  * rev חייב להיות זהה לגרסה השמורה, אחרת זו התנגשות (מישהו אחר שמר בינתיים).
  */
 export function applyClientTasks(plan: EventPlan, input: { tasks: unknown; dismissed?: unknown; rev: unknown }, opts: { client: boolean } = { client: true }) {
-  const sections = { ...DEFAULT_SECTIONS, ...parse<Partial<Record<PortalSection, boolean>>>(plan.portal_sections, {}) };
-  if (opts.client && !sections.tasks) throw new Error("המשימות לא פתוחות לעריכה");
+  const sections = { ...DEFAULT_SECTIONS, ...(parse<Partial<Record<PortalSection, boolean>> | null>(plan.portal_sections, {}) ?? {}) };
+  if (opts.client && sections.tasks === false) throw new Error("המשימות לא פתוחות לעריכה");
   const cur = Number(plan.client_tasks_rev) || 0;
   if (Number(input.rev) !== cur) throw new TasksConflict("הרשימה עודכנה בינתיים. טוענים מחדש");
   const tasks = sanitizeTasks(input.tasks);
@@ -199,9 +199,17 @@ export function applyClientTasks(plan: EventPlan, input: { tasks: unknown; dismi
 
 /** רישום בהיסטוריה מקובץ: עדכון של אותה שעה מצטרף לשורה הקיימת */
 export function mergeTasksLog(last: { text: string; at: string } | undefined, change: string, now: string) {
-  if (last && last.text.startsWith(TASKS_LOG_PREFIX) && +new Date(now) - +new Date(last.at) < 3600e3) {
-    const text = (last.text + " · " + change).slice(0, 400);
-    return { update: true as const, text };
+  const merged = last ? last.text + " · " + change : "";
+  // מצטרף לשורה של השעה האחרונה, כל עוד היא לא ארוכה מדי (אחרת שורה חדשה, בלי לחתוך מידע)
+  if (last && last.text.startsWith(TASKS_LOG_PREFIX) && +new Date(now) - +new Date(last.at) < 3600e3 && merged.length <= 400) {
+    return { update: true as const, text: merged };
   }
   return { update: false as const, text: `${TASKS_LOG_PREFIX}: ${change}`.slice(0, 400) };
+}
+
+/** תצוגה מקדימה לעובד בלי מחירים+כספים: בלי חלק התשלומים */
+export function forStaffPreview(view: ClientView, canSeeMoney: boolean): ClientView {
+  if (canSeeMoney) return view;
+  const { payments: _p, ...rest } = view;
+  return { ...rest, sections: { ...view.sections, payments: false } };
 }

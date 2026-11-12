@@ -1,7 +1,8 @@
 "use client";
-import { applyClientTasks, clientView, findByLogin, mergeTasksLog, normPhone, CLIENT_LOGIN_ERROR, TasksConflict, type ClientView } from "./portal";
+import { applyClientTasks, clientView, forStaffPreview, findByLogin, mergeTasksLog, normPhone, CLIENT_LOGIN_ERROR, TasksConflict, type ClientView } from "./portal";
 import { TASKS_LOG_PREFIX } from "./tasks";
-import { markLocalSeen, portalSheetsCall, readLocalDB, sheetsUrl, supabase, writeLocalDB } from "./repo";
+import { markLocalSeen, portalSheetsCall, readLocalDB, sheetsCall, sheetsUrl, supabase, writeLocalDB } from "./repo";
+import { memberCan } from "./types";
 
 /**
  * דף הלקוח מדבר עם השרת רק דרך הקובץ הזה: כניסה, צפייה, שמירת משימות, ותצוגה מקדימה לצוות.
@@ -40,7 +41,7 @@ async function api<T>(body: Record<string, unknown>): Promise<T> {
     throw new PortalError("אין חיבור לאינטרנט. נסו שוב", "net");
   }
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new PortalError(data.error || "שגיאה. נסו שוב", (data.code as PortalErrorCode) || "bad");
+  if (!res.ok) throw new PortalError(data.error || "שגיאה. נסו שוב", (data.code as PortalErrorCode) || (res.status >= 500 ? "net" : "bad"));
   return data as T;
 }
 async function sheets<T>(action: string, payload: Record<string, unknown>): Promise<T> {
@@ -48,7 +49,7 @@ async function sheets<T>(action: string, payload: Record<string, unknown>): Prom
     return await portalSheetsCall<T>(action, payload);
   } catch (e) {
     const code = (e as { code?: string }).code;
-    throw new PortalError(e instanceof Error ? e.message : String(e), code === "auth" || code === "conflict" ? code : "bad");
+    throw new PortalError(e instanceof Error ? e.message : String(e), code === "auth" || code === "conflict" || code === "net" ? code : "bad");
   }
 }
 
@@ -110,11 +111,17 @@ export async function preview(token: string): Promise<ClientView | null> {
       const r = await fetch(`/api/portal?t=${encodeURIComponent(token)}`, { cache: "no-store" });
       return r.ok ? ((await r.json()) as ClientView) : null;
     }
-    if (sheetsUrl()) return (await sheets<{ view: ClientView }>("portal_preview", { portal_token: token })).view;
+    if (sheetsUrl()) return (await sheetsCall<{ view: ClientView }>("portal_preview", { portal_token: token })).view; // עם קוד העובד
     const db = readLocalDB();
     const plan = db?.event_plans?.find((p) => p.portal_token === token && p.portal_enabled);
     const lead = plan && db!.leads.find((l) => l.id === plan.id && l.status === "won");
-    return plan && lead ? clientView({ lead, plan, db: db! }) : null;
+    let staffId: string | null = null;
+    try {
+      staffId = sessionStorage.getItem("rever-demo-staff");
+    } catch {}
+    const me = db?.members.find((m) => m.id === staffId && m.active);
+    if (!me) return null; // תצוגה מקדימה רק לעובד מחובר
+    return plan && lead ? forStaffPreview(clientView({ lead, plan, db: db! }), memberCan(me, "prices") && memberCan(me, "finance")) : null;
   } catch {
     return null;
   }

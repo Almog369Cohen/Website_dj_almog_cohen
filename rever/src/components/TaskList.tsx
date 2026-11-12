@@ -48,7 +48,8 @@ export function TaskList(props: {
   const maxOrder = () => tasks.reduce((m, t) => Math.max(m, t.order), -1) + 1;
 
   const change = (next: ClientTask[], d = dismissed) => !readOnly && props.onChange(next, d);
-  const toggle = (t: ClientTask) => change(tasks.map((x) => (x.id === t.id ? { ...x, done: !x.done } : x)));
+  // ביטול סימון מחזיר את המשימה לסוף הרשימה הפתוחה (בלי להתנגש בסדר של האחרות)
+  const toggle = (t: ClientTask) => change(tasks.map((x) => (x.id === t.id ? { ...x, done: !x.done, order: x.done ? maxOrder() : x.order } : x)));
   const saveEdit = (t: ClientTask) => {
     const clean = { ...t, title: t.title.trim().slice(0, TASK_LIMITS.title), note: t.note?.trim() || undefined };
     if (!clean.title) return;
@@ -210,8 +211,11 @@ function Sortable({ items, disabled, onReorder, children }: { items: ClientTask[
     const next = [...without.slice(0, at), drag.id, ...without.slice(at)];
     if (next.join() !== ids.join()) setOrder(next);
   };
+  const ended = useRef(false);
   const end = () => {
-    if (drag && order) onReorder(order);
+    if (!drag || ended.current) return;
+    ended.current = true; // pointerup מגיע פעם אחת לכל גרירה
+    if (order && order.join() !== items.map((t) => t.id).join()) onReorder(order);
     setDrag(null);
   };
 
@@ -226,10 +230,9 @@ function Sortable({ items, disabled, onReorder, children }: { items: ClientTask[
             aria-label="גרירה לשינוי סדר"
             onPointerDown={(e) => {
               e.currentTarget.setPointerCapture?.(e.pointerId);
+              ended.current = false;
               setDrag({ id, y0: e.clientY, dy: 0 });
             }}
-            onPointerMove={move}
-            onPointerUp={end}
           >
             ⋮⋮
           </span>

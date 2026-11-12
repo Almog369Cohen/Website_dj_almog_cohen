@@ -21,6 +21,18 @@ const PORTAL_FIELDS = ["portal_token", "portal_enabled", "portal_sections", "cli
 /** נכתבים רק דרך מסלולים ייעודיים (צפייה של הלקוח, כניסה, שמירת משימות), לא בשמירה רגילה */
 const GUARDED = ["portal_seen_at", "portal_fails", "portal_locked_until", "client_tasks", "client_tasks_rev", "dismissed_suggestions"];
 const SERVER_ONLY = ["portal_fails", "portal_locked_until"];
+/** שדות הגישה של הלקוח. כל שינוי בהם חייב להעלות את portal_code_ver באחד (המסך עושה את זה) */
+const ACCESS = ["portal_code", "portal_token", "portal_enabled"];
+const norm = (v: unknown) => (v === undefined || v === null || v === "" ? null : v === true || v === "TRUE" ? true : v === false || v === "FALSE" ? false : String(v));
+export const accessChanged = (row: Record<string, unknown>, prev: Record<string, unknown>) => ACCESS.some((k) => norm(row[k]) !== norm(prev[k]));
+/**
+ * עותק ישן של הדף לא יכול להחזיר קוד שהוחלף או להדליק דף שכובה:
+ * גרסה נמוכה מהשמורה = ישן; שינוי בגישה בלי להעלות גרסה באחד = ישן.
+ */
+export const staleAccess = (row: Record<string, unknown>, prev: Record<string, unknown>) => {
+  const inV = Number(row.portal_code_ver) || 0, cur = Number(prev.portal_code_ver) || 0;
+  return inV < cur || (accessChanged(row, prev) && inV !== cur + 1);
+};
 
 /** עלויות ספקים: מי שאין לו הרשאת מחירים לא מקבל ולא משנה אותן */
 function stripCosts(json: unknown): string | undefined {
@@ -132,13 +144,17 @@ export async function writeRow(me: Member, table: Table, input: Record<string, u
   }
   if (table === "settings" && !("make_webhook_url" in input)) delete row.make_webhook_url;
   const plans = memberCan(me, "prices") && memberCan(me, "finance");
-  if (table === "event_plans" && (!plans || !memberCan(me, "portal"))) {
+  let resetLock = false;
+  if (table === "event_plans") {
     const { data } = await db.from("event_plans").select("*").eq("id", row.id).maybeSingle();
     if (!memberCan(me, "prices")) row.suppliers = keepCosts(row.suppliers, data?.suppliers);
     if (!plans) row.payment_plan = data?.payment_plan ?? null; // תוכנית תשלומים = סכומים
-    if (!memberCan(me, "portal")) for (const k of PORTAL_FIELDS) row[k] = data?.[k] ?? null; // רק מי שמורשה מפעיל / משנה את הקישור ללקוח
+    const keepPortal = !memberCan(me, "portal") || (data && staleAccess(row, data)); // אין הרשאה / עותק ישן של הדף
+    if (keepPortal) for (const k of PORTAL_FIELDS) row[k] = data?.[k] ?? null;
+    resetLock = !!data && !keepPortal && accessChanged(row, data); // קוד חדש מבטל נעילה
   }
   if (table === "event_plans") for (const k of GUARDED) delete row[k]; // נשמר הערך הקיים
+  if (resetLock) Object.assign(row, { portal_fails: 0, portal_locked_until: null });
   if (table === "members") {
     if (row.id === me.id && (row.role !== "admin" || row.active === false)) throw new Forbidden("אי אפשר להוריד לעצמך הרשאת מאסטר");
     for (const k of ["can_prices", "can_finance", "can_delete", "can_templates", "can_portal", "active"]) row[k] = !!row[k];
@@ -205,14 +221,31 @@ async function planBySession(session: unknown) {
 }
 
 /** תצוגה מקדימה לצוות (הקישור הסודי): קריאה בלבד, לא נרשמת צפייה */
-export async function portalPreview(token: string) {
-  if (!token || token.length < 20) return null;
+export async function portalPreview(token: string, me: Member | null) {
+  if (!me || !token || token.length < 20) return null; // רק עובד מחובר
+  const { forStaffPreview } = await import("../portal");
+  const v = await previewByToken(token);
+  return v && forStaffPreview(v, memberCan(me, "prices") && memberCan(me, "finance"));
+}
+async function previewByToken(token: string) {
   const { data: plan } = await adminDb().from("event_plans").select("*").eq("portal_token", token).maybeSingle();
   if (!plan || !plan.portal_enabled) return null;
   return buildView(plan);
 }
 
-/** הזוג נכנס עם טלפון + קוד. 5 טעויות לאותו טלפון נועלות ל-15 דקות. */
+/** עדכון "השווה והחלף": מצליח רק אם השדה עדיין בערך שקראנו. מונע מרוץ בין בקשות שמגיעות במקביל. */
+async function casPlan(id: unknown, field: string, expected: unknown, patch: Record<string, unknown>) {
+  const base = adminDb().from("event_plans").update(patch).eq("id", id);
+  const q = expected === null || expected === undefined ? base.is(field, null) : base.eq(field, expected);
+  const { data, error } = await q.select("id");
+  if (error) throw new Error(error.message);
+  return (data ?? []).length > 0;
+}
+
+/**
+ * הזוג נכנס עם טלפון + קוד. כל ניסיון "נשמר בתור" באופן אטומי לפני שבודקים את הקוד,
+ * כך שגם אלף בקשות במקביל מקבלות לכל היותר 5 בדיקות קוד לפני נעילה של 15 דקות.
+ */
 export async function portalLogin(phone: unknown, code: unknown) {
   const { findByLogin, normPhone, CLIENT_LOGIN_ERROR, CLIENT_MAX_TRIES, CLIENT_LOCK_MIN } = await import("../portal");
   const p = normPhone(phone), c = String(code ?? "").trim();
@@ -220,16 +253,23 @@ export async function portalLogin(phone: unknown, code: unknown) {
   const db = adminDb();
   const [{ data: leads }, { data: plans }] = await Promise.all([db.from("leads").select("id,phone,status"), db.from("event_plans").select("*")]);
   const { candidates, match } = findByLogin((leads ?? []) as never, (plans ?? []) as never, p, c);
-  const now = Date.now();
-  if (candidates.some((pl) => pl.portal_locked_until && +new Date(pl.portal_locked_until) > now)) throw new Forbidden(`יותר מדי ניסיונות. נסו שוב בעוד ${CLIENT_LOCK_MIN} דקות`);
-  if (!match) {
-    for (const pl of candidates) {
-      const fails = (Number(pl.portal_fails) || 0) + 1;
+  for (const pl of candidates) {
+    let reserved = false;
+    for (let i = 0; i < 10 && !reserved; i++) {
+      const { data: cur } = await db.from("event_plans").select("portal_fails,portal_locked_until").eq("id", pl.id).maybeSingle();
+      const now = Date.now();
+      const until = cur?.portal_locked_until ? +new Date(String(cur.portal_locked_until)) : 0;
+      if (until > now) throw new Forbidden(CLIENT_LOGIN_ERROR);
+      const fails = (until ? 0 : Number(cur?.portal_fails) || 0) + 1; // נעילה שפגה = מתחילים מאפס
       const lock = fails >= CLIENT_MAX_TRIES;
-      await db.from("event_plans").update({ portal_fails: lock ? 0 : fails, portal_locked_until: lock ? new Date(now + CLIENT_LOCK_MIN * 60000).toISOString() : null }).eq("id", pl.id);
+      reserved = await casPlan(pl.id, "portal_fails", cur?.portal_fails ?? null, {
+        portal_fails: fails,
+        portal_locked_until: lock ? new Date(now + CLIENT_LOCK_MIN * 60000).toISOString() : null,
+      });
     }
-    throw new Forbidden(CLIENT_LOGIN_ERROR);
+    if (!reserved) throw new Forbidden(CLIENT_LOGIN_ERROR);
   }
+  if (!match) throw new Forbidden(CLIENT_LOGIN_ERROR);
   await db.from("event_plans").update({ portal_fails: 0, portal_locked_until: null }).eq("id", match.id);
   return { session: makeClientSession(match.id, Number(match.portal_code_ver) || 0) };
 }
@@ -260,10 +300,10 @@ export async function portalTasksSave(session: unknown, input: { tasks: unknown;
 /** שמירת משימות מהצוות (כרטיס האירוע). כל עובד יכול: אין בהן סכומים. */
 export async function staffTasksSave(_me: Member, id: string, input: { tasks: unknown; dismissed?: unknown; rev: unknown }) {
   const { data: plan } = await adminDb().from("event_plans").select("*").eq("id", id).maybeSingle();
-  return saveTasks((plan ?? { id }) as Record<string, unknown>, input, { client: false });
+  return saveTasks((plan ?? { id }) as Record<string, unknown>, input, { client: false }, !!plan);
 }
 
-async function saveTasks(plan: Record<string, unknown>, input: { tasks: unknown; dismissed?: unknown; rev: unknown }, opts: { client: boolean }) {
+async function saveTasks(plan: Record<string, unknown>, input: { tasks: unknown; dismissed?: unknown; rev: unknown }, opts: { client: boolean }, exists = true) {
   const { applyClientTasks, mergeTasksLog, TasksConflict } = await import("../portal");
   const { TASKS_LOG_PREFIX } = await import("../tasks");
   const db = adminDb();
@@ -274,8 +314,13 @@ async function saveTasks(plan: Record<string, unknown>, input: { tasks: unknown;
     if (e instanceof TasksConflict) throw new Conflict(e.message);
     throw new Forbidden(e instanceof Error ? e.message : String(e));
   }
-  const { error } = await db.from("event_plans").upsert({ id: plan.id, ...r.patch });
-  if (error) throw new Error(error.message);
+  // נכתב רק אם הגרסה עדיין זו שבדקנו (שני שומרים במקביל: אחד מקבל "התנגשות")
+  if (!exists) {
+    const { error } = await db.from("event_plans").upsert({ id: plan.id, ...r.patch }); // כרטיס אירוע שעוד לא נשמר
+    if (error) throw new Error(error.message);
+  } else if (!(await casPlan(plan.id, "client_tasks_rev", plan.client_tasks_rev ?? null, r.patch))) {
+    throw new Conflict("הרשימה עודכנה בינתיים. טוענים מחדש");
+  }
   if (opts.client) {
     const now = new Date().toISOString();
     const { data: acts } = await db.from("activities").select("*").eq("lead_id", plan.id);

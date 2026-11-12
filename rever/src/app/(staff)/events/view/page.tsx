@@ -5,7 +5,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
 import type { Doc, EventPlan, Lead, PlanPayment, PortalSection, Supplier, TimelineItem } from "@/lib/types";
 import { DOC_STATUS, DOC_TYPES, PORTAL_SECTIONS, SUPPLIER_CATEGORIES } from "@/lib/types";
-import { nis, relDay, shortDate, uid } from "@/lib/format";
+import { copyText, nis, relDay, shortDate, uid } from "@/lib/format";
 import { AFTER_STEPS, CHECKS, byTime, daysUntil, planOf, readiness, timelineTemplate, timelineText, type PlanView } from "@/lib/events";
 import { CLIENT_STEP_LABELS, DEFAULT_CLIENT_STEPS, DEFAULT_SECTIONS, allocatePlan, newPortalCode, newPortalToken, portalPath } from "@/lib/portal";
 import { fillTemplate, waLink } from "@/lib/whatsapp";
@@ -139,7 +139,7 @@ function TimelineTab({ l, v, onChange }: { l: Lead; v: PlanView; onChange: (t: T
               <a className="btn sm wa" href={waLink("", timelineText(l, v))} target="_blank" rel="noreferrer">
                 💬 שליחה לספקים
               </a>
-              <button className="btn sm" onClick={() => navigator.clipboard?.writeText(timelineText(l, v)).then(() => toast("הלו\"ז הועתק"))}>
+              <button className="btn sm" onClick={() => copyText(timelineText(l, v)).then((ok) => toast(ok ? "הלו\"ז הועתק" : "לא הצלחנו להעתיק. אפשר לסמן ולהעתיק ידנית"))}>
                 📋 העתקה
               </button>
             </>
@@ -643,7 +643,7 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
             </p>
             <button
               className="btn pri"
-              onClick={() => (savePlan({ portal_token: token || newPortalToken(), portal_enabled: true, portal_code: code || newPortalCode(), portal_code_ver: ver }), refresh())}
+              onClick={() => (savePlan({ portal_token: token || newPortalToken(), portal_enabled: true, portal_code: code || newPortalCode(), portal_code_ver: ver + 1 }), refresh())}
             >
               🔗 הפעלת הדף והנפקת קוד
             </button>
@@ -669,10 +669,10 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
               <a className="btn wa" href={waLink(l.phone, msg)} target="_blank" rel="noreferrer">
                 💬 שליחה ל{l.name}
               </a>
-              <button className="btn" onClick={() => navigator.clipboard?.writeText(msg).then(() => toast("ההודעה הועתקה"))}>
+              <button className="btn" onClick={() => copyText(msg).then((ok) => toast(ok ? "ההודעה הועתקה" : "לא הצלחנו להעתיק. אפשר לסמן ולהעתיק ידנית"))}>
                 📋 העתקת ההודעה
               </button>
-              <a className="btn" href={url} target="_blank" rel="noreferrer">
+              <a className="btn" href={url} target="_blank" rel="opener">
                 👁 לראות כמו הלקוח
               </a>
             </div>
@@ -687,7 +687,7 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
             <div className="trow">
               <span>הדף פעיל</span>
               <label className="switch ml">
-                <input type="checkbox" checked={enabled} onChange={(e) => (savePlan({ portal_enabled: e.target.checked }), refresh())} />
+                <input type="checkbox" checked={enabled} onChange={(e) => (savePlan({ portal_enabled: e.target.checked, portal_code_ver: ver + 1 }), refresh())} />
                 <span />
               </label>
             </div>
