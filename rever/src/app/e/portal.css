@@ -116,3 +116,8 @@
 .portal .p-btn{margin-top:4px;background:var(--ink);color:#fff;border:none;border-radius:14px;padding:14px;font:inherit;font-weight:700;font-size:16px;cursor:pointer}
 .portal .p-btn:disabled{opacity:.5;cursor:default}
 .portal .p-out{display:block;margin:10px auto 0;background:none;border:none;color:var(--muted);text-decoration:underline;font:inherit;font-size:12.5px;cursor:pointer}
+.portal .exp{width:100%;border-collapse:collapse;font-size:14px;margin-top:12px}
+.portal .exp th{font-weight:500;color:var(--muted);font-size:12.5px;text-align:right;padding:6px 0;border-bottom:1px solid var(--line)}
+.portal .exp td{padding:9px 0;border-bottom:1px solid var(--line)}
+.portal .exp td:last-child,.portal .exp th:last-child{text-align:left;font-variant-numeric:tabular-nums}
+.portal .exp tfoot td{font-weight:700;border:none;padding-top:10px}

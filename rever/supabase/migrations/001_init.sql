@@ -137,6 +137,8 @@ create table if not exists event_plans (
 );
 alter table leads add column if not exists lost_reason text;
 alter table leads add column if not exists contacts text; -- JSON: אנשי קשר נוספים
+alter table leads add column if not exists money_items text; -- JSON: הסכומים שרבר מציגים ללקוח
+alter table leads add column if not exists money_plan text; -- JSON: תוכנית תשלומים + מה שולם (רישום בלבד)
 alter table event_plans add column if not exists after text;
 alter table event_plans add column if not exists portal_token text unique;
 alter table event_plans add column if not exists portal_enabled boolean default false;

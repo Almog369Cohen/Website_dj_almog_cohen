@@ -6,7 +6,9 @@ import { allocatePlan, clientView, newPortalCode, newPortalToken, normPhone } fr
 import { partnersOf, sanitizeTasks, starterTasks, suggestions, whenText } from "../src/lib/tasks";
 import type { DB, EventPlan, Lead } from "../src/lib/types";
 
-const lead = { id: "L3", name: "שירן ועומר", phone: "0500000003", event_type: "חתונה", event_date: "2026-11-30", guests: 400, venue: "אולם הגן", source: "אינסטגרם", status: "won", price: 30000, assigned_to: "m-gal", notes: "הערה פנימית בליד", created_at: "x" } as Lead;
+const lead = { id: "L3", name: "שירן ועומר", phone: "0500000003", event_type: "חתונה", event_date: "2026-11-30", guests: 400, venue: "אולם הגן", source: "אינסטגרם", status: "won", price: 30000, assigned_to: "m-gal", notes: "הערה פנימית בליד", created_at: "x",
+  money_items: JSON.stringify([{ id: "i1", service: "אולם", supplier: "אולם הגן", price: 20000 }, { id: "i2", service: "צילום", supplier: "סטודיו", price: 7500 }, { id: "i3", service: "פנימי-מוסתר", supplier: "x", price: 2500, show_client: false }]),
+  money_plan: JSON.stringify([{ id: "a", name: "מקדמה", amount: 10000, due: "2026-10-03", paid: { date: "2026-10-03", amount: 10000, method: "transfer", note: "אסמכתא פנימית 77" } }, { id: "b", name: "ביניים", amount: 5000, due: "2026-11-08", paid: { date: "2026-11-08", amount: 5000, method: "bit" } }, { id: "c", name: "אחרון", amount: 15000, due: "2026-11-23" }]) } as Lead;
 const plan: EventPlan = {
   id: "L3",
   portal_token: "tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -60,7 +62,9 @@ ok("תשלומים: סה\"כ, שולם, יתרה, ותוכנית לפי הסדר
   assert.equal(view.payments!.paid, 15000);
   assert.equal(view.payments!.balance, 15000);
   assert.deepEqual(view.payments!.plan.map((p) => p.paid), [true, true, false]);
-  assert.deepEqual(view.payments!.docs, [{ label: "קבלה", number: "R-1", date: "2026-10-03" }]);
+  assert.deepEqual(view.payments!.items.map((i) => i.service), ["אולם", "צילום"]); // שורה מוסתרת לא נשלחת
+  const pf = JSON.stringify(view.payments);
+  assert.ok(!pf.includes("אסמכתא") && !pf.includes("transfer") && !pf.includes("method") && !pf.includes("פנימי-מוסתר"));
 });
 ok("סטטוס: רק השלבים שנבחרו ללקוח, ואיש הקשר בשם פרטי", () => {
   assert.deepEqual(view.steps!.map((s) => s.done), [true, true, true, false, false]);

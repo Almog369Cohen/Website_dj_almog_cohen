@@ -35,9 +35,16 @@ export interface Lead {
   assigned_to?: string; // העובד שמטפל בליד
   lost_reason?: string; // למה לא סגרנו
   contacts?: string; // JSON: Contact[] (חתן, כלה, הורים…). הטלפון הראשי נשאר ב-phone
+  money_items?: string; // JSON: MoneyItem[] — הסכומים שרבר מציגים ללקוח (שירות, ספק, מחיר)
+  money_plan?: string; // JSON: MoneyPay[] — תוכנית תשלומים + רישום מה שולם (לא סליקה)
   created_at: string;
 }
 export interface Contact { id: string; name: string; role?: string; phone?: string }
+export interface MoneyItem { id: string; service: string; supplier?: string; price: number; show_client?: boolean }
+export type PayMethod = "transfer" | "cash" | "check" | "bit" | "credit" | "other";
+export const PAY_METHODS: Record<PayMethod, string> = { transfer: "העברה", cash: "מזומן", check: "צ׳ק", bit: "ביט", credit: "אשראי", other: "אחר" };
+export interface MoneyPaid { date: string; amount: number; method: PayMethod; note?: string }
+export interface MoneyPay { id: string; name: string; to?: string; amount: number; due?: string; paid?: MoneyPaid }
 
 export type ActivityKind = "created" | "message" | "call" | "status" | "note" | "meeting" | "payment";
 export interface Activity {

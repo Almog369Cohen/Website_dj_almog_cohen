@@ -1,6 +1,7 @@
 import type { DB, EventPlan, Lead, Supplier, TimelineItem } from "./types";
 import { shortDate, uid } from "./format";
 import { lateTasks, parseTasks } from "./tasks";
+import { duePays } from "./money";
 
 /** צ'קליסט הכנה לאירוע (חברת הפקות) */
 export const CHECKS: { id: string; label: string }[] = [
@@ -113,17 +114,7 @@ export const byTime = (a: TimelineItem, b: TimelineItem) => {
   return k(a.time) - k(b.time);
 };
 
-/** שלבי תוכנית התשלומים שעוד לא שולמו, ותאריך היעד שלהם עבר או בעוד 3 ימים לכל היותר */
-export function duePayments(db: DB, l: Lead, withinDays = 3) {
-  const plan = parse<{ id: string; name: string; amount: number; due?: string }[]>(planOf(db, l).plan.payment_plan, []);
-  let left = db.payments.filter((p) => p.lead_id === l.id).reduce((s, p) => s + (p.kind === "refund" ? -p.amount : p.amount), 0);
-  const out: { name: string; amount: number; due: string; days: number; late: boolean }[] = [];
-  for (const p of plan) {
-    const paid = left >= p.amount - 0.5;
-    left -= p.amount;
-    if (paid || !p.due) continue;
-    const days = daysUntil(p.due)!;
-    if (days <= withinDays) out.push({ name: p.name, amount: p.amount, due: p.due, days, late: days < 0 });
-  }
-  return out;
+/** שלבי תוכנית התשלומים (מכרטיס הלקוח) שלא סומנו כשולמו, ומועדם עבר או בעוד 3 ימים לכל היותר */
+export function duePayments(_db: DB, l: Lead, withinDays = 3) {
+  return duePays([l], withinDays).map(({ pay, days, late }) => ({ name: pay.name, amount: Number(pay.amount) || 0, due: pay.due!, days, late }));
 }

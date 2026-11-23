@@ -9,7 +9,7 @@ export type StuckReason = "new_untouched" | "quote_silent" | "no_followup";
 const DAY = 86400000;
 const daysSince = (iso: string | undefined, now: number) => (iso ? Math.floor((now - +new Date(iso)) / DAY) : Infinity);
 
-export function stuckLeads(db: Pick<DB, "leads" | "docs">, now = Date.now()) {
+export function stuckLeads(db: Pick<DB, "leads">, now = Date.now()) {
   const out: { lead: Lead; reason: StuckReason; text: string }[] = [];
   for (const l of db.leads) {
     if (["won", "lost"].includes(l.status) || l.next_followup) continue;
@@ -19,8 +19,7 @@ export function stuckLeads(db: Pick<DB, "leads" | "docs">, now = Date.now()) {
       continue;
     }
     if (l.status === "quote") {
-      const sent = db.docs.filter((d) => d.lead_id === l.id && d.type === "quote" && d.status === "sent").map((d) => d.date).sort().pop();
-      const quiet = Math.min(touched, daysSince(sent, now));
+      const quiet = touched;
       if (quiet >= 3 && quiet !== Infinity) {
         out.push({ lead: l, reason: "quote_silent", text: `הצעת מחיר בלי תגובה ${quiet} ימים` });
         continue;

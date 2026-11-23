@@ -22,7 +22,7 @@ var LOCK_MIN = 10;
 
 /** טבלה → [שם הלשונית, [[מפתח, כותרת בעברית], ...]] */
 var TABLES = {
-  leads: ["לידים", [["id", "מזהה"], ["name", "שם"], ["phone", "טלפון"], ["email", "אימייל"], ["event_type", "סוג אירוע"], ["event_date", "תאריך אירוע"], ["guests", "מוזמנים"], ["venue", "מקום"], ["source", "מקור"], ["status", "סטטוס"], ["price", "מחיר"], ["next_followup", "פולואפ הבא"], ["followup_note", "מה לעשות בפולואפ"], ["pending_message", "הודעה מתוזמנת"], ["last_contact", "קשר אחרון"], ["notes", "הערות"], ["assigned_to", "מטפל"], ["lost_reason", "סיבה שלא נסגר"], ["contacts", "אנשי קשר נוספים"], ["created_at", "נוצר"]]],
+  leads: ["לידים", [["id", "מזהה"], ["name", "שם"], ["phone", "טלפון"], ["email", "אימייל"], ["event_type", "סוג אירוע"], ["event_date", "תאריך אירוע"], ["guests", "מוזמנים"], ["venue", "מקום"], ["source", "מקור"], ["status", "סטטוס"], ["price", "מחיר"], ["next_followup", "פולואפ הבא"], ["followup_note", "מה לעשות בפולואפ"], ["pending_message", "הודעה מתוזמנת"], ["last_contact", "קשר אחרון"], ["notes", "הערות"], ["assigned_to", "מטפל"], ["lost_reason", "סיבה שלא נסגר"], ["contacts", "אנשי קשר נוספים"], ["money_items", "סכומים ללקוח"], ["money_plan", "תוכנית תשלומים"], ["created_at", "נוצר"]]],
   activities: ["היסטוריה", [["id", "מזהה"], ["lead_id", "ליד"], ["kind", "סוג"], ["text", "תיאור"], ["at", "מתי"], ["by", "מי"]]],
   calendar_items: ["יומן", [["id", "מזהה"], ["kind", "סוג"], ["title", "כותרת"], ["start", "מתי"], ["location", "מקום"], ["lead_id", "ליד"]]],
   templates: ["תבניות", [["id", "מזהה"], ["name", "שם"], ["description", "מתי משתמשים"], ["body", "הודעה"], ["sort", "סדר"]]],
@@ -241,7 +241,7 @@ function loadAll_(me) {
     if (FINANCE[t] && !finance) return (out[t] = []);
     var rows = readTable_(t);
     if (t === "members") rows = rows.map(publicMember_);
-    if (t === "leads" && !prices) rows.forEach(function (r) { delete r.price; });
+    if (t === "leads" && !prices) rows.forEach(function (r) { delete r.price; delete r.money_items; delete r.money_plan; });
     if (t === "activities" && !prices) rows = rows.filter(function (r) { return r.kind !== "payment"; }).map(function (r) { r.text = String(r.text).replace(/₪\s?[\d,.]+/g, "₪•••"); return r; });
     if (t === "settings" && me.role !== "admin") rows.forEach(function (r) { delete r.make_webhook_url; });
     if (t === "event_plans" && !prices) rows.forEach(function (r) { r.suppliers = stripCosts_(r.suppliers); });
@@ -264,7 +264,8 @@ function upsert_(me, table, input) {
   var row = {};
   TABLES[table][1].forEach(function (c) { var k = c[0]; if (!PRIVATE_MEMBER[k]) row[k] = input[k] === undefined ? "" : input[k]; });
   var prev = findRow_(table, input.id);
-  if (table === "leads" && !can_(me, "prices")) row.price = prev ? prev.price : "";
+  if (table === "leads" && !can_(me, "prices")) { row.price = prev ? prev.price : ""; row.money_items = prev ? prev.money_items : ""; row.money_plan = prev ? prev.money_plan : ""; }
+  else if (table === "leads" && !can_(me, "finance")) row.money_plan = keepPaid_(row.money_plan, prev && prev.money_plan); // רישום "שולם" רק עם הרשאת כספים
   if (table === "settings" && prev && !("make_webhook_url" in input)) row.make_webhook_url = prev.make_webhook_url;
   if (table === "event_plans" && !can_(me, "prices")) row.suppliers = keepCosts_(row.suppliers, prev && prev.suppliers);
   if (table === "event_plans" && !(can_(me, "prices") && can_(me, "finance"))) row.payment_plan = prev ? prev.payment_plan : "";
@@ -490,6 +491,14 @@ function saveTasks_(plan, req, client) {
   }
   return { rev: cur + 1 };
 }
+function keepPaid_(next, prev) {
+  var old = {};
+  var p0 = parse_(prev, []);
+  if (Array.isArray(p0)) p0.forEach(function (p) { old[p.id] = p.paid; });
+  var n = parse_(next, null);
+  if (!Array.isArray(n)) return prev || "";
+  return JSON.stringify(n.map(function (p) { var o = {}; Object.keys(p).forEach(function (k) { if (k !== "paid") o[k] = p[k]; }); if (old[p.id]) o.paid = old[p.id]; return o; }));
+}
 function partners_(lead, plan) {
   var parts = String(lead.name || "").split(/\s+ו(?=\S)|\s*&\s*|\s*\+\s*/);
   var a = plan.partner_a || (parts.length > 1 ? parts[0].trim() : "");
@@ -529,14 +538,16 @@ function clientView_(lead, plan, payments, docs, settingsRows, members) {
       .map(function (t) { return { time: t.time, title: t.title }; });
   }
   if (sections.payments) {
-    var total = Number(lead.price) || 0;
-    var paid = payments.filter(function (p) { return p.lead_id === lead.id; }).reduce(function (a, p) { return a + (p.kind === "refund" ? -p.amount : p.amount); }, 0);
-    var left = paid;
+    // מכרטיס הלקוח (חייב להתאים ל-src/lib/money.ts): סכומים + תוכנית, בלי "איך שולם" ובלי הערות
+    var items = parse_(lead.money_items, []), mplan = parse_(lead.money_plan, []);
+    if (!Array.isArray(items)) items = [];
+    if (!Array.isArray(mplan)) mplan = [];
+    var total = items.length ? items.reduce(function (a, i) { return a + (Number(i.price) || 0); }, 0) : Number(lead.price) || 0;
+    var paid = mplan.reduce(function (a, p) { return a + (p.paid ? Number(p.paid.amount) || 0 : 0); }, 0);
     view.payments = {
       total: total, paid: paid, balance: Math.max(0, total - paid),
-      plan: parse_(plan.payment_plan, []).map(function (p) { var ok = left >= p.amount - 0.5; left -= p.amount; return { name: p.name, amount: p.amount, due: p.due, paid: ok }; }),
-      docs: docs.filter(function (d) { return d.lead_id === lead.id && d.show_client && d.status !== "cancelled"; })
-        .map(function (d) { return { label: DOC_LABELS[d.type], number: d.number, date: d.date }; })
+      items: items.filter(function (i) { return i.show_client !== false && i.service; }).map(function (i) { return { service: i.service, supplier: i.supplier || undefined, price: Number(i.price) || 0 }; }),
+      plan: mplan.map(function (p) { return { name: p.name, amount: Number(p.amount) || 0, due: p.due || undefined, paid: !!p.paid }; })
     };
   }
   if (sections.suppliers) {

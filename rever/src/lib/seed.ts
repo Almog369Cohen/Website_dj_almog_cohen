@@ -47,9 +47,21 @@ export function demoDB(): DB {
     L({ id: "l1", assigned_to: "m-arad", name: "דנה ויובל", phone: "050-0000001", event_type: "חתונה", event_date: day(300), guests: 300, source: "פייסבוק",
       status: "new", next_followup: at(0, 10), followup_note: "ליד חדש: לשלוח הודעת היכרות", created_at: at(-1, 20) }),
     L({ id: "l2", assigned_to: "m-liel", name: "משפחת לוי", phone: "050-0000002", event_type: "בר מצווה", event_date: day(120), guests: 150, source: "המלצה",
-      status: "quote", price: 20000, next_followup: at(0, 12), followup_note: "לבדוק אם ראו את הצעת המחיר", last_contact: at(-3, 12), created_at: at(-10) }),
+      status: "quote", price: 20000,
+      money_items: JSON.stringify([{ id: "mq1", service: "הפקת בר מצווה", supplier: "רבר הפקות", price: 20000, show_client: true }]), next_followup: at(0, 12), followup_note: "לבדוק אם ראו את הצעת המחיר", last_contact: at(-3, 12), created_at: at(-10) }),
     L({ id: "l3", assigned_to: "m-gal", name: "שירן ועומר", phone: "050-0000003", event_type: "חתונה", event_date: day(20), guests: 400, source: "אינסטגרם",
       venue: "אולם הגן", status: "won", price: 30000, last_contact: at(-5), created_at: at(-60),
+      money_items: JSON.stringify([
+        { id: "mi1", service: "הפקה וניהול האירוע", supplier: "רבר הפקות", price: 9000, show_client: true },
+        { id: "mi2", service: "צילום", supplier: "סטודיו לדוגמה", price: 8000, show_client: true },
+        { id: "mi3", service: "דיג׳יי", supplier: "די ג׳יי לדוגמה", price: 8000, show_client: true },
+        { id: "mi4", service: "תאורה והגברה", supplier: "תאורה והגברה", price: 5000, show_client: true },
+      ]),
+      money_plan: JSON.stringify([
+        { id: "mp1", name: "מקדמה", amount: 10000, due: monthsAgo(1), paid: { date: monthsAgo(1), amount: 10000, method: "transfer" } },
+        { id: "mp2", name: "תשלום ביניים", amount: 5000, due: day(-2), paid: { date: day(-2), amount: 5000, method: "bit" } },
+        { id: "mp3", name: "תשלום סופי", amount: 15000, due: day(13) },
+      ]),
       contacts: JSON.stringify([{ id: "c1", name: "שירן", role: "כלה", phone: "050-0000003" }, { id: "c2", name: "עומר", role: "חתן", phone: "050-0000015" }, { id: "c3", name: "רונית", role: "אמא של הכלה", phone: "050-0000013" }]) }),
   ];
 
@@ -59,24 +71,15 @@ export function demoDB(): DB {
       { id: "a1", lead_id: "l1", kind: "created", text: "ליד חדש נכנס מפייסבוק", at: at(-1, 20) },
       { id: "a2", lead_id: "l2", by: "m-liel", kind: "status", text: "נשלחה הצעת מחיר ₪20,000", at: at(-3, 12) },
       { id: "a3", lead_id: "l3", by: "m-gal", kind: "status", text: 'סטטוס שונה ל"נסגר"', at: at(-45) },
-      { id: "a4", lead_id: "l3", by: "m-gal", kind: "payment", text: "התקבלה מקדמה ₪10,000 (העברה בנקאית)", at: at(-45) },
+      { id: "a4", lead_id: "l3", by: "m-gal", kind: "payment", text: "💳 נרשם תשלום: מקדמה ₪10,000 (העברה)", at: at(-45) },
     ],
     calendar_items: [
       { id: "c1", kind: "meeting", title: "פגישה: משפחת לוי", start: at(1, 18), location: "במשרד", lead_id: "l2" },
     ],
     templates: DEFAULT_TEMPLATES,
-    payments: [
-      { id: "p1", lead_id: "l3", kind: "deposit", amount: 10000, date: monthsAgo(1), method: "העברה בנקאית" },
-      { id: "p2", lead_id: "l3", kind: "payment", amount: 5000, date: day(-2), method: "ביט" },
-    ],
-    expenses: [
-      { id: "e1", date: day(-3), amount: 2000, category: "שיווק ופרסום", supplier: "פרסום בפייסבוק" },
-      { id: "e2", date: monthsAgo(1), amount: 5000, category: "ספקים", supplier: "תאורה והגברה", lead_id: "l3" },
-    ],
-    docs: [
-      { id: "d1", lead_id: "l2", type: "quote", number: "Q-1001", amount: 20000, date: day(-3), status: "sent" },
-      { id: "d2", lead_id: "l3", type: "receipt", number: "R-3101", amount: 10000, date: monthsAgo(1), status: "paid", show_client: true },
-    ],
+    payments: [],
+    expenses: [],
+    docs: [],
     settings: [{ id: "main", business_name: "רבר הפקות", owner_name: "גל", whatsapp_mode: "link", vat_rate: 18, contact_phone: "050-0000000" }],
     members: DEMO_MEMBERS,
     event_plans: [
@@ -104,11 +107,6 @@ export function demoDB(): DB {
         requests: "בלי עשן כבד · הפתעה לחתן ברחבה אחרי הריקוד הראשון",
         contract_status: "signed",
         internal_notes: "לתאם הכל דרך הכלה. האולם מבקש הגעת ספקים לא לפני 16:00.",
-        payment_plan: JSON.stringify([
-          { id: "pp1", name: "מקדמה", amount: 10000, due: monthsAgo(1) },
-          { id: "pp2", name: "תשלום ביניים", amount: 5000, due: day(-2) },
-          { id: "pp3", name: "תשלום אחרון", amount: 15000, due: day(13) },
-        ]),
         portal_token: "demo-shiran-omer-xxxxxxxxxxxxxxx",
         portal_enabled: true,
         portal_code: "482913",

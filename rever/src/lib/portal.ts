@@ -1,6 +1,7 @@
 import type { DB, EventPlan, Lead, PlanPayment, PortalSection, Supplier, TimelineItem } from "./types";
-import { DOC_TYPES, SUPPLIER_CATEGORIES } from "./types";
+import { SUPPLIER_CATEGORIES } from "./types";
 import { CHECKS, byTime } from "./events";
+import { moneyOf } from "./money";
 import { TASKS_LOG_PREFIX, describeChange, parseTasks, partnersOf, sanitizeDismissed, sanitizeTasks, type ClientTask } from "./tasks";
 
 /**
@@ -34,8 +35,8 @@ export interface ClientView {
     total: number;
     paid: number;
     balance: number;
+    items: { service: string; supplier?: string; price: number }[];
     plan: { name: string; amount: number; due?: string; paid: boolean }[];
-    docs: { label: string; number: string; date: string }[];
   };
   suppliers?: { category: string; icon: string; name: string; phone?: string }[];
   details?: { venue?: string; arrival?: string; guests?: number; day_contact?: string; requests?: string };
@@ -99,16 +100,14 @@ export function clientView(input: { lead: Lead; plan: EventPlan; db: Pick<DB, "p
       .map((t) => ({ time: t.time, title: t.title }));
   }
   if (sections.payments) {
-    const total = Number(lead.price) || 0;
-    const paid = db.payments.filter((p) => p.lead_id === lead.id).reduce((s, p) => s + (p.kind === "refund" ? -p.amount : p.amount), 0);
+    // מכרטיס הלקוח: הסכומים שרבר מציגים + תוכנית התשלומים. בלי "איך שולם" ובלי הערות.
+    const m = moneyOf(lead);
     view.payments = {
-      total,
-      paid,
-      balance: Math.max(0, total - paid),
-      plan: allocatePlan(parse<PlanPayment[]>(plan.payment_plan, []), paid),
-      docs: db.docs
-        .filter((d) => d.lead_id === lead.id && d.show_client && d.status !== "cancelled")
-        .map((d) => ({ label: DOC_TYPES[d.type], number: d.number, date: d.date })),
+      total: m.total,
+      paid: m.paid,
+      balance: m.remaining,
+      items: m.items.filter((i) => i.show_client !== false && i.service).map((i) => ({ service: i.service, supplier: i.supplier || undefined, price: Number(i.price) || 0 })),
+      plan: m.plan.map((p) => ({ name: p.name, amount: Number(p.amount) || 0, due: p.due || undefined, paid: !!p.paid })),
     };
   }
   if (sections.suppliers) {

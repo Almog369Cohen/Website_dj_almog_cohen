@@ -159,11 +159,11 @@ function Portal() {
         <div className="colB">
           {p && (p.total > 0 || p.plan.length > 0) && (
             <section className="sec">
-              <h2 className="serif"><span className="ic">💳</span>התשלומים שלכם</h2>
+              <h2 className="serif"><span className="ic">💳</span>ההוצאות והתשלומים</h2>
               <div className="pay3">
                 <div><small>סה״כ</small><b>{nis(p.total)}</b></div>
                 <div><small>שולם</small><b style={{ color: "var(--green)" }}>{nis(p.paid)}</b></div>
-                <div><small>נותר</small><b>{nis(p.balance)}</b></div>
+                <div><small>נותר לתשלום</small><b>{nis(p.balance)}</b></div>
               </div>
               <div className="bar"><span style={{ ["--w" as string]: `${p.total ? Math.min(100, (p.paid / p.total) * 100) : 0}%` }} /></div>
               {p.plan.length > 0 && (
@@ -180,12 +180,31 @@ function Portal() {
                   })}
                 </ul>
               )}
-              {p.docs.length > 0 && (
-                <div className="docs">
-                  {p.docs.map((d) => (
-                    <span key={d.number} className="doc">{d.label === "הצעת מחיר" ? "📄" : "🧾"} {d.label} · {dm(d.date)}</span>
-                  ))}
-                </div>
+              {p.items.length > 0 && (
+                <table className="exp">
+                  <thead>
+                    <tr>
+                      <th>שירות</th>
+                      <th>ספק</th>
+                      <th>מחיר</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {p.items.map((it, i) => (
+                      <tr key={i}>
+                        <td>{it.service}</td>
+                        <td>{it.supplier ?? ""}</td>
+                        <td>{nis(it.price)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colSpan={2}>סה״כ</td>
+                      <td>{nis(p.items.reduce((x, it) => x + it.price, 0))}</td>
+                    </tr>
+                  </tfoot>
+                </table>
               )}
             </section>
           )}

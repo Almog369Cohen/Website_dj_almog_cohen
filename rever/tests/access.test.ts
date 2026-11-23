@@ -118,6 +118,22 @@ async function main() {
     await writeRow(pub("sapir"), "leads", { ...tables.leads[0], contacts: c });
     assert.equal(tables.leads[0].contacts, c); assert.equal(tables.leads[0].price, 20000);
   });
+  await ok("כספים בכרטיס: בלי מחירים לא מקבלים ולא משנים; מחירים בלי כספים לא מסמנים 'שולם'", async () => {
+    const MI = JSON.stringify([{ id: "i1", service: "אולם", price: 20000 }]);
+    const MP = JSON.stringify([{ id: "p1", name: "מקדמה", amount: 5000, paid: { date: "2026-11-01", amount: 5000, method: "transfer" } }, { id: "p2", name: "סופי", amount: 15000 }]);
+    Object.assign(tables.leads[0], { money_items: MI, money_plan: MP });
+    const d = await readAll(pub("sapir"));
+    assert.equal("money_items" in d.leads[0], false); assert.equal("money_plan" in d.leads[0], false);
+    await writeRow(pub("sapir"), "leads", { ...d.leads[0], money_items: "[]", money_plan: "[]" });
+    assert.equal(tables.leads[0].money_items, MI); assert.equal(tables.leads[0].money_plan, MP);
+    await writeRow(pub("gal"), "members", { ...pub("arad"), can_prices: true, can_finance: false });
+    const forged = JSON.stringify([{ id: "p1", name: "מקדמה", amount: 5000 }, { id: "p2", name: "סופי", amount: 15000, paid: { date: "x", amount: 15000, method: "cash" } }]);
+    await writeRow(pub("arad"), "leads", { ...tables.leads[0], money_plan: forged });
+    const r = JSON.parse(String(tables.leads[0].money_plan));
+    assert.ok(r[0].paid && !r[1].paid);
+    await writeRow(pub("gal"), "leads", { ...tables.leads[0], money_plan: forged }); // מאסטר כן
+    assert.ok(JSON.parse(String(tables.leads[0].money_plan))[1].paid);
+  });
   await ok("גל פותחת לספיר מחירים, וספיר רואה מחיר אבל לא תשלומים", async () => {
     await writeRow(pub("gal"), "members", { ...pub("sapir"), can_prices: true });
     const d = await readAll(pub("sapir"));

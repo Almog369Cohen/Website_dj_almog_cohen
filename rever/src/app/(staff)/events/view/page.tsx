@@ -11,6 +11,7 @@ import { CLIENT_STEP_LABELS, DEFAULT_CLIENT_STEPS, DEFAULT_SECTIONS, allocatePla
 import { fillTemplate, waLink } from "@/lib/whatsapp";
 import { TASKS_LOG_PREFIX, lateTasks, parseTasks, partnersOf, starterTasks } from "@/lib/tasks";
 import { TaskList } from "@/components/TaskList";
+import { MoneyPanel } from "@/components/MoneyPanel";
 
 type Tab = "timeline" | "suppliers" | "prep" | "tasks" | "payments" | "portal";
 
@@ -66,7 +67,7 @@ function EventCard({ l }: { l: Lead }) {
     { id: "suppliers", label: "🤝 ספקים", show: true },
     { id: "prep", label: "✅ הכנה", show: true },
     { id: "tasks", label: "📝 משימות הזוג", show: l.status === "won" },
-    { id: "payments", label: "💳 תשלומים", show: can("prices") && can("finance") },
+    { id: "payments", label: "💳 כספים", show: can("prices") },
     { id: "portal", label: "🔗 קישור ללקוח", show: can("portal") },
   ];
 
@@ -118,7 +119,7 @@ function EventCard({ l }: { l: Lead }) {
       {tab === "suppliers" && <SuppliersTab v={v} onChange={(s) => savePlan({ suppliers: JSON.stringify(s) })} showCost={can("prices")} />}
       {tab === "prep" && <PrepTab l={l} v={v} days={days} savePlan={savePlan} />}
       {tab === "tasks" && <CoupleTasksTab l={l} v={v} savePlan={savePlan} />}
-      {tab === "payments" && can("prices") && can("finance") && <PaymentsTab l={l} v={v} savePlan={savePlan} />}
+      {tab === "payments" && can("prices") && <MoneyPanel l={l} />}
       {tab === "portal" && can("portal") && <PortalTab l={l} v={v} savePlan={savePlan} />}
     </>
   );
@@ -488,124 +489,6 @@ function CoupleTasksTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p
           ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-/* ---------------- תשלומים ---------------- */
-function PaymentsTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Partial<EventPlan>) => void }) {
-  const { db, save, can } = useStore();
-  const plan = parse<PlanPayment[]>(v.plan.payment_plan, []);
-  const paid = db.payments.filter((p) => p.lead_id === l.id).reduce((s, p) => s + (p.kind === "refund" ? -p.amount : p.amount), 0);
-  const alloc = allocatePlan(plan, paid);
-  const sum = plan.reduce((s, p) => s + (p.amount || 0), 0);
-  const setPlan = (next: PlanPayment[]) => savePlan({ payment_plan: JSON.stringify(next) });
-  const set = (id: string, patch: Partial<PlanPayment>) => setPlan(plan.map((p) => (p.id === id ? { ...p, ...patch } : p)));
-  const docs = db.docs.filter((d) => d.lead_id === l.id);
-  const today = new Date().toISOString().slice(0, 10);
-  return (
-    <div className="eventgrid">
-      <div className="card">
-        <h2>
-          💳 תוכנית תשלומים
-          <span className="r muted" style={{ fontSize: 14, fontWeight: 500 }}>
-            {nis(sum)}
-            {l.price && sum !== l.price ? <span className="late"> · מחיר העסקה {nis(l.price)}</span> : null}
-          </span>
-        </h2>
-        {plan.length === 0 && l.price ? (
-          <div className="empty" style={{ padding: "14px 0" }}>
-            אין עדיין תוכנית.{" "}
-            <button
-              className="link"
-              onClick={() => {
-                const third = Math.round(l.price! / 3 / 100) * 100;
-                setPlan([
-                  { id: uid(), name: "מקדמה", amount: third, due: today },
-                  { id: uid(), name: "תשלום ביניים", amount: third },
-                  { id: uid(), name: "תשלום אחרון", amount: l.price! - third * 2, due: l.event_date },
-                ]);
-              }}
-            >
-              לחלק ל-3 תשלומים
-            </button>
-          </div>
-        ) : null}
-        {plan.length > 0 && (
-          <div className="tablewrap">
-          <table className="tbl">
-            <thead>
-              <tr>
-                <th>שלב</th>
-                <th>סכום</th>
-                <th>עד תאריך</th>
-                <th>מצב</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {plan.map((p, i) => (
-                <tr key={p.id}>
-                  <td>
-                    <input className="cell" defaultValue={p.name} onBlur={(e) => e.target.value !== p.name && set(p.id, { name: e.target.value })} />
-                  </td>
-                  <td>
-                    <input className="cell" type="number" defaultValue={p.amount} onBlur={(e) => Number(e.target.value) !== p.amount && set(p.id, { amount: Number(e.target.value) || 0 })} />
-                  </td>
-                  <td>
-                    <input className="cell" type="date" defaultValue={p.due ?? ""} onBlur={(e) => e.target.value !== (p.due ?? "") && set(p.id, { due: e.target.value || undefined })} />
-                  </td>
-                  <td>
-                    {alloc[i]?.paid ? (
-                      <span className="tag t-green">שולם ✓</span>
-                    ) : p.due && p.due < today ? (
-                      <span className="tag t-red">באיחור</span>
-                    ) : (
-                      <span className="tag t-gold">ממתין</span>
-                    )}
-                  </td>
-                  <td>
-                    <button className="muted" onClick={() => setPlan(plan.filter((x) => x.id !== p.id))}>
-                      ✕
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          </div>
-        )}
-        <button className="link" style={{ marginTop: 10 }} onClick={() => setPlan([...plan, { id: uid(), name: "", amount: 0 }])}>
-          + שלב תשלום
-        </button>
-        <div className="muted" style={{ fontSize: 13, marginTop: 8 }}>
-          "שולם" מתעדכן לבד לפי התשלומים שנרשמו בכספים (שולם עד היום: {nis(paid)}).
-        </div>
-      </div>
-
-      {(
-        <div className="card">
-          <h2>
-            📄 מסמכים
-            <span className="r muted" style={{ fontSize: 13, fontWeight: 500 }}>
-              ללקוח = מוצג בקישור
-            </span>
-          </h2>
-          {docs.length === 0 && <div className="muted" style={{ fontSize: 14 }}>אין מסמכים. מוסיפים ממסך הכספים או מכרטיס הלקוח.</div>}
-          {docs.map((d: Doc) => (
-            <div key={d.id} className="trow">
-              <span>
-                {DOC_TYPES[d.type]} {d.number} · <span className="muted">{DOC_STATUS[d.status]}</span>
-              </span>
-              <b className="ml">{nis(d.amount)}</b>
-              <label className="switch" title="להציג ללקוח">
-                <input type="checkbox" checked={!!d.show_client} onChange={(e) => save("docs", { ...d, show_client: e.target.checked })} />
-                <span />
-              </label>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

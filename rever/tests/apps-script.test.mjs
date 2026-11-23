@@ -128,6 +128,14 @@ ok("אנשי קשר נוספים נשמרים בגיליון בעמודה משל
   assert.equal(ctx.readTable_("leads")[0].contacts, c);
   assert.ok(sheets["לידים"].rows[0].includes("אנשי קשר נוספים"));
 });
+ok("כספים בכרטיס: בלי מחירים לא מקבלים ולא משנים", () => {
+  const MI = JSON.stringify([{ id: "i1", service: "אולם", price: 20000 }]);
+  call({ action: "upsert", token: gal, table: "leads", row: { ...ctx.readTable_("leads")[0], money_items: MI } });
+  const row = call({ action: "load", token: sapir }).db.leads[0];
+  assert.equal(row.money_items, undefined);
+  call({ action: "upsert", token: sapir, table: "leads", row: { ...row, money_items: "[]" } });
+  assert.equal(ctx.readTable_("leads")[0].money_items, MI);
+});
 ok("ספיר מעדכנת סטטוס, והמחיר נשמר", () => {
   call({ action: "upsert", token: sapir, table: "leads", row: { id: "L1", name: "דנה ויובל", phone: "0500000001", status: "talk", event_type: "חתונה", source: "אתר" } });
   const lead = ctx.readTable_("leads")[0];

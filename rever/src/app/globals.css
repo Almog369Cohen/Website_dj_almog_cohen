@@ -330,3 +330,19 @@ pre{max-width:100%;overflow-x:auto}
 .field.contact{align-items:center}
 .contact-form{display:flex;flex-direction:column;gap:8px;margin-top:6px}
 .contact-form .search{min-width:0;width:100%;height:40px}
+.money3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.money3>div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.money3 small{display:block;color:var(--muted);font-size:12.5px}
+.money3 b{font-size:22px;font-variant-numeric:tabular-nums}
+.money-panel{display:flex;flex-direction:column;gap:16px}
+.money-panel>.money3{margin-bottom:0}
+.month-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line2)}
+.month-row:last-child{border:none}
+.month-row .mm{width:64px;font-weight:600;font-size:14px;flex:none}
+.month-row .mbar{flex:1;min-width:0}
+.month-row .mbar .t{display:block;height:12px;border-radius:6px;background:#e6e9ef;overflow:hidden}
+.month-row .mbar .p{display:block;height:100%;background:var(--green)}
+.month-row .mv{text-align:left;flex:none}
+.month-row .mv b{display:block;font-size:14.5px;font-variant-numeric:tabular-nums}
+.month-row .mv small{color:var(--muted);font-size:12px}
+@media (max-width:600px){.money3{grid-template-columns:1fr 1fr 1fr;gap:6px}.money3 b{font-size:16px}.money3>div{padding:9px}}

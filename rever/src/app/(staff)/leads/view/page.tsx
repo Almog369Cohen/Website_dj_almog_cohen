@@ -3,11 +3,12 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
-import { DOC_STATUS, DOC_TYPES, LOST_REASONS, PAYMENT_KINDS, STATUSES } from "@/lib/types";
+import { LOST_REASONS, STATUSES } from "@/lib/types";
 import type { ActivityKind, Contact, Lead, LeadStatus } from "@/lib/types";
 import { fromLocalInput, isOverdue, nis, relDay, shortDate, toLocalInput, uid } from "@/lib/format";
 import { fillTemplate, sendWhatsApp, waLink } from "@/lib/whatsapp";
-import { CalendarModal, DocModal, FollowupModal, LeadModal, PaymentModal } from "@/components/forms";
+import { CalendarModal, FollowupModal, LeadModal } from "@/components/forms";
+import { moneyOf } from "@/lib/money";
 
 const DOT: Record<ActivityKind, string> = {
   created: "var(--blue)",
@@ -63,9 +64,7 @@ function LeadView({ l }: { l: Lead }) {
   const meeting = db.calendar_items
     .filter((c) => c.lead_id === l.id && c.kind === "meeting" && new Date(c.start) >= new Date())
     .sort((a, b) => +new Date(a.start) - +new Date(b.start))[0];
-  const payments = db.payments.filter((p) => p.lead_id === l.id).sort((a, b) => a.date.localeCompare(b.date));
-  const paid = payments.reduce((s, p) => s + (p.kind === "refund" ? -p.amount : p.amount), 0);
-  const docs = db.docs.filter((d) => d.lead_id === l.id);
+  const money = moneyOf(l);
 
   // תבנית מוצעת לפי מצב הליד
   const suggested = useMemo(() => {
@@ -265,56 +264,32 @@ function LeadView({ l }: { l: Lead }) {
 
           <Contacts l={l} />
 
-          {l.status === "won" && can("finance") && (
+          {can("prices") && (l.status === "won" || l.money_items || l.money_plan) && (
             <>
               <h2 style={{ marginTop: 20 }}>
-                💰 תשלומים
-                <button className="r link" onClick={() => setModal("payment")}>
-                  + תשלום
-                </button>
+                💳 כספים
+                <Link className="r link" href={`/events/view?id=${l.id}#payments`}>
+                  פירוט ותשלומים ←
+                </Link>
               </h2>
               <div className="field">
-                <span>שולם</span>
-                <b style={{ color: "var(--green)" }}>{nis(paid)}</b>
+                <span>סה״כ ללקוח</span>
+                <b>{nis(money.total)}</b>
               </div>
               <div className="field">
-                <span>יתרה</span>
-                <b className={(l.price ?? 0) - paid > 0 ? "late" : ""}>{nis((l.price ?? 0) - paid)}</b>
+                <span>שולם</span>
+                <b style={{ color: "var(--green)" }}>{nis(money.paid)}</b>
               </div>
-              {payments.map((p) => (
-                <div key={p.id} className="tli">
-                  <span className="dt" style={{ background: "var(--green)" }} />
-                  <div>
-                    {PAYMENT_KINDS[p.kind]} {nis(p.amount)}
-                    <small>
-                      {shortDate(p.date)} · {p.method}
-                    </small>
-                  </div>
-                </div>
-              ))}
+              <div className="field">
+                <span>נותר לתשלום</span>
+                <b className={money.remaining > 0 ? "late" : ""}>
+                  {nis(money.remaining)}
+                  {money.late ? ` · ${money.late} באיחור` : ""}
+                </b>
+              </div>
             </>
           )}
 
-          {can("finance") && (<>
-          <h2 style={{ marginTop: 20 }}>
-            מסמכים
-            <button className="r link" onClick={() => setModal("doc")}>
-              + מסמך
-            </button>
-          </h2>
-          {docs.length === 0 && <div className="muted" style={{ fontSize: 14 }}>אין עדיין הצעת מחיר או חשבונית</div>}
-          {docs.map((d) => (
-            <div key={d.id} className="field">
-              <span>
-                {DOC_TYPES[d.type]} {d.number}
-              </span>
-              <b>
-                {nis(d.amount)} · <span className="muted" style={{ fontWeight: 400 }}>{DOC_STATUS[d.status]}</span>
-              </b>
-            </div>
-          ))}
-
-          </>)}
           <h2 style={{ marginTop: 20 }}>היסטוריה</h2>
           <form
             className="row"
@@ -418,8 +393,6 @@ function LeadView({ l }: { l: Lead }) {
       {modal === "edit" && <LeadModal lead={l} onClose={() => setModal(null)} />}
       {modal === "followup" && <FollowupModal lead={l} onClose={() => setModal(null)} />}
       {modal === "meeting" && <CalendarModal leadId={l.id} onClose={() => setModal(null)} />}
-      {modal === "payment" && <PaymentModal leadId={l.id} onClose={() => setModal(null)} />}
-      {modal === "doc" && <DocModal leadId={l.id} onClose={() => setModal(null)} />}
     </>
   );
 }

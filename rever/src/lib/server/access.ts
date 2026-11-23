@@ -6,7 +6,7 @@ import { makeClientSession, readSession, verifyClientSession } from "./session";
 
 /** העמודות שמותר לכתוב לכל טבלה (כל השאר נזרק). */
 const COLUMNS: Record<Table, string[]> = {
-  leads: ["id", "name", "phone", "email", "event_type", "event_date", "guests", "venue", "source", "status", "price", "next_followup", "followup_note", "pending_message", "last_contact", "notes", "assigned_to", "lost_reason", "contacts", "created_at"],
+  leads: ["id", "name", "phone", "email", "event_type", "event_date", "guests", "venue", "source", "status", "price", "next_followup", "followup_note", "pending_message", "last_contact", "notes", "assigned_to", "lost_reason", "contacts", "money_items", "money_plan", "created_at"],
   activities: ["id", "lead_id", "kind", "text", "at", "by"],
   calendar_items: ["id", "kind", "title", "start", "location", "lead_id"],
   templates: ["id", "name", "description", "body", "sort"],
@@ -109,7 +109,7 @@ export async function readAll(me: Member): Promise<DB> {
       if (error) throw new Error(`${t}: ${error.message}`);
       let rows = (data ?? []).map(stripNulls);
       if (t === "members") rows = (data ?? []).map((r) => publicMember(r) as unknown as Record<string, unknown>);
-      if (t === "leads" && !prices) rows = rows.map(({ price: _p, ...r }) => r);
+      if (t === "leads" && !prices) rows = rows.map(({ price: _p, money_items: _i, money_plan: _m, ...r }) => r);
       if (t === "activities" && !prices) rows = rows.filter((r) => r.kind !== "payment").map((r) => ({ ...r, text: maskMoney(String(r.text)) }));
       if (t === "settings" && me.role !== "admin") rows = rows.map(({ make_webhook_url: _w, ...r }) => r);
       if (t === "event_plans" && !prices) rows = rows.map((r) => ({ ...r, suppliers: stripCosts(r.suppliers) }));
@@ -137,10 +137,17 @@ export async function writeRow(me: Member, table: Table, input: Record<string, u
   if (table === "templates" && !memberCan(me, "templates")) throw new Forbidden("אין הרשאה לערוך תבניות");
   if ((table === "settings" || table === "members") && me.role !== "admin") throw new Forbidden("רק מנהלים");
 
-  if (table === "leads" && !memberCan(me, "prices")) {
-    // מי שלא רואה מחירים לא יכול גם לשנות אותם: שומרים את המחיר הקיים
-    const { data } = await db.from("leads").select("price").eq("id", row.id).maybeSingle();
-    row.price = data?.price ?? null;
+  if (table === "leads" && !(memberCan(me, "prices") && memberCan(me, "finance"))) {
+    const { data } = await db.from("leads").select("price,money_items,money_plan").eq("id", row.id).maybeSingle();
+    if (!memberCan(me, "prices")) {
+      // מי שלא רואה סכומים לא יכול גם לשנות אותם: שומרים את הקיים
+      row.price = data?.price ?? null;
+      row.money_items = data?.money_items ?? null;
+      row.money_plan = data?.money_plan ?? null;
+    } else {
+      const { keepPaid } = await import("../money");
+      row.money_plan = keepPaid(row.money_plan, data?.money_plan); // רישום "שולם" רק עם הרשאת כספים
+    }
   }
   if (table === "settings" && !("make_webhook_url" in input)) delete row.make_webhook_url;
   const plans = memberCan(me, "prices") && memberCan(me, "finance");
