@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { nav, whatsapp } from "@/content/site";
 import { waHref } from "@/lib/whatsapp";
 import { WaIcon } from "./ui";
+import { ConsultButton } from "./Consult";
+import { consult } from "@/content/site";
 
 type LenisLike = { stop: () => void; start: () => void };
 const lenis = () => (window as Window & { __lenis?: LenisLike }).__lenis;
@@ -47,6 +49,7 @@ export function Header() {
             ))}
           </nav>
           <div className="head-actions">
+            <ConsultButton where="header" className="head-cta">{consult.short}</ConsultButton>
             <a className="round gold" id="headWa" href={waHref()} target="_blank" rel="noopener" data-wa-link="header" aria-label={`${whatsapp.cta} בוואטסאפ`}>
               <WaIcon />
             </a>
@@ -65,9 +68,10 @@ export function Header() {
           <Link key={n.href} className="big" href={n.href} onClick={() => close(false)} aria-current={path === n.href ? "page" : undefined}>{n.label}</Link>
         ))}
         <Link className="big" href="/contact/" onClick={() => close(false)}>צור קשר</Link>
-        <a className="btn-gold" href={waHref()} target="_blank" rel="noopener" data-wa-link="menu">
+        <ConsultButton where="menu" onNavigate={() => close(false)} />
+        <a className="link-quiet menu-wa" href={waHref()} target="_blank" rel="noopener" data-wa-link="menu">
           <WaIcon />
-          {whatsapp.cta}
+          {whatsapp.cta} בוואטסאפ
         </a>
       </nav>
     </>

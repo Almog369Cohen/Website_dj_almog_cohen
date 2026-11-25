@@ -42,11 +42,33 @@ export const nav = [
   { href: "/faq/", label: "שאלות נפוצות" },
 ];
 
+/**
+ * The one action on the site: a free consultation call. Every section ends here.
+ * The message (Almog, 25.11.2026): "we are the rocket of productions; with us it's fire".
+ */
+export const consult = {
+  cta: "קבעו שיחת ייעוץ ללא עלות",
+  short: "שיחת ייעוץ חינם",
+  submit: "קבעו לי שיחת ייעוץ",
+  promise: "ללא עלות וללא התחייבות.",
+};
+
 export const hero = {
   h1: "הפקת חתונות ואירועים, בליווי מלא",
-  displayTop: "מקבלת הפנים בגן",
-  displayBottom: "ועד השיר האחרון על הרחבה",
-  tagline: "אתם מתרגשים מהאירוע, אנחנו דואגים לכל מה שמסביב.",
+  displayTop: "טיל ההפקות.",
+  displayBottom: "איתנו זה אש.",
+  tagline: "לכם יהיה כיף, והאירוע ייראה מיליון דולר. את כל השאר אנחנו מחזיקים.",
+};
+
+/** Right after the opening: what a couple gets, in three words, and the one action. */
+export const fire = {
+  kicker: "למה REVER",
+  title: "אנחנו טיל ההפקות. איתנו זה אש.",
+  pillars: [
+    { n: "01", word: "כיף", line: "אתם נהנים מהדרך ומהערב. הלחץ, הספקים והלו״ז אצלנו." },
+    { n: "02", word: "מיליון דולר", line: "עיצוב, תאורה ורגעים שנראים כמו הפקה גדולה, כי הם הפקה גדולה." },
+    { n: "03", word: "אש על הרחבה", line: "ערב עם אנרגיה מהכניסה ועד השיר האחרון, וצוות בשטח עד הסוף." },
+  ],
 };
 
 export const difference = {
@@ -106,7 +128,10 @@ export const about = [
 ];
 
 export const contactCopy = {
-  title: "בואו נתחיל לתכנן את האירוע שלכם.",
-  lead: "ליווי מלא משלב התכנון ועד יום האירוע. השאירו פרטים ונחזור אליכם.",
+  kicker: "שיחת ייעוץ",
+  title: "קבעו שיחת ייעוץ ללא עלות.",
+  lead: "השאירו פרטים, וגל וליאל יחזרו אליכם לתאם שיחה. נשמע מה אתם מדמיינים, ונראה לכם איך עושים מזה אש.",
+  points: ["מכירים אתכם ואת החלום", "רעיונות ראשונים לאירוע", "מה הצעד הבא, בלי לחץ"],
   eventTypes: ["חתונה", "בר / בת מצווה", "אירוע חברה", "אירוע פרטי", "אחר"],
+  callTimes: ["בוקר", "צהריים", "ערב", "לא משנה"],
 };

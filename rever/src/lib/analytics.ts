@@ -12,22 +12,23 @@ type Win = Window & { gtag?: (...a: unknown[]) => void };
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 export const LEAD_ENDPOINT = process.env.NEXT_PUBLIC_LEAD_ENDPOINT || "";
 
-export type TrackEvent = "click_whatsapp" | "click_call" | "generate_lead" | "open_photo" | "hero_opened" | "journey_stage";
+export type TrackEvent = "click_consult" | "click_whatsapp" | "click_call" | "generate_lead" | "open_photo" | "hero_opened" | "journey_stage";
 
 export function track(event: TrackEvent, params: Record<string, string> = {}) {
   if (typeof window === "undefined") return;
   (window as Win).gtag?.("event", event, params);
 }
 
-/** Saves the lead first; a failed save never blocks the WhatsApp hand-off. */
-export async function sendLead(data: Record<string, string>) {
-  if (!LEAD_ENDPOINT || data.website) return; // `website` is the hidden honeypot: a person never fills it
+/** Saves the lead (see lib/lead.ts for its shape). Returns false when no endpoint is set or the save failed. */
+export async function sendLead(data: object): Promise<boolean> {
+  if (!LEAD_ENDPOINT) return false;
   const body = JSON.stringify({ ...data, source: getSource(), context: waContextText(), page: location.href, at: new Date().toISOString() });
   try {
     // text/plain keeps it a "simple" request, which Apps Script and most form services accept without CORS preflight
     await fetch(LEAD_ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body, keepalive: true, mode: "no-cors" });
+    return true;
   } catch {
-    // the WhatsApp message still carries every detail
+    return false; // the form then falls back to WhatsApp, which carries every detail
   }
 }
 

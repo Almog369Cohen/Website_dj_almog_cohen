@@ -3,6 +3,7 @@ import { verifiedFaq } from "@/content/faq";
 import { SHOW_TODO } from "@/content/site";
 import { EventsGallery } from "@/components/EventsGallery";
 import { FromField, Hero, How, journeyPreload, PaperChapter, Team } from "@/components/home";
+import { ConsultButton } from "@/components/Consult";
 import { Closing, ContactSection, FaqList } from "@/components/sections";
 import { JsonLd } from "@/components/ui";
 import { faqGraph, pageGraph } from "@/lib/seo";
@@ -24,6 +25,10 @@ export default function Home() {
           <div className="kicker">אירועים</div>
           <h2 id="eventsTitle">אירועים שהפקנו.</h2>
           <EventsGallery events={events} />
+          <div className="events-cta">
+            <p>רוצים ערב כזה?</p>
+            <ConsultButton where="events" />
+          </div>
         </section>
         {SHOW_TODO && <FromField />}
         <FaqList />

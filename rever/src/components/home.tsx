@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { PHOTO_SIZES } from "@/content/photos";
 import journeyCrops from "@/content/journey-crops.json";
-import { about, brand, difference, eventTypes, founders, hero, includes, journey, journeyAlt, steps } from "@/content/site";
-import { coverSizes, Faces, Pic, srcSetFor, Todo, WaButton } from "./ui";
+import { about, brand, consult, difference, eventTypes, fire, founders, hero, includes, journey, journeyAlt, steps } from "@/content/site";
+import { ConsultButton } from "./Consult";
+import { coverSizes, Faces, Pic, srcSetFor, Todo } from "./ui";
 
 const PHONE = "(max-aspect-ratio: 3/4)";
 const crops: Record<string, number[]> = journeyCrops;
@@ -91,6 +92,7 @@ export function Hero() {
           <a className="jskip" id="jskip" href="#difference">דלגו על המסע</a>
           <div className="hero-rest" id="heroRest">
             <h1>{hero.h1}</h1>
+            <ConsultButton where="hero-first" className="btn-ghost">{consult.short}</ConsultButton>
             <div className="cue" aria-hidden="true">גללו<i /></div>
           </div>
           <div className="hero-copy" id="heroCopy">
@@ -98,9 +100,10 @@ export function Hero() {
             <p className="display">{hero.displayTop}<span>{hero.displayBottom}</span></p>
             <p className="tagline">{hero.tagline}</p>
             <div className="row">
-              <WaButton where="hero" />
+              <ConsultButton where="hero" className="btn-gold btn-big" />
               <a className="link-quiet" href="#events">לרגעים שהפקנו</a>
             </div>
+            <p className="hero-promise">{consult.promise}</p>
             <Faces href="#founders" />
           </div>
         </div>
@@ -125,11 +128,35 @@ export function Hero() {
   );
 }
 
+/** 1b. Right after the opening: the message in three words, and the one action. */
+export function Fire() {
+  return (
+    <section className="fire wrap" id="fire" data-tone="dark" data-wa="קראתי באתר למה REVER" aria-labelledby="fireTitle">
+      <div className="kicker">{fire.kicker}</div>
+      <h2 id="fireTitle" className="fire-title">{fire.title}</h2>
+      <ol className="pillars">
+        {fire.pillars.map((p) => (
+          <li key={p.n}>
+            <span className="en n">{p.n}</span>
+            <b>{p.word}</b>
+            <p>{p.line}</p>
+          </li>
+        ))}
+      </ol>
+      <div className="fire-cta">
+        <ConsultButton where="fire" className="btn-gold btn-big" />
+        <span>{consult.promise}</span>
+      </div>
+    </section>
+  );
+}
+
 /** 2–4. The paper chapter: the difference, the wipe, the founders and the event types. */
 export function PaperChapter() {
   const words = difference.tasks.split(/\s+/);
   return (
     <div className="chapter-paper" data-tone="paper">
+      <Fire />
       <section className="manifesto wrap" id="difference" data-wa="קראתי באתר על ההבדל" aria-label="ההבדל">
         <div className="kicker">ההבדל</div>
         <p className="says" id="says">
@@ -198,7 +225,7 @@ export function Founders({ intro = true }: { intro?: boolean }) {
       </div>
       {intro && (
         <div className="founders-cta wrap">
-          <WaButton where="founders" />
+          <ConsultButton where="founders">שיחת ייעוץ עם גל וליאל</ConsultButton>
           <Link className="link-quiet" href="/about/">עוד על גל וליאל</Link>
         </div>
       )}
@@ -237,7 +264,10 @@ export function How() {
         <div className="kicker">מה כולל הליווי</div>
         <ul>{includes.map((i) => <li key={i}>{i}</li>)}</ul>
         <p><Todo>לאשר: אנחנו לא האולם ולא הקייטרינג. אנחנו מחברים את כל הספקים ומנהלים אותם בשבילכם.</Todo></p>
-        <WaButton className="link-quiet" where="how">רוצים לשמוע איך זה ייראה אצלכם?</WaButton>
+        <div className="how-cta">
+          <p>הכול מתחיל בשיחת ייעוץ ללא עלות.</p>
+          <ConsultButton where="how" />
+        </div>
       </div>
     </section>
   );

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { faq } from "@/content/faq";
-import { brand, contactCopy, nav, SHOW_TODO } from "@/content/site";
+import { brand, consult, contactCopy, nav, SHOW_TODO } from "@/content/site";
 import type { Block, Source } from "@/content/guides";
 import type { Crumb } from "@/lib/seo";
+import { ConsultButton } from "./Consult";
 import { ContactForm } from "./ContactForm";
 import { Faces, InstagramIcon, PhoneIcon, Pic, Todo, WaButton } from "./ui";
 
@@ -34,21 +35,26 @@ export function FaqList({ title = "מה זוגות שואלים אותנו.", he
 export function ContactSection({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
   const Title = headingLevel === 1 ? "h1" : "h2";
   return (
-    <section className="contact wrap" id="contact" data-tone="paper" data-hide-fab data-wa="הגעתי לטופס באתר" aria-labelledby="contactTitle">
-      <div>
-        <div className="kicker">דברו איתנו</div>
+    <section className="contact wrap" id="contact" data-tone="dark" data-hide-fab data-wa="הגעתי לטופס שיחת הייעוץ באתר" aria-labelledby="contactTitle">
+      <div className="contact-head">
+        <div className="kicker">{contactCopy.kicker}</div>
         <Title id="contactTitle" style={{ margin: 0 }}>{contactCopy.title}</Title>
         <p className="lead">{contactCopy.lead}</p>
+      </div>
+      <ContactForm />
+      <div className="contact-more">
+        <ol className="consult-points">
+          {contactCopy.points.map((p, i) => <li key={p}><span className="en">{String(i + 1).padStart(2, "0")}</span>{p}</li>)}
+        </ol>
         <div style={{ marginTop: 28 }}>
           <Faces label={<>גל וליאל חוזרים אליכם <Todo>תוך ___</Todo></>} />
         </div>
         <div className="direct" style={{ marginTop: 16 }}>
-          <WaButton className="" where="contact">שלחו הודעה לגל וליאל בוואטסאפ</WaButton>
+          <WaButton className="" where="contact">מעדיפים לכתוב? וואטסאפ לגל וליאל</WaButton>
           <div><PhoneIcon /><Todo dir="ltr">{brand.phoneDisplay}</Todo></div>
           <a href={brand.instagram} target="_blank" rel="noopener"><InstagramIcon /><span dir="ltr">{brand.instagramHandle}</span></a>
         </div>
       </div>
-      <ContactForm />
     </section>
   );
 }
@@ -66,9 +72,10 @@ export function Closing({ photo = false }: { photo?: boolean }) {
         </div>
       )}
       <div className="cta wrap">
-        <h2>הערב שלכם מתחיל בהודעה אחת.</h2>
+        <h2>הערב שלכם מתחיל בשיחה אחת.</h2>
+        <p className="closing-line">טיל ההפקות. איתנו זה אש. {consult.promise}</p>
+        <ConsultButton where="closing" className="btn-gold btn-big" />
         <Faces />
-        <WaButton where="closing" />
       </div>
       <div className="foot wrap">
         <nav aria-label="עמודים">
@@ -106,7 +113,7 @@ export function PageHero({ title, answer, crumbs, photo, cta = true }: { title: 
         <Breadcrumbs crumbs={crumbs} />
         <h1>{title}</h1>
         {answer && <p className="answer">{answer}</p>}
-        {cta && <WaButton where="page-hero" />}
+        {cta && <ConsultButton where="page-hero" />}
       </div>
     </header>
   );
@@ -153,8 +160,9 @@ export function CtaBand({ title = "רוצים לשמוע איך זה ייראה 
   return (
     <div className="cta-band">
       <h2>{title}</h2>
+      <p>{consult.cta}, {consult.promise}</p>
+      <ConsultButton where="cta-band" />
       <Faces />
-      <WaButton where="cta-band" />
     </div>
   );
 }
