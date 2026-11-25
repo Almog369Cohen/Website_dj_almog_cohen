@@ -25,9 +25,9 @@ export async function POST(req: Request) {
       if (typeof body.id !== "string" || !body.id) return NextResponse.json({ error: "חסר id" }, { status: 400 });
       return NextResponse.json(await staffTasksSave(me, body.id, { tasks: body.tasks, dismissed: body.dismissed, rev: body.rev }));
     }
-    const { table, row } = body;
+    const { table, row, base } = body;
     if (!isTable(table)) return NextResponse.json({ error: "טבלה לא קיימת" }, { status: 400 });
-    await writeRow(me, table, row);
+    await writeRow(me, table, row, base && typeof base === "object" ? base : null); // base: רק מה שהשתנה נכתב
     return NextResponse.json({ ok: true });
   } catch (e) {
     return fail(e);

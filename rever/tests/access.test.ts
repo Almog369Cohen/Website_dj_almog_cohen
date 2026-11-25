@@ -175,6 +175,41 @@ async function main() {
     await writeRow(pub("arad"), "event_plans", { ...d.event_plans[0], payment_plan: "[]" });
     assert.match(String(tables.event_plans[0].payment_plan), /5000/);
   });
+  await ok("צ'קליסט: כל עובד שומר פרטים (תאריך יעד, הערה, סדר) והם נטענים חזרה", async () => {
+    const meta = JSON.stringify({ order: ["venue", "contract"], items: { venue: { due: "2027-01-01", note: "הערה", section: "after" } } });
+    await writeRow(pub("sapir"), "event_plans", { ...tables.event_plans[0], check_meta: meta, extra_checks: "[\"c_1\"]" });
+    assert.equal(tables.event_plans[0].check_meta, meta);
+    assert.equal((await readAll(pub("arad"))).event_plans[0].check_meta, meta);
+  });
+  await ok("שמירה במקביל: שני עובדים משנים שדות שונים מאותה גרסה, ושני השינויים נשמרים", async () => {
+    // כרטיס אירוע: א' משנה בקשות, ב' משנה הערות פנימיות, באותו זמן
+    const basePlan = { ...tables.event_plans[0], requests: "ישן", internal_notes: "ישן" };
+    tables.event_plans[0] = { ...basePlan };
+    await Promise.all([
+      writeRow(pub("arad"), "event_plans", { ...basePlan, requests: "בלי עשן" }, basePlan),
+      writeRow(pub("sapir"), "event_plans", { ...basePlan, internal_notes: "לתאם דרך הכלה" }, basePlan),
+    ]);
+    assert.equal(tables.event_plans[0].requests, "בלי עשן");
+    assert.equal(tables.event_plans[0].internal_notes, "לתאם דרך הכלה");
+    // ליד: א' משנה מקום, ב' משנה מוזמנים
+    const baseLead: Row = { ...tables.leads[0], venue: "ישן", guests: 100 };
+    tables.leads[0] = { ...baseLead };
+    const seen = (await readAll(pub("sapir"))).leads[0] as unknown as Row; // ספיר בלי מחירים: מה שהיא רואה הוא ה"בסיס" שלה
+    await Promise.all([
+      writeRow(pub("gal"), "leads", { ...baseLead, venue: "אולם הגן" }, baseLead),
+      writeRow(pub("sapir"), "leads", { ...seen, guests: 400 }, seen),
+    ]);
+    assert.equal(tables.leads[0].venue, "אולם הגן");
+    assert.equal(tables.leads[0].guests, 400);
+    assert.equal(tables.leads[0].price, baseLead.price); // ספיר לא מחקה את המחיר
+    // אותו שדה: האחרון קובע (לא נזרקת שגיאה)
+    await writeRow(pub("gal"), "leads", { ...baseLead, venue: "א" }, baseLead);
+    await writeRow(pub("arad"), "leads", { ...baseLead, venue: "ב" }, baseLead);
+    assert.equal(tables.leads[0].venue, "ב");
+    // שורה חדשה עם בסיס: נשמרת במלואה
+    await writeRow(pub("gal"), "calendar_items", { id: "C9", kind: "meeting", title: "פגישה", start: "2027-01-01T10:00" }, { id: "C9" });
+    assert.equal(tables.calendar_items.find((c) => c.id === "C9")!.title, "פגישה");
+  });
   await ok("שדות דיג'יי ישנים (שירים, רגעים, ציוד) נזרקים", async () => {
     await writeRow(pub("gal"), "event_plans", { id: "L1", must_songs: "x", no_songs: "y", moments: "{}", equipment: "{}" });
     const r = tables.event_plans[0];

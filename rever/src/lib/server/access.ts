@@ -15,7 +15,7 @@ const COLUMNS: Record<Table, string[]> = {
   docs: ["id", "lead_id", "type", "number", "amount", "date", "status", "show_client"],
   settings: ["id", "business_name", "owner_name", "whatsapp_mode", "make_webhook_url", "vat_rate", "sheet_url", "sheet_map", "sheet_auto", "sheet_last_pull", "contact_phone"],
   members: ["id", "name", "title", "phone", "role", "can_prices", "can_finance", "can_delete", "can_templates", "can_portal", "active", "created_at"],
-  event_plans: ["id", "timeline", "suppliers", "checklist", "extra_checks", "contact_name", "contact_phone", "requests", "notes", "after", "portal_token", "portal_enabled", "portal_sections", "portal_seen_at", "client_steps", "payment_plan", "contract_status", "internal_notes", "portal_code", "portal_code_ver", "portal_fails", "portal_locked_until", "client_tasks", "client_tasks_rev", "partner_a", "partner_b", "dismissed_suggestions", "updated_at"],
+  event_plans: ["id", "timeline", "suppliers", "checklist", "extra_checks", "check_meta", "contact_name", "contact_phone", "requests", "notes", "after", "portal_token", "portal_enabled", "portal_sections", "portal_seen_at", "client_steps", "payment_plan", "contract_status", "internal_notes", "portal_code", "portal_code_ver", "portal_fails", "portal_locked_until", "client_tasks", "client_tasks_rev", "partner_a", "partner_b", "dismissed_suggestions", "updated_at"],
 };
 const PORTAL_FIELDS = ["portal_token", "portal_enabled", "portal_sections", "client_steps", "portal_code", "portal_code_ver"];
 /** נכתבים רק דרך מסלולים ייעודיים (צפייה של הלקוח, כניסה, שמירת משימות), לא בשמירה רגילה */
@@ -124,14 +124,26 @@ export async function readAll(me: Member): Promise<DB> {
 
 export class Forbidden extends Error {}
 
-/** כתיבה: בדיקת הרשאה לפי טבלה + סינון עמודות. */
-export async function writeRow(me: Member, table: Table, input: Record<string, unknown>) {
+/**
+ * כתיבה: בדיקת הרשאה לפי טבלה + סינון עמודות.
+ * base = השורה כפי שהמסך טען אותה. כשהוא נשלח, נכתבים רק השדות שהשתנו מולו (שמירות במקביל לא דורסות זו את זו).
+ */
+export async function writeRow(me: Member, table: Table, input: Record<string, unknown>, base?: Record<string, unknown> | null) {
   const db = adminDb();
   if (typeof input?.id !== "string" || !input.id) throw new Error("חסר id");
   const row: Record<string, unknown> = {};
   for (const c of COLUMNS[table]) if (c in input) row[c] = input[c] === undefined ? null : input[c];
   // שדות שנשלחו כ"לא קיימים" (undefined → נמחקו ב-JSON) צריכים להתאפס
   for (const c of COLUMNS[table]) if (!(c in input) && c !== "id") row[c] = null;
+  let only: Set<string> | null = null; // השדות שנכתבים (null = כל השורה)
+  if (base && typeof base === "object") {
+    const { data: cur } = await db.from(table).select("*").eq("id", row.id).maybeSingle();
+    if (cur) {
+      const { changedKeys } = await import("../merge");
+      only = new Set(changedKeys(row, base));
+      for (const k of Object.keys(row)) if (k !== "id" && !only.has(k)) row[k] = cur[k] ?? null; // השאר: הערך העדכני מהמסד
+    }
+  }
 
   if (FINANCE.includes(table) && !memberCan(me, "finance")) throw new Forbidden("אין הרשאת כספים");
   if (table === "templates" && !memberCan(me, "templates")) throw new Forbidden("אין הרשאה לערוך תבניות");
@@ -162,10 +174,19 @@ export async function writeRow(me: Member, table: Table, input: Record<string, u
   }
   if (table === "event_plans") for (const k of GUARDED) delete row[k]; // נשמר הערך הקיים
   if (resetLock) Object.assign(row, { portal_fails: 0, portal_locked_until: null });
+  if (resetLock && only) only.add("portal_fails").add("portal_locked_until");
   if (table === "members") {
     if (row.id === me.id && (row.role !== "admin" || row.active === false)) throw new Forbidden("אי אפשר להוריד לעצמך הרשאת מאסטר");
     for (const k of ["can_prices", "can_finance", "can_delete", "can_templates", "can_portal", "active"]) row[k] = !!row[k];
     if (!["admin", "team"].includes(row.role as string)) row.role = "team";
+  }
+  if (only) {
+    // רק מה שהשתנה (אחרי כל הבדיקות למעלה, שיכולות להחזיר שדה לערך הקיים)
+    const patch = Object.fromEntries([...only].filter((k) => k in row).map((k) => [k, row[k]]));
+    if (!Object.keys(patch).length) return;
+    const { error } = await db.from(table).update(patch).eq("id", row.id);
+    if (error) throw new Error(error.message);
+    return;
   }
   const { error } = await db.from(table).upsert(row);
   if (error) throw new Error(error.message);

@@ -158,6 +158,8 @@ alter table event_plans add column if not exists client_tasks_rev integer defaul
 alter table event_plans add column if not exists partner_a text;
 alter table event_plans add column if not exists partner_b text;
 alter table event_plans add column if not exists dismissed_suggestions text;
+-- צ'קליסט שאפשר לערוך: שם, תאריך יעד, הערה, לפני/אחרי, סדר (הלקוח לא רואה)
+alter table event_plans add column if not exists check_meta text;
 alter table docs add column if not exists show_client boolean default false;
 alter table settings add column if not exists contact_phone text;
 alter table members add column if not exists can_portal boolean not null default false;

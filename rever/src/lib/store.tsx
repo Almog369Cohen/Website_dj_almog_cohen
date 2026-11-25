@@ -6,6 +6,7 @@ import { memberCan, statusLabel, TABLES } from "./types";
 import { makeRepo, type Repo } from "./repo";
 import { emptyDB } from "./seed";
 import { uid } from "./format";
+import { freshLoad } from "./freshLoad";
 import type { ClientTask } from "./tasks";
 
 interface Store {
@@ -52,15 +53,23 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // כמה שמירות באוויר, ומונה שמתקדם בכל שמירה: רענון ברקע לא דורס שמירה שעוד לא הסתיימה
+  const dbRef = useRef(db);
+  dbRef.current = db;
   const pending = useRef(0);
   const writeSeq = useRef(0);
+  const writes = useRef<Promise<unknown>>(Promise.resolve()); // השמירות שעוד באוויר
   const load = useCallback(async (background = false) => {
     const repo = repoRef.current!;
     if (background && pending.current) return;
-    const seq = writeSeq.current;
     try {
-      const data = await repo.loadAll();
-      if (background && (pending.current || seq !== writeSeq.current)) return; // נכתב משהו בזמן הטעינה: נרענן בפעם הבאה
+      const data = await freshLoad({
+        loadAll: () => repo.loadAll(),
+        waitWrites: () => writes.current.catch(() => {}),
+        seq: () => writeSeq.current,
+        pending: () => pending.current,
+        background,
+      });
+      if (!data) return; // השמירות לא נגמרות: נשאר עם מה שעל המסך, הרענון הבא יביא את העדכני
       for (const t of TABLES) if (!Array.isArray(data[t])) (data as unknown as Record<string, unknown[]>)[t] = [];
       if (!data.settings?.length) data.settings = emptyDB().settings;
       if (!data.templates?.length) data.templates = emptyDB().templates;
@@ -92,6 +101,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const save = useCallback(
     async <T extends Table>(table: T, row: DB[T][number]) => {
+      // הבסיס: השורה כפי שהמסך מכיר אותה לפני השינוי. השרת כותב רק את מה שהשתנה מולו
+      const id = (row as { id: string }).id;
+      const base = (dbRef.current[table] as { id: string }[]).find((r) => r.id === id) as DB[T][number] | undefined;
+      const others = (dbRef.current[table] as { id: string }[]).filter((r) => r.id !== id);
+      dbRef.current = { ...dbRef.current, [table]: [...others, row] }; // שמירה נוספת לפני שהמסך התרענן תשתמש בזה כבסיס
       setDb((prev) => {
         const list = [...(prev[table] as { id: string }[])];
         const i = list.findIndex((r) => r.id === (row as { id: string }).id);
@@ -102,7 +116,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       try {
         pending.current++;
         writeSeq.current++;
-        await repoRef.current!.upsert(table, row).finally(() => pending.current--);
+        const w = repoRef.current!.upsert(table, row, base).finally(() => pending.current--);
+        writes.current = Promise.allSettled([writes.current, w]);
+        await w;
       } catch (e) {
         toast("השמירה נכשלה: " + (e instanceof Error ? e.message : e));
         load();
@@ -128,8 +144,6 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   // ואחרי כישלון כל השמירות שחיכו בתור נזרקות וטוענים מחדש, כדי לא לדרוס שינוי של הזוג.
   const tasksQueue = useRef(Promise.resolve());
   const tasksGen = useRef(0);
-  const dbRef = useRef(db);
-  dbRef.current = db;
   const saveTasks = useCallback(
     (planId: string, tasks: ClientTask[], dismissed: string[]) => {
       const gen = tasksGen.current;

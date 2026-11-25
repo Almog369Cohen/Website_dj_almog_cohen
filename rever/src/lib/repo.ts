@@ -1,3 +1,4 @@
+import { changedKeys } from "./merge";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { DB, Table } from "./types";
 import { demoDB } from "./seed";
@@ -9,7 +10,8 @@ export interface Repo {
   /** קביעת קוד לעובד (בשרת) */
   setPin?(staffId: string, pin: string): Promise<void>;
   loadAll(): Promise<DB>;
-  upsert<T extends Table>(table: T, row: DB[T][number]): Promise<void>;
+  /** base = השורה כפי שנטענה. השרת כותב רק את השדות שהשתנו מולה (שמירות במקביל לא דורסות) */
+  upsert<T extends Table>(table: T, row: DB[T][number], base?: DB[T][number]): Promise<void>;
   remove(table: Table, id: string): Promise<void>;
   reset?(): Promise<DB>;
   /** מצב דמו: מחיקת נתוני הדוגמה (שומר צוות, תבניות והגדרות) */
@@ -83,10 +85,17 @@ class LocalRepo implements Repo {
   async loadAll() {
     return this.read();
   }
-  async upsert<T extends Table>(table: T, row: DB[T][number]) {
+  async upsert<T extends Table>(table: T, row: DB[T][number], base?: DB[T][number]) {
     const db = this.read();
     const list = db[table] as { id: string }[];
     const i = list.findIndex((r) => r.id === (row as { id: string }).id);
+    if (i >= 0 && base) {
+      // כמו בשרת: רק השדות שהשתנו מול מה שנטען (למשל שתי לשוניות פתוחות)
+      const cur = list[i] as Record<string, unknown>;
+      const next = { ...cur };
+      for (const k of changedKeys(row as unknown as Record<string, unknown>, base as unknown as Record<string, unknown>)) next[k] = (row as unknown as Record<string, unknown>)[k];
+      row = next as unknown as DB[T][number];
+    }
     if (i >= 0 && table === "event_plans") {
       // כמו בשרת: המשימות של הזוג נשמרות רק במסלול שלהן, שמירה רגילה לא דורסת אותן
       const prev = list[i] as Record<string, unknown>;
@@ -148,8 +157,8 @@ class ApiRepo implements Repo {
   async loadAll() {
     return (await this.call("GET", "/api/data")) as DB;
   }
-  async upsert<T extends Table>(table: T, row: DB[T][number]) {
-    await this.call("POST", "/api/data", { table, row });
+  async upsert<T extends Table>(table: T, row: DB[T][number], base?: DB[T][number]) {
+    await this.call("POST", "/api/data", { table, row, base });
   }
   async saveTasks(id: string, input: { tasks: unknown; dismissed?: unknown; rev: number }) {
     return (await this.call("POST", "/api/data", { action: "tasks", id, ...input })) as { rev: number };
@@ -251,8 +260,8 @@ class SheetsRepo implements Repo {
     const r = await sheetsCall<{ db: DB }>("load");
     return r.db;
   }
-  async upsert<T extends Table>(table: T, row: DB[T][number]) {
-    await sheetsCall("upsert", { table, row });
+  async upsert<T extends Table>(table: T, row: DB[T][number], base?: DB[T][number]) {
+    await sheetsCall("upsert", { table, row, base });
   }
   async saveTasks(id: string, input: { tasks: unknown; dismissed?: unknown; rev: number }) {
     return sheetsCall<{ rev: number }>("tasks_save", { id, ...input });
