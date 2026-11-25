@@ -8,7 +8,7 @@ import { clientSession, PortalError } from "@/lib/portalClient";
 import { TaskList, type SaveState } from "@/components/TaskList";
 import type { ClientTask } from "@/lib/tasks";
 
-/** דף הלקוח: "האירוע שלכם". כניסה עם טלפון + קוד מרבר. הזוג עורך רק את המשימות שלו. */
+/** דף הלקוח: "האירוע שלכם". כניסה מהקישור האישי + קוד מרבר. הזוג עורך רק את המשימות שלו. */
 export default function PortalPage() {
   return (
     <Suspense>
@@ -26,25 +26,29 @@ function Portal() {
   const sp = useSearchParams();
   const token = sp.get("t") ?? ""; // תצוגה מקדימה לצוות (קריאה בלבד)
   const preview = !!token;
+  const urlKey = sp.get("k") ?? ""; // הקישור האישי של הזוג
+  const [key, setKey] = useState("");
   const [view, setView] = useState<ClientView | null | undefined>(undefined);
   const [needLogin, setNeedLogin] = useState(false);
   const [now, setNow] = useState(() => Date.now());
 
   const load = useCallback(async () => {
     if (preview) return setView(await api.preview(token));
-    const s = clientSession.get();
+    const k = clientSession.key(urlKey);
+    setKey(k);
+    const s = clientSession.get(k);
     if (!s) return setNeedLogin(true);
     try {
       setView(await api.view(s));
       setNeedLogin(false);
     } catch (e) {
       if (e instanceof PortalError && e.code === "auth") {
-        clientSession.set(null);
+        clientSession.set(k, null);
         return setNeedLogin(true);
       }
       setView(null); // תקלה זמנית: לא מנתקים את הזוג, מציעים לנסות שוב
     }
-  }, [preview, token]);
+  }, [preview, token, urlKey]);
 
   useEffect(() => {
     load();
@@ -54,7 +58,7 @@ function Portal() {
     return () => clearInterval(id);
   }, []);
 
-  if (needLogin) return <Login onDone={(s) => (clientSession.set(s), setView(undefined), load())} />;
+  if (needLogin) return key ? <Login token={key} onDone={(s) => (clientSession.set(key, s), setNeedLogin(false), setView(undefined), load())} /> : <NoLink />;
   if (view === undefined)
     return (
       <div className="p-state">
@@ -139,7 +143,7 @@ function Portal() {
             </section>
           )}
 
-          {v.tasks && <TasksSection key={v.tasks.rev} view={v} readOnly={preview} onReload={load} />}
+          {v.tasks && <TasksSection key={v.tasks.rev} view={v} readOnly={preview} onReload={load} sessionKey={key} />}
 
           {v.timeline && v.timeline.length > 0 && (
             <section className="sec">
@@ -262,7 +266,7 @@ function Portal() {
           <div className="foot">
             {v.business} · הדף מתעדכן אוטומטית
             {!preview && (
-              <button className="p-out" onClick={() => (clientSession.set(null), location.reload())}>
+              <button className="p-out" onClick={() => (clientSession.set(key, null), location.reload())}>
                 יציאה
               </button>
             )}
@@ -273,9 +277,8 @@ function Portal() {
   );
 }
 
-/** כניסה: הטלפון שלכם + קוד מרבר */
-function Login({ onDone }: { onDone(session: string): void }) {
-  const [phone, setPhone] = useState("");
+/** כניסה: הקישור האישי כבר בכתובת, נשאר רק הקוד מרבר */
+function Login({ token, onDone }: { token: string; onDone(session: string): void }) {
   const [code, setCode] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
@@ -288,7 +291,7 @@ function Login({ onDone }: { onDone(session: string): void }) {
           setBusy(true);
           setErr("");
           try {
-            onDone(await api.login(phone, code));
+            onDone(await api.login(token, code));
           } catch (x) {
             setErr(x instanceof Error ? x.message : "שגיאה. נסו שוב");
           } finally {
@@ -298,14 +301,10 @@ function Login({ onDone }: { onDone(session: string): void }) {
       >
         <span className="mono" style={{ margin: "0 auto" }}>ר</span>
         <h1 className="serif">הדף של האירוע שלכם</h1>
-        <p>נכנסים עם מספר הטלפון שלכם והקוד שקיבלתם מאיתנו בוואטסאפ.</p>
+        <p>מקלידים את הקוד שקיבלתם מאיתנו בוואטסאפ, יחד עם הקישור הזה.</p>
         <label>
-          מספר טלפון
-          <input inputMode="tel" autoComplete="tel" dir="ltr" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="050-0000000" />
-        </label>
-        <label>
-          קוד
-          <input inputMode="numeric" autoComplete="one-time-code" dir="ltr" required maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))} placeholder="••••••" />
+          קוד אישי
+          <input inputMode="numeric" autoComplete="one-time-code" dir="ltr" required autoFocus maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))} placeholder="••••••" />
         </label>
         {err && <div className="p-err" role="alert">{err}</div>}
         <button className="p-btn" disabled={busy || code.length !== 6}>
@@ -317,8 +316,21 @@ function Login({ onDone }: { onDone(session: string): void }) {
   );
 }
 
+/** "/e" בלי קישור אישי, במכשיר שעוד לא נכנסו ממנו */
+function NoLink() {
+  return (
+    <div className="p-state">
+      <div className="box">
+        <span className="mono" style={{ margin: "0 auto" }}>ר</span>
+        <h1 className="serif">הדף של האירוע שלכם</h1>
+        <p>נכנסים מהקישור האישי ששלחנו לכם בוואטסאפ. אם אתם לא מוצאים אותו, בקשו אותו מאיש הקשר שלכם.</p>
+      </div>
+    </div>
+  );
+}
+
 /** "המשימות שלנו": שמירה מיידית, אחת-אחת, עם חיווי. התנגשות = טוענים מחדש. */
-function TasksSection({ view, readOnly, onReload }: { view: ClientView; readOnly: boolean; onReload(): void }) {
+function TasksSection({ view, readOnly, onReload, sessionKey }: { view: ClientView; readOnly: boolean; onReload(): void; sessionKey: string }) {
   const t = view.tasks!;
   const [tasks, setTasks] = useState<ClientTask[]>(t.list);
   const [dismissed, setDismissed] = useState<string[]>(t.dismissed);
@@ -330,7 +342,7 @@ function TasksSection({ view, readOnly, onReload }: { view: ClientView; readOnly
   const flush = useCallback(async () => {
     if (busy.current || !pending.current) return;
     busy.current = true;
-    const s = clientSession.get();
+    const s = clientSession.get(sessionKey);
     while (pending.current) {
       const next = pending.current;
       pending.current = null;
@@ -348,7 +360,7 @@ function TasksSection({ view, readOnly, onReload }: { view: ClientView; readOnly
     }
     busy.current = false;
     setTimeout(() => setSave((x) => (x === "saved" ? "idle" : x)), 1800);
-  }, [onReload]);
+  }, [onReload, sessionKey]);
 
   return (
     <section className="sec" id="tasks">

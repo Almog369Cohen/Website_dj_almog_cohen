@@ -7,7 +7,7 @@ import type { Doc, EventPlan, Lead, PlanPayment, PortalSection, Supplier, Timeli
 import { DOC_STATUS, DOC_TYPES, PORTAL_SECTIONS, SUPPLIER_CATEGORIES } from "@/lib/types";
 import { copyText, nis, relDay, shortDate, uid } from "@/lib/format";
 import { AFTER_STEPS, CHECKS, byTime, daysUntil, planOf, readiness, timelineTemplate, timelineText, type PlanView } from "@/lib/events";
-import { CLIENT_STEP_LABELS, DEFAULT_CLIENT_STEPS, DEFAULT_SECTIONS, allocatePlan, newPortalCode, newPortalToken, portalPath } from "@/lib/portal";
+import { CLIENT_STEP_LABELS, DEFAULT_CLIENT_STEPS, DEFAULT_SECTIONS, allocatePlan, clientPath, newPortalCode, newPortalToken, portalPath } from "@/lib/portal";
 import { fillTemplate, waLink } from "@/lib/whatsapp";
 import { TASKS_LOG_PREFIX, lateTasks, parseTasks, partnersOf, starterTasks } from "@/lib/tasks";
 import { TaskList } from "@/components/TaskList";
@@ -514,10 +514,10 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
   const ver = Number(v.plan.portal_code_ver) || 0;
   const enabled = !!v.plan.portal_enabled && !!token;
   const url = token ? base + portalPath(token) : ""; // תצוגה מקדימה לצוות בלבד
-  const loginUrl = base + "/e";
+  const clientUrl = token ? base + clientPath(token) : ""; // הקישור האישי של הזוג
   const sections = { ...DEFAULT_SECTIONS, ...parse<Partial<Record<PortalSection, boolean>>>(v.plan.portal_sections, {}) };
   const steps = parse<string[]>(v.plan.client_steps, DEFAULT_CLIENT_STEPS);
-  const msg = `היי ${l.name} 🥂\nזה הדף של האירוע שלכם, כל מה שחשוב במקום אחד: הלו״ז, המשימות שלכם, התשלומים ואנשי הקשר.\n${loginUrl}\nנכנסים עם מספר הטלפון הזה והקוד: ${code}`;
+  const msg = `היי ${l.name} 🥂\nזה הדף של האירוע שלכם, כל מה שחשוב במקום אחד: הלו״ז, המשימות שלכם, התשלומים ואנשי הקשר.\n${clientUrl}\nהקוד האישי שלכם: ${code}`;
   const [frame, setFrame] = useState(0);
   const refresh = () => setTimeout(() => setFrame((x) => x + 1), 600);
 
@@ -533,7 +533,7 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
         {!enabled || !code ? (
           <>
             <p className="muted" style={{ fontSize: 14, lineHeight: 1.6, marginBottom: 12 }}>
-              דף אישי לאירוע, מהטלפון. הזוג נכנס עם מספר הטלפון שלו וקוד שאתם שולחים. הוא רואה לו״ז, תשלומים, ספקים ואיש קשר, ועורך רק את המשימות שלו. בלי עלויות, רווח או הערות פנימיות.
+              דף אישי לאירוע, מהטלפון. הזוג מקבל קישור אישי וקוד בן 6 ספרות. הוא רואה לו״ז, תשלומים, ספקים ואיש קשר, ועורך רק את המשימות שלו. בלי עלויות, רווח או הערות פנימיות.
             </p>
             <button
               className="btn pri"
@@ -547,19 +547,14 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
           <>
             <div className="codebox">
               <div>
-                <small>כתובת (אותה לכל הלקוחות)</small>
-                <b dir="ltr">{loginUrl.replace(/^https?:\/\//, "")}</b>
-              </div>
-              <div>
-                <small>טלפון</small>
-                <b dir="ltr">{l.phone || "—"}</b>
+                <small>קישור אישי</small>
+                <b dir="ltr">{clientUrl.replace(/^https?:\/\//, "")}</b>
               </div>
               <div>
                 <small>קוד כניסה</small>
                 <b dir="ltr" className="code">{code}</b>
               </div>
             </div>
-            {!l.phone && <div className="banner err" style={{ marginTop: 10 }}>אין טלפון בכרטיס הלקוח, ולכן הזוג לא יוכל להיכנס. מוסיפים טלפון בכרטיס הלקוח.</div>}
             <div className="row" style={{ marginTop: 12, flexWrap: "wrap" }}>
               <a className="btn wa" href={waLink(l.phone, msg)} target="_blank" rel="noreferrer">
                 💬 שליחה ל{l.name}
@@ -592,8 +587,8 @@ function PortalTab({ l, v, savePlan }: { l: Lead; v: PlanView; savePlan: (p: Par
                 className="btn sm danger ml"
                 disabled={busy}
                 onClick={() =>
-                  confirm("מי שנכנס עם הקוד הנוכחי ינותק מיד. להנפיק קוד חדש?") &&
-                  access({ portal_code: newPortalCode(), portal_code_ver: ver + 1, portal_token: newPortalToken() }).then(() => (toast("נוצר קוד חדש. צריך לשלוח אותו לזוג"), refresh()))
+                  confirm("מי שנכנס ינותק מיד, והקישור הישן יפסיק לעבוד. להנפיק קישור וקוד חדשים?") &&
+                  access({ portal_code: newPortalCode(), portal_code_ver: ver + 1, portal_token: newPortalToken() }).then(() => (toast("נוצרו קישור וקוד חדשים. צריך לשלוח אותם לזוג"), refresh()))
                 }
               >
                 קוד חדש

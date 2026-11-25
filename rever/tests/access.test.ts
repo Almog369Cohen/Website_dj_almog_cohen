@@ -183,23 +183,33 @@ async function main() {
   // ---- הזוג: כניסה בטלפון + קוד, צפייה, ושמירת משימות ----
   const T = (id: string, title: string, extra: Record<string, unknown> = {}) => ({ id, title, owner: "both", category: "guests", status: "todo", done: false, section: "before", order: 0, ...extra });
   let session = "";
-  await ok("כניסת הזוג: טלפון + קוד נכונים בלבד; 5 טעויות נועלות", async () => {
+  const TOKA = "tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+  await ok("כניסת הזוג: קישור אישי + קוד נכונים בלבד, בלי טלפון; 5 טעויות נועלות", async () => {
     const { portalLogin } = await import("../src/lib/server/access");
     tables.leads[0].status = "won"; tables.leads[0].phone = "050-1234567"; tables.leads[0].assigned_to = "gal";
     tables.members.find((m) => m.id === "gal")!.phone = "050-1112222";
-    tables.event_plans = [{ id: "L1", portal_token: "tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", portal_enabled: true, portal_code: "482913", portal_code_ver: 0, client_tasks_rev: 0, internal_notes: "סודי" }];
-    await denied(portalLogin("0501234567", "111111"));
-    session = (await portalLogin("+972-50-123-4567", "482913")).session;
+    tables.event_plans = [{ id: "L1", portal_token: TOKA, portal_enabled: true, portal_code: "482913", portal_code_ver: 0, client_tasks_rev: 0, internal_notes: "סודי" }];
+    await denied(portalLogin(TOKA, "111111"));
+    await denied(portalLogin("0501234567", "482913")); // טלפון במקום קישור: לא נכנס
+    await denied(portalLogin("tok_zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", "482913")); // קישור לא קיים
+    await denied(portalLogin(TOKA, "48291")); // קוד קצר
+    session = (await portalLogin(" " + TOKA + " ", "482913")).session;
     assert.ok(session.length > 20);
-    for (let i = 0; i < 5; i++) await denied(portalLogin("0501234567", "000000"));
-    await denied(portalLogin("0501234567", "482913")); // נעול, גם עם הקוד הנכון (ובלי לגלות שזה טלפון של לקוח)
+    assert.equal(tables.event_plans[0].portal_fails, 0); // כניסה נכונה מאפסת
+    for (let i = 0; i < 5; i++) await denied(portalLogin(TOKA, "000000"));
+    await assert.rejects(portalLogin(TOKA, "482913"), /יותר מדי ניסיונות/); // נעול, גם עם הקוד הנכון
     // במקביל: 30 ניסיונות בבת אחת לא עוקפים את הנעילה
     tables.event_plans[0].portal_locked_until = null; tables.event_plans[0].portal_fails = 0;
-    const burst = await Promise.allSettled(Array.from({ length: 30 }, () => portalLogin("0501234567", "000000")));
+    const burst = await Promise.allSettled(Array.from({ length: 30 }, () => portalLogin(TOKA, "000000")));
     assert.ok(burst.every((r) => r.status === "rejected"));
     assert.ok(tables.event_plans[0].portal_locked_until, "חייב להינעל");
-    tables.event_plans[0].portal_locked_until = null;
-    await denied(portalLogin("0509999999", "482913")); // טלפון אחר
+    tables.event_plans[0].portal_locked_until = null; tables.event_plans[0].portal_fails = 0;
+    // הדף כבוי / ליד שלא נסגר: הקישור לא פעיל
+    tables.event_plans[0].portal_enabled = false;
+    await assert.rejects(portalLogin(TOKA, "482913"), /הקישור לא פעיל/);
+    tables.event_plans[0].portal_enabled = true; tables.leads[0].status = "talk";
+    await assert.rejects(portalLogin(TOKA, "482913"), /הקישור לא פעיל/);
+    tables.leads[0].status = "won";
   });
   await ok("צפייה: רק עם אסימון תקף; נרשמת פעם אחת; טלפון המטפל; בלי הערות פנימיות", async () => {
     const { portalView } = await import("../src/lib/server/access");
@@ -256,7 +266,7 @@ async function main() {
   await ok("שמירת משימות במקביל: אחד נשמר, השני מקבל התנגשות (לא נבלע בשקט)", async () => {
     const { portalTasksSave, staffTasksSave, Conflict } = await import("../src/lib/server/access");
     tables.event_plans[0].portal_code = "482913"; tables.event_plans[0].portal_code_ver = 0; tables.event_plans[0].portal_enabled = true;
-    const s2 = (await (await import("../src/lib/server/access")).portalLogin("0501234567", "482913")).session;
+    const s2 = (await (await import("../src/lib/server/access")).portalLogin(String(tables.event_plans[0].portal_token), "482913")).session;
     const rev = Number(tables.event_plans[0].client_tasks_rev);
     const r = await Promise.allSettled([portalTasksSave(s2, { tasks: [T("z1", "זוג")], rev }), staffTasksSave(pub("gal"), "L1", { tasks: [T("z2", "צוות")], rev })]);
     assert.equal(r.filter((x) => x.status === "fulfilled").length, 1);
@@ -279,13 +289,16 @@ async function main() {
     await writeRow(pub("gal"), "event_plans", { ...tables.event_plans[0], portal_enabled: false });
     assert.equal(tables.event_plans[0].portal_enabled, true);
   });
-  await ok("לקוח עם שני אירועים לא ננעל מכניסות תקינות", async () => {
+  await ok("שני אירועים: קוד של אירוע אחד לא פותח את השני, והנעילה היא לכל אירוע בנפרד", async () => {
     const { portalLogin } = await import("../src/lib/server/access");
+    const T1 = String(tables.event_plans[0].portal_token), T2 = "tok_cccccccccccccccccccccccccccccc";
     tables.leads.push({ ...tables.leads[0], id: "L2", name: "אירוע שני" });
-    tables.event_plans.push({ id: "L2", portal_enabled: true, portal_code: "121212", portal_code_ver: 0 });
+    tables.event_plans.push({ id: "L2", portal_token: T2, portal_enabled: true, portal_code: "121212", portal_code_ver: 0 });
     Object.assign(tables.event_plans[0], { portal_code: "343434", portal_code_ver: 9, portal_fails: 0, portal_locked_until: null, portal_enabled: true });
-    for (let i = 0; i < 7; i++) assert.ok((await portalLogin("0501234567", "343434")).session);
-    assert.ok((await portalLogin("0501234567", "121212")).session);
+    for (let i = 0; i < 7; i++) assert.ok((await portalLogin(T1, "343434")).session);
+    await denied(portalLogin(T1, "121212")); // הקוד של האירוע השני
+    for (let i = 0; i < 5; i++) await denied(portalLogin(T2, "000000"));
+    assert.ok((await portalLogin(T1, "343434")).session); // האירוע הראשון לא ננעל
     tables.leads.pop(); tables.event_plans.pop();
   });
   await ok("אסימון לקוח לא עובר כאסימון עובד, ולהפך (גם עם קידומת)", async () => {

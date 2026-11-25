@@ -17,11 +17,18 @@ export async function GET(req: Request) {
   }
 }
 
-/** הזוג: כניסה (טלפון + קוד), צפייה, ושמירת המשימות שלהם. אין שום כתיבה אחרת. */
+/** הזוג: כניסה (קישור אישי + קוד), צפייה, ושמירת המשימות שלהם. אין שום כתיבה אחרת. */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    if (body?.action === "login") return NextResponse.json(await portalLogin(body.phone, body.code), { headers: H });
+    if (body?.action === "login") {
+      try {
+        return NextResponse.json(await portalLogin(body.token, body.code), { headers: H });
+      } catch (e) {
+        if (e instanceof Forbidden) return NextResponse.json({ error: e.message, code: "bad" }, { status: 403, headers: H }); // שגיאת כניסה היא לא "נדרשת כניסה מחדש"
+        throw e;
+      }
+    }
     if (body?.action === "view") {
       const view = await portalView(body.session);
       if (!view) return NextResponse.json({ error: NOT_ACTIVE, code: "auth" }, { status: 401, headers: H });

@@ -138,14 +138,19 @@ export function newPortalToken() {
   return btoa(String.fromCharCode(...b)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
+/** תצוגה מקדימה לצוות (רק לעובד מחובר) */
 export const portalPath = (token: string) => `/e?t=${encodeURIComponent(token)}`;
+/** הקישור האישי של הזוג: פותח את מסך הקוד של האירוע שלהם */
+export const clientPath = (token: string) => `/e?k=${encodeURIComponent(token)}`;
 
-/* ───────── כניסת הזוג: טלפון + קוד ───────── */
+/* ───────── כניסת הזוג: קישור אישי + קוד ───────── */
 
 export const CLIENT_SESSION_DAYS = 90;
 export const CLIENT_MAX_TRIES = 5;
 export const CLIENT_LOCK_MIN = 15;
-export const CLIENT_LOGIN_ERROR = "טלפון או קוד שגויים. אחרי 5 ניסיונות הכניסה ננעלת לרבע שעה";
+export const CLIENT_LOGIN_ERROR = "הקוד שגוי. אחרי 5 ניסיונות הכניסה ננעלת לרבע שעה";
+export const CLIENT_LOCKED_ERROR = "יותר מדי ניסיונות. אפשר לנסות שוב בעוד רבע שעה, או לבקש מאיתנו קוד חדש";
+export const CLIENT_LINK_INACTIVE = "הקישור לא פעיל. בקשו מאיתנו קישור חדש";
 
 /** 050-123-4567 / +972501234567 → 0501234567 */
 export const normPhone = (p: unknown) => {
@@ -160,14 +165,19 @@ export function newPortalCode() {
   return String(100000 + (b[0] % 900000));
 }
 
-/** מוצא את האירוע לפי טלפון + קוד (לקוח עם שני אירועים: הקוד מכריע) */
-export function findByLogin(leads: Lead[], plans: EventPlan[], phone: string, code: string) {
-  const p = normPhone(phone);
-  const mine = plans.filter((pl) => {
-    const l = leads.find((x) => x.id === pl.id);
-    return l && l.status === "won" && pl.portal_enabled && normPhone(l.phone) === p;
-  });
-  return { candidates: mine, match: mine.find((pl) => pl.portal_code && String(pl.portal_code) === String(code).trim()) ?? null };
+/** בדיקה ראשונית של מה שהזוג שלח (לפני שניגשים למסד) */
+export function checkLoginInput(token: unknown, code: unknown): { token: string; code: string } {
+  const t = String(token ?? "").trim(), c = String(code ?? "").trim();
+  if (t.length < 20) throw new Error(CLIENT_LINK_INACTIVE);
+  if (!/^\d{6}$/.test(c)) throw new Error(CLIENT_LOGIN_ERROR);
+  return { token: t, code: c };
+}
+
+/** האירוע לפי הקישור האישי: רק כשהדף פעיל והליד נסגר */
+export function findByToken(leads: Pick<Lead, "id" | "status">[], plans: EventPlan[], token: string) {
+  const plan = plans.find((p) => p.portal_token && p.portal_token === token);
+  const lead = plan && leads.find((l) => l.id === plan.id);
+  return plan && plan.portal_enabled && lead && lead.status === "won" ? plan : null;
 }
 
 /* ───────── שמירת משימות מהלקוח (אותה לוגיקה בשרת ובדמו) ───────── */

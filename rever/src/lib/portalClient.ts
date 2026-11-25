@@ -1,5 +1,5 @@
 "use client";
-import { applyClientTasks, clientView, forStaffPreview, findByLogin, mergeTasksLog, normPhone, CLIENT_LOGIN_ERROR, TasksConflict, type ClientView } from "./portal";
+import { applyClientTasks, checkLoginInput, clientView, forStaffPreview, findByToken, mergeTasksLog, CLIENT_LOGIN_ERROR, CLIENT_LINK_INACTIVE, TasksConflict, type ClientView } from "./portal";
 import { TASKS_LOG_PREFIX } from "./tasks";
 import { markLocalSeen, portalSheetsCall, readLocalDB, sheetsCall, sheetsUrl, supabase, writeLocalDB } from "./repo";
 import { memberCan } from "./types";
@@ -16,20 +16,36 @@ export class PortalError extends Error {
   }
 }
 
-const SESSION_KEY = "rever-client-session";
-export const clientSession = {
-  get: () => {
+/**
+ * הכניסה נשמרת לפי הקישור האישי (מכשיר אחד יכול להחזיק שני אירועים, למשל חתונה וחינה).
+ * "/e" בלי קישור פותח את האירוע האחרון שנכנסו אליו מהמכשיר הזה.
+ */
+const SESSION_KEY = "rever-client-session:";
+const LAST_KEY = "rever-client-last";
+const ls = {
+  get: (k: string) => {
     try {
-      return localStorage.getItem(SESSION_KEY);
+      return localStorage.getItem(k);
     } catch {
       return null;
     }
   },
-  set: (v: string | null) => {
+  set: (k: string, v: string | null) => {
     try {
-      if (v) localStorage.setItem(SESSION_KEY, v);
-      else localStorage.removeItem(SESSION_KEY);
+      if (v) localStorage.setItem(k, v);
+      else localStorage.removeItem(k);
     } catch {}
+  },
+};
+export const clientSession = {
+  /** הקישור שאיתו עובדים: מהכתובת, ואם אין, האחרון שנכנסו איתו */
+  key: (fromUrl: string) => fromUrl || ls.get(LAST_KEY) || "",
+  get: (key: string) => (key ? ls.get(SESSION_KEY + key) : null),
+  set: (key: string, v: string | null) => {
+    if (!key) return;
+    ls.set(SESSION_KEY + key, v);
+    if (v) ls.set(LAST_KEY, key);
+    else if (ls.get(LAST_KEY) === key) ls.set(LAST_KEY, null);
   },
 };
 
@@ -64,13 +80,20 @@ function demoPlan(session: string) {
   return { db, plan, lead };
 }
 
-export async function login(phone: string, code: string): Promise<string> {
-  if (supabase()) return (await api<{ session: string }>({ action: "login", phone, code })).session;
-  if (sheetsUrl()) return (await sheets<{ session: string }>("portal_login", { phone, code })).session;
+export async function login(token: string, code: string): Promise<string> {
+  if (supabase()) return (await api<{ session: string }>({ action: "login", token, code })).session;
+  if (sheetsUrl()) return (await sheets<{ session: string }>("portal_login", { portal_token: token, code })).session;
+  let c: string;
+  try {
+    c = checkLoginInput(token, code).code;
+  } catch (e) {
+    throw new PortalError((e as Error).message, "bad");
+  }
   const db = readLocalDB();
-  const { match } = findByLogin(db?.leads ?? [], db?.event_plans ?? [], normPhone(phone), code);
-  if (!match) throw new PortalError(CLIENT_LOGIN_ERROR, "bad");
-  return demoSession(match.id, Number(match.portal_code_ver) || 0);
+  const plan = findByToken(db?.leads ?? [], db?.event_plans ?? [], token.trim());
+  if (!plan) throw new PortalError(CLIENT_LINK_INACTIVE, "bad");
+  if (String(plan.portal_code ?? "") !== c) throw new PortalError(CLIENT_LOGIN_ERROR, "bad");
+  return demoSession(plan.id, Number(plan.portal_code_ver) || 0);
 }
 
 export async function view(session: string): Promise<ClientView> {

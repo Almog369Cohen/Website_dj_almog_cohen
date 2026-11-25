@@ -118,7 +118,7 @@ function handle_(req) {
   if (a === "setup_first") return setupFirst_(req.name, req.pin);
   if (a === "login") return login_(req.staff_id, req.pin);
   // ---- הזוג (בלי קוד עובד): כניסה, צפייה, שמירת המשימות שלהם בלבד ----
-  if (a === "portal_login") return portalLogin_(req.phone, req.code);
+  if (a === "portal_login") return portalLogin_(req.portal_token, req.code);
   if (a === "portal_view") return portalView_(req.session);
   if (a === "portal_tasks") return portalTasks_(req.session, req);
   var me = auth_(req.token);
@@ -332,7 +332,11 @@ var DEFAULT_CLIENT_STEPS = ["contract", "deposit", "meeting", "suppliers", "time
 var DOC_LABELS = { quote: "הצעת מחיר", invoice: "חשבונית מס", receipt: "קבלה" };
 var SUP_CATS = { venue: ["אולם / מקום", "🏛️"], catering: ["קייטרינג", "🍽️"], design: ["עיצוב ופרחים", "💐"], photo: ["צילום", "📸"], dj: ["DJ", "🎧"], light: ["תאורה והגברה", "💡"], attraction: ["אטרקציות", "🎉"], other: ["אחר", "🤝"] };
 
-var CLIENT_DAYS = 90, CLIENT_MAX_TRIES = 5, CLIENT_LOCK_MIN = 15, CLIENT_LOGIN_ERROR = "טלפון או קוד שגויים. אחרי 5 ניסיונות הכניסה ננעלת לרבע שעה";
+var CLIENT_DAYS = 90, CLIENT_MAX_TRIES = 5, CLIENT_LOCK_MIN = 15;
+// חייב להתאים ל-src/lib/portal.ts
+var CLIENT_LOGIN_ERROR = "הקוד שגוי. אחרי 5 ניסיונות הכניסה ננעלת לרבע שעה";
+var CLIENT_LOCKED_ERROR = "יותר מדי ניסיונות. אפשר לנסות שוב בעוד רבע שעה, או לבקש מאיתנו קוד חדש";
+var CLIENT_LINK_INACTIVE = "הקישור לא פעיל. בקשו מאיתנו קישור חדש";
 
 function makeClientToken_(pid, ver) {
   var payload = Utilities.base64EncodeWebSafe(JSON.stringify({ typ: "client", pid: pid, v: ver, exp: Date.now() + CLIENT_DAYS * 86400000 }));
@@ -347,7 +351,6 @@ function verifyClientToken_(t) {
     return o.typ === "client" && typeof o.pid === "string" && o.exp > Date.now() ? { pid: o.pid, v: Number(o.v) || 0 } : null;
   } catch (x) { return null; }
 }
-function normPhone_(p) { var d = String(p == null ? "" : p).replace(/\D/g, ""); return d.indexOf("972") === 0 ? "0" + d.slice(3) : d; }
 
 /** האירוע של הזוג לפי האסימון ("קוד חדש" מנתק אסימונים ישנים) */
 function planBySession_(session) {
@@ -361,30 +364,25 @@ function planBySession_(session) {
 }
 function viewOf_(lead, plan) { return clientView_(lead, plan, readTable_("payments"), readTable_("docs"), readTable_("settings"), readTable_("members")); }
 
-function portalLogin_(phone, code) {
-  var p = normPhone_(phone), c = String(code == null ? "" : code).trim();
-  if (p.length < 9 || !/^\d{6}$/.test(c)) throw err_(CLIENT_LOGIN_ERROR);
+/** הזוג נכנס מהקישור האישי שלו + קוד. 5 טעויות נועלות את האירוע לרבע שעה */
+function portalLogin_(token, code) {
+  var t = String(token == null ? "" : token).trim(), c = String(code == null ? "" : code).trim();
+  if (t.length < 20) throw err_(CLIENT_LINK_INACTIVE);
+  if (!/^\d{6}$/.test(c)) throw err_(CLIENT_LOGIN_ERROR);
   return withLock_(function () {
-    var leads = readTable_("leads"), now = Date.now(), candidates = [], match = null;
-    readTable_("event_plans").forEach(function (pl) {
-      var l = leads.filter(function (x) { return x.id === pl.id; })[0];
-      if (l && l.status === "won" && pl.portal_enabled && normPhone_(l.phone) === p) {
-        candidates.push(pl);
-        if (!match && pl.portal_code && String(pl.portal_code) === c) match = pl;
-      }
-    });
-    // נעול = אותה הודעה כמו קוד שגוי (לא מגלים שזה טלפון של לקוח)
-    if (candidates.some(function (pl) { return pl.portal_locked_until && new Date(pl.portal_locked_until).getTime() > now; })) throw err_(CLIENT_LOGIN_ERROR);
-    if (!match) {
-      candidates.forEach(function (pl) {
-        var fails = (Number(pl.portal_fails) || 0) + 1, lock = fails >= CLIENT_MAX_TRIES;
-        pl.portal_fails = lock ? 0 : fails; pl.portal_locked_until = lock ? new Date(now + CLIENT_LOCK_MIN * 60000).toISOString() : "";
-        writeRow_("event_plans", pl);
-      });
+    var plan = null, now = Date.now();
+    readTable_("event_plans").forEach(function (p) { if (p.portal_token && p.portal_token === t) plan = p; });
+    var lead = plan && findRow_("leads", plan.id);
+    if (!plan || !plan.portal_enabled || !lead || lead.status !== "won") throw err_(CLIENT_LINK_INACTIVE);
+    if (plan.portal_locked_until && new Date(plan.portal_locked_until).getTime() > now) throw err_(CLIENT_LOCKED_ERROR);
+    if (!plan.portal_code || String(plan.portal_code) !== c) {
+      var fails = (Number(plan.portal_fails) || 0) + 1, lock = fails >= CLIENT_MAX_TRIES;
+      plan.portal_fails = lock ? 0 : fails; plan.portal_locked_until = lock ? new Date(now + CLIENT_LOCK_MIN * 60000).toISOString() : "";
+      writeRow_("event_plans", plan);
       throw err_(CLIENT_LOGIN_ERROR);
     }
-    match.portal_fails = 0; match.portal_locked_until = ""; writeRow_("event_plans", match);
-    return { session: makeClientToken_(match.id, Number(match.portal_code_ver) || 0) };
+    plan.portal_fails = 0; plan.portal_locked_until = ""; writeRow_("event_plans", plan);
+    return { session: makeClientToken_(plan.id, Number(plan.portal_code_ver) || 0) };
   });
 }
 

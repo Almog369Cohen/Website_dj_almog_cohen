@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { allocatePlan, clientView, newPortalCode, newPortalToken, normPhone } from "../src/lib/portal";
+import { allocatePlan, clientPath, clientView, newPortalCode, newPortalToken, normPhone, CLIENT_LINK_INACTIVE, CLIENT_LOCKED_ERROR, CLIENT_LOGIN_ERROR, CLIENT_LOCK_MIN, CLIENT_MAX_TRIES } from "../src/lib/portal";
 import { partnersOf, sanitizeTasks, starterTasks, suggestions, whenText } from "../src/lib/tasks";
 import type { DB, EventPlan, Lead } from "../src/lib/types";
 
@@ -135,6 +135,13 @@ ok("ולידציית משימות זהה ב-TS וב-Apps Script (כולל הוד
     try { gs = gsCtx.sanitizeTasks_(c); } catch (e) { gs = { error: (e as Error).message }; }
     assert.deepEqual(J(gs), J(ts), "שונה: " + JSON.stringify(c).slice(0, 80));
   }
+});
+ok("כניסת הזוג: אותן הודעות ואותם גבולות בשני השרתים; הקישור האישי לא חושף מידע", () => {
+  const g = gsCtx as unknown as Record<string, unknown>;
+  assert.deepEqual([g.CLIENT_LOGIN_ERROR, g.CLIENT_LOCKED_ERROR, g.CLIENT_LINK_INACTIVE, g.CLIENT_MAX_TRIES, g.CLIENT_LOCK_MIN], [CLIENT_LOGIN_ERROR, CLIENT_LOCKED_ERROR, CLIENT_LINK_INACTIVE, CLIENT_MAX_TRIES, CLIENT_LOCK_MIN]);
+  const tok = newPortalToken();
+  assert.equal(clientPath(tok), "/e?k=" + tok);
+  assert.ok(!clientPath(tok).includes("482913"));
 });
 ok("שמות בני הזוג, טלפון, קוד, רשימה מוכנה והצעות", () => {
   assert.deepEqual(partnersOf({ name: "דנה ויובל" }, {}), { a: "דנה", b: "יובל" });

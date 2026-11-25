@@ -183,13 +183,16 @@ ok("כרטיס אירוע: עלויות ספקים מוסתרות ממי שאי�
 });
 const TOK = "tok_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 let session = "";
-ok("כניסת הזוג: רק כשהליד נסגר והדף פעיל, עם טלפון + קוד נכונים; תצוגה מקדימה לא רושמת צפייה", () => {
+ok("כניסת הזוג: רק כשהליד נסגר והדף פעיל, עם קישור אישי + קוד נכונים, בלי טלפון; תצוגה מקדימה לא רושמת צפייה", () => {
   call({ action: "upsert", token: gal, table: "leads", row: { ...ctx.readTable_("leads")[0], status: "won" } });
   call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], portal_token: TOK, portal_enabled: false, portal_code: "482913", portal_code_ver: 1, payment_plan: JSON.stringify([{ id: "a", name: "מקדמה", amount: 5000 }]), internal_notes: "סודי" } });
-  assert.match(call({ action: "portal_login", phone: "0500000001", code: "482913" }).error, /שגויים/);
+  assert.match(call({ action: "portal_login", portal_token: TOK, code: "482913" }).error, /הקישור לא פעיל/);
   call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], portal_enabled: true, portal_code_ver: 2 } });
-  assert.match(call({ action: "portal_login", phone: "0500000001", code: "111111" }).error, /שגויים/);
-  session = call({ action: "portal_login", phone: "+972 50-000-0001", code: "482913" }).session;
+  assert.match(call({ action: "portal_login", portal_token: TOK, code: "111111" }).error, /הקוד שגוי/);
+  assert.match(call({ action: "portal_login", phone: "0500000001", code: "482913" }).error, /הקישור לא פעיל/); // טלפון לא מספיק
+  assert.match(call({ action: "portal_login", portal_token: "tok_zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", code: "482913" }).error, /הקישור לא פעיל/);
+  session = call({ action: "portal_login", portal_token: TOK, code: "482913" }).session;
+  assert.equal(ctx.readTable_("event_plans")[0].portal_fails, 0);
   assert.ok(session && session.length > 20);
   const pv = call({ action: "portal_preview", token: gal, portal_token: TOK });
   assert.ok(pv.view && pv.view.event.name === "דנה ויובל");
@@ -203,11 +206,21 @@ ok("כניסת הזוג: רק כשהליד נסגר והדף פעיל, עם טל
   assert.equal(call({ action: "portal_view", session: gal }).code, "auth"); // אסימון עובד לא נכנס כלקוח
   assert.equal(call({ action: "load", token: session }).code, "auth"); // אסימון לקוח לא נכנס כעובד
 });
-ok("5 טעויות קוד לאותו טלפון נועלות ל-15 דקות", () => {
-  for (let i = 0; i < 5; i++) call({ action: "portal_login", phone: "0500000001", code: "000000" });
-  assert.match(call({ action: "portal_login", phone: "0500000001", code: "482913" }).error, /שגויים/); // נעול, גם עם הקוד הנכון
+ok("5 טעויות קוד לאותו קישור נועלות ל-15 דקות", () => {
+  for (let i = 0; i < 5; i++) call({ action: "portal_login", portal_token: TOK, code: "000000" });
+  assert.match(call({ action: "portal_login", portal_token: TOK, code: "482913" }).error, /יותר מדי ניסיונות/); // נעול, גם עם הקוד הנכון
   const p = ctx.readTable_("event_plans")[0];
   p.portal_locked_until = ""; ctx.writeRow_("event_plans", p);
+});
+ok("שני אירועים: קוד של אירוע אחד לא פותח את השני, והנעילה היא לכל אירוע בנפרד", () => {
+  const T2 = "tok_cccccccccccccccccccccccccccccc";
+  ctx.writeRow_("leads", { ...ctx.readTable_("leads")[0], id: "L9", name: "אירוע שני" });
+  ctx.writeRow_("event_plans", { id: "L9", portal_token: T2, portal_enabled: true, portal_code: "121212", portal_code_ver: 0 });
+  assert.match(call({ action: "portal_login", portal_token: TOK, code: "121212" }).error, /הקוד שגוי/);
+  for (let i = 0; i < 5; i++) call({ action: "portal_login", portal_token: T2, code: "000000" });
+  assert.match(call({ action: "portal_login", portal_token: T2, code: "121212" }).error, /יותר מדי ניסיונות/);
+  assert.ok(call({ action: "portal_login", portal_token: TOK, code: "482913" }).session); // הראשון לא ננעל
+  ctx.deleteRow_("event_plans", "L9"); ctx.deleteRow_("leads", "L9");
 });
 ok("עובד בלי הרשאת קישור ללקוח לא רואה קישור/קוד ולא יכול לשנות; בלי מחירים לא רואה תוכנית תשלומים", () => {
   const arad = call({ action: "login", staff_id: "arad", pin: "3333" }).token;

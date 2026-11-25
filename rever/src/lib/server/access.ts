@@ -250,36 +250,39 @@ async function casPlan(id: unknown, field: string, expected: unknown, patch: Rec
 }
 
 /**
- * הזוג נכנס עם טלפון + קוד. כל ניסיון "נשמר בתור" באופן אטומי לפני שבודקים את הקוד,
+ * הזוג נכנס מהקישור האישי שלו + קוד. כל ניסיון "נשמר בתור" באופן אטומי לפני שבודקים את הקוד,
  * כך שגם אלף בקשות במקביל מקבלות לכל היותר 5 בדיקות קוד לפני נעילה של 15 דקות.
  */
-export async function portalLogin(phone: unknown, code: unknown) {
-  const { findByLogin, normPhone, CLIENT_LOGIN_ERROR, CLIENT_MAX_TRIES, CLIENT_LOCK_MIN } = await import("../portal");
-  const p = normPhone(phone), c = String(code ?? "").trim();
-  if (p.length < 9 || !/^\d{6}$/.test(c)) throw new Forbidden(CLIENT_LOGIN_ERROR);
-  const db = adminDb();
-  const [{ data: leads }, { data: plans }] = await Promise.all([db.from("leads").select("id,phone,status"), db.from("event_plans").select("*")]);
-  const { candidates, match } = findByLogin((leads ?? []) as never, (plans ?? []) as never, p, c);
-  for (const pl of candidates) {
-    let reserved = false;
-    for (let i = 0; i < 10 && !reserved; i++) {
-      const { data: cur } = await db.from("event_plans").select("portal_fails,portal_locked_until").eq("id", pl.id).maybeSingle();
-      const now = Date.now();
-      const until = cur?.portal_locked_until ? +new Date(String(cur.portal_locked_until)) : 0;
-      if (until > now) throw new Forbidden(CLIENT_LOGIN_ERROR);
-      const fails = (until ? 0 : Number(cur?.portal_fails) || 0) + 1; // נעילה שפגה = מתחילים מאפס
-      const lock = fails >= CLIENT_MAX_TRIES;
-      reserved = await casPlan(pl.id, "portal_fails", cur?.portal_fails ?? null, {
-        portal_fails: fails,
-        portal_locked_until: lock ? new Date(now + CLIENT_LOCK_MIN * 60000).toISOString() : null,
-      });
-    }
-    if (!reserved) throw new Forbidden(CLIENT_LOGIN_ERROR);
+export async function portalLogin(token: unknown, code: unknown) {
+  const { checkLoginInput, findByToken, CLIENT_LOGIN_ERROR, CLIENT_LOCKED_ERROR, CLIENT_LINK_INACTIVE, CLIENT_MAX_TRIES, CLIENT_LOCK_MIN } = await import("../portal");
+  let t: string, c: string;
+  try {
+    ({ token: t, code: c } = checkLoginInput(token, code));
+  } catch (e) {
+    throw new Forbidden((e as Error).message);
   }
-  if (!match) throw new Forbidden(CLIENT_LOGIN_ERROR);
-  // כניסה נכונה מאפסת את המונה בכל האירועים של הטלפון הזה (לקוח עם שני אירועים לא יינעל מכניסות תקינות)
-  for (const pl of candidates) await db.from("event_plans").update({ portal_fails: 0, portal_locked_until: null }).eq("id", pl.id);
-  return { session: makeClientSession(match.id, Number(match.portal_code_ver) || 0) };
+  const db = adminDb();
+  const { data: row } = await db.from("event_plans").select("*").eq("portal_token", t).maybeSingle();
+  const { data: lead } = row ? await db.from("leads").select("id,status").eq("id", row.id).maybeSingle() : { data: null };
+  const plan = row && findByToken(lead ? [lead as never] : [], [stripNulls(row) as never], t);
+  if (!plan) throw new Forbidden(CLIENT_LINK_INACTIVE);
+  let reserved = false;
+  for (let i = 0; i < 10 && !reserved; i++) {
+    const { data: cur } = await db.from("event_plans").select("portal_fails,portal_locked_until").eq("id", plan.id).maybeSingle();
+    const now = Date.now();
+    const until = cur?.portal_locked_until ? +new Date(String(cur.portal_locked_until)) : 0;
+    if (until > now) throw new Forbidden(CLIENT_LOCKED_ERROR);
+    const fails = (until ? 0 : Number(cur?.portal_fails) || 0) + 1; // נעילה שפגה = מתחילים מאפס
+    const lock = fails >= CLIENT_MAX_TRIES;
+    reserved = await casPlan(plan.id, "portal_fails", cur?.portal_fails ?? null, {
+      portal_fails: fails,
+      portal_locked_until: lock ? new Date(now + CLIENT_LOCK_MIN * 60000).toISOString() : null,
+    });
+  }
+  if (!reserved) throw new Forbidden(CLIENT_LOGIN_ERROR);
+  if (!plan.portal_code || String(plan.portal_code) !== c) throw new Forbidden(CLIENT_LOGIN_ERROR);
+  await db.from("event_plans").update({ portal_fails: 0, portal_locked_until: null }).eq("id", plan.id);
+  return { session: makeClientSession(plan.id, Number(plan.portal_code_ver) || 0) };
 }
 
 /** הדף של הזוג (אחרי כניסה). רושם צפייה. */
