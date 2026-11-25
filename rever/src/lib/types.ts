@@ -190,7 +190,7 @@ export interface EventPlan {
   payment_plan?: string; // JSON: PlanPayment[]
   contract_status?: "none" | "sent" | "signed";
   internal_notes?: string; // הלקוח לא רואה
-  // ---- כניסת הזוג (טלפון + קוד) ----
+  // ---- כניסת הזוג (קישור אישי + קוד) ----
   portal_code?: string; // 6 ספרות. רק מי שיש לו הרשאת "קישור ללקוח" רואה
   portal_code_ver?: number; // עולה בכל "קוד חדש" ומנתק כניסות ישנות
   portal_fails?: number; // שרת בלבד

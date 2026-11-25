@@ -201,6 +201,13 @@ ok("כניסת הזוג: רק כשהליד נסגר והדף פעיל, עם קי
   assert.ok(ctx.readTable_("event_plans")[0].portal_seen_at);
   const flat = JSON.stringify(v);
   assert.ok(!flat.includes("סודי") && !flat.includes("8000") && !flat.includes("cost") && !flat.includes("482913"));
+  // דליפה: טלפון ועלות ספק, ושדה זר שנשמר במשימה, לא מגיעים ללקוח
+  const p0 = ctx.readTable_("event_plans")[0], keep = { suppliers: p0.suppliers, client_tasks: p0.client_tasks };
+  ctx.writeRow_("event_plans", { ...p0, suppliers: JSON.stringify([{ id: "s1", name: "דני", phone: "054-9998877", cost: 8000, category: "dj", show_client: true }]), client_tasks: JSON.stringify([{ id: "k9", title: "טבעות", owner: "both", category: "rings", status: "todo", done: false, section: "before", order: 0, staff_note: "סודי-משימה" }]) });
+  const lv = JSON.stringify(call({ action: "portal_view", session }).view);
+  assert.ok(lv.includes("דני") && lv.includes("טבעות"));
+  for (const secret of ["054-9998877", "8000", "staff_note", "סודי-משימה"]) assert.ok(!lv.includes(secret), "דלף: " + secret);
+  ctx.writeRow_("event_plans", { ...ctx.readTable_("event_plans")[0], ...keep });
   assert.equal(call({ action: "portal_view", portal_token: TOK }).code, "auth"); // הקישור הסודי לא מספיק לכניסה
   assert.equal(call({ action: "portal_view", session: session.slice(0, -2) + "xx" }).code, "auth");
   assert.equal(call({ action: "portal_view", session: gal }).code, "auth"); // אסימון עובד לא נכנס כלקוח

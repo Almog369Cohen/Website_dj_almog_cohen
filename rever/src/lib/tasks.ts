@@ -195,6 +195,35 @@ export const parseTasks = (s?: string): ClientTask[] => {
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 const YMD = /^\d{4}-\d{2}-\d{2}$/;
 
+/**
+ * המשימות כפי שהן נשלחות ללקוח: רק השדות הידועים, גם אם נשמר משהו נוסף בשורה.
+ * לא זורק שגיאה (קריאה, לא כתיבה): שורה לא תקינה פשוט לא נשלחת.
+ * חייב להתאים ל-apps-script/Code.gs: viewTasks_
+ */
+export function viewTasks(s?: string): ClientTask[] {
+  const out: ClientTask[] = [];
+  parseTasks(s).forEach((raw, i) => {
+    const r = (raw && typeof raw === "object" ? raw : {}) as unknown as Record<string, unknown>;
+    const id = str(r.id, TASK_LIMITS.id), title = str(r.title, TASK_LIMITS.title);
+    if (!id || !title) return;
+    const start = str(r.start, 10), note = str(r.note, TASK_LIMITS.note), order = Number(r.order);
+    const t: ClientTask = {
+      id,
+      title,
+      owner: OWNERS.includes(r.owner as TaskOwner) ? (r.owner as TaskOwner) : "none",
+      category: TASK_CATEGORIES.some((c) => c.id === r.category) ? (r.category as string) : "other",
+      status: STATUSES.some((x) => x.id === r.status) ? (r.status as TaskStatus) : "todo",
+      done: r.done === true,
+      section: r.section === "after" ? "after" : "before",
+      order: Number.isFinite(order) ? Math.round(order) : i,
+    };
+    if (start && YMD.test(start)) t.start = start;
+    if (note) t.note = note;
+    out.push(t);
+  });
+  return out.slice(0, TASK_LIMITS.count);
+}
+
 /** מחזיר רשימה נקייה או זורק שגיאה. כל שדה שלא ברשימה נזרק. */
 export function sanitizeTasks(input: unknown): ClientTask[] {
   if (!Array.isArray(input)) throw new Error("רשימה לא תקינה");

@@ -219,6 +219,16 @@ async function main() {
     assert.equal(tables.activities.length, before + 1);
     assert.equal(v!.contact.phone, "050-1112222");
     assert.ok(!JSON.stringify(v).includes("סודי") && !JSON.stringify(v).includes("482913"));
+    // דליפה: טלפון ועלות ספק, ושדה זר שנשמר במשימה, לא מגיעים ללקוח
+    const keep = { suppliers: tables.event_plans[0].suppliers, client_tasks: tables.event_plans[0].client_tasks };
+    Object.assign(tables.event_plans[0], {
+      suppliers: JSON.stringify([{ id: "s1", name: "דני", phone: "054-9998877", cost: 8000, category: "dj", show_client: true }]),
+      client_tasks: JSON.stringify([{ ...T("k9", "טבעות"), staff_note: "סודי-משימה" }]),
+    });
+    const lv = JSON.stringify(await portalView(session));
+    assert.ok(lv.includes("דני") && lv.includes("טבעות"));
+    for (const secret of ["054-9998877", "8000", "staff_note", "סודי-משימה"]) assert.ok(!lv.includes(secret), "דלף: " + secret);
+    Object.assign(tables.event_plans[0], keep);
     assert.equal(await portalView("tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), null); // הקישור הסודי לא מספיק
     assert.equal(await portalView(session.slice(0, -2) + "xx"), null); // חתימה מזויפת
     const { makeSession } = await import("../src/lib/server/session");

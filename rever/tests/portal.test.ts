@@ -54,8 +54,32 @@ ok("לא נשלחים: עלויות ספקים, רווח, הערות פנימי�
 ok("לו\"ז: רק שורות שמוצגות ללקוח, ממוין, בלי 'מי אחראי'", () => {
   assert.deepEqual(view.timeline, [{ time: "19:30", title: "קבלת פנים" }, { time: "21:00", title: "חופה" }]);
 });
-ok("ספקים: רק מי שסומן להציג, בלי מחיר", () => {
-  assert.deepEqual(view.suppliers, [{ category: "DJ", icon: "🎧", name: "די ג'יי", phone: "050" }]);
+ok("ספקים: רק מי שסומן להציג, בלי מחיר ובלי טלפון", () => {
+  assert.deepEqual(view.suppliers, [{ category: "DJ", icon: "🎧", name: "די ג'יי" }]);
+  assert.ok(!JSON.stringify(view.suppliers).includes("phone"));
+});
+ok("דליפה: שדות לא מוכרים במשימות ובהצעות שנסגרו לא נשלחים ללקוח, בשני השרתים", () => {
+  const ctx: Record<string, unknown> = {};
+  vm.createContext(ctx);
+  vm.runInContext(readFileSync(new URL("../apps-script/Code.gs", import.meta.url), "utf8"), ctx);
+  const dirty = {
+    ...plan,
+    client_tasks: JSON.stringify([
+      { id: "t1", title: "טבעות", owner: "both", category: "rings", status: "todo", done: false, section: "before", order: 0, staff_note: "סודי-משימה", cost: 4321 },
+      { id: "t2", title: "x", owner: "hacker", status: "weird", section: "zzz", start: "לא-תאריך", category: "nope" },
+      { id: "", title: "בלי מזהה" },
+      "לא אובייקט",
+    ]),
+    dismissed_suggestions: JSON.stringify(["s-bus", "<script>", { internal: "סודי-הצעה" }]),
+  };
+  const ts = clientView({ lead, plan: dirty, db });
+  const gs = (ctx.clientView_ as (...a: unknown[]) => unknown)(lead, dirty, db.payments, db.docs, db.settings, db.members);
+  const J = (x: unknown) => JSON.parse(JSON.stringify(x));
+  assert.deepEqual(J(gs), J(ts));
+  const f = JSON.stringify(ts);
+  for (const secret of ["סודי-משימה", "staff_note", "4321", "hacker", "weird", "לא-תאריך", "<script>", "סודי-הצעה", "בלי מזהה"]) assert.ok(!f.includes(secret), "דלף: " + secret);
+  assert.deepEqual(ts.tasks!.list.map((t) => [t.id, t.owner, t.status, t.section, t.category]), [["t1", "both", "todo", "before", "rings"], ["t2", "none", "todo", "before", "other"]]);
+  assert.deepEqual(ts.tasks!.dismissed, ["s-bus"]);
 });
 ok("תשלומים: סה\"כ, שולם, יתרה, ותוכנית לפי הסדר", () => {
   assert.equal(view.payments!.total, 30000);

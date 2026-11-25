@@ -220,12 +220,6 @@ function Portal() {
                 <div key={i} className="sup">
                   <span className="si">{s.icon}</span>
                   <div><b>{s.name}</b><span>{s.category}</span></div>
-                  {s.phone && (
-                    <div className="acts">
-                      <a className="cb" href={`tel:${s.phone}`} aria-label="שיחה">📞</a>
-                      <a className="cb wa" href={`https://wa.me/${cleanPhone(s.phone)}`} target="_blank" rel="noreferrer" aria-label="וואטסאפ">💬</a>
-                    </div>
-                  )}
                 </div>
               ))}
             </section>

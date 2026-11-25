@@ -2,7 +2,7 @@ import type { DB, EventPlan, Lead, PlanPayment, PortalSection, Supplier, Timelin
 import { SUPPLIER_CATEGORIES } from "./types";
 import { CHECKS, byTime } from "./events";
 import { moneyOf } from "./money";
-import { TASKS_LOG_PREFIX, describeChange, parseTasks, partnersOf, sanitizeDismissed, sanitizeTasks, type ClientTask } from "./tasks";
+import { TASKS_LOG_PREFIX, describeChange, parseTasks, partnersOf, sanitizeDismissed, sanitizeTasks, viewTasks, type ClientTask } from "./tasks";
 
 /**
  * הקישור ללקוח: מה הלקוח מקבל.
@@ -38,7 +38,7 @@ export interface ClientView {
     items: { service: string; supplier?: string; price: number }[];
     plan: { name: string; amount: number; due?: string; paid: boolean }[];
   };
-  suppliers?: { category: string; icon: string; name: string; phone?: string }[];
+  suppliers?: { category: string; icon: string; name: string }[];
   details?: { venue?: string; arrival?: string; guests?: number; day_contact?: string; requests?: string };
   contact: { name: string; phone?: string };
   tasks?: { list: ClientTask[]; rev: number; partners: { a: string; b: string }; dismissed: string[] };
@@ -87,10 +87,10 @@ export function clientView(input: { lead: Lead; plan: EventPlan; db: Pick<DB, "p
   }
   if (sections.tasks) {
     view.tasks = {
-      list: parseTasks(plan.client_tasks),
+      list: viewTasks(plan.client_tasks), // רק שדות ידועים, גם אם נשמר משהו נוסף
       rev: Number(plan.client_tasks_rev) || 0,
       partners: partnersOf(lead, plan),
-      dismissed: parse<string[]>(plan.dismissed_suggestions, []),
+      dismissed: sanitizeDismissed(parse<unknown>(plan.dismissed_suggestions, [])),
     };
   }
   if (sections.timeline) {
@@ -115,7 +115,8 @@ export function clientView(input: { lead: Lead; plan: EventPlan; db: Pick<DB, "p
       .filter((s) => s.show_client && s.name)
       .map((s) => {
         const c = SUPPLIER_CATEGORIES.find((x) => x.id === s.category);
-        return { category: c?.label || s.role || "", icon: c?.icon || "🤝", name: s.name, phone: s.phone || undefined };
+        // בלי טלפון ובלי מחיר: הלקוח לא פונה לספקים ישירות
+        return { category: c?.label || s.role || "", icon: c?.icon || "🤝", name: s.name };
       });
   }
   if (sections.details) {

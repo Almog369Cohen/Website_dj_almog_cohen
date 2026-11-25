@@ -448,6 +448,22 @@ function sanitizeTasks_(input) {
     return t;
   });
 }
+/** המשימות כפי שהן נשלחות ללקוח: רק שדות ידועים, בלי לזרוק (חייב להתאים ל-viewTasks ב-src/lib/tasks.ts) */
+function viewTasks_(s) {
+  var list = parse_(s, []), out = [];
+  if (!Array.isArray(list)) return out;
+  list.forEach(function (raw, i) {
+    var r = raw && typeof raw === "object" ? raw : {};
+    var id = str_(r.id, TASK_LIMITS.id), title = str_(r.title, TASK_LIMITS.title);
+    if (!id || !title) return;
+    var start = str_(r.start, 10), note = str_(r.note, TASK_LIMITS.note), order = Number(r.order);
+    var t = { id: id, title: title, owner: TASK_OWNERS.indexOf(r.owner) >= 0 ? r.owner : "none", category: TASK_CATS.indexOf(r.category) >= 0 ? r.category : "other", status: TASK_STATUSES.indexOf(r.status) >= 0 ? r.status : "todo", done: r.done === true, section: r.section === "after" ? "after" : "before", order: isFinite(order) ? Math.round(order) : i };
+    if (start && /^\d{4}-\d{2}-\d{2}$/.test(start)) t.start = start;
+    if (note) t.note = note;
+    out.push(t);
+  });
+  return out.slice(0, TASK_LIMITS.count);
+}
 function sanitizeDismissed_(input) {
   if (!Array.isArray(input)) return [];
   var out = [];
@@ -527,8 +543,7 @@ function clientView_(lead, plan, payments, docs, settingsRows, members) {
       .map(function (id) { return { label: CLIENT_STEP_LABELS[id], done: !!checklist[id] }; });
   }
   if (sections.tasks) {
-    var list = parse_(plan.client_tasks, []);
-    view.tasks = { list: Array.isArray(list) ? list : [], rev: Number(plan.client_tasks_rev) || 0, partners: partners_(lead, plan), dismissed: parse_(plan.dismissed_suggestions, []) };
+    view.tasks = { list: viewTasks_(plan.client_tasks), rev: Number(plan.client_tasks_rev) || 0, partners: partners_(lead, plan), dismissed: sanitizeDismissed_(parse_(plan.dismissed_suggestions, [])) };
   }
   if (sections.timeline) {
     view.timeline = parse_(plan.timeline, []).filter(function (t) { return t.show_client !== false && t.title; })
@@ -551,7 +566,7 @@ function clientView_(lead, plan, payments, docs, settingsRows, members) {
   if (sections.suppliers) {
     view.suppliers = parse_(plan.suppliers, []).filter(function (x) { return x.show_client && x.name; }).map(function (x) {
       var c = SUP_CATS[x.category];
-      return { category: (c && c[0]) || x.role || "", icon: (c && c[1]) || "🤝", name: x.name, phone: x.phone || undefined };
+      return { category: (c && c[0]) || x.role || "", icon: (c && c[1]) || "🤝", name: x.name }; // בלי טלפון ובלי מחיר
     });
   }
   if (sections.details) {
