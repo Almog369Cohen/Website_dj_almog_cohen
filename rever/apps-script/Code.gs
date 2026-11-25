@@ -124,7 +124,7 @@ function handle_(req) {
   var me = auth_(req.token);
   if (a === "me") return { me: publicMember_(me) };
   if (a === "load") return { db: loadAll_(me), sheet_url: me.role === "admin" ? SpreadsheetApp.getActive().getUrl() : null };
-  if (a === "upsert") return withLock_(function () { upsert_(me, req.table, req.row); return { ok: true }; });
+  if (a === "upsert") return withLock_(function () { upsert_(me, req.table, req.row, req.base); return { ok: true }; });
   if (a === "remove") return withLock_(function () { remove_(me, req.table, req.id); return { ok: true }; });
   if (a === "set_pin") return withLock_(function () { setPin_(me, req.staff_id, req.pin); return { ok: true }; });
   if (a === "portal_preview") { var pv = portalPreview_(req.portal_token); if (!(can_(me, "prices") && can_(me, "finance"))) { delete pv.view.payments; pv.view.sections.payments = false; } return pv; } // תצוגה מקדימה: רק עובד מחובר
@@ -255,7 +255,11 @@ function loadAll_(me) {
   return out;
 }
 
-function upsert_(me, table, input) {
+/** שמירה בלי דריסה (חייב להתאים ל-src/lib/merge.ts): השדות שלא השתנו מול מה שהמסך טען נשארים כמו בגיליון */
+function normVal_(v) { return v === undefined || v === null || v === "" ? null : typeof v === "object" ? JSON.stringify(v) : String(v); }
+function changedKeys_(row, base) { return Object.keys(row).filter(function (k) { return k !== "id" && normVal_(row[k]) !== normVal_(base[k]); }); }
+
+function upsert_(me, table, input, base) {
   if (!TABLES[table]) throw err_("טבלה לא קיימת");
   if (!input || typeof input.id !== "string" || !input.id) throw err_("חסר מזהה");
   if (FINANCE[table] && !can_(me, "finance")) throw err_("אין הרשאת כספים");
@@ -264,6 +268,10 @@ function upsert_(me, table, input) {
   var row = {};
   TABLES[table][1].forEach(function (c) { var k = c[0]; if (!PRIVATE_MEMBER[k]) row[k] = input[k] === undefined ? "" : input[k]; });
   var prev = findRow_(table, input.id);
+  if (prev && base && typeof base === "object") {
+    var changed = changedKeys_(row, base);
+    Object.keys(row).forEach(function (k) { if (k !== "id" && changed.indexOf(k) < 0) row[k] = prev[k] === undefined ? "" : prev[k]; });
+  }
   if (table === "leads" && !can_(me, "prices")) { row.price = prev ? prev.price : ""; row.money_items = prev ? prev.money_items : ""; row.money_plan = prev ? prev.money_plan : ""; }
   else if (table === "leads" && !can_(me, "finance")) row.money_plan = keepPaid_(row.money_plan, prev && prev.money_plan); // רישום "שולם" רק עם הרשאת כספים
   if (table === "settings" && prev && !("make_webhook_url" in input)) row.make_webhook_url = prev.make_webhook_url;

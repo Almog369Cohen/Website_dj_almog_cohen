@@ -297,6 +297,25 @@ ok("צ'קליסט: כל עובד שומר פרטים (תאריך יעד, הער�
   assert.ok(sheets["אירועים"].rows[0].includes("פרטי צקליסט"));
   assert.equal(call({ action: "load", token: arad }).db.event_plans[0].check_meta, meta);
 });
+ok("שמירה במקביל: שני עובדים משנים שדות שונים מאותה גרסה, ושני השינויים נשמרים", () => {
+  const arad = call({ action: "login", staff_id: "arad", pin: "3333" }).token;
+  const basePlan = { ...ctx.readTable_("event_plans")[0], requests: "ישן", internal_notes: "ישן" };
+  ctx.writeRow_("event_plans", basePlan);
+  assert.ok(call({ action: "upsert", token: arad, table: "event_plans", row: { ...basePlan, requests: "בלי עשן" }, base: basePlan }).ok);
+  assert.ok(call({ action: "upsert", token: gal, table: "event_plans", row: { ...basePlan, internal_notes: "לתאם דרך הכלה" }, base: basePlan }).ok);
+  const p = ctx.readTable_("event_plans")[0];
+  assert.equal(p.requests, "בלי עשן"); assert.equal(p.internal_notes, "לתאם דרך הכלה");
+  const baseLead = { ...ctx.readTable_("leads")[0], venue: "ישן", guests: 100 };
+  ctx.writeRow_("leads", baseLead);
+  const seen = call({ action: "load", token: arad }).db.leads.find((l) => l.id === baseLead.id); // ארד בלי מחירים
+  call({ action: "upsert", token: gal, table: "leads", row: { ...baseLead, venue: "אולם הגן" }, base: baseLead });
+  call({ action: "upsert", token: arad, table: "leads", row: { ...seen, guests: 400 }, base: seen });
+  const l = ctx.readTable_("leads").find((x) => x.id === baseLead.id);
+  assert.equal(l.venue, "אולם הגן"); assert.equal(l.guests, 400); assert.equal(l.price, baseLead.price);
+  // שורה חדשה עם בסיס: נשמרת במלואה
+  call({ action: "upsert", token: gal, table: "calendar_items", row: { id: "C9", kind: "meeting", title: "פגישה", start: "2027-01-01T10:00" }, base: { id: "C9" } });
+  assert.equal(ctx.readTable_("calendar_items").find((c) => c.id === "C9").title, "פגישה");
+});
 ok("שדות דיג'יי ישנים (שירים, רגעים, ציוד) לא נשמרים, ועמודות ישנות נמחקות מהגיליון", () => {
   call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], must_songs: "x", equipment: "{}" } });
   const r = ctx.readTable_("event_plans")[0];

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
 import { allocatePlan, clientPath, clientView, newPortalCode, newPortalToken, normPhone, CLIENT_LINK_INACTIVE, CLIENT_LOCKED_ERROR, CLIENT_LOGIN_ERROR, CLIENT_LOCK_MIN, CLIENT_MAX_TRIES } from "../src/lib/portal";
+import { changedKeys } from "../src/lib/merge";
 import { partnersOf, sanitizeTasks, starterTasks, suggestions, whenText } from "../src/lib/tasks";
 import type { DB, EventPlan, Lead } from "../src/lib/types";
 
@@ -142,6 +143,12 @@ ok("כניסת הזוג: אותן הודעות ואותם גבולות בשני 
   const tok = newPortalToken();
   assert.equal(clientPath(tok), "/e?k=" + tok);
   assert.ok(!clientPath(tok).includes("482913"));
+});
+ok("שמירה בלי דריסה: 'מה השתנה' זהה ב-TS וב-Apps Script", () => {
+  const base = { id: "x", a: "1", b: null, c: "", d: 5, e: true, f: '{"k":1}', g: "same" };
+  const row = { id: "y", a: "2", b: "", c: undefined, d: "5", e: false, f: '{"k":2}', g: "same", h: "new" };
+  assert.deepEqual(changedKeys(row, base), ["a", "e", "f", "h"]);
+  assert.deepEqual(J(gsCtx.changedKeys_(row, base)), changedKeys(row, base));
 });
 ok("שמות בני הזוג, טלפון, קוד, רשימה מוכנה והצעות", () => {
   assert.deepEqual(partnersOf({ name: "דנה ויובל" }, {}), { a: "דנה", b: "יובל" });

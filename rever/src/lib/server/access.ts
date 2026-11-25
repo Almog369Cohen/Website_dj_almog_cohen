@@ -124,14 +124,26 @@ export async function readAll(me: Member): Promise<DB> {
 
 export class Forbidden extends Error {}
 
-/** כתיבה: בדיקת הרשאה לפי טבלה + סינון עמודות. */
-export async function writeRow(me: Member, table: Table, input: Record<string, unknown>) {
+/**
+ * כתיבה: בדיקת הרשאה לפי טבלה + סינון עמודות.
+ * base = השורה כפי שהמסך טען אותה. כשהוא נשלח, נכתבים רק השדות שהשתנו מולו (שמירות במקביל לא דורסות זו את זו).
+ */
+export async function writeRow(me: Member, table: Table, input: Record<string, unknown>, base?: Record<string, unknown> | null) {
   const db = adminDb();
   if (typeof input?.id !== "string" || !input.id) throw new Error("חסר id");
   const row: Record<string, unknown> = {};
   for (const c of COLUMNS[table]) if (c in input) row[c] = input[c] === undefined ? null : input[c];
   // שדות שנשלחו כ"לא קיימים" (undefined → נמחקו ב-JSON) צריכים להתאפס
   for (const c of COLUMNS[table]) if (!(c in input) && c !== "id") row[c] = null;
+  let only: Set<string> | null = null; // השדות שנכתבים (null = כל השורה)
+  if (base && typeof base === "object") {
+    const { data: cur } = await db.from(table).select("*").eq("id", row.id).maybeSingle();
+    if (cur) {
+      const { changedKeys } = await import("../merge");
+      only = new Set(changedKeys(row, base));
+      for (const k of Object.keys(row)) if (k !== "id" && !only.has(k)) row[k] = cur[k] ?? null; // השאר: הערך העדכני מהמסד
+    }
+  }
 
   if (FINANCE.includes(table) && !memberCan(me, "finance")) throw new Forbidden("אין הרשאת כספים");
   if (table === "templates" && !memberCan(me, "templates")) throw new Forbidden("אין הרשאה לערוך תבניות");
@@ -162,10 +174,19 @@ export async function writeRow(me: Member, table: Table, input: Record<string, u
   }
   if (table === "event_plans") for (const k of GUARDED) delete row[k]; // נשמר הערך הקיים
   if (resetLock) Object.assign(row, { portal_fails: 0, portal_locked_until: null });
+  if (resetLock && only) only.add("portal_fails").add("portal_locked_until");
   if (table === "members") {
     if (row.id === me.id && (row.role !== "admin" || row.active === false)) throw new Forbidden("אי אפשר להוריד לעצמך הרשאת מאסטר");
     for (const k of ["can_prices", "can_finance", "can_delete", "can_templates", "can_portal", "active"]) row[k] = !!row[k];
     if (!["admin", "team"].includes(row.role as string)) row.role = "team";
+  }
+  if (only) {
+    // רק מה שהשתנה (אחרי כל הבדיקות למעלה, שיכולות להחזיר שדה לערך הקיים)
+    const patch = Object.fromEntries([...only].filter((k) => k in row).map((k) => [k, row[k]]));
+    if (!Object.keys(patch).length) return;
+    const { error } = await db.from(table).update(patch).eq("id", row.id);
+    if (error) throw new Error(error.message);
+    return;
   }
   const { error } = await db.from(table).upsert(row);
   if (error) throw new Error(error.message);
