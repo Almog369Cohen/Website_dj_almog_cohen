@@ -101,12 +101,15 @@ export function clientView(input: { lead: Lead; plan: EventPlan; db: Pick<DB, "p
   }
   if (sections.payments) {
     // מכרטיס הלקוח: הסכומים שרבר מציגים + תוכנית התשלומים. בלי "איך שולם" ובלי הערות.
+    // הסה"כ והיתרה רק מהשורות הגלויות: אחרת ההפרש חושף את הסכום של שורה מוסתרת
     const m = moneyOf(lead);
+    const items = m.items.filter((i) => i.show_client !== false && i.service).map((i) => ({ service: i.service, supplier: i.supplier || undefined, price: Number(i.price) || 0 }));
+    const total = m.items.length ? items.reduce((s, i) => s + i.price, 0) : Number(lead.price) || 0; // בלי שורות בכלל: מחיר הליד
     view.payments = {
-      total: m.total,
+      total,
       paid: m.paid,
-      balance: m.remaining,
-      items: m.items.filter((i) => i.show_client !== false && i.service).map((i) => ({ service: i.service, supplier: i.supplier || undefined, price: Number(i.price) || 0 })),
+      balance: Math.max(0, total - m.paid),
+      items,
       plan: m.plan.map((p) => ({ name: p.name, amount: Number(p.amount) || 0, due: p.due || undefined, paid: !!p.paid })),
     };
   }

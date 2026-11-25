@@ -229,6 +229,17 @@ async function main() {
     assert.ok(lv.includes("דני") && lv.includes("טבעות"));
     for (const secret of ["054-9998877", "8000", "staff_note", "סודי-משימה"]) assert.ok(!lv.includes(secret), "דלף: " + secret);
     Object.assign(tables.event_plans[0], keep);
+    // דליפה: סה"כ ונותר רק מהשורות הגלויות (שורה מוסתרת לא ניתנת לחישוב מההפרש)
+    const keepLead = { money_items: tables.leads[0].money_items, money_plan: tables.leads[0].money_plan };
+    Object.assign(tables.leads[0], {
+      money_items: JSON.stringify([{ id: "a", service: "אולם", price: 20000 }, { id: "b", service: "צילום", price: 9500 }, { id: "h", service: "עמלה", price: 2000, show_client: false }]),
+      money_plan: JSON.stringify([{ id: "p1", name: "מקדמה", amount: 5000, paid: { date: "2026-01-01", amount: 5000, method: "bit" } }]),
+    });
+    const mv = (await portalView(session))!;
+    assert.equal(mv.payments!.total, 29500);
+    assert.equal(mv.payments!.balance, 24500);
+    assert.ok(!JSON.stringify(mv).includes("31500") && !JSON.stringify(mv).includes("עמלה") && !JSON.stringify(mv).includes("26500"));
+    Object.assign(tables.leads[0], keepLead);
     assert.equal(await portalView("tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), null); // הקישור הסודי לא מספיק
     assert.equal(await portalView(session.slice(0, -2) + "xx"), null); // חתימה מזויפת
     const { makeSession } = await import("../src/lib/server/session");

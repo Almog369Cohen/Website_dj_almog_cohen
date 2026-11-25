@@ -82,13 +82,38 @@ ok("דליפה: שדות לא מוכרים במשימות ובהצעות שנס�
   assert.deepEqual(ts.tasks!.dismissed, ["s-bus"]);
 });
 ok("תשלומים: סה\"כ, שולם, יתרה, ותוכנית לפי הסדר", () => {
-  assert.equal(view.payments!.total, 30000);
+  assert.equal(view.payments!.total, 27500); // רק השורות הגלויות (20000 + 7500), בלי השורה המוסתרת של 2500
   assert.equal(view.payments!.paid, 15000);
-  assert.equal(view.payments!.balance, 15000);
+  assert.equal(view.payments!.balance, 12500);
   assert.deepEqual(view.payments!.plan.map((p) => p.paid), [true, true, false]);
   assert.deepEqual(view.payments!.items.map((i) => i.service), ["אולם", "צילום"]); // שורה מוסתרת לא נשלחת
   const pf = JSON.stringify(view.payments);
   assert.ok(!pf.includes("אסמכתא") && !pf.includes("transfer") && !pf.includes("method") && !pf.includes("פנימי-מוסתר"));
+});
+ok("דליפה: סה\"כ ונותר מחושבים רק מהשורות הגלויות, בשני השרתים (אי אפשר לחשב שורה מוסתרת מההפרש)", () => {
+  const ctx: Record<string, unknown> = {};
+  vm.createContext(ctx);
+  vm.runInContext(readFileSync(new URL("../apps-script/Code.gs", import.meta.url), "utf8"), ctx);
+  const J = (x: unknown) => JSON.parse(JSON.stringify(x));
+  const gs = (l: Lead) => J((ctx.clientView_ as (...a: unknown[]) => unknown)(l, plan, db.payments, db.docs, db.settings, db.members)) as ReturnType<typeof clientView>;
+  const items = (arr: unknown[]) => ({ ...lead, money_items: JSON.stringify(arr) }) as Lead;
+  const cases: [Lead, number][] = [
+    [items([{ id: "a", service: "אולם", price: 20000 }, { id: "b", service: "צילום", price: 9500 }, { id: "h", service: "עמלה", price: 1777, show_client: false }]), 29500],
+    [items([{ id: "h1", service: "עמלה", price: 1777, show_client: false }, { id: "h2", service: "פנימי", price: 3333, show_client: false }]), 0], // הכל מוסתר: לא חוזרים למחיר הליד
+    [items([]), 30000], // אין שורות בכלל: מחיר הליד
+  ];
+  for (const [l, total] of cases) {
+    for (const v of [clientView({ lead: l, plan, db }), gs(l)]) {
+      const p = v.payments!;
+      assert.equal(p.total, total);
+      assert.equal(p.total, p.items.length ? p.items.reduce((s, i) => s + i.price, 0) : total);
+      assert.equal(p.balance, Math.max(0, total - 15000));
+      const f = JSON.stringify(v);
+      for (const secret of ["1777", "3333", "5110", "עמלה", "פנימי"]) assert.ok(!f.includes(secret), "דלף: " + secret);
+      if (total === 0) assert.ok(!JSON.stringify(p).includes("30000") && !JSON.stringify(p).includes("31777"));
+    }
+    assert.deepEqual(gs(l).payments, J(clientView({ lead: l, plan, db }).payments));
+  }
 });
 ok("סטטוס: רק השלבים שנבחרו ללקוח, ואיש הקשר בשם פרטי", () => {
   assert.deepEqual(view.steps!.map((s) => s.done), [true, true, true, false, false]);

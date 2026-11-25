@@ -555,11 +555,13 @@ function clientView_(lead, plan, payments, docs, settingsRows, members) {
     var items = parse_(lead.money_items, []), mplan = parse_(lead.money_plan, []);
     if (!Array.isArray(items)) items = [];
     if (!Array.isArray(mplan)) mplan = [];
-    var total = items.length ? items.reduce(function (a, i) { return a + (Number(i.price) || 0); }, 0) : Number(lead.price) || 0;
+    // הסה"כ והיתרה רק מהשורות הגלויות (חייב להתאים ל-clientView ב-src/lib/portal.ts)
+    var visible = items.filter(function (i) { return i.show_client !== false && i.service; }).map(function (i) { return { service: i.service, supplier: i.supplier || undefined, price: Number(i.price) || 0 }; });
+    var total = items.length ? visible.reduce(function (a, i) { return a + i.price; }, 0) : Number(lead.price) || 0;
     var paid = mplan.reduce(function (a, p) { return a + (p.paid ? Number(p.paid.amount) || 0 : 0); }, 0);
     view.payments = {
       total: total, paid: paid, balance: Math.max(0, total - paid),
-      items: items.filter(function (i) { return i.show_client !== false && i.service; }).map(function (i) { return { service: i.service, supplier: i.supplier || undefined, price: Number(i.price) || 0 }; }),
+      items: visible,
       plan: mplan.map(function (p) { return { name: p.name, amount: Number(p.amount) || 0, due: p.due || undefined, paid: !!p.paid }; })
     };
   }

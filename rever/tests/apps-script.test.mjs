@@ -208,6 +208,14 @@ ok("כניסת הזוג: רק כשהליד נסגר והדף פעיל, עם קי
   assert.ok(lv.includes("דני") && lv.includes("טבעות"));
   for (const secret of ["054-9998877", "8000", "staff_note", "סודי-משימה"]) assert.ok(!lv.includes(secret), "דלף: " + secret);
   ctx.writeRow_("event_plans", { ...ctx.readTable_("event_plans")[0], ...keep });
+  // דליפה: סה"כ ונותר רק מהשורות הגלויות (שורה מוסתרת לא ניתנת לחישוב מההפרש)
+  const l0 = ctx.readTable_("leads")[0], keepLead = { money_items: l0.money_items, money_plan: l0.money_plan };
+  ctx.writeRow_("leads", { ...l0, money_items: JSON.stringify([{ id: "a", service: "אולם", price: 20000 }, { id: "b", service: "צילום", price: 9500 }, { id: "h", service: "עמלה", price: 2000, show_client: false }]), money_plan: JSON.stringify([{ id: "p1", name: "מקדמה", amount: 5000, paid: { date: "2026-01-01", amount: 5000, method: "bit" } }]) });
+  const mv = call({ action: "portal_view", session }).view;
+  assert.equal(mv.payments.total, 29500);
+  assert.equal(mv.payments.balance, 24500);
+  assert.ok(!JSON.stringify(mv).includes("31500") && !JSON.stringify(mv).includes("עמלה") && !JSON.stringify(mv).includes("26500"));
+  ctx.writeRow_("leads", { ...ctx.readTable_("leads")[0], ...keepLead });
   assert.equal(call({ action: "portal_view", portal_token: TOK }).code, "auth"); // הקישור הסודי לא מספיק לכניסה
   assert.equal(call({ action: "portal_view", session: session.slice(0, -2) + "xx" }).code, "auth");
   assert.equal(call({ action: "portal_view", session: gal }).code, "auth"); // אסימון עובד לא נכנס כלקוח
