@@ -176,6 +176,7 @@ export interface EventPlan {
   suppliers?: string; // JSON: Supplier[]
   checklist?: string; // JSON: Record<string, boolean>
   extra_checks?: string; // JSON: string[] (פריטים שהוסיפו)
+  check_meta?: string; // JSON: CheckMetaAll (src/lib/events.ts): שם, תאריך יעד, הערה, לפני/אחרי, סדר. הלקוח לא רואה
   contact_name?: string;
   contact_phone?: string;
   requests?: string; // בקשות מיוחדות

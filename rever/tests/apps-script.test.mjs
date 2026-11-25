@@ -288,6 +288,15 @@ ok("מחירים בלי כספים: לא רואה תוכנית תשלומים ו
   call({ action: "upsert", token: arad, table: "event_plans", row: { ...row, payment_plan: "[]" } });
   assert.match(ctx.readTable_("event_plans")[0].payment_plan, /5000/);
 });
+ok("צ'קליסט: כל עובד שומר פרטים (תאריך יעד, הערה, סדר), נשמרים בעמודה משלהם ונטענים חזרה", () => {
+  const meta = JSON.stringify({ order: ["venue"], items: { venue: { due: "2027-01-01", note: "הערה" } } });
+  const arad = call({ action: "login", staff_id: "arad", pin: "3333" }).token; // עובד בלי הרשאות מיוחדות
+  const res = call({ action: "upsert", token: arad, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], check_meta: meta } });
+  assert.ok(res.ok, JSON.stringify(res));
+  assert.equal(ctx.readTable_("event_plans")[0].check_meta, meta);
+  assert.ok(sheets["אירועים"].rows[0].includes("פרטי צקליסט"));
+  assert.equal(call({ action: "load", token: arad }).db.event_plans[0].check_meta, meta);
+});
 ok("שדות דיג'יי ישנים (שירים, רגעים, ציוד) לא נשמרים, ועמודות ישנות נמחקות מהגיליון", () => {
   call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], must_songs: "x", equipment: "{}" } });
   const r = ctx.readTable_("event_plans")[0];

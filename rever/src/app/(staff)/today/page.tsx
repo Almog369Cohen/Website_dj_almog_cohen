@@ -171,8 +171,8 @@ export default function TodayPage() {
             </Link>
           </h2>
           {todos.map((t, i) => (
-            <button key={t.kind + t.lead.id + i} className="ag" style={{ width: "100%", textAlign: "right" }} onClick={() => router.push(`/events/view?id=${t.lead.id}${t.kind === "couple_task" ? "#tasks" : ""}`)}>
-              <div className="tm" style={{ fontSize: 20 }}>{t.kind === "review" ? "⭐" : t.kind === "payment" ? "💳" : t.kind === "couple_task" ? "📝" : "🗓️"}</div>
+            <button key={t.kind + t.lead.id + i} className="ag" style={{ width: "100%", textAlign: "right" }} onClick={() => router.push(`/events/view?id=${t.lead.id}${t.kind === "couple_task" ? "#tasks" : t.kind === "check_late" ? "#prep" : ""}`)}>
+              <div className="tm" style={{ fontSize: 20 }}>{t.kind === "review" ? "⭐" : t.kind === "payment" ? "💳" : t.kind === "couple_task" ? "📝" : t.kind === "check_late" ? "⏰" : "🗓️"}</div>
               <div className="bar" style={{ background: t.kind === "review" ? "var(--gold)" : t.kind === "payment" ? "var(--red)" : "var(--orange)" }} />
               <div>
                 <b>{t.text}</b>

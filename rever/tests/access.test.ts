@@ -175,6 +175,12 @@ async function main() {
     await writeRow(pub("arad"), "event_plans", { ...d.event_plans[0], payment_plan: "[]" });
     assert.match(String(tables.event_plans[0].payment_plan), /5000/);
   });
+  await ok("צ'קליסט: כל עובד שומר פרטים (תאריך יעד, הערה, סדר) והם נטענים חזרה", async () => {
+    const meta = JSON.stringify({ order: ["venue", "contract"], items: { venue: { due: "2027-01-01", note: "הערה", section: "after" } } });
+    await writeRow(pub("sapir"), "event_plans", { ...tables.event_plans[0], check_meta: meta, extra_checks: "[\"c_1\"]" });
+    assert.equal(tables.event_plans[0].check_meta, meta);
+    assert.equal((await readAll(pub("arad"))).event_plans[0].check_meta, meta);
+  });
   await ok("שדות דיג'יי ישנים (שירים, רגעים, ציוד) נזרקים", async () => {
     await writeRow(pub("gal"), "event_plans", { id: "L1", must_songs: "x", no_songs: "y", moments: "{}", equipment: "{}" });
     const r = tables.event_plans[0];

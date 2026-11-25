@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import type { Doc, EventPlan, Lead, PlanPayment, PortalSection, Supplier, TimelineItem } from "@/lib/types";
 import { DOC_STATUS, DOC_TYPES, PORTAL_SECTIONS, SUPPLIER_CATEGORIES } from "@/lib/types";
 import { copyText, nis, relDay, shortDate, uid } from "@/lib/format";
-import { AFTER_STEPS, CHECKS, byTime, daysUntil, planOf, readiness, timelineTemplate, timelineText, type PlanView } from "@/lib/events";
+import { Checklist } from "@/components/Checklist";
+import { AFTER_STEPS, CHECKS, byTime, daysUntil, planOf, planView, readiness, timelineTemplate, timelineText, type PlanView } from "@/lib/events";
 import { CLIENT_STEP_LABELS, DEFAULT_CLIENT_STEPS, DEFAULT_SECTIONS, allocatePlan, clientPath, newPortalCode, newPortalToken, portalPath } from "@/lib/portal";
 import { fillTemplate, waLink } from "@/lib/whatsapp";
 import { TASKS_LOG_PREFIX, lateTasks, parseTasks, partnersOf, starterTasks } from "@/lib/tasks";
@@ -60,7 +61,15 @@ function EventCard({ l }: { l: Lead }) {
   const v = planOf(db, l);
   const r = readiness(v);
   const days = daysUntil(l.event_date);
-  const savePlan = (patch: Partial<EventPlan>) => save("event_plans", { ...v.plan, ...patch, updated_at: new Date().toISOString() });
+  // הגרסה האחרונה של הכרטיס: שתי שמירות מהירות (למשל תאריך ואז הערה) לא דורסות זו את זו
+  const latest = useRef(v.plan);
+  const synced = useRef(v.plan);
+  if (synced.current !== v.plan) synced.current = latest.current = v.plan;
+  const savePlan = (patch: Partial<EventPlan>) => {
+    latest.current = { ...latest.current, ...patch, updated_at: new Date().toISOString() };
+    return save("event_plans", latest.current);
+  };
+  const fresh = () => planView(latest.current);
 
   const TABS: { id: Tab; label: string; show: boolean }[] = [
     { id: "timeline", label: "🕒 לו״ז", show: true },
@@ -117,7 +126,7 @@ function EventCard({ l }: { l: Lead }) {
 
       {tab === "timeline" && <TimelineTab l={l} v={v} onChange={(t) => savePlan({ timeline: JSON.stringify(t) })} />}
       {tab === "suppliers" && <SuppliersTab v={v} onChange={(s) => savePlan({ suppliers: JSON.stringify(s) })} showCost={can("prices")} />}
-      {tab === "prep" && <PrepTab l={l} v={v} days={days} savePlan={savePlan} />}
+      {tab === "prep" && <PrepTab l={l} v={v} days={days} savePlan={savePlan} fresh={fresh} />}
       {tab === "tasks" && <CoupleTasksTab l={l} v={v} savePlan={savePlan} />}
       {tab === "payments" && can("prices") && <MoneyPanel l={l} />}
       {tab === "portal" && can("portal") && <PortalTab l={l} v={v} savePlan={savePlan} />}
@@ -297,37 +306,12 @@ function SuppliersTab({ v, onChange, showCost }: { v: PlanView; onChange: (s: Su
 }
 
 /* ---------------- הכנה ---------------- */
-function PrepTab({ l, v, days, savePlan }: { l: Lead; v: PlanView; days: number | null; savePlan: (p: Partial<EventPlan>) => void }) {
+function PrepTab({ l, v, days, savePlan, fresh }: { l: Lead; v: PlanView; days: number | null; savePlan: (p: Partial<EventPlan>) => void; fresh: () => PlanView }) {
   const { db, settings } = useStore();
-  const r = readiness(v);
-  const toggle = (k: string) => savePlan({ checklist: JSON.stringify({ ...v.checklist, [k]: !v.checklist[k] }) });
   const contract = v.plan.contract_status ?? "none";
   return (
     <div className="eventgrid">
-      <div className="card">
-        <h2>
-          ✅ צ'קליסט הכנה
-          <span className="r muted" style={{ fontSize: 14, fontWeight: 500 }}>
-            {r.done}/{r.total}
-          </span>
-        </h2>
-        {CHECKS.map((c) => (
-          <label key={c.id} className="check">
-            <input type="checkbox" checked={!!v.checklist[c.id]} onChange={() => toggle(c.id)} />
-            <span>{c.label}</span>
-          </label>
-        ))}
-        {v.extra.map((x) => (
-          <label key={x} className="check">
-            <input type="checkbox" checked={!!v.checklist["x:" + x]} onChange={() => toggle("x:" + x)} />
-            <span>{x}</span>
-            <button className="ml muted" title="הסרה" onClick={(e) => (e.preventDefault(), savePlan({ extra_checks: JSON.stringify(v.extra.filter((y) => y !== x)) }))}>
-              ✕
-            </button>
-          </label>
-        ))}
-        <AddLine placeholder="+ פריט נוסף לרשימה" onAdd={(x) => !v.extra.includes(x) && savePlan({ extra_checks: JSON.stringify([...v.extra, x]) })} />
-      </div>
+      <Checklist v={v} fresh={fresh} savePlan={savePlan} />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div className="card">
@@ -343,7 +327,7 @@ function PrepTab({ l, v, days, savePlan }: { l: Lead; v: PlanView; days: number 
               <button
                 key={k}
                 className={contract === k ? "on" : ""}
-                onClick={() => savePlan({ contract_status: k, ...(k === "signed" ? { checklist: JSON.stringify({ ...v.checklist, contract: true }) } : {}) })}
+                onClick={() => savePlan({ contract_status: k, ...(k === "signed" ? { checklist: JSON.stringify({ ...fresh().checklist, contract: true }) } : {}) })}
               >
                 {label}
               </button>
@@ -661,19 +645,3 @@ function normTime(raw: string) {
   return `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}`;
 }
 
-function AddLine({ placeholder, onAdd }: { placeholder: string; onAdd: (x: string) => void }) {
-  const [x, setX] = useState("");
-  return (
-    <form
-      className="row"
-      style={{ marginTop: 8 }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (x.trim()) onAdd(x.trim());
-        setX("");
-      }}
-    >
-      <input className="search" style={{ minWidth: 0, flex: 1, height: 38 }} placeholder={placeholder} value={x} onChange={(e) => setX(e.target.value)} />
-    </form>
-  );
-}

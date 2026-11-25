@@ -102,6 +102,17 @@ export function demoDB(): DB {
           { id: "s4", category: "light", role: "תאורה והגברה", name: "תאורה והגברה", phone: "050-0000012", cost: 5000, confirmed: false, show_client: false },
         ]),
         checklist: JSON.stringify({ contract: true, deposit: true, meeting: true, suppliers: false, venue: true }),
+        extra_checks: JSON.stringify(["c_demo1", "c_demo2"]),
+        check_meta: JSON.stringify({
+          items: {
+            suppliers: { due: day(-2), note: "התאורה עוד לא אישרה. לחזור אליהם עד סוף השבוע" },
+            timeline: { due: day(10) },
+            venue: { note: "האולם מבקש הגעת ספקים לא לפני 16:00" },
+            "x:c_demo1": { label: "הזמנת שאטלים לאורחים", due: day(7) },
+            invoice: { section: "after" },
+            "x:c_demo2": { label: "החזרת ציוד מהאולם", section: "after", due: day(21) },
+          },
+        }),
         contact_name: "אמא של הכלה",
         contact_phone: "050-0000013",
         requests: "בלי עשן כבד · הפתעה לחתן ברחבה אחרי הריקוד הראשון",

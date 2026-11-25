@@ -346,3 +346,27 @@ pre{max-width:100%;overflow-x:auto}
 .month-row .mv b{display:block;font-size:14.5px;font-variant-numeric:tabular-nums}
 .month-row .mv small{color:var(--muted);font-size:12px}
 @media (max-width:600px){.money3{grid-template-columns:1fr 1fr 1fr;gap:6px}.money3 b{font-size:16px}.money3>div{padding:9px}}
+
+/* צ'קליסט שאפשר לערוך (כרטיס אירוע ← הכנה) */
+.ck-sec+.ck-sec{margin-top:18px}
+.ck-title{font-size:13px;font-weight:700;color:var(--muted);margin:4px 0 2px;letter-spacing:.2px}
+.ck-empty{font-size:13.5px;padding:8px 2px}
+.ck-row{border-bottom:1px solid var(--line2)}
+.ck-line{display:flex;align-items:center;gap:10px;min-height:44px;padding:4px 2px}
+.ck-line input[type=checkbox]{width:18px;height:18px;accent-color:var(--green);flex:none}
+.ck-label{flex:1;min-width:0;display:flex;align-items:center;gap:6px;text-align:right;font-size:15px;padding:6px 0;background:none;border:0;color:inherit;cursor:pointer;font-family:inherit}
+.ck-label span:first-child{overflow-wrap:anywhere}
+.ck-row.done .ck-label span:first-child{color:var(--muted);text-decoration:line-through}
+.ck-note{font-size:13px;flex:none}
+.ck-due{flex:none;font-size:12.5px;font-weight:600;color:var(--muted);background:#f1f2f5;border-radius:8px;padding:3px 8px;font-variant-numeric:tabular-nums}
+.ck-due.late{color:var(--red);background:var(--redbg)}
+.ck-row.done .ck-due{opacity:.55}
+.ck-grip{flex:none;cursor:grab;color:#a3a8b3;font-size:16px;letter-spacing:-2px;padding:8px 6px;touch-action:none;user-select:none}
+.ck-dragging{opacity:.6;background:#fafbfc}
+.ck-edit{display:grid;grid-template-columns:1fr 170px;gap:10px;padding:4px 2px 14px}
+.ck-edit label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted);min-width:0}
+.ck-edit input,.ck-edit textarea{font:inherit;font-size:14.5px;color:var(--text);border:1px solid var(--line2);border-radius:10px;padding:8px 10px;background:#fff;min-width:0}
+.ck-edit textarea{resize:vertical}
+.ck-edit .wide{grid-column:1/-1}
+.ck-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+@media (max-width:600px){.ck-edit{grid-template-columns:1fr}}
