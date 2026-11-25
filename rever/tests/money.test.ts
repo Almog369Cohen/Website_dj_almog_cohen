@@ -1,6 +1,6 @@
 // כספים מכרטיס הלקוח: סה"כ / שולם / נותר, תשלומים שמגיעים, סיכום חודשי, ושמירת "שולם"
 import assert from "node:assert/strict";
-import { byMonth, duePays, keepPaid, moneyOf } from "../src/lib/money";
+import { byMonth, duePays, keepPaid, moneyOf, planRevealsHidden } from "../src/lib/money";
 import type { Lead } from "../src/lib/types";
 
 const L = (p: Partial<Lead> & { id: string }) => ({ name: p.id, phone: "0", event_type: "חתונה", source: "x", status: "won", created_at: "x", ...p }) as Lead;
@@ -33,5 +33,15 @@ ok("בלי הרשאת כספים: אי אפשר לסמן, לבטל או לשנו
   assert.equal(r[0].name, "שונה"); assert.equal(r[0].paid.amount, 10000); // מחיקת "שולם" נדחתה
   assert.equal(r[1].amount, 6000); assert.equal(r[1].paid, undefined); // סימון "שולם" נדחה
   assert.equal(r.length, 3);
+});
+ok("התראה לצוות: תוכנית שחושפת שורה מוסתרת", () => {
+  const mi = (...rows: [number, boolean?, string?][]) => JSON.stringify(rows.map(([price, show, service], i) => ({ id: "i" + i, service: service ?? "s" + i, price, ...(show === false ? { show_client: false } : {}) })));
+  const P = (...a: number[]) => JSON.stringify(a.map((amount, i) => ({ id: "p" + i, name: "n" + i, amount })));
+  assert.equal(planRevealsHidden({ money_items: mi([20000], [9500], [2000, false]), money_plan: P(10000, 21500) }), true); // תוכנית על הסה"כ המלא
+  assert.equal(planRevealsHidden({ money_items: mi([20000], [9500], [2000, false]), money_plan: P(10000, 19500) }), false); // תואמת לגלוי
+  assert.equal(planRevealsHidden({ money_items: mi([20000], [9500]), money_plan: P(10000, 1) }), false); // אין שורה מוסתרת
+  assert.equal(planRevealsHidden({ money_items: mi([20000], [2000, false]), money_plan: undefined }), false); // אין תוכנית
+  assert.equal(planRevealsHidden({ money_items: mi([20000], [500, true, ""], [2000, false]), money_plan: P(20500) }), true); // שורה בלי שם שירות לא נחשבת גלויה
+  assert.equal(planRevealsHidden({ money_items: mi([20000], [500, true, ""], [2000, false]), money_plan: P(20000) }), false);
 });
 console.log(`\nכל ${n} בדיקות הכספים עברו`);

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { Modal } from "@/components/ui";
-import { moneyOf } from "@/lib/money";
+import { moneyOf, planRevealsHidden } from "@/lib/money";
 import { nis, shortDate, uid } from "@/lib/format";
 import { PAY_METHODS, type Lead, type MoneyItem, type MoneyPaid, type MoneyPay, type PayMethod } from "@/lib/types";
 
@@ -108,6 +108,11 @@ export function MoneyPanel({ l }: { l: Lead }) {
         {m.items.length === 0 && l.price ? <div className="muted" style={{ fontSize: 13, marginTop: 6 }}>כרגע הסכום הוא מחיר הליד ({nis(l.price)}). אפשר לפרט אותו כאן לשורות.</div> : null}
       </div>
 
+      {planRevealsHidden(l) && (
+        <div className="banner err" role="alert" style={{ marginBottom: 12 }}>
+          ⚠️ שימו לב: הזוג רואה את תוכנית התשלומים. היא לא תואמת לסכום הגלוי, ואפשר להסיק ממנה את השורה המוסתרת.
+        </div>
+      )}
       <div className="card">
         <h2>
           💳 תוכנית תשלומים ומה שולם

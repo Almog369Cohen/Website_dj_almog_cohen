@@ -29,6 +29,19 @@ export function moneyOf(l: Lead, now = today()) {
   return { items, plan, total, paid, remaining: Math.max(0, total - paid), late: late.length, planned: plan.reduce((s, p) => s + (Number(p.amount) || 0), 0) };
 }
 
+/**
+ * התראה לצוות: הזוג רואה את תוכנית התשלומים, אבל הסה"כ שלו נספר רק מהשורות הגלויות.
+ * אם יש שורה מוסתרת והתוכנית לא תואמת לסכום הגלוי, אפשר לחשב ממנה את השורה המוסתרת.
+ * "גלוי" כמו ב-clientView (src/lib/portal.ts): show_client לא כבוי ויש שם שירות.
+ */
+export function planRevealsHidden(l: Pick<Lead, "money_items" | "money_plan">) {
+  const items = moneyItems(l), plan = moneyPlan(l);
+  if (!plan.length || !items.some((i) => i.show_client === false)) return false;
+  const visible = items.filter((i) => i.show_client !== false && i.service).reduce((s, i) => s + (Number(i.price) || 0), 0);
+  const planned = plan.reduce((s, p) => s + (Number(p.amount) || 0), 0);
+  return Math.abs(planned - visible) > 0.5;
+}
+
 /** תשלומים שלא שולמו ומועדם עבר או בתוך X ימים */
 export function duePays(leads: Lead[], withinDays = 14, now = today()) {
   const out: { lead: Lead; pay: MoneyPay; days: number; late: boolean }[] = [];
