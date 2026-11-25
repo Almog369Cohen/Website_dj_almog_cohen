@@ -5,7 +5,7 @@ import type { Block, Source } from "@/content/guides";
 import type { Crumb } from "@/lib/seo";
 import { ConsultButton } from "./Consult";
 import { ContactForm } from "./ContactForm";
-import { Faces, InstagramIcon, PhoneIcon, Pic, Todo, WaButton } from "./ui";
+import { Faces, Hl, InstagramIcon, PhoneIcon, Pic, Todo, WaButton } from "./ui";
 
 /** Questions with a verified answer always; the rest only in the preview, in green. */
 export function FaqList({ title = "מה זוגות שואלים אותנו.", headingLevel = 2 }: { title?: string; headingLevel?: 1 | 2 }) {
@@ -38,8 +38,8 @@ export function ContactSection({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
     <section className="contact wrap" id="contact" data-tone="dark" data-hide-fab data-wa="הגעתי לטופס שיחת הייעוץ באתר" aria-labelledby="contactTitle">
       <div className="contact-head">
         <div className="kicker">{contactCopy.kicker}</div>
-        <Title id="contactTitle" style={{ margin: 0 }}>{contactCopy.title}</Title>
-        <p className="lead">{contactCopy.lead}</p>
+        <Title id="contactTitle" style={{ margin: 0 }}><Hl text={contactCopy.title} /></Title>
+        <p className="lead"><Hl text={contactCopy.lead} /></p>
       </div>
       <ContactForm />
       <div className="contact-more">
@@ -72,8 +72,8 @@ export function Closing({ photo = false }: { photo?: boolean }) {
         </div>
       )}
       <div className="cta wrap">
-        <h2>הערב שלכם מתחיל בשיחה אחת.</h2>
-        <p className="closing-line">טיל ההפקות. איתנו זה אש. {consult.promise}</p>
+        <h2>הערב שלכם מתחיל <em className="hl">בשיחה אחת</em>.</h2>
+        <p className="closing-line">{consult.promise}</p>
         <ConsultButton where="closing" className="btn-gold btn-big" />
         <Faces />
       </div>
@@ -160,7 +160,7 @@ export function CtaBand({ title = "רוצים לשמוע איך זה ייראה 
   return (
     <div className="cta-band">
       <h2>{title}</h2>
-      <p>{consult.cta}, {consult.promise}</p>
+      <p>{consult.promise}</p>
       <ConsultButton where="cta-band" />
       <Faces />
     </div>

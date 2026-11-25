@@ -111,3 +111,12 @@ export function JsonLd({ data }: { data: object }) {
   // escape "<" so no string inside the data can close the script tag
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} />;
 }
+
+/** Copy with *emphasis*: only the words between asterisks turn bold and gold. Everything else stays regular. */
+export function Hl({ text }: { text: string }) {
+  const parts = text.split(/\*([^*]+)\*/);
+  return <>{parts.map((p, i) => (i % 2 ? <em className="hl" key={i}>{p}</em> : p))}</>;
+}
+
+/** The same copy as plain text, for titles, metadata and messages. */
+export const plain = (text: string) => text.replace(/\*/g, "");

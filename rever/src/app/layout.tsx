@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bellefair, Rubik } from "next/font/google";
+import { Bellefair, Karantina, Rubik } from "next/font/google";
 import { brand } from "@/content/site";
 import { pages } from "@/content/routes";
 import { Header } from "@/components/Header";
@@ -10,8 +10,9 @@ import { ConsultFab } from "@/components/Consult";
 import { orgGraph, pageMetadata } from "@/lib/seo";
 import "./globals.css";
 
-// Rubik: rounded, warm and bold, for every Hebrew word. Bellefair only for the Latin wordmark and numbers.
-const rubik = Rubik({ variable: "--font-rubik", subsets: ["hebrew", "latin"], weight: ["300", "400", "500", "700", "800"], display: "swap" });
+// Karantina for headlines (regular; bold only for the highlighted words), Rubik for text, Bellefair for the Latin wordmark and numbers.
+const karantina = Karantina({ variable: "--font-karantina", subsets: ["hebrew", "latin"], weight: ["400", "700"], display: "swap" });
+const rubik = Rubik({ variable: "--font-rubik", subsets: ["hebrew", "latin"], weight: ["300", "400", "500"], display: "swap" });
 const bellefair = Bellefair({ variable: "--font-bellefair", subsets: ["latin"], weight: "400", display: "swap" });
 
 export const metadata: Metadata = {
@@ -32,7 +33,7 @@ const scenesScript = `(function(){var h=document.documentElement,m=function(q){r
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="he" dir="rtl" data-scenes="off" className={`${rubik.variable} ${bellefair.variable}`} suppressHydrationWarning>
+    <html lang="he" dir="rtl" data-scenes="off" className={`${karantina.variable} ${rubik.variable} ${bellefair.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: scenesScript }} />
       </head>

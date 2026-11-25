@@ -3,7 +3,7 @@ import { PHOTO_SIZES } from "@/content/photos";
 import journeyCrops from "@/content/journey-crops.json";
 import { about, brand, consult, difference, eventTypes, fire, founders, hero, includes, journey, journeyAlt, steps } from "@/content/site";
 import { ConsultButton } from "./Consult";
-import { coverSizes, Faces, Pic, srcSetFor, Todo } from "./ui";
+import { coverSizes, Faces, Hl, Pic, srcSetFor, Todo } from "./ui";
 
 const PHONE = "(max-aspect-ratio: 3/4)";
 const crops: Record<string, number[]> = journeyCrops;
@@ -97,8 +97,8 @@ export function Hero() {
           </div>
           <div className="hero-copy" id="heroCopy">
             <span className="small en" lang="en">REVER PRODUCTIONS</span>
-            <p className="display">{hero.displayTop}<span>{hero.displayBottom}</span></p>
-            <p className="tagline">{hero.tagline}</p>
+            <p className="display">{hero.displayTop}<span><Hl text={hero.displayBottom} /></span></p>
+            <p className="tagline"><Hl text={hero.tagline} /></p>
             <div className="row">
               <ConsultButton where="hero" className="btn-gold btn-big" />
               <a className="link-quiet" href="#events">לרגעים שהפקנו</a>
@@ -133,7 +133,7 @@ export function Fire() {
   return (
     <section className="fire wrap" id="fire" data-tone="dark" data-wa="קראתי באתר למה REVER" aria-labelledby="fireTitle">
       <div className="kicker">{fire.kicker}</div>
-      <h2 id="fireTitle" className="fire-title">{fire.title}</h2>
+      <h2 id="fireTitle" className="fire-title"><Hl text={fire.title} /></h2>
       <ol className="pillars">
         {fire.pillars.map((p) => (
           <li key={p.n}>
@@ -164,15 +164,15 @@ export function PaperChapter() {
             <span key={i}><span className="w">{w}</span>{i < words.length - 1 ? " " : ""}</span>
           ))}
         </p>
-        <p className="says-after">{difference.after}</p>
+        <p className="says-after"><Hl text={difference.after} /></p>
       </section>
 
       <section className="wipe" id="wipe" data-wa="ראיתי באתר איך זה עובד ביום עצמו" aria-label="אצלנו ואצלכם">
         <div className="wipe-stage">
           <Pic id="wipeUnder" className="under" name="team-day" alt="ארד מצוות REVER, עם תג צוות, ליד הזוג ביום החתונה בגן" />
-          <div className="wipe-cap one" id="capOne"><b>{difference.ours.title}</b><span>{difference.ours.text}</span></div>
+          <div className="wipe-cap one" id="capOne"><b><Hl text={difference.ours.title} /></b><span>{difference.ours.text}</span></div>
           <Pic id="wipeOver" className="over" name="ev-nye-5" alt="הזוג רוקד בין ניצוצות על הרחבה" />
-          <div className="wipe-cap two" id="capTwo"><b>{difference.yours.title}</b><span>{difference.yours.text}</span></div>
+          <div className="wipe-cap two" id="capTwo"><b><Hl text={difference.yours.title} /></b><span>{difference.yours.text}</span></div>
           <div className="wipe-shade" />
         </div>
       </section>
@@ -207,8 +207,8 @@ export function Founders({ intro = true }: { intro?: boolean }) {
       {intro && (
         <div className="founders-intro wrap">
           <div className="kicker">המייסדים</div>
-          <h2 id="foundersTitle">האנשים שעונים לכם.</h2>
-          <p className="lead">גל וליאל הקימו את REVER, והם אלה שעונים לכם בוואטסאפ.</p>
+          <h2 id="foundersTitle">גל וליאל. <em className="hl">הם גם יענו לכם.</em></h2>
+          <p className="lead">הם הקימו את REVER, והם אלה שיענו לכם כשתכתבו לנו.</p>
         </div>
       )}
       <div className="founders">
@@ -238,8 +238,8 @@ export function How() {
   return (
     <section className="how wrap" id="how" data-tone="paper" data-wa="קראתי באתר איך זה עובד" aria-labelledby="howTitle">
       <div className="kicker">איך זה עובד</div>
-      <h2 id="howTitle">מהפגישה הראשונה ועד השיר האחרון.</h2>
-      <p className="lead">אנחנו מנהלים עבורכם את כל התהליך, כדי שתוכלו להיות רגועים ופנויים ליהנות מהדרך ומהאירוע עצמו.</p>
+      <h2 id="howTitle">מהשיחה הראשונה ועד <em className="hl">השיר האחרון</em>.</h2>
+      <p className="lead">אנחנו מנהלים את כל התהליך, כדי שתהיו רגועים ותיהנו מהדרך, לא רק מהערב.</p>
       <div className="how-grid">
         <div className="steps">
           {steps.map((s) => (
@@ -249,8 +249,8 @@ export function How() {
               <h3>{s.title}</h3>
               <p>{s.text}</p>
               <dl className="rows">
-                <div><dt>על השולחן שלכם</dt><dd>{s.yours}</dd></div>
-                <div><dt>אצלנו</dt><dd>{s.ours}</dd></div>
+                <div><dt>אתם</dt><dd>{s.yours}</dd></div>
+                <div><dt>אנחנו</dt><dd>{s.ours}</dd></div>
               </dl>
             </article>
           ))}
@@ -265,7 +265,7 @@ export function How() {
         <ul>{includes.map((i) => <li key={i}>{i}</li>)}</ul>
         <p><Todo>לאשר: אנחנו לא האולם ולא הקייטרינג. אנחנו מחברים את כל הספקים ומנהלים אותם בשבילכם.</Todo></p>
         <div className="how-cta">
-          <p>הכול מתחיל בשיחת ייעוץ ללא עלות.</p>
+          <p>הכול מתחיל בשיחה אחת. <em className="hl">בחינם.</em></p>
           <ConsultButton where="how" />
         </div>
       </div>
@@ -279,9 +279,9 @@ export function Team() {
     <section className="team" id="team" data-tone="paper" data-wa="ראיתי באתר את הצוות" aria-labelledby="teamTitle">
       <div className="wrap">
         <div className="kicker">הצוות</div>
-        <h2 id="teamTitle">האנשים שמאחורי הערב.</h2>
+        <h2 id="teamTitle">מי מאחורי הערב.</h2>
         {about.map((p) => <p className="lead" key={p}>{p}</p>)}
-        <p className="lead">גל וליאל מובילים, ואיתם צוות שעובד בשטח ביום האירוע, כמו ארד שראיתם למעלה.</p>
+        <p className="lead">גל וליאל מובילים, ואיתם צוות שנמצא בשטח ביום האירוע, כמו ארד שראיתם למעלה.</p>
         <div className="stats">
           <div className="stat"><b className="en">{brand.years}</b><span>שנים של הפקות</span></div>
           <Todo><span className="stat"><b>?</b><span>אירועים שהפקנו</span></span></Todo>
