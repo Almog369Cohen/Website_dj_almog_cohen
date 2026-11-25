@@ -99,7 +99,7 @@ p{margin:0}
 .sx-stage::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(to left,rgba(10,12,12,.92) 0%,rgba(10,12,12,.55) 30%,rgba(10,12,12,0) 56%)}
 .sx-stage::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(180deg,rgba(10,12,12,.55) 0%,rgba(10,12,12,0) 18%,rgba(10,12,12,0) 70%,rgba(10,12,12,.6) 100%)}
 .sx-world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
-.sx-night{position:absolute;inset:-40%;background:url(assets/night.jpg) center/cover no-repeat;opacity:.85}
+.sx-night{position:absolute;inset:0;background:url(assets/night.jpg) center/cover no-repeat;opacity:.7}
 .sx-night::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 40% at 50% 50%,rgba(5,156,192,.10),transparent 70%)}
 .sx-place{position:absolute;width:540px;height:960px;margin:-480px 0 0 -270px;transition:opacity .5s var(--ease)}
 .sx-glow{position:absolute;left:50%;top:56%;width:1300px;height:1300px;margin:-650px 0 0 -650px;border-radius:50%;background:radial-gradient(circle,rgba(3,178,140,.22) 0%,rgba(5,156,192,.10) 30%,rgba(5,156,192,0) 60%);pointer-events:none}
@@ -141,6 +141,16 @@ p{margin:0}
   .sx-meta{display:none}
 }
 @media (prefers-reduced-motion:reduce){.sx-hint span::after,.sx-cap .btn.hot,.sx-meta i{animation:none}}
+/* portrait phones: one tidy column of moments, no prints, no second bokeh layer (one big composited layer less for Safari) */
+@media (max-aspect-ratio:1/1){
+  .sx-night,.sx-print{display:none}
+  .sx-glow{width:900px;height:900px;margin:-450px 0 0 -450px}
+  .sx-card{border-radius:36px;box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 0 3px rgba(255,255,255,.16)}
+}
+/* if the engine ever fails, the page still reads: first words shown, no tall track */
+.sx-fail .sx-track{height:100vh!important;height:100svh!important}
+.sx-fail .sx-cap:first-child{opacity:1!important;visibility:visible!important;transform:none!important}
+.sx-fail .sx-world{transform:none!important}
 
 /* ---------- MANIFESTO ---------- */
 .manifesto{position:relative;padding-block:clamp(110px,18vh,220px) clamp(90px,14vh,180px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.42fr);gap:clamp(32px,6vw,110px);align-items:end}
@@ -459,11 +469,11 @@ footer{padding-block:0 calc(28px + env(safe-area-inset-bottom,0px))}
     <div class="sx-stage" id="sxStage">
       <div class="sx-world" id="sxWorld" aria-hidden="true">
         <div class="sx-night"></div>
-        <div class="sx-place" data-i="0"><div class="sx-glow"></div><div class="sx-print" style="left:-330px;top:120px;transform:rotate(-7deg)"><img src="assets/lights-crowd-colorful.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="metadata" poster="assets/n1-reception.jpg" src="assets/n1-reception.mp4"></video></div></div>
-        <div class="sx-place" data-i="1"><div class="sx-glow"></div><div class="sx-print" style="left:390px;top:80px;width:360px;height:520px;transform:rotate(6deg)"><img src="assets/couple-chuppah-tall.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="metadata" poster="assets/n2-chuppah.jpg" src="assets/n2-chuppah.mp4"></video></div></div>
-        <div class="sx-place" data-i="2"><div class="sx-glow"></div><div class="sx-print" style="left:-340px;top:420px;transform:rotate(5deg)"><img src="assets/couple-shoulders-singing.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="metadata" poster="assets/n3-glass.jpg" src="assets/n3-glass.mp4"></video></div></div>
-        <div class="sx-place" data-i="3"><div class="sx-glow"></div><div class="sx-print" style="left:400px;top:60px;transform:rotate(-5deg)"><img src="assets/couple-dancing-booth.jpg" alt=""></div><div class="sx-print" style="left:-350px;top:480px;transform:rotate(7deg)"><img src="assets/stage-lights-crowd.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="metadata" poster="assets/n4-floor.jpg" src="assets/n4-floor.mp4"></video></div></div>
-        <div class="sx-place" data-i="4"><div class="sx-glow"></div><div class="sx-print" style="left:-330px;top:160px;transform:rotate(-6deg)"><img src="assets/booth-smoke-purple.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="metadata" poster="assets/n5-after.jpg" src="assets/n5-after.mp4"></video></div></div>
+        <div class="sx-place" data-i="0"><div class="sx-glow"></div><div class="sx-print" style="left:-330px;top:120px;transform:rotate(-7deg)"><img src="assets/lights-crowd-colorful.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="none" poster="assets/n1-reception.jpg" src="assets/n1-reception.mp4"></video></div></div>
+        <div class="sx-place" data-i="1"><div class="sx-glow"></div><div class="sx-print" style="left:390px;top:80px;width:360px;height:520px;transform:rotate(6deg)"><img src="assets/couple-chuppah-tall.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="none" poster="assets/n2-chuppah.jpg" src="assets/n2-chuppah.mp4"></video></div></div>
+        <div class="sx-place" data-i="2"><div class="sx-glow"></div><div class="sx-print" style="left:-340px;top:420px;transform:rotate(5deg)"><img src="assets/couple-shoulders-singing.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="none" poster="assets/n3-glass.jpg" src="assets/n3-glass.mp4"></video></div></div>
+        <div class="sx-place" data-i="3"><div class="sx-glow"></div><div class="sx-print" style="left:400px;top:60px;transform:rotate(-5deg)"><img src="assets/couple-dancing-booth.jpg" alt=""></div><div class="sx-print" style="left:-350px;top:480px;transform:rotate(7deg)"><img src="assets/stage-lights-crowd.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="none" poster="assets/n4-floor.jpg" src="assets/n4-floor.mp4"></video></div></div>
+        <div class="sx-place" data-i="4"><div class="sx-glow"></div><div class="sx-print" style="left:-330px;top:160px;transform:rotate(-6deg)"><img src="assets/booth-smoke-purple.jpg" alt=""></div><div class="sx-card"><video muted loop playsinline preload="none" poster="assets/n5-after.jpg" src="assets/n5-after.mp4"></video></div></div>
       </div>
       <canvas class="sx-fx" id="sxFx" aria-hidden="true"></canvas>
       <div class="sx-prog" id="sxProg" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -820,7 +830,7 @@ var HOLD=.55,port=false,vw=0,vh=0,dpr=1,STEP=0,L=null,POSES=[],cam={cx:0,cy:0,s:
 var clamp=function(x,a,b){return Math.max(a===undefined?0:a,Math.min(b===undefined?1:b,x))};
 var ease=function(x){return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
 function layout(p){
-  return p?{W:2000,H:3700,P:[[640,600],[1360,1300],[640,2000],[1360,2700],[660,3300]],pad:70,wpad:30}
+  return p?{W:1700,H:2320,P:[[420,560],[1280,560],[850,1160],[420,1760],[1280,1760]],pad:60,wpad:0}
           :{W:5200,H:3000,P:[[760,980],[1830,2060],[2680,900],[3560,2080],[4500,960]],pad:230,wpad:60};
 }
 function build(){
@@ -839,9 +849,9 @@ function resize(){
   port=vw/vh<1;L=layout(port);build();
   if(port){
     var dock=76,capH=Math.max.apply(null,[0,N-1].map(function(k){return caps[k].offsetHeight||0}));
-    AREA_P={x:14,y:60,w:vw-28,h:vh*.62-60};
-    var wy=clamp(70+capH+16,vh*.34,vh*.5);
-    AREA_W={x:14,y:wy,w:vw-28,h:vh-wy-dock-30};
+    AREA_P={x:14,y:56,w:vw-28,h:vh*.6-56};
+    var wy=clamp(60+capH+14,vh*.3,vh*.5);
+    AREA_W={x:14,y:wy,w:vw-28,h:vh-wy-dock-26};
   }else{
     AREA_P={x:24,y:84,w:vw*.52,h:vh-140};
     AREA_W={x:24,y:84,w:vw*.56,h:vh-140};
@@ -878,11 +888,18 @@ function drawBeat(p,size,alpha){
 }
 var tT=0,tC=0,last=performance.now(),t0=last,on=true,lastK=-1;
 function readScroll(){var d=-track.getBoundingClientRect().top;tT=STEP>0?clamp(d/STEP,0,N-1+.7):0;if(!isFinite(tT))tT=0}
-function playNear(k){
-  vids.forEach(function(v,i){var near=(k===0||k===N-1)||Math.abs(i-(k-1))<=1;if(near){if(v.paused){try{v.play().catch(function(){})}catch(e){}}}else if(!v.paused)v.pause()});
+var playing={};
+function playSet(set){
+  vids.forEach(function(v,i){var want=!!set[i];if(want){if(v.paused){try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}}else if(!v.paused)v.pause()});
 }
+function playNear(k){var s={};if(k>=1&&k<=5)s[k-1]=1;playSet(s)}
+var failed=false;
 function frame(now){
+  if(failed)return;
   requestAnimationFrame(frame);
+  try{frameBody(now)}catch(e){failed=true;stage.parentNode.parentNode.classList.add("sx-fail");vids.forEach(function(v){try{v.pause()}catch(x){}})}
+}
+function frameBody(now){
   var dt=Math.min(64,now-last);last=now;
   var r=track.getBoundingClientRect();
   var vis=r.bottom>0&&r.top<vh;
@@ -891,7 +908,8 @@ function frame(now){
   tC=reduce?tT:tC+(tT-tC)*(1-Math.pow(1-.16,dt/16.7));
   if(Math.abs(tT-tC)<.0005)tC=tT;
   var t=tC,k=clamp(Math.floor(t),0,N-1),p=t-k;
-  if(k!==lastK){lastK=k;playNear(k);prog.forEach(function(b,i){b.classList.toggle("on",i<=k)})}
+  if(k!==lastK){lastK=k;prog.forEach(function(b,i){b.classList.toggle("on",i<=k)})}
+  var want={};if(k>=1&&k<=5)want[k-1]=1;if(p>HOLD&&k>=1&&k<=4)want[k]=1;var key=Object.keys(want).join(",");if(key!==playing.key){playing.key=key;playSet(want)}
   var c=camAt(t);cam={cx:c.cx,cy:c.cy,s:Math.exp(c.ls),ax:c.ax,ay:c.ay};
   world.style.transform="translate3d("+(cam.ax-cam.cx*cam.s).toFixed(2)+"px,"+(cam.ay-cam.cy*cam.s).toFixed(2)+"px,0) scale("+cam.s.toFixed(5)+")";
   /* captions: in during the hold, out while the camera moves; on phones the world views carry their words on top */
@@ -935,10 +953,10 @@ function frame(now){
 addEventListener("resize",function(){resize()});
 addEventListener("scroll",readScroll,{passive:true});
 document.addEventListener("visibilitychange",function(){last=performance.now()});
-resize();tC=tT;
+try{resize()}catch(e){failed=true;stage.parentNode.parentNode.classList.add("sx-fail")}
+tC=tT;
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(resize);
-addEventListener("load",function(){resize();playNear(0)});
-playNear(0);
+addEventListener("load",function(){resize()});
 requestAnimationFrame(frame);
 })();
 
