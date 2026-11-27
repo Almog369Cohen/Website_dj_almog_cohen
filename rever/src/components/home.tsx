@@ -175,7 +175,7 @@ export function PaperChapter({ lead }: { lead?: React.ReactNode }) {
 /** Gal in black on the night half, Liel in white on the paper half. */
 export function Founders({ intro = true }: { intro?: boolean }) {
   return (
-    <section id="founders" data-wa="קראתי עליכם באתר" aria-labelledby="foundersTitle">
+    <section id="founders" data-wa="קראתי עליכם באתר" data-hide-fab aria-labelledby="foundersTitle">
       {intro && (
         <div className="founders-intro wrap">
           <div className="kicker">המייסדים</div>
@@ -213,8 +213,7 @@ export function How() {
       <h2 id="howTitle">מהשיחה הראשונה ועד <em className="hl">השיר האחרון</em>.</h2>
       <p className="lead">ארבעה שלבים. בכל אחד כתוב מה עליכם ומה עלינו.</p>
       <div className="how-zero">
-        <span className="en n">00</span>
-        <p>שלב אפס: <em className="hl">שיחה</em> עם גל וליאל.</p>
+        <p>הכול מתחיל ב<em className="hl">שיחה</em> עם גל וליאל.</p>
       </div>
       <div className="how-grid">
         <div className="steps">

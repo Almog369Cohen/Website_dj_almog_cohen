@@ -21,7 +21,7 @@ const p = (src: string, alt: string): EventPhoto => ({ src, alt });
 export const events: RevEvent[] = [
   {
     slug: "stone-courtyard-garden-wedding",
-    tab: "חתונה בחצר אבן",
+    tab: "חתונת גן בחצר אבן",
     title: "חתונת גן בחצר אבן",
     text: "חצר אבן בין עצים, שרשראות אור, מנורות שולחן ופינות ישיבה. האורחים בלבן, והערב נגמר על הרחבה.",
     setting: "חצר אבן פתוחה בין עצים",

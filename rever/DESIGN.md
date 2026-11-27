@@ -1,5 +1,7 @@
 # REVER design rules
 
+> **מ-27.11 החוקים הם `RULES.md` (גובר על המסמך הזה) והפסיקות ב-`COUNCIL-VERDICT.md`.** מה שכתוב כאן על נייר בהיר, Bellefair וזהב בארבעה מקומות הוא היסטוריה.
+
 A light paper magazine with dark chapters. Only REVER's own photos and video: no drawn decorations, no orange, no muddy fades.
 
 ## Palette and type

@@ -30,7 +30,9 @@ export function EventsGallery({ events, tabs = true, meta = true }: Props) {
   useEffect(() => { window.dispatchEvent(new Event("rever:layout")); }, [current, expanded, desktop]);
 
   const n = desktop ? 3 : 2;
-  const limit = desktop || expanded ? ev.photos.length : Math.min(6, ev.photos.length);
+  const shown = desktop || expanded ? ev.photos.length : Math.min(6, ev.photos.length);
+  // a full last row: drop the odd photo out rather than leave a hole in the grid
+  const limit = shown >= n ? shown - (shown % n) : shown;
   const cols: { p: RevEvent["photos"][number]; k: number }[][] = Array.from({ length: n }, () => []);
   ev.photos.slice(0, limit).forEach((p, k) => cols[k % n].push({ p, k }));
 

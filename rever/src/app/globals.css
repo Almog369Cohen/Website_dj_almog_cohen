@@ -722,3 +722,15 @@ em.hl.gold { background: var(--gold-metal); background-size: 220% 100%; backgrou
 .chip span { min-height: 38px; padding: 0 14px; font-size: 15px; }
 .menu-word { font-size: 16px; }
 .closing .cta h2 { max-width: 14ch; }
+
+/* ---- Council round 3 (27.11) ---- */
+/* desktop reading size: body and secondary text never under 17px */
+@media (min-width: 1024px) {
+  .lead, .pillars p, .step p, .faq .a, .ev-meta p, .rows dd, .consult-points li, .how-zero p, .tagline { font-size: clamp(17px, 1.25vw, 19px); line-height: 1.6; }
+  .faq summary { font-size: 22px; }
+  .kicker { font-size: 15px; }
+}
+.how-zero { grid-template-columns: 1fr; }
+/* founders: the two portraits at the same size and on the same line */
+.f-half { align-content: start; }
+@media (min-width: 1024px) { .f-photo { width: min(28vw, 400px); } .f-half { min-height: auto; padding-block: 10vh; } }

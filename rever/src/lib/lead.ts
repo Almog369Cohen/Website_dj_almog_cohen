@@ -10,7 +10,7 @@ export type ConsultLead = {
   intent: "consultation";
   name: string;
   phone: string;
-  eventType: string;
+  eventType?: string;
   /** free text: "יוני הבא", "15.8.2027" */
   eventDate?: string;
   /** בוקר / צהריים / ערב / לא משנה */
@@ -20,12 +20,12 @@ export type ConsultLead = {
 
 export function leadFromForm(d: Record<string, string>): ConsultLead | null {
   const name = d.name?.trim(), phone = d.phone?.trim(), eventType = d.type?.trim();
-  if (!name || !phone || !eventType) return null;
+  if (!name || !phone) return null;
   return {
     intent: "consultation",
     name,
     phone,
-    eventType,
+    eventType: eventType || undefined,
     eventDate: d.when?.trim() || undefined,
     callTime: d.callTime || undefined,
     message: d.message?.trim() || undefined,
@@ -44,7 +44,7 @@ export function leadMessage(l: ConsultLead, greeting: string) {
     `${greeting.trim()} אשמח לקבוע שיחת ייעוץ.`,
     `שם: ${l.name}`,
     `טלפון: ${l.phone}`,
-    `סוג אירוע: ${l.eventType}`,
+    l.eventType ? `סוג אירוע: ${l.eventType}` : "",
     l.eventDate ? `מתי: ${l.eventDate}` : "",
     l.callTime ? `נוח לי לדבר: ${l.callTime}` : "",
     l.message ? `פרטים: ${l.message}` : "",

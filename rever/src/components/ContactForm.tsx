@@ -25,13 +25,13 @@ export function ContactForm() {
     const d = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
     if (d.website) return; // the hidden honeypot: a person never fills it
     const lead = leadFromForm(d);
-    setMissing(["name", "phone", "type"].filter((k) => !d[k]?.trim()));
+    setMissing(["name", "phone"].filter((k) => !d[k]?.trim()));
     if (!lead) return setStatus("missing");
     if (!looksLikePhone(lead.phone)) return setStatus("phone");
     setStatus("sending");
     const url = waHref(leadMessage(lead, whatsapp.greeting));
     setLink(url);
-    track("generate_lead", { type: lead.eventType });
+    track("generate_lead", { type: lead.eventType ?? "" });
     if (await sendLead(lead)) {
       setStatus("saved");
       return;
@@ -63,9 +63,9 @@ export function ContactForm() {
       </div>
       <div className="field-pair">
         <div className="field-row">
-          <label htmlFor="f-type">סוג האירוע</label>
-          <select id="f-type" name="type" required defaultValue="" aria-invalid={missing.includes("type") || undefined}>
-            <option value="" disabled>בחרו</option>
+          <label htmlFor="f-type">סוג האירוע (לא חובה)</label>
+          <select id="f-type" name="type" defaultValue="">
+            <option value="">בחרו</option>
             {contactCopy.eventTypes.map((t) => <option key={t}>{t}</option>)}
           </select>
         </div>
@@ -94,7 +94,7 @@ export function ContactForm() {
         {status === "sending" ? "שולחים..." : consult.submit}
       </button>
       <p className="fine" id="formNote" role="status">
-        {status === "missing" && "חסר שם, טלפון או סוג אירוע. מלאו אותם ונסו שוב."}
+        {status === "missing" && "חסר שם או טלפון. מלאו אותם ונסו שוב."}
         {status === "phone" && "מספר הטלפון לא נראה תקין. בדקו אותו ונסו שוב."}
         {status === "whatsapp" && (
           <>
