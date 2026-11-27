@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bellefair, Karantina, Rubik } from "next/font/google";
+import { Assistant } from "next/font/google";
 import { brand } from "@/content/site";
 import { pages } from "@/content/routes";
 import { Header } from "@/components/Header";
@@ -10,10 +10,8 @@ import { ConsultFab } from "@/components/Consult";
 import { orgGraph, pageMetadata } from "@/lib/seo";
 import "./globals.css";
 
-// Karantina for headlines (regular; bold only for the highlighted words), Rubik for text, Bellefair for the Latin wordmark and numbers.
-const karantina = Karantina({ variable: "--font-karantina", subsets: ["hebrew", "latin"], weight: ["400", "700"], display: "swap" });
-const rubik = Rubik({ variable: "--font-rubik", subsets: ["hebrew", "latin"], weight: ["300", "400", "500"], display: "swap" });
-const bellefair = Bellefair({ variable: "--font-bellefair", subsets: ["latin"], weight: "400", display: "swap" });
+// RULES.md §1: Assistant only, 300 for everything and 700 for key words.
+const assistant = Assistant({ variable: "--font-assistant", subsets: ["hebrew", "latin"], weight: ["300", "700"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(brand.url),
@@ -22,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0a0c",
+  themeColor: "#0f0d0b",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -33,7 +31,7 @@ const scenesScript = `(function(){var h=document.documentElement,m=function(q){r
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="he" dir="rtl" data-scenes="off" className={`${karantina.variable} ${rubik.variable} ${bellefair.variable}`} suppressHydrationWarning>
+    <html lang="he" dir="rtl" data-scenes="off" className={assistant.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: scenesScript }} />
       </head>

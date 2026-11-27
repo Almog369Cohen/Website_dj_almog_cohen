@@ -2,7 +2,7 @@ import { events } from "@/content/events";
 import { verifiedFaq } from "@/content/faq";
 import { SHOW_TODO } from "@/content/site";
 import { EventsGallery } from "@/components/EventsGallery";
-import { FromField, Hero, How, journeyPreload, PaperChapter, Team } from "@/components/home";
+import { Founders, FromField, Hero, How, journeyPreload, PaperChapter, Team } from "@/components/home";
 import { ConsultButton } from "@/components/Consult";
 import { Closing, ContactSection, FaqList } from "@/components/sections";
 import { JsonLd } from "@/components/ui";
@@ -18,18 +18,21 @@ export default function Home() {
       <link rel="preload" as="image" href={lcp.href} imageSrcSet={lcp.wide.srcSet} imageSizes={lcp.wide.sizes} media={lcp.phone ? "(min-aspect-ratio: 3/4)" : undefined} fetchPriority="high" />
       <main id="main" data-wa="">
         <Hero />
-        <PaperChapter />
+        <PaperChapter lead={
+          <section className="events wrap" id="events" data-tone="paper" aria-labelledby="eventsTitle">
+            <div className="kicker">אירועים</div>
+            <h2 id="eventsTitle">ככה זה נראה <em className="hl">אצלנו</em>.</h2>
+            <EventsGallery events={events} />
+            <div className="events-cta">
+              <p>רוצים ערב כזה? זה מתחיל בשיחה.</p>
+              <ConsultButton where="events" />
+            </div>
+          </section>
+        } />
         <How />
+        <Founders />
         <Team />
-        <section className="events wrap" id="events" data-tone="paper" aria-labelledby="eventsTitle">
-          <div className="kicker">אירועים</div>
-          <h2 id="eventsTitle">אירועים שהפקנו.</h2>
-          <EventsGallery events={events} />
-          <div className="events-cta">
-            <p>רוצים ערב כזה?</p>
-            <ConsultButton where="events" />
-          </div>
-        </section>
+
         {SHOW_TODO && <FromField />}
         <FaqList />
         <ContactSection />

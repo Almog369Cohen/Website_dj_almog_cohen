@@ -355,7 +355,9 @@ export function Engine() {
       // the button is there from the second stage of the journey on
       const started = journeyStage >= 1 || (manifesto ? manifesto.getBoundingClientRect().top < vh * 0.5 : y > vh * 0.6);
       const at = vh - 40;
-      const hidden = $$("[data-hide-fab]").some((el) => { const r = el.getBoundingClientRect(); return r.top < at && r.bottom > at; });
+      // one main button per screen (RULES.md §4): the floating pill steps aside while a section's own pill is on screen
+      const pillOnScreen = $$("main [data-consult], footer [data-consult]").some((el) => { const r = el.getBoundingClientRect(); return r.bottom > 64 && r.top < vh - 20 && r.width > 0; });
+      const hidden = pillOnScreen || $$("[data-hide-fab]").some((el) => { const r = el.getBoundingClientRect(); return r.top < at && r.bottom > at; });
       const on = started && !hidden;
       fab?.classList.toggle("on", on);
       headWa?.classList.toggle("gone", on);

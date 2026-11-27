@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PHOTO_SIZES } from "@/content/photos";
 import journeyCrops from "@/content/journey-crops.json";
-import { about, brand, consult, difference, eventTypes, fire, founders, hero, includes, journey, journeyAlt, steps } from "@/content/site";
+import { about, brand, consult, difference, fire, founders, hero, includes, journey, journeyAlt, steps } from "@/content/site";
 import { ConsultButton } from "./Consult";
 import { coverSizes, Faces, Hl, Pic, srcSetFor, Todo } from "./ui";
 
@@ -89,7 +89,7 @@ export function Hero() {
             <p className="jline" id="jline">{journey[0].line}</p>
             <div className="jbar">{journey.map((s) => <i key={s.id}><b /></i>)}</div>
           </div>
-          <a className="jskip" id="jskip" href="#difference">דלגו על המסע</a>
+          <a className="jskip" id="jskip" href="#events">דלגו על המסע</a>
           <div className="hero-rest" id="heroRest">
             <h1>{hero.h1}</h1>
             <ConsultButton where="hero-first" className="btn-ghost">{consult.short}</ConsultButton>
@@ -152,10 +152,11 @@ export function Fire() {
 }
 
 /** 2–4. The paper chapter: the difference, the wipe, the founders and the event types. */
-export function PaperChapter() {
+export function PaperChapter({ lead }: { lead?: React.ReactNode }) {
   const words = difference.tasks.split(/\s+/);
   return (
     <div className="chapter-paper" data-tone="paper">
+      {lead}
       <Fire />
       <section className="manifesto wrap" id="difference" data-wa="קראתי באתר על ההבדל" aria-label="ההבדל">
         <div className="kicker">ההבדל</div>
@@ -181,21 +182,7 @@ export function PaperChapter() {
         <ul>{difference.noNeed.map((l) => <li key={l}>{l}</li>)}</ul>
       </section>
 
-      <Founders />
 
-      <div className="marquee" aria-hidden="true">
-        <div className="track" id="marquee">
-          {[0, 1].map((k) => (
-            <div className="item" key={k}>
-              {eventTypes.map((t, i) => (
-                <span key={t} style={{ display: "contents" }}>
-                  <span className={i % 2 ? "g" : undefined}>{t}</span><i />
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
@@ -240,6 +227,10 @@ export function How() {
       <div className="kicker">איך זה עובד</div>
       <h2 id="howTitle">מהשיחה הראשונה ועד <em className="hl">השיר האחרון</em>.</h2>
       <p className="lead">אנחנו מנהלים את כל התהליך, כדי שתהיו רגועים ותיהנו מהדרך, לא רק מהערב.</p>
+      <div className="how-zero">
+        <span className="en n">00</span>
+        <p>הכול מתחיל בשיחת ייעוץ. <em className="hl">בחינם</em>, בלי שום התחייבות.</p>
+      </div>
       <div className="how-grid">
         <div className="steps">
           {steps.map((s) => (
@@ -265,7 +256,7 @@ export function How() {
         <ul>{includes.map((i) => <li key={i}>{i}</li>)}</ul>
         <p><Todo>לאשר: אנחנו לא האולם ולא הקייטרינג. אנחנו מחברים את כל הספקים ומנהלים אותם בשבילכם.</Todo></p>
         <div className="how-cta">
-          <p>הכול מתחיל בשיחה אחת. <em className="hl">בחינם.</em></p>
+          <p>רוצים לשמוע איך זה ייראה אצלכם?</p>
           <ConsultButton where="how" />
         </div>
       </div>
