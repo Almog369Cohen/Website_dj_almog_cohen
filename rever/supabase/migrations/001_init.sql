@@ -162,6 +162,11 @@ alter table event_plans add column if not exists dismissed_suggestions text;
 alter table event_plans add column if not exists check_meta text;
 alter table docs add column if not exists show_client boolean default false;
 alter table settings add column if not exists contact_phone text;
+-- יומן: קטגוריות צבע, שעת סיום, ומקום לסנכרון עם Google Calendar
+alter table settings add column if not exists calendar_cats text;
+alter table calendar_items add column if not exists ends_at timestamptz;
+alter table calendar_items add column if not exists cat text;
+alter table calendar_items add column if not exists gcal_id text;
 alter table members add column if not exists can_portal boolean not null default false;
 alter table members add column if not exists phone text;
 -- רבר היא חברת הפקות: שדות הדיג'יי הישנים יורדים

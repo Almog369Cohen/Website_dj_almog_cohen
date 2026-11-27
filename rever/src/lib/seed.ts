@@ -74,13 +74,16 @@ export function demoDB(): DB {
       { id: "a4", lead_id: "l3", by: "m-gal", kind: "payment", text: "💳 נרשם תשלום: מקדמה ₪10,000 (העברה)", at: at(-45) },
     ],
     calendar_items: [
-      { id: "c1", kind: "meeting", title: "פגישה: משפחת לוי", start: at(1, 18), location: "במשרד", lead_id: "l2" },
+      { id: "c1", kind: "meeting", title: "פגישה: משפחת לוי", start: at(1, 18), ends_at: at(1, 19), location: "במשרד", lead_id: "l2" },
+      { id: "c2", kind: "event", title: "סיור באולם הגן עם שירן ועומר", start: at(1, 17, 30), ends_at: at(1, 18, 30), location: "אולם הגן", lead_id: "l3", cat: "k_tour" },
+      { id: "c3", kind: "meeting", title: "ישיבת צוות שבועית", start: at(2, 10), ends_at: at(2, 11), cat: "k_team" },
     ],
     templates: DEFAULT_TEMPLATES,
     payments: [],
     expenses: [],
     docs: [],
-    settings: [{ id: "main", business_name: "רבר הפקות", owner_name: "גל", whatsapp_mode: "link", vat_rate: 18, contact_phone: "050-0000000" }],
+    settings: [{ id: "main", business_name: "רבר הפקות", owner_name: "גל", whatsapp_mode: "link", vat_rate: 18, contact_phone: "050-0000000",
+      calendar_cats: JSON.stringify([{ id: "k_tour", label: "סיור באולם", color: "blue" }, { id: "k_team", label: "צוות", color: "gray" }]) }],
     members: DEMO_MEMBERS,
     event_plans: [
       {

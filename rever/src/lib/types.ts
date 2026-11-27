@@ -62,8 +62,11 @@ export interface CalendarItem {
   kind: CalendarKind;
   title: string;
   start: string; // ISO datetime
+  ends_at?: string; // ISO datetime. בלי סוף = שעה אחת
   location?: string;
   lead_id?: string;
+  cat?: string; // קטגוריית צבע (settings.calendar_cats). בלי = לפי הסוג
+  gcal_id?: string; // שמור לסנכרון עם Google Calendar (עוד לא בשימוש)
 }
 
 export interface Template {
@@ -126,6 +129,7 @@ export interface Settings {
   sheet_auto?: boolean; // למשוך לידים חדשים אוטומטית בכל כניסה
   sheet_last_pull?: string;
   contact_phone?: string; // טלפון לפניות לקוחות (בקישור ללקוח)
+  calendar_cats?: string; // JSON: CalendarCat[] (src/lib/agenda.ts). קטגוריות צבע ביומן
 }
 
 export type Role = "admin" | "team";

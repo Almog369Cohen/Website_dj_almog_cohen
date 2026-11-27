@@ -4,6 +4,7 @@ import { useStore } from "@/lib/store";
 import { Field, Modal } from "./ui";
 import type { CalendarItem, CalendarKind, Lead } from "@/lib/types";
 import { EVENT_TYPES, SOURCES, STATUSES } from "@/lib/types";
+import { calendarCats } from "@/lib/agenda";
 import { fromLocalInput, nis, toLocalInput, todayYmd, uid } from "@/lib/format";
 
 const num = (v: string) => (v === "" ? undefined : Number(v));
@@ -178,18 +179,21 @@ export function FollowupModal({ lead, onClose }: { lead: Lead; onClose: () => vo
 export function CalendarModal({
   item,
   date,
+  hour,
   leadId,
   defaultKind = "meeting",
   onClose,
 }: {
   item?: CalendarItem;
   date?: string;
+  hour?: number; // מתצוגת שעות: לחיצה על משבצת
   leadId?: string;
   defaultKind?: CalendarKind;
   onClose: () => void;
 }) {
-  const { db, save, remove, lead, log, setStatus, can } = useStore();
-  const start0 = date ? new Date(date + "T18:00:00").toISOString() : new Date().toISOString();
+  const { db, save, remove, lead, log, setStatus, can, settings } = useStore();
+  const cats = calendarCats(settings);
+  const start0 = date ? new Date(`${date}T${String(hour ?? 18).padStart(2, "0")}:00:00`).toISOString() : new Date().toISOString();
   const l0 = lead(leadId);
   const [f, setF] = useState<CalendarItem>(
     item ?? { id: uid(), kind: defaultKind, title: l0 ? `פגישה: ${l0.name}` : "", start: start0, lead_id: leadId },
@@ -201,7 +205,7 @@ export function CalendarModal({
         className="form"
         onSubmit={async (e) => {
           e.preventDefault();
-          await save("calendar_items", f);
+          await save("calendar_items", { ...f, ends_at: f.ends_at && +new Date(f.ends_at) > +new Date(f.start) ? f.ends_at : undefined });
           const l = lead(f.lead_id);
           if (!item && l && f.kind === "meeting") {
             await log(l.id, "meeting", `נקבעה פגישה${f.location ? " (" + f.location + ")" : ""}`);
@@ -217,8 +221,25 @@ export function CalendarModal({
             <option value="followup">תזכורת / פולואפ</option>
           </select>
         </Field>
+        <Field label="קטגוריה (צבע ביומן)">
+          <select value={f.cat ?? f.kind} onChange={(e) => set({ cat: e.target.value === f.kind ? undefined : e.target.value })}>
+            {cats.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+        </Field>
         <Field label="מתי">
           <input type="datetime-local" required value={toLocalInput(f.start)} onChange={(e) => set({ start: fromLocalInput(e.target.value)! })} />
+        </Field>
+        <Field label="עד שעה (לא חובה)">
+          <input
+            type="time"
+            dir="ltr"
+            value={f.ends_at ? toLocalInput(f.ends_at).slice(11, 16) : ""}
+            onChange={(e) => set({ ends_at: e.target.value ? fromLocalInput(toLocalInput(f.start).slice(0, 11) + e.target.value) : undefined })}
+          />
         </Field>
         <Field label="כותרת *" full>
           <input required value={f.title} onChange={(e) => set({ title: e.target.value })} />

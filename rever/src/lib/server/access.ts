@@ -8,12 +8,12 @@ import { makeClientSession, readSession, verifyClientSession } from "./session";
 const COLUMNS: Record<Table, string[]> = {
   leads: ["id", "name", "phone", "email", "event_type", "event_date", "guests", "venue", "source", "status", "price", "next_followup", "followup_note", "pending_message", "last_contact", "notes", "assigned_to", "lost_reason", "contacts", "money_items", "money_plan", "created_at"],
   activities: ["id", "lead_id", "kind", "text", "at", "by"],
-  calendar_items: ["id", "kind", "title", "start", "location", "lead_id"],
+  calendar_items: ["id", "kind", "title", "start", "location", "lead_id", "ends_at", "cat", "gcal_id"],
   templates: ["id", "name", "description", "body", "sort"],
   payments: ["id", "lead_id", "kind", "amount", "date", "method", "note"],
   expenses: ["id", "date", "amount", "category", "supplier", "note", "lead_id"],
   docs: ["id", "lead_id", "type", "number", "amount", "date", "status", "show_client"],
-  settings: ["id", "business_name", "owner_name", "whatsapp_mode", "make_webhook_url", "vat_rate", "sheet_url", "sheet_map", "sheet_auto", "sheet_last_pull", "contact_phone"],
+  settings: ["id", "business_name", "owner_name", "whatsapp_mode", "make_webhook_url", "vat_rate", "sheet_url", "sheet_map", "sheet_auto", "sheet_last_pull", "contact_phone", "calendar_cats"],
   members: ["id", "name", "title", "phone", "role", "can_prices", "can_finance", "can_delete", "can_templates", "can_portal", "active", "created_at"],
   event_plans: ["id", "timeline", "suppliers", "checklist", "extra_checks", "check_meta", "contact_name", "contact_phone", "requests", "notes", "after", "portal_token", "portal_enabled", "portal_sections", "portal_seen_at", "client_steps", "payment_plan", "contract_status", "internal_notes", "portal_code", "portal_code_ver", "portal_fails", "portal_locked_until", "client_tasks", "client_tasks_rev", "partner_a", "partner_b", "dismissed_suggestions", "updated_at"],
 };

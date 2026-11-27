@@ -316,6 +316,18 @@ ok("שמירה במקביל: שני עובדים משנים שדות שונים 
   call({ action: "upsert", token: gal, table: "calendar_items", row: { id: "C9", kind: "meeting", title: "פגישה", start: "2027-01-01T10:00" }, base: { id: "C9" } });
   assert.equal(ctx.readTable_("calendar_items").find((c) => c.id === "C9").title, "פגישה");
 });
+ok("יומן: קטגוריה, שעת סיום ומזהה גוגל נשמרים; קטגוריות היומן בהגדרות רק למנהל", () => {
+  const arad = call({ action: "login", staff_id: "arad", pin: "3333" }).token;
+  assert.ok(call({ action: "upsert", token: arad, table: "calendar_items", row: { id: "C7", kind: "meeting", title: "סיור", start: "2027-01-01T10:00:00.000Z", ends_at: "2027-01-01T11:30:00.000Z", cat: "k1", gcal_id: "g1" } }).ok);
+  const c = ctx.readTable_("calendar_items").find((x) => x.id === "C7");
+  assert.deepEqual([c.ends_at, c.cat, c.gcal_id], ["2027-01-01T11:30:00.000Z", "k1", "g1"]);
+  const cats = JSON.stringify([{ id: "k1", label: "חזרות", color: "teal" }]);
+  const st = ctx.readTable_("settings")[0];
+  assert.match(call({ action: "upsert", token: arad, table: "settings", row: { ...st, calendar_cats: cats } }).error, /מנהלים/);
+  assert.ok(call({ action: "upsert", token: gal, table: "settings", row: { ...st, calendar_cats: cats } }).ok);
+  assert.equal(call({ action: "load", token: arad }).db.settings[0].calendar_cats, cats);
+  for (const h of ["עד", "קטגוריה", "מזהה ביומן גוגל"]) assert.ok(sheets["יומן"].rows[0].includes(h));
+});
 ok("שדות דיג'יי ישנים (שירים, רגעים, ציוד) לא נשמרים, ועמודות ישנות נמחקות מהגיליון", () => {
   call({ action: "upsert", token: gal, table: "event_plans", row: { ...ctx.readTable_("event_plans")[0], must_songs: "x", equipment: "{}" } });
   const r = ctx.readTable_("event_plans")[0];

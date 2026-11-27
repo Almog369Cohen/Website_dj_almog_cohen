@@ -210,6 +210,16 @@ async function main() {
     await writeRow(pub("gal"), "calendar_items", { id: "C9", kind: "meeting", title: "פגישה", start: "2027-01-01T10:00" }, { id: "C9" });
     assert.equal(tables.calendar_items.find((c) => c.id === "C9")!.title, "פגישה");
   });
+  await ok("יומן: קטגוריה, שעת סיום ומזהה גוגל נשמרים; קטגוריות היומן בהגדרות רק למנהל", async () => {
+    await writeRow(pub("sapir"), "calendar_items", { id: "C7", kind: "meeting", title: "סיור באולם", start: "2027-01-01T10:00:00.000Z", ends_at: "2027-01-01T11:30:00.000Z", cat: "k1", gcal_id: "g1" });
+    const c = tables.calendar_items.find((x) => x.id === "C7")!;
+    assert.deepEqual([c.ends_at, c.cat, c.gcal_id], ["2027-01-01T11:30:00.000Z", "k1", "g1"]);
+    const cats = JSON.stringify([{ id: "k1", label: "חזרות", color: "teal" }]);
+    await denied(writeRow(pub("sapir"), "settings", { ...tables.settings[0], calendar_cats: cats }));
+    await writeRow(pub("gal"), "settings", { ...tables.settings[0], calendar_cats: cats });
+    assert.equal(tables.settings[0].calendar_cats, cats);
+    assert.equal((await readAll(pub("sapir"))).settings[0].calendar_cats, cats); // כולם רואים
+  });
   await ok("שדות דיג'יי ישנים (שירים, רגעים, ציוד) נזרקים", async () => {
     await writeRow(pub("gal"), "event_plans", { id: "L1", must_songs: "x", no_songs: "y", moments: "{}", equipment: "{}" });
     const r = tables.event_plans[0];
