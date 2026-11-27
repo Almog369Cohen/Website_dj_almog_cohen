@@ -53,8 +53,8 @@ export function Header() {
             <a className="round gold" id="headWa" href={waHref()} target="_blank" rel="noopener" data-wa-link="header" aria-label={`${whatsapp.cta} בוואטסאפ`}>
               <WaIcon />
             </a>
-            <button ref={burger} className="round burger" type="button" aria-label="פתיחת תפריט" aria-expanded={open} aria-controls="menu" onClick={() => setOpen(true)}>
-              <span />
+            <button ref={burger} className="menu-word" type="button" aria-expanded={open} aria-controls="menu" onClick={() => setOpen(true)}>
+              תפריט
             </button>
           </div>
         </div>

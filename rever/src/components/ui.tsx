@@ -112,10 +112,21 @@ export function JsonLd({ data }: { data: object }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} />;
 }
 
-/** Copy with *emphasis*: only the words between asterisks turn bold and gold. Everything else stays regular. */
+/**
+ * Copy with emphasis (RULES.md §1, §3): *word* turns bold, **word** turns bold metallic gold.
+ * Gold is for one phrase per screen at most.
+ */
 export function Hl({ text }: { text: string }) {
-  const parts = text.split(/\*([^*]+)\*/);
-  return <>{parts.map((p, i) => (i % 2 ? <em className="hl" key={i}>{p}</em> : p))}</>;
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/);
+  return (
+    <>
+      {parts.map((p, i) => {
+        if (p.startsWith("**")) return <em className="hl gold" key={i}>{p.slice(2, -2)}</em>;
+        if (p.startsWith("*")) return <em className="hl" key={i}>{p.slice(1, -1)}</em>;
+        return p;
+      })}
+    </>
+  );
 }
 
 /** The same copy as plain text, for titles, metadata and messages. */

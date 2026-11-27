@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { faq } from "@/content/faq";
-import { brand, consult, contactCopy, nav, SHOW_TODO } from "@/content/site";
+import { brand, contactCopy, nav, SHOW_TODO } from "@/content/site";
 import type { Block, Source } from "@/content/guides";
 import type { Crumb } from "@/lib/seo";
 import { ConsultButton } from "./Consult";
@@ -73,7 +73,6 @@ export function Closing({ photo = false }: { photo?: boolean }) {
       )}
       <div className="cta wrap">
         <h2>הערב שלכם מתחיל <em className="hl">בשיחה אחת</em>.</h2>
-        <p className="closing-line">{consult.promise}</p>
         <ConsultButton where="closing" className="btn-gold btn-big" />
         <Faces />
       </div>
@@ -160,7 +159,6 @@ export function CtaBand({ title = "רוצים לשמוע איך זה ייראה 
   return (
     <div className="cta-band">
       <h2>{title}</h2>
-      <p>{consult.promise}</p>
       <ConsultButton where="cta-band" />
       <Faces />
     </div>

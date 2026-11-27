@@ -18,12 +18,14 @@ type Status = "idle" | "missing" | "phone" | "sending" | "saved" | "whatsapp";
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [link, setLink] = useState("");
+  const [missing, setMissing] = useState<string[]>([]);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const d = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
     if (d.website) return; // the hidden honeypot: a person never fills it
     const lead = leadFromForm(d);
+    setMissing(["name", "phone", "type"].filter((k) => !d[k]?.trim()));
     if (!lead) return setStatus("missing");
     if (!looksLikePhone(lead.phone)) return setStatus("phone");
     setStatus("sending");
@@ -53,22 +55,22 @@ export function ContactForm() {
       <input className="honey" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <div className="field-row">
         <label htmlFor="f-name">שם מלא</label>
-        <input id="f-name" name="name" autoComplete="name" required enterKeyHint="next" />
+        <input id="f-name" name="name" autoComplete="name" required enterKeyHint="next" aria-invalid={missing.includes("name") || undefined} />
       </div>
       <div className="field-row">
         <label htmlFor="f-phone">טלפון</label>
-        <input id="f-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" dir="ltr" style={{ textAlign: "right" }} required enterKeyHint="next" aria-invalid={status === "phone" || undefined} />
+        <input id="f-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" dir="ltr" style={{ textAlign: "right" }} required enterKeyHint="next" aria-invalid={status === "phone" || missing.includes("phone") || undefined} />
       </div>
       <div className="field-pair">
         <div className="field-row">
           <label htmlFor="f-type">סוג האירוע</label>
-          <select id="f-type" name="type" required defaultValue="">
+          <select id="f-type" name="type" required defaultValue="" aria-invalid={missing.includes("type") || undefined}>
             <option value="" disabled>בחרו</option>
             {contactCopy.eventTypes.map((t) => <option key={t}>{t}</option>)}
           </select>
         </div>
         <div className="field-row">
-          <label htmlFor="f-when">מתי האירוע</label>
+          <label htmlFor="f-when">מתי האירוע (לא חובה)</label>
           <input id="f-when" name="when" placeholder="למשל: יוני הבא" enterKeyHint="next" />
         </div>
       </div>

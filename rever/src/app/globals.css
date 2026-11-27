@@ -17,7 +17,7 @@
   --gold-deep: #d8b46c;
   --gold-soft: #e2c486;
   --gold-line: #b8924a;
-  --gold-metal: linear-gradient(100deg, #8c6b33 0%, #c9a159 18%, #f7e9c4 36%, #d9b56d 52%, #a98444 70%, #f1dcab 86%, #b48d48 100%);
+  --gold-metal: linear-gradient(100deg, #b08a4a 0%, #d8b468 22%, #fff4d6 42%, #e2c27c 54%, #b8914c 72%, #e9cf92 88%, #c29c55 100%);
   --hair: rgba(244, 238, 228, .12);
   --hair-dark: rgba(244, 238, 228, .12);
   --todo: #22c55e;
@@ -35,7 +35,7 @@
 [hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 @media (prefers-reduced-motion: no-preference) { html[data-scenes="off"] { scroll-behavior: smooth; } }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-weight: 300; font-size: 17px; line-height: 1.75; overflow-x: clip; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-weight: 300; font-size: 17px; line-height: 1.6; overflow-x: clip; -webkit-font-smoothing: antialiased; }
 img, video { max-width: 100%; display: block; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
@@ -107,7 +107,7 @@ html[data-scenes="on"] .hero-media { clip-path: inset(calc(50svh - min(46vw, 26s
 html[data-scenes="on"] .jl[data-i="0"] img { transform: scale(1.18); }
 /* the current stage darkens as the camera goes in; the window has a gold hairline (3px at 1/3 scale is 1px) */
 .jl::after { content: ""; position: absolute; inset: 0; background: #000; opacity: var(--dk, 0); pointer-events: none; }
-.jl::before { content: ""; position: absolute; inset: 0; z-index: 1; border: 3px solid var(--gold-soft); opacity: var(--f, 0); pointer-events: none; }
+.jl::before { content: ""; position: absolute; inset: 0; z-index: 1; border: 2px solid rgba(244, 238, 228, .45); opacity: var(--f, 0); pointer-events: none; }
 .hero-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(8, 7, 6, .9) 0, rgba(8, 7, 6, .55) 40%, transparent 64%); opacity: 0; }
 /* the stage caption sits above the floating WhatsApp button, inside the small viewport so the toolbar never hides it */
 .jcap { position: absolute; left: 0; right: 0; top: calc(100svh - 200px - env(safe-area-inset-bottom, 0px)); padding-left: var(--gut); padding-right: var(--gut-r); display: grid; gap: 8px; justify-items: start; opacity: 0; visibility: hidden; text-shadow: 0 1px 14px rgba(0, 0, 0, .55); pointer-events: none; }
@@ -635,3 +635,60 @@ em.hl { font-style: normal; font-weight: 700; background: var(--gold-metal); bac
 .menu a.big { font-size: 34px; }
 .skip { background: var(--gold-metal); color: #17110a; }
 @media (prefers-reduced-motion: reduce) { .btn-gold, .btn-gold::after, em.hl, .pillars b { transition: none; animation: none; } }
+
+/* ---- Council round 1 (27.11): gold in three places only, no Hebrew tracking, calmer type ---- */
+/* §1: Hebrew gets no letter-spacing; only the Latin wordmark keeps its tracking */
+h1, h2, h3, .display, .says, .wipe-cap b, .nope li, .includes li, .faq summary, .related a, .menu a.big, .quote, .jstage b,
+.f-name, .stat b, .ev-card h2, .person h2, .mw2, .hero-copy .display, .pillars b, .fire-title { letter-spacing: 0; }
+@media (min-width: 1024px) { body { font-size: 18px; } }
+.lead { line-height: 1.6; }
+
+/* §3: *word* is bold cream; **word** is the one metallic phrase on a screen */
+em.hl { background: none; color: var(--ink); -webkit-text-fill-color: currentColor; animation: none; }
+em.hl.gold { background: var(--gold-metal); background-size: 220% 100%; background-position: 45% 0; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+@media (prefers-reduced-motion: no-preference) {
+  .display em.hl.gold, .tagline em.hl.gold { animation: sheen-in 1.4s var(--ease) .5s both; }
+}
+@keyframes sheen-in { from { background-position: 100% 0; } to { background-position: 45% 0; } }
+.pillars b { background: none; color: var(--ink); -webkit-text-fill-color: currentColor; animation: none; }
+.kicker { font-weight: 300; color: var(--ink-2); font-size: 15px; }
+.kicker::before { background: var(--gold-line); }
+.f-role, .f-gal .f-role, .step .label, .rows dt, .contact .field-row label, .contact .field-row legend { font-weight: 300; color: var(--ink-2); }
+.bigmark span { background: none; color: rgba(244, 238, 228, .08); -webkit-text-fill-color: currentColor; }
+.faq summary::after { color: var(--ink-2); }
+.chip input:checked + span { border-color: var(--gold-line); }
+
+/* the main button: one look everywhere, the full words */
+.hero-first { min-height: 52px; padding: 0 26px; font-size: 16px; }
+@media (max-width: 599px) { .hero-rest { justify-content: center; } .hero-first { width: 100%; } }
+.site-head.over-hero .head-cta { display: none; }
+.fab { font-size: 16px; }
+.btn-gold { background-position: 45% 0; }
+.btn-gold:hover { background-position: 5% 0; }
+
+/* small text never thin and tiny */
+.hero-promise, .contact .fine, .fire-cta span { font-size: 16px; }
+
+/* header: a word instead of outlined icon circles; WhatsApp lives in the menu */
+.round.gold { display: none; }
+.menu-word { min-height: 44px; padding: 0 4px; border: 0; background: none; color: inherit; font: 300 16px var(--body); cursor: pointer; }
+
+/* gallery: a calm, regular grid, photos edge to edge with a hairline gap */
+.cols { gap: 4px; }
+.col { gap: 4px; transform: none !important; }
+.col:nth-child(2) { margin-top: 0; }
+@media (min-width: 1024px) { .cols { gap: 6px; } .col { gap: 6px; } .col:nth-child(2) { margin-top: 0; } }
+.tile { border-radius: 4px; box-shadow: none; }
+.reveal, .how-frame, .ev-card .ph, .f-photo, .person .f-photo, .jstatic img { box-shadow: none; }
+
+/* form: tighter label to line, clearer placeholder */
+.contact form.consult-form { gap: 18px; }
+.contact .field-row { gap: 2px; }
+.contact .field-row input, .contact .field-row select, .contact .field-row textarea { min-height: 44px; padding: 6px 0; }
+.contact .field-row input::placeholder { color: rgba(244, 238, 228, .55); }
+.contact .field-row [aria-invalid] { border-bottom-color: #e8a27a; }
+.contact { padding-block: 9svh 12svh; }
+/* how it works: step 00 flows straight into step 01, no empty band between hairlines */
+.how-grid { margin-top: 0; }
+.how-zero { border-bottom: 0; margin-bottom: 0; }
+.step { padding-block: 4svh; }

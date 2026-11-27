@@ -92,7 +92,7 @@ export function Hero() {
           <a className="jskip" id="jskip" href="#events">דלגו על המסע</a>
           <div className="hero-rest" id="heroRest">
             <h1>{hero.h1}</h1>
-            <ConsultButton where="hero-first" className="btn-ghost">{consult.short}</ConsultButton>
+            <ConsultButton where="hero-first" className="btn-gold hero-first" />
             <div className="cue" aria-hidden="true">גללו<i /></div>
           </div>
           <div className="hero-copy" id="heroCopy">
@@ -145,29 +145,17 @@ export function Fire() {
       </ol>
       <div className="fire-cta">
         <ConsultButton where="fire" className="btn-gold btn-big" />
-        <span>{consult.promise}</span>
       </div>
     </section>
   );
 }
 
-/** 2–4. The paper chapter: the difference, the wipe, the founders and the event types. */
+/** 2–3. The chapter after the opening: the proof (events), the three promises, and the wipe. */
 export function PaperChapter({ lead }: { lead?: React.ReactNode }) {
-  const words = difference.tasks.split(/\s+/);
   return (
     <div className="chapter-paper" data-tone="paper">
       {lead}
       <Fire />
-      <section className="manifesto wrap" id="difference" data-wa="קראתי באתר על ההבדל" aria-label="ההבדל">
-        <div className="kicker">ההבדל</div>
-        <p className="says" id="says">
-          {words.map((w, i) => (
-            <span key={i}><span className="w">{w}</span>{i < words.length - 1 ? " " : ""}</span>
-          ))}
-        </p>
-        <p className="says-after"><Hl text={difference.after} /></p>
-      </section>
-
       <section className="wipe" id="wipe" data-wa="ראיתי באתר איך זה עובד ביום עצמו" aria-label="אצלנו ואצלכם">
         <div className="wipe-stage">
           <Pic id="wipeUnder" className="under" name="team-day" alt="ארד מצוות REVER, עם תג צוות, ליד הזוג ביום החתונה בגן" />
@@ -178,9 +166,6 @@ export function PaperChapter({ lead }: { lead?: React.ReactNode }) {
         </div>
       </section>
 
-      <section className="nope wrap" aria-label="מה לא צריך">
-        <ul>{difference.noNeed.map((l) => <li key={l}>{l}</li>)}</ul>
-      </section>
 
 
     </div>
@@ -194,8 +179,8 @@ export function Founders({ intro = true }: { intro?: boolean }) {
       {intro && (
         <div className="founders-intro wrap">
           <div className="kicker">המייסדים</div>
-          <h2 id="foundersTitle">גל וליאל. <em className="hl">הם גם יענו לכם.</em></h2>
-          <p className="lead">הם הקימו את REVER, והם אלה שיענו לכם כשתכתבו לנו.</p>
+          <h2 id="foundersTitle">גל וליאל. <em className="hl">הם יענו לכם.</em></h2>
+          <p className="lead">הם הקימו את REVER לפני {brand.years} שנים, והם אלה שעונים לכם כשאתם כותבים.</p>
         </div>
       )}
       <div className="founders">
@@ -212,7 +197,7 @@ export function Founders({ intro = true }: { intro?: boolean }) {
       </div>
       {intro && (
         <div className="founders-cta wrap">
-          <ConsultButton where="founders">שיחת ייעוץ עם גל וליאל</ConsultButton>
+          <ConsultButton where="founders" />
           <Link className="link-quiet" href="/about/">עוד על גל וליאל</Link>
         </div>
       )}
@@ -226,10 +211,10 @@ export function How() {
     <section className="how wrap" id="how" data-tone="paper" data-wa="קראתי באתר איך זה עובד" aria-labelledby="howTitle">
       <div className="kicker">איך זה עובד</div>
       <h2 id="howTitle">מהשיחה הראשונה ועד <em className="hl">השיר האחרון</em>.</h2>
-      <p className="lead">אנחנו מנהלים את כל התהליך, כדי שתהיו רגועים ותיהנו מהדרך, לא רק מהערב.</p>
+      <p className="lead">ארבעה שלבים. בכל אחד כתוב מה עליכם ומה עלינו.</p>
       <div className="how-zero">
         <span className="en n">00</span>
-        <p>הכול מתחיל בשיחת ייעוץ. <em className="hl">בחינם</em>, בלי שום התחייבות.</p>
+        <p>הכול מתחיל בשיחת ייעוץ איתנו.</p>
       </div>
       <div className="how-grid">
         <div className="steps">
