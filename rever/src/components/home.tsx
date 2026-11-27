@@ -139,7 +139,7 @@ export function Fire() {
           <li key={p.n}>
             <span className="en n">{p.n}</span>
             <b>{p.word}</b>
-            <p>{p.line}</p>
+            <p><Hl text={p.line} /></p>
           </li>
         ))}
       </ol>
@@ -180,7 +180,7 @@ export function Founders({ intro = true }: { intro?: boolean }) {
         <div className="founders-intro wrap">
           <div className="kicker">המייסדים</div>
           <h2 id="foundersTitle">גל וליאל. <em className="hl">הם יענו לכם.</em></h2>
-          <p className="lead">הם הקימו את REVER לפני {brand.years} שנים, והם אלה שעונים לכם כשאתם כותבים.</p>
+          <p className="lead">הם הקימו את REVER לפני {brand.years} שנים.</p>
         </div>
       )}
       <div className="founders">
@@ -214,7 +214,7 @@ export function How() {
       <p className="lead">ארבעה שלבים. בכל אחד כתוב מה עליכם ומה עלינו.</p>
       <div className="how-zero">
         <span className="en n">00</span>
-        <p>הכול מתחיל בשיחת ייעוץ איתנו.</p>
+        <p>שלב אפס: <em className="hl">שיחה</em> עם גל וליאל.</p>
       </div>
       <div className="how-grid">
         <div className="steps">

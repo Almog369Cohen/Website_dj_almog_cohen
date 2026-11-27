@@ -21,7 +21,7 @@ const p = (src: string, alt: string): EventPhoto => ({ src, alt });
 export const events: RevEvent[] = [
   {
     slug: "stone-courtyard-garden-wedding",
-    tab: "חצר האבן",
+    tab: "חתונה בחצר אבן",
     title: "חתונת גן בחצר אבן",
     text: "חצר אבן בין עצים, שרשראות אור, מנורות שולחן ופינות ישיבה. האורחים בלבן, והערב נגמר על הרחבה.",
     setting: "חצר אבן פתוחה בין עצים",
@@ -36,7 +36,7 @@ export const events: RevEvent[] = [
   },
   {
     slug: "new-years-eve-wedding",
-    tab: "ערב 31.12",
+    tab: "חתונת סילבסטר",
     title: "חתונה בערב השנה החדשה",
     text: "אולם בתאורת מגנטה, צמחייה תלויה עם כדורי מראה, פמוטי קריסטל, ניצוצות ומגדל שמפניה.",
     setting: "אולם בהפקת במה, בערב השנה החדשה",
@@ -51,7 +51,7 @@ export const events: RevEvent[] = [
   },
   {
     slug: "lotus-booth-garden-wedding",
-    tab: "עמדת הלוטוס",
+    tab: "חתונת גן",
     title: "חתונת גן עם עמדת הלוטוס",
     text: "שולחנות עץ ארוכים עם פרחי גן, מגדל שמפניה על הדשא, ועמדת DJ בצורת לוטוס עם תותחי עשן לרחבה.",
     setting: "גן אירועים עם דשא ועצים",
@@ -65,7 +65,7 @@ export const events: RevEvent[] = [
   },
   {
     slug: "live-band-stage-show",
-    tab: "מופע במה",
+    tab: "מופע עם להקה",
     title: "מופע במה עם להקה חיה",
     text: "להקה חיה, נגן בוזוקי בעמדת ה־DJ, מסך לד ענק ותאורת לייזר מעל הרחבה.",
     setting: "במה עם מסך לד ותאורת לייזר",

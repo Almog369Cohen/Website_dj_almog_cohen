@@ -135,7 +135,7 @@ export function Engine() {
       // the opening: the first photo's window opens to full screen
       const z = clamp(scrolled / geo.travel, 0, 1);
       const e0 = easeInOut(range(z, 0, 0.7)), k0 = 1 - e0;
-      media.style.clipPath = k0 > 0 ? `inset(${(geo.t * k0).toFixed(1)}px ${(geo.rr * k0).toFixed(1)}px ${(geo.b * k0).toFixed(1)}px ${(geo.l * k0).toFixed(1)}px round ${(28 * k0).toFixed(2)}px)` : "none";
+      media.style.clipPath = k0 > 0 ? `inset(${(geo.t * k0).toFixed(1)}px ${(geo.rr * k0).toFixed(1)}px ${(geo.b * k0).toFixed(1)}px ${(geo.l * k0).toFixed(1)}px round ${(12 * k0).toFixed(2)}px)` : "none";
       media.style.willChange = k0 > 0 ? "clip-path" : "auto";
       const w = easeIn(range(z, 0, 0.55)), wo = String(1 - range(z, 0.25, 0.55));
       mw1.style.transform = `translate3d(0,${-w * 110}%,0)`;

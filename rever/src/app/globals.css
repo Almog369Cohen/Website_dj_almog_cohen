@@ -99,7 +99,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .hero-inner { position: absolute; inset: 0; transform-origin: 50% 30%; }
 .hero-media { position: absolute; inset: 0; overflow: hidden; }
 /* The window's starting shape is set in CSS, exactly where the slot sits, so the opening paints before any script runs */
-html[data-scenes="on"] .hero-media { clip-path: inset(calc(50svh - min(46vw, 26svh)) calc(50vw - min(36.8vw, 20.8svh)) calc(100vh - 50svh - min(46vw, 26svh)) calc(50vw - min(36.8vw, 20.8svh)) round 28px); }
+html[data-scenes="on"] .hero-media { clip-path: inset(calc(50svh - min(46vw, 26svh)) calc(50vw - min(36.8vw, 20.8svh)) calc(100vh - 50svh - min(46vw, 26svh)) calc(50vw - min(36.8vw, 20.8svh)) round 12px); }
 .jl { position: absolute; inset: 0; transform-origin: 0 0; visibility: hidden; overflow: hidden; contain: strict; background: var(--night); }
 .jl[data-i="0"] { visibility: visible; }
 .jl picture { position: absolute; inset: 0; }
@@ -155,7 +155,7 @@ html[data-scenes="on"] .jstatic img { display: none; }
 .hero-dim { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
 @media (min-width: 1024px) {
   .hero { height: 748vh; }
-  html[data-scenes="on"] .hero-media { clip-path: inset(23vh calc(50vw - 15.1875vh) 23vh calc(50vw - 15.1875vh) round 28px); }
+  html[data-scenes="on"] .hero-media { clip-path: inset(23vh calc(50vw - 15.1875vh) 23vh calc(50vw - 15.1875vh) round 12px); }
   /* the clip is portrait: on a wide screen it ends as a tall panel on the night, opposite the copy */
   .jl-video video { position: absolute; top: 0; left: max(4vw, calc(28vw - 28.125vh)); width: 56.25vh; }
   .hero-shade { background: linear-gradient(to left, rgba(8, 7, 6, .86) 0, rgba(8, 7, 6, .45) 45%, transparent 72%); }
@@ -692,3 +692,33 @@ em.hl.gold { background: var(--gold-metal); background-size: 220% 100%; backgrou
 .how-grid { margin-top: 0; }
 .how-zero { border-bottom: 0; margin-bottom: 0; }
 .step { padding-block: 4svh; }
+
+/* ---- Council round 2 (27.11) ---- */
+/* one gold button per screen on desktop too: the header pill is the action there, no floating pill */
+@media (min-width: 768px) { .fab { display: none; } }
+/* phones: the last line of a section scrolls clear of the floating pill */
+@media (max-width: 767px) { main#main { padding-bottom: 88px; } }
+/* gold stays in its three places: section dashes, link lines and the journey counter turn cream */
+.kicker::before { background: var(--hair); }
+.link-quiet { text-decoration-color: var(--hair); }
+.jnum { color: var(--ink); }
+/* hero on a phone: what we do in one small line above the pill */
+@media (max-width: 599px) {
+  .hero-rest { flex-direction: column; align-items: stretch; gap: 12px; }
+}
+/* promises on a phone: the number above the title, the text full width */
+@media (max-width: 1023px) {
+  .pillars li { grid-template-columns: 1fr; }
+  .pillars .n { padding-top: 0; }
+  .pillars p { grid-column: 1; }
+}
+@media (min-width: 1024px) { .pillars p { font-size: 18px; } .kicker { font-size: 17px; } }
+.pillars p em.hl { color: var(--ink); }
+/* form: label right on its line, two short fields side by side even on a phone */
+.contact .field-row { gap: 0; }
+.contact .field-row label { line-height: 1.3; }
+.field-pair { grid-template-columns: 1fr 1fr; gap: 16px; }
+.contact form.consult-form { gap: 14px; }
+.chip span { min-height: 38px; padding: 0 14px; font-size: 15px; }
+.menu-word { font-size: 16px; }
+.closing .cta h2 { max-width: 14ch; }

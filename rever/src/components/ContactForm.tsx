@@ -55,11 +55,11 @@ export function ContactForm() {
       <input className="honey" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       <div className="field-row">
         <label htmlFor="f-name">שם מלא</label>
-        <input id="f-name" name="name" autoComplete="name" required enterKeyHint="next" aria-invalid={missing.includes("name") || undefined} />
+        <input id="f-name" name="name" autoComplete="name" required enterKeyHint="next" placeholder="השם שלכם" aria-invalid={missing.includes("name") || undefined} />
       </div>
       <div className="field-row">
         <label htmlFor="f-phone">טלפון</label>
-        <input id="f-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" dir="ltr" style={{ textAlign: "right" }} required enterKeyHint="next" aria-invalid={status === "phone" || missing.includes("phone") || undefined} />
+        <input id="f-phone" name="phone" type="tel" placeholder="050-0000000" inputMode="tel" autoComplete="tel" dir="ltr" style={{ textAlign: "right" }} required enterKeyHint="next" aria-invalid={status === "phone" || missing.includes("phone") || undefined} />
       </div>
       <div className="field-pair">
         <div className="field-row">
@@ -87,7 +87,7 @@ export function ContactForm() {
       </fieldset>
       <div className="field-row">
         <label htmlFor="f-msg">משהו שחשוב לכם שנדע (לא חובה)</label>
-        <textarea id="f-msg" name="message" rows={2} maxLength={600} />
+        <textarea id="f-msg" name="message" rows={2} maxLength={600} placeholder="אולם, מספר אורחים, מה שעולה לכם" />
       </div>
       <button className="btn-gold btn-big" type="submit" disabled={status === "sending"}>
         <CalIcon />

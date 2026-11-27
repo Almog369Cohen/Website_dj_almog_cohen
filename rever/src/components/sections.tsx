@@ -72,7 +72,7 @@ export function Closing({ photo = false }: { photo?: boolean }) {
         </div>
       )}
       <div className="cta wrap">
-        <h2>הערב שלכם מתחיל <em className="hl">בשיחה אחת</em>.</h2>
+        <h2>טיל ההפקות. איתנו זה <em className="hl gold">אש</em>. נתחיל בשיחה?</h2>
         <ConsultButton where="closing" className="btn-gold btn-big" />
         <Faces />
       </div>
